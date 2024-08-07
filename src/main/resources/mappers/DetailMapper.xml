@@ -1,0 +1,16 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<!--<mapper namespace="kr.co.swm.board.mapper.DetailMapper">-->
+
+<!--    <resultMap id="test" type="kr.co.swm.board.DetailDto">-->
+<!--        <result column="t_no" property="t_no"/>-->
+<!--        <result column="t_name" property="t_name"/>-->
+<!--        <result column="t_id" property="t_id"/>-->
+
+<!--    </resultMap>-->
+
+<!--    <select id="getAllposts" resultMap="kr.co.swm.board.DetailDto">-->
+<!--        select * from sys.test-->
+<!--    </select>-->
+
+<!--</mapper>-->

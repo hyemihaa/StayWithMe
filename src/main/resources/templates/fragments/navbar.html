@@ -1,0 +1,35 @@
+<!-- src/main/resources/templates/fragments/navbar.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/static">dirEngine.</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
+            </button>
+
+            <!-- 체크인 아웃 날짜 예약 -->
+            <div class="form-group">
+                <input type="text" id="checkin_date" class="form-control-checkin" placeholder="체크인 날짜">
+            </div>
+            <div class="form-group">
+                <input type="text" id="checkin_date" class="form-control-checkout" placeholder="체크아웃 날짜">
+            </div>
+
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active"><a href="/static" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="/tour" class="nav-link">Tour</a></li>
+                    <li class="nav-item"><a href="/hotel" class="nav-link">Hotels</a></li>
+                    <li class="nav-item"><a href="/blog" class="nav-link">Blog</a></li>
+                    <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
+                    <li class="nav-item cta"><a href="/contact" class="nav-link"><span>Add listing</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</th:block>
+</html>
