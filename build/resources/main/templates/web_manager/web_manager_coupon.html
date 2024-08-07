@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Stay With Me</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="./bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="./seller.css" rel="stylesheet">
+    <link href="./coupon.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container-xxl position-relative bg-white d-flex p-0">
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+    <!-- Sidebar Start -->
+    <div class="sidebar pe-4 pb-3">
+        <nav class="navbar bg-light navbar-light">
+            <a href="seller.html" class="navbar-brand mx-4 mb-3">
+                <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Stay With Me</h3>
+            </a>
+            <div class="d-flex align-items-center ms-4 mb-4">
+                <div class="ms-3">
+                    <h6 class="mb-0">Jhon Doe</h6>
+                    <span>Admin</span>
+                </div>
+            </div>
+            <div class="navbar-nav w-100">
+                <a href="seller.html" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                <a href="coupon.html" class="nav-item nav-link active"><i class="fa fa-th me-2"></i>Coupon</a>
+                <a href="member_search.html" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Member</a>
+            </div>
+        </nav>
+    </div>
+    <!-- Sidebar End -->
+
+    <!-- Content Start -->
+    <div class="content">
+        <!-- Navbar Start -->
+        <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+            </a>
+            <a href="#" class="sidebar-toggler flex-shrink-0">
+                <i class="fa fa-bars"></i>
+            </a>
+            <div class="navbar-nav align-items-center ms-auto">
+                <div class="nav-item dropdown">
+                    <i class="fa fa-envelope me-lg-2"></i>
+                    <span class="d-none d-lg-inline-flex">Message</span>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <span class="d-none d-lg-inline-flex">John Doe</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#" class="dropdown-item">My Profile</a>
+                        <a href="#" class="dropdown-item">Settings</a>
+                        <a href="#" class="dropdown-item">Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Navbar End -->
+
+        <!-- Coupon Section Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="bg-light rounded-top p-4">
+                <div class="d-flex justify-content-between mb-4">
+                    <div class="coupon_button">
+                        <button class="btn btn-primary button_style" id="editBtn">수정</button>
+                        <button class="btn btn-success button_style" id="registerBtn">등록</button>
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                    <tr>
+                        <th class="text-center">선택</th>
+                        <th class="text-center">쿠폰 코드</th>
+                        <th class="text-center">쿠폰 이름</th>
+                        <th class="text-center">할인 종류</th>
+                        <th class="text-center">쿠폰 수량</th>
+                        <th class="text-center">쿠폰 잔여량</th>
+                        <th class="text-center">쿠폰 기간</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-center"><input type="radio" name="coupon_check" value="c240501"></td>
+                        <td class="text-center">c240501</td>
+                        <td class="text-center">Summer Event</td>
+                        <td class="text-center">3%</td>
+                        <td class="text-center">200</td>
+                        <td class="text-center">70</td>
+                        <td class="text-center">0000. 00. 00 ~ 0000. 00. 00</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><input type="radio" name="coupon_check" value="c240612"></td>
+                        <td class="text-center">c240612</td>
+                        <td class="text-center">뷰맛 기행</td>
+                        <td class="text-center">10000원</td>
+                        <td class="text-center">50</td>
+                        <td class="text-center">10</td>
+                        <td class="text-center">0000. 00. 00 ~ 0000. 00. 00</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><input type="radio" name="coupon_check" value="c240725"></td>
+                        <td class="text-center">c240725</td>
+                        <td class="text-center">가자! 바다로</td>
+                        <td class="text-center">20000원</td>
+                        <td class="text-center">200</td>
+                        <td class="text-center">110</td>
+                        <td class="text-center">0000. 00. 00 ~ 0000. 00. 00</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><input type="radio" name="coupon_check" value="c240805"></td>
+                        <td class="text-center">c240805</td>
+                        <td class="text-center">최고의 숲속 휴양지</td>
+                        <td class="text-center">5%</td>
+                        <td class="text-center">50</td>
+                        <td class="text-center">40</td>
+                        <td class="text-center">0000. 00. 00 ~ 0000. 00. 00</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- 등록 모달 -->
+                <div id="registerModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <form class="modal-form">
+                            <label for="couponName">쿠폰 이름</label>
+                            <input type="text" id="couponName" name="couponName">
+
+                            <label for="couponType">쿠폰 유형</label>
+                            <select id="couponType" name="couponType">
+                                <option value="percent">percent</option>
+                                <option value="pay">pay</option>
+                            </select>
+
+                            <label for="discount">할인</label>
+                            <input type="number" id="discount" name="discount">
+
+                            <label for="couponQuantity">쿠폰 수량</label>
+                            <input type="number" id="couponQuantity" name="couponQuantity">
+
+                            <label for="couponStart">쿠폰 시작일</label>
+                            <input type="date" id="couponStart" name="couponStart">
+
+                            <label for="couponEnd">쿠폰 종료일</label>
+                            <input type="date" id="couponEnd" name="couponEnd">
+
+                            <label for="minPurchasePrice">최소 구매 금액</label>
+                            <input type="number" id="minPurchasePrice" name="minPurchasePrice">
+
+                            <button type="submit" class="button_style">등록</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 수정 모달 -->
+                <div id="editModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <form class="modal-form">
+                            <input type="hidden" id="editCouponCode" name="couponCode">
+
+                            <label for="editCouponName">쿠폰 이름</label>
+                            <input type="text" id="editCouponName" name="couponName">
+
+                            <label for="editCouponType">쿠폰 유형</label>
+                            <select id="editCouponType" name="couponType">
+                                <option value="percent">percent</option>
+                                <option value="pay">pay</option>
+                            </select>
+
+                            <label for="editDiscount">할인</label>
+                            <input type="number" id="editDiscount" name="discount">
+
+                            <label for="editCouponQuantity">쿠폰 수량</label>
+                            <input type="number" id="editCouponQuantity" name="couponQuantity">
+
+                            <label for="editCouponStart">쿠폰 시작일</label>
+                            <input type="date" id="editCouponStart" name="couponStart">
+
+                            <label for="editCouponEnd">쿠폰 종료일</label>
+                            <input type="date" id="editCouponEnd" name="couponEnd">
+
+                            <label for="editMinPurchasePrice">최소 구매 금액</label>
+                            <input type="number" id="editMinPurchasePrice" name="minPurchasePrice">
+
+                            <button type="submit" class="button_style">수정</button>
+                        </form>
+                    </div>
+                </div>
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination calendar">
+                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <!-- Content End -->
+
+            <!-- Footer Start -->
+            <div class="footer">
+                <div class="container-fluid pt-4 px-4">
+                    <div class="bg-light rounded-top p-4">
+                        <div class="row">
+                            <div class="col-12 col-sm-6 text-center text-sm-start">
+                                &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+                            </div>
+                            <div class="col-12 col-sm-6 text-center text-sm-end">
+                                <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                                Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer End -->
+        </div>
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="./lib/chart/chart.min.js"></script>
+        <script src="./lib/easing/easing.min.js"></script>
+        <script src="./lib/waypoints/waypoints.min.js"></script>
+        <script src="./lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="./lib/tempusdominus/js/moment.min.js"></script>
+        <script src="./lib/tempusdominus/js/moment-timezone.min.js"></script>
+        <script src="./lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+        <!-- Template Javascript -->
+        <script src="./js/coupon.js"></script>
+</body>
+
+</html>

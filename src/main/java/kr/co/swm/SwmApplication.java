@@ -1,5 +1,8 @@
-package main.java.kr.co.swm;
+package kr.co.swm;
 
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class SwmApplication {
