@@ -1,16 +1,18 @@
 package kr.co.swm.model.service;
 
-import jakarta.servlet.http.HttpSession;
 import kr.co.swm.model.dto.SellerDto;
 
 import java.util.List;
 
 public interface SellerService {
 
-    public List<SellerDto> basicRate(String roomCode);
+    // 객실 리스트 조회
+    List<String> roomNameSearch(int accommodationNo);
 
-//    public int basicRateInsert(SellerDto sellerDto, HttpSession session);
-    public int basicRateInsert(SellerDto sellerDto, String adminCode);
+    // 기본 요금 조회
+    List<SellerDto> basicRateList(String roomName);
 
+    // 추가 요금 조회
+    List<SellerDto> extraRateList(String roomName);
 
 }

@@ -1,20 +1,20 @@
 package kr.co.swm.mappers;
 
-import jakarta.servlet.http.HttpSession;
 import kr.co.swm.model.dto.SellerDto;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface SellerMapper {
 
-    List<SellerDto> basicRate(String roomCode);
+    // 객실 리스트 조회
+    List<String> roomNameSearch(int accommodationNo);
 
-    int roomInventorySearch(String adminCode);
+    // 기본 요금 조회
+    List<SellerDto> basicRateList(String roomName);
 
-    int basicRateUpdate(SellerDto sellerDto, int roomInventory);
+    // 추가 요금 조회
+    List<SellerDto> extraRateList(String roomName);
 
-    int extraRateInsert(SellerDto sellerDto);
 }

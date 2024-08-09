@@ -147,12 +147,22 @@
                         </tr>
                         </thead>
                         <tbody id="rateTableBody">
-                        <tr th:each="item : ${sellerList}">
-                            <td th:text="${item.extraName != null && !item.extraName.isEmpty() ? item.extraName : '기본가'}"></td>
+                        <!-- 기본 요금 표시 -->
+                        <tr th:each="item : ${basicRateList}">
+                            <td th:text="${'기본가'}"></td>
                             <td><input type="text" name="weekdayRate" th:value="${item.weekdayRate}" class="text-center"></td>
                             <td><input type="text" name="fridayRate" th:value="${item.fridayRate}" class="text-center"></td>
                             <td><input type="text" name="saturdayRate" th:value="${item.saturdayRate}" class="text-center"></td>
                             <td><input type="text" name="sundayRate" th:value="${item.sundayRate}" class="text-center"></td>
+                            <td><button type="button" class="deleteRow btn btn-danger btn-sm">삭제</button></td>
+                        </tr>
+                        <!-- 추가 요금 표시 -->
+                        <tr th:each="item : ${extraRateList}" th:if="${item.extraName != null and !item.extraName.isEmpty()}">
+                            <td th:text="${item.extraName}"></td>
+                            <td><input type="text" name="extraWeekdayRate" th:value="${item.extraWeekdayRate}" class="text-center"></td>
+                            <td><input type="text" name="extraFridayRate" th:value="${item.extraFridayRate}" class="text-center"></td>
+                            <td><input type="text" name="extraSaturdayRate" th:value="${item.extraSaturdayRate}" class="text-center"></td>
+                            <td><input type="text" name="extraSundayRate" th:value="${item.extraSundayRate}" class="text-center"></td>
                             <td><button type="button" class="deleteRow btn btn-danger btn-sm">삭제</button></td>
                         </tr>
                         </tbody>
