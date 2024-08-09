@@ -97,7 +97,7 @@
 								</label>
 							</div>
 							<div class="form-check">
-								<input type="checkbox" class="form-check-input" id="exampleCheck1">
+								<input type="checkbox" class="form-check-input" id="exampleCheck2">
 								<label class="form-check-label" for="exampleCheck1">
 									<p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i
 											class="icon-star"></i><i class="icon-star"></i><i
@@ -105,7 +105,7 @@
 								</label>
 							</div>
 							<div class="form-check">
-								<input type="checkbox" class="form-check-input" id="exampleCheck1">
+								<input type="checkbox" class="form-check-input" id="exampleCheck3">
 								<label class="form-check-label" for="exampleCheck1">
 									<p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i
 											class="icon-star"></i><i class="icon-star-o"></i><i
@@ -113,7 +113,7 @@
 								</label>
 							</div>
 							<div class="form-check">
-								<input type="checkbox" class="form-check-input" id="exampleCheck1">
+								<input type="checkbox" class="form-check-input" id="exampleCheck4">
 								<label class="form-check-label" for="exampleCheck1">
 									<p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i
 											class="icon-star-o"></i><i class="icon-star-o"></i><i
@@ -121,7 +121,7 @@
 								</label>
 							</div>
 							<div class="form-check">
-								<input type="checkbox" class="form-check-input" id="exampleCheck1">
+								<input type="checkbox" class="form-check-input" id="exampleCheck5">
 								<label class="form-check-label" for="exampleCheck1">
 									<p class="rate"><span><i class="icon-star"></i><i class="icon-star-o"></i><i
 											class="icon-star-o"></i><i class="icon-star-o"></i><i
@@ -166,29 +166,32 @@
 									</div>
 								</a>
 								<!-- 텍스트 영역 -->
-								<div class="text-tour p-3">
+								<div class="text-tour p-3" th:each="place : ${place}">
 									<div class="d-flex">
-										<div class="one">
-											<h3><a href="/hotel-single">숙박 명</a></h3>
+										<div class="one" >
+											<h3><a href="/hotel-single" th:text="${place?.BoardName}"></a></h3>
 											<p class="rate">
 												<i class="icon-star"></i>
 												<i class="icon-star"></i>
 												<i class="icon-star"></i>
 												<i class="icon-star"></i>
 												<i class="icon-star-o"></i>
-												<span>8 Rating</span>
+												<span>8</span>
 											</p>
 										</div>
 										<div class="two">
-											<p>숙박유형</p>
+											<p th:text="${place?.BoardType}"></p>
 										</div>
 									</div>
-									<span><i class="icon-map-o"></i> 장소 명</span>
-									<p class="days"><span>체크인 : 15:00</span></p>
+									<span><i class="icon-map-o"></i>&nbsp<span th:text="${place?.BoardAddress}" /></span>
+									<p class="days"><span>체크인 :&nbsp<span th:text="${place?.BoardCheckIn}" /></span></p>
 									<hr>
-									<span class="price" style="text-decoration: line-through;">200,000원</span>
+									<span class="price" style="text-decoration: line-through;">
+										<span th:text="${place?.BoardCount}"/>원</span>
 									<br>
-									<p class="price">쿠폰적용가 : 170,000원</p>
+									<p class="price" style="font-weight:bold">
+										쿠폰적용가 : <span style="font-weight:bold" th:text="${place?.BoardDiscount}" />
+										원</p>
 									<p class="bottom-area d-flex">
 										<span class="ml-auto"><a href="/hotel-single">자세히보기</a></span>
 									</p>
@@ -208,30 +211,30 @@
 								<ul>
 									<!-- 왼쪽 버튼 -->
 								<!-- 현재페이지가 1페이지인 경우와 아닌경우-->
-								<!--<li>
-								<a th:if="${pi.currentPage == 1}" href="#">&lt;</a>
+								<li>
+								<a th:if="${pi.currentPage == 1}" href="#">&lt</a>
 								<a th:if="${pi.currentPage > 1}" th:href="@{tour(currentPage=${pi.currentPage-1})}">&lt;</a>
-								</li>-->
-									<li ><a href="#">&lt;</a></li>
+								</li>
+<!--									<li ><a href="#">&lt;</a></li>-->
 
 									<!-- 가운데 페이지 버튼 -->
-									<li class="active"><span>1</span></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">5</a></li>
+<!--									<li class="active"><span>1</span></li>-->
+<!--									<li><a href="#">2</a></li>-->
+<!--									<li><a href="#">3</a></li>-->
+<!--									<li><a href="#">4</a></li>-->
+<!--									<li><a href="#">5</a></li>-->
 
-								<!--<li th:each="page : ${#numbers.sequence(pi.startpage, pi.endpage)}">
-								<a th:href="@{tour(currentPage=${page})}">th:text="${page}"</a>
-								</li>-->
+								<li class="active" th:each="page : ${#numbers.sequence(pi.startPage, pi.endPage)}">
+								<a th:href="@{tour(currentPage=${page})}"><p th:text="${page}" /></a>
+								</li>
 
 									<!-- 오른쪽 버튼 -->
-									<li><a href="#">&gt;</a></li>
+<!--									<li><a href="#">&gt;</a></li>-->
 								<!-- 현재페이지가 마지막인 경우와 아닌경우 -->
-								<!--<li>
-								<a th:if="${pi.currentPage == pi.maxpage}" href="#">&gt;</a>
-								<a th:if="${pi.currentPage < pi.maxpage}" th:href="@{tour(currentPage=${pi.currentPage+1})}">&gt;</a>
-								</li>-->
+								<li>
+								<a th:if="${pi.currentPage == pi.maxPage}" href="#">&gt;</a>
+								<a th:if="${pi.currentPage < pi.maxPage}" th:href="@{tour(currentPage=${pi.currentPage+1})}">&gt;</a>
+								</li>
 								</ul>
 							</div>
 						</div>

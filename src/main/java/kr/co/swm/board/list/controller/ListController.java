@@ -1,6 +1,5 @@
 package kr.co.swm.board.list.controller;
 
-
 import kr.co.swm.board.list.model.dto.ListDto;
 import kr.co.swm.board.list.model.dto.PageInfoDto;
 import kr.co.swm.board.list.model.sevice.ListService;
@@ -28,17 +27,19 @@ public class ListController {
 
       PageInfoDto pi = pagenation.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 
-        //목록 불러오기
-        List<ListDto> posts = listService.getAllPosts(pi);
+        //장소 불러오기
+        List<ListDto> place = listService.getPlace(pi);
+        //별점
+//        List<ListDto> rate = listService.getRate(pi);
 
-
-      model.addAttribute("posts",posts);
+        //데이터 바인딩
+      model.addAttribute("place",place);
+//      model.addAttribute("rate",rate);
       model.addAttribute("pi",pi);
-
         return "tour";  // tour위치 반환
         //templates / ** .html
+
     }
-        //데이터 바인딩
 
 
 

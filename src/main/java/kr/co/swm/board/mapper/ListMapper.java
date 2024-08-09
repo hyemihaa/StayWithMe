@@ -9,6 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface ListMapper {
-  public List<ListDto> getAllPosts(@Param("pi") PageInfoDto pi);
+  List<ListDto> getPlace(@Param("pi") PageInfoDto pi);
+  List<ListDto> getRate(@Param("pi") PageInfoDto pi);
   int getTotalCount();
 }

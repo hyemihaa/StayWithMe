@@ -20,21 +20,20 @@ public class ListServiceImpl implements ListService {
     this.listMapper = listMapper;
     }
 
-
-    //목록 불러오기
+    //장소 불러오기
       @Override
-      public List<ListDto> getAllPosts(PageInfoDto pi){
-          return listMapper.getAllPosts(pi);
+      public List<ListDto> getPlace(PageInfoDto pi){
+          return listMapper.getPlace(pi);
       }
-
+    //별점 불러오기
+//    @Override
+//    public List<ListDto> getRate(PageInfoDto pi) {
+//        return listMapper.getRate(pi);
+//    }
         //페이징 처리
       @Override
       public int getTotalCount(){
           return listMapper.getTotalCount();
       }
-
-
-
-
 
 }

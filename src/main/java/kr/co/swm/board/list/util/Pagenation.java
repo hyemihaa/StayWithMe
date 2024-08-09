@@ -18,7 +18,6 @@ public class Pagenation {
             endPage = maxPage;
         }
 
-        return new PageInfoDto
-                (listCount, currentPage, pageLimit, boardLimit, maxPage, startPage, endPage, row, offset, limit);
+        return new PageInfoDto(listCount, currentPage, pageLimit, boardLimit, maxPage, startPage, endPage, row, offset, limit);
     }
 }
