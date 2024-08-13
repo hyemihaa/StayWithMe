@@ -22,19 +22,22 @@ public class ListController {
 
     //전체 게시글 수 구하기(Pagenation 영역)
     int listCount = listService.getTotalCount();
-    int pageLimit = 10; // 보여질 페이지
+    int pageLimit = 3; // 보여질 페이지
     int boardLimit = 5; // 페이지당 게시글
 
       PageInfoDto pi = pagenation.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+//        listCount: 전체 항목, currentPage: 현재 페이지
 
         //장소 불러오기
         List<ListDto> place = listService.getPlace(pi);
-        //별점
-//        List<ListDto> rate = listService.getRate(pi);
+
+
+        // 평균 별점 계산
+        double rate = listService.getAvgRate(place.get(0).getBoardNo());
 
         //데이터 바인딩
-      model.addAttribute("place",place);
-//      model.addAttribute("rate",rate);
+      model.addAttribute("place", place);
+      model.addAttribute("rate", rate);
       model.addAttribute("pi",pi);
         return "tour";  // tour위치 반환
         //templates / ** .html

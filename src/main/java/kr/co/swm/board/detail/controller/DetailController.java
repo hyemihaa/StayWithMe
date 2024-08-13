@@ -7,22 +7,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
 @Controller
 public class DetailController {
 
-    @GetMapping("/hotel-single")
-    public String list(Model model) {
+    @GetMapping("/hotel-single/{id}")
+    public String detail(@PathVariable Long id, Model model) {
 
         // 장소 불러오기
         List<DetailDto> place = detailService.getPlace();
 
+        // 게시글 상세 조회
+        DetailDto post = detailService.getPost(id);
+
         //별점
-        List<DetailDto> rate = detailService.getRate();
+        double rate = detailService.getAvgRate(post.getBoardNo());
 
         model.addAttribute("place",place);
+        model.addAttribute("post",post);
         model.addAttribute("rate",rate);
 
 

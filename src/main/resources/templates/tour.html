@@ -32,7 +32,8 @@
 	<section class="ftco-section ftco-degree-bg">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-3 sidebar ftco-animate">
+
+				<div class="col-lg-3 sidebar ftco-animate" >
 					<div class="sidebar-wrap bg-light ftco-animate">
 						<h3 class="heading mb-4">필터</h3>
 						<form action="#">
@@ -134,7 +135,6 @@
 
 
 
-
 				<!-- 숙박 상품 리스트 -->
 
 				<div class="col-lg-9">
@@ -169,28 +169,38 @@
 								<div class="text-tour p-3" th:each="place : ${place}">
 									<div class="d-flex">
 										<div class="one" >
-											<h3><a href="/hotel-single" th:text="${place?.BoardName}"></a></h3>
-											<p class="rate">
-												<i class="icon-star"></i>
-												<i class="icon-star"></i>
-												<i class="icon-star"></i>
-												<i class="icon-star"></i>
-												<i class="icon-star-o"></i>
-												<span>8</span>
+											<h3><a href="/hotel-single" th:text="${place.boardName}"></a></h3>
+												<!-- 별점 평균 값에 따른 아이콘 변화 -->
+											<p class="rate" th:each="rate : ${rate}">
+												<i class="icon-star" th:if="${rate >= 1}"></i>
+												<i class="icon-star" th:if="${rate >= 2}"></i>
+												<i class="icon-star" th:if="${rate >= 3}"></i>
+												<i class="icon-star" th:if="${rate >= 4}"></i>
+												<i class="icon-star" th:if="${rate >= 5}"></i>
+												<!-- "icon-star" = 채워져있는 별 / "icon-star-o" = 비어있는 별 -->
+												<i class="icon-star-o" th:if="${rate < 1}"></i>
+												<i class="icon-star-o" th:if="${rate < 2}"></i>
+												<i class="icon-star-o" th:if="${rate < 3}"></i>
+												<i class="icon-star-o" th:if="${rate < 4}"></i>
+												<i class="icon-star-o" th:if="${rate < 5}"></i>
+												<span th:text="${rate}"></span>
 											</p>
 										</div>
 										<div class="two">
-											<p th:text="${place?.BoardType}"></p>
+											<p th:text="${place.boardType}"></p>
 										</div>
 									</div>
-									<span><i class="icon-map-o"></i>&nbsp<span th:text="${place?.BoardAddress}" /></span>
-									<p class="days"><span>체크인 :&nbsp<span th:text="${place?.BoardCheckIn}" /></span></p>
+									<span><i class="icon-map-o"></i> &nbsp <span th:text="${place.boardAddress}" /></span>
+									<p class="days"><span>체크인 : &nbsp <span th:text="${place.boardCheckIn}" /></span></p>
 									<hr>
 									<span class="price" style="text-decoration: line-through;">
-										<span th:text="${place?.BoardCount}"/>원</span>
+											200000
+										<!-- <span th:text="${place?.boardCount}"/> -->
+										원</span>
 									<br>
 									<p class="price" style="font-weight:bold">
-										쿠폰적용가 : <span style="font-weight:bold" th:text="${place?.BoardDiscount}" />
+										쿠폰적용가 : 170000
+<!--										<span style="font-weight:bold" th:text="${place?.boardDiscount}" />-->
 										원</p>
 									<p class="bottom-area d-flex">
 										<span class="ml-auto"><a href="/hotel-single">자세히보기</a></span>
@@ -198,10 +208,6 @@
 								</div>
 							</div>
 						</div>
-
-
-
-
 					</div>
 
 					<!-- 페이지네이션 영역 -->
@@ -210,30 +216,26 @@
 							<div class="block-27">
 								<ul>
 									<!-- 왼쪽 버튼 -->
+
 								<!-- 현재페이지가 1페이지인 경우와 아닌경우-->
 								<li>
 								<a th:if="${pi.currentPage == 1}" href="#">&lt</a>
-								<a th:if="${pi.currentPage > 1}" th:href="@{tour(currentPage=${pi.currentPage-1})}">&lt;</a>
+								<a th:if="${pi.currentPage > 1}" th:href="@{/tour(currentPage=${pi.currentPage-1})}">&lt;</a>
 								</li>
-<!--									<li ><a href="#">&lt;</a></li>-->
+
 
 									<!-- 가운데 페이지 버튼 -->
-<!--									<li class="active"><span>1</span></li>-->
-<!--									<li><a href="#">2</a></li>-->
-<!--									<li><a href="#">3</a></li>-->
-<!--									<li><a href="#">4</a></li>-->
-<!--									<li><a href="#">5</a></li>-->
 
-								<li class="active" th:each="page : ${#numbers.sequence(pi.startPage, pi.endPage)}">
-								<a th:href="@{tour(currentPage=${page})}"><p th:text="${page}" /></a>
-								</li>
+									<li th:class="${page == pi.currentPage} ? 'active' : ''" th:each="page : ${#numbers.sequence(pi.startPage, pi.endPage)}">
+										<a th:href="@{/tour(currentPage=${page})}" th:text="${page}"></a>
+									</li>
 
 									<!-- 오른쪽 버튼 -->
-<!--									<li><a href="#">&gt;</a></li>-->
+
 								<!-- 현재페이지가 마지막인 경우와 아닌경우 -->
 								<li>
 								<a th:if="${pi.currentPage == pi.maxPage}" href="#">&gt;</a>
-								<a th:if="${pi.currentPage < pi.maxPage}" th:href="@{tour(currentPage=${pi.currentPage+1})}">&gt;</a>
+								<a th:if="${pi.currentPage < pi.maxPage}" th:href="@{/tour(currentPage=${pi.currentPage+1})}">&gt;</a>
 								</li>
 								</ul>
 							</div>
@@ -245,6 +247,7 @@
 	</section> <!-- .section -->
 
 
+<!--	<script th:src="@{js/option.js}"></script>-->
 	<script th:src="@{js/range.js}"></script>
 	<div th:include="fragments/footer.html :: footer"></div>
   <!-- loader -->

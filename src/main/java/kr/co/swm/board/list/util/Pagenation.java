@@ -7,16 +7,16 @@ import org.springframework.stereotype.Component;
 public class Pagenation {
     public PageInfoDto getPageInfo
             (int listCount, int currentPage, int pageLimit, int boardLimit) {
-        int maxPage = (int)(Math.ceil((double) listCount/boardLimit));
-        int startPage = (currentPage-1) / pageLimit * pageLimit+1;
-        int endPage = startPage+pageLimit-1;
+        int maxPage = (int)(Math.ceil((double) listCount/boardLimit));  //  총 페이지
+        int startPage = (currentPage-1) / pageLimit * pageLimit+1;  // 시작 페이지
+        int endPage = startPage+pageLimit-1;    // 끝 페이지
         int row = listCount - (currentPage-1) * boardLimit;
         int offset = (currentPage-1) * boardLimit;
         int limit = offset+10;
 
         if(endPage>maxPage){
             endPage = maxPage;
-        }
+        }   //  페이지가 최대 페이지 넘기지 않게 조정
 
         return new PageInfoDto(listCount, currentPage, pageLimit, boardLimit, maxPage, startPage, endPage, row, offset, limit);
     }

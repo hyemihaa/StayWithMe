@@ -91,7 +91,7 @@
 								</label>
 							</div>
 							<div class="form-check">
-								<input type="checkbox" class="form-check-input" id="exampleCheck1">
+								<input type="checkbox" class="form-check-input" id="exampleCheck2">
 								<label class="form-check-label" for="exampleCheck1">
 									<p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i
 											class="icon-star"></i><i class="icon-star"></i><i
@@ -99,7 +99,7 @@
 								</label>
 							</div>
 							<div class="form-check">
-								<input type="checkbox" class="form-check-input" id="exampleCheck1">
+								<input type="checkbox" class="form-check-input" id="exampleCheck3">
 								<label class="form-check-label" for="exampleCheck1">
 									<p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i
 											class="icon-star"></i><i class="icon-star-o"></i><i
@@ -107,7 +107,7 @@
 								</label>
 							</div>
 							<div class="form-check">
-								<input type="checkbox" class="form-check-input" id="exampleCheck1">
+								<input type="checkbox" class="form-check-input" id="exampleCheck4">
 								<label class="form-check-label" for="exampleCheck1">
 									<p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i
 											class="icon-star-o"></i><i class="icon-star-o"></i><i
@@ -115,7 +115,7 @@
 								</label>
 							</div>
 							<div class="form-check">
-								<input type="checkbox" class="form-check-input" id="exampleCheck1">
+								<input type="checkbox" class="form-check-input" id="exampleCheck5">
 								<label class="form-check-label" for="exampleCheck1">
 									<p class="rate"><span><i class="icon-star"></i><i class="icon-star-o"></i><i
 											class="icon-star-o"></i><i class="icon-star-o"></i><i
@@ -147,18 +147,24 @@
 						<!-- 객실 정보 -->
 
 						<div class="col-md-12 hotel-single mt-4 mb-5 ftco-animate">
-							<span>숙박유형</span>
-							<h2>숙박명</h2>
+							<span th:text="${post.boardType}">숙박유형</span>
+							<h2 th:text="${post.boardName}">숙박명</h2>
 							<p class="rate mb-5">
-								<span class="loc"><a href="#"><i class="icon-map"></i> 숙박 주소</a></span>
+								<span class="loc"><a href="#" th:text="${post.boardAddress}"><i class="icon-map"></i> 숙박 주소</a></span>
 								<br>
-								<span class="star">
-									<i class="icon-star"></i>
-									<i class="icon-star"></i>
-									<i class="icon-star"></i>
-									<i class="icon-star"></i>
-									<i class="icon-star-o"></i>
-									8 Rating</span>
+								<span class="star" th:each="rate : ${rate}">
+									<i class="icon-star" th:if="${rate >= 1}"></i>
+									<i class="icon-star" th:if="${rate >= 2}"></i>
+									<i class="icon-star" th:if="${rate >= 3}"></i>
+									<i class="icon-star" th:if="${rate >= 4}"></i>
+									<i class="icon-star" th:if="${rate >= 5}"></i>
+									<!-- "icon-star" = 채워져있는 별 / "icon-star-o" = 비어있는 별 -->
+									<i class="icon-star-o" th:if="${rate < 1}"></i>
+									<i class="icon-star-o" th:if="${rate < 2}"></i>
+									<i class="icon-star-o" th:if="${rate < 3}"></i>
+									<i class="icon-star-o" th:if="${rate < 4}"></i>
+									<i class="icon-star-o" th:if="${rate < 5}"></i>
+									<span th:text="${rate}"/></span>
 							</p>
 							<div class="d-md-flex mt-5 mb-5">
 								<!-- 호텔 정보 -->
@@ -248,7 +254,7 @@
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
-											<input type="text" id="checkin_date" class="form-control"
+											<input type="text" id="checkin_out" class="form-control"
 												   placeholder="체크아웃 날짜">
 										</div>
 									</div>
@@ -256,7 +262,7 @@
 										<div class="form-group">
 											<div class="select-wrap one-third">
 												<div class="icon"><span class="ion-ios-arrow-down"></span></div>
-												<select name="" id="" class="form-control">
+												<select name=""  class="form-control">
 													<option value="0">성인 인원</option>
 													<option value="1">1명</option>
 													<option value="2">2명</option>
@@ -270,7 +276,7 @@
 										<div class="form-group">
 											<div class="select-wrap one-third">
 												<div class="icon"><span class="ion-ios-arrow-down"></span></div>
-												<select name="" id="" class="form-control">
+												<select name=""  class="form-control">
 													<option value="0">아동 인원</option>
 													<option value="1">1명</option>
 													<option value="2">2명</option>

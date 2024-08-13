@@ -23,14 +23,16 @@ public class ListServiceImpl implements ListService {
     //장소 불러오기
       @Override
       public List<ListDto> getPlace(PageInfoDto pi){
+        List<ListDto> place = listMapper.getPlace(pi);
           return listMapper.getPlace(pi);
       }
+
     //별점 불러오기
-//    @Override
-//    public List<ListDto> getRate(PageInfoDto pi) {
-//        return listMapper.getRate(pi);
-//    }
-        //페이징 처리
+        @Override
+        public double getAvgRate(int boardNo) {
+        return listMapper.getAvgRate(boardNo);
+    }
+
       @Override
       public int getTotalCount(){
           return listMapper.getTotalCount();

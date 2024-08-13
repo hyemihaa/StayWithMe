@@ -15,7 +15,6 @@ public class DetailServiceImpl implements DetailService{
 
     @Autowired
     public DetailServiceImpl(DetailMapper detailMapper){
-
         this.detailMapper = detailMapper;
     }
 
@@ -25,9 +24,15 @@ public class DetailServiceImpl implements DetailService{
    }
 
     @Override
-    public List<DetailDto> getRate() {
-        return detailMapper.getRate();
+    public DetailDto getPost(Long id) {
+        return detailMapper.findPostById(id);
     }
+
+    @Override
+    public double getAvgRate(int boardNo) {
+        return detailMapper.getAvgRate(boardNo);
+    }
+
 
 
 }

@@ -9,8 +9,9 @@ public interface ListService {
     //장소 불러오기
     List<ListDto> getPlace(PageInfoDto pi);
     // 별점 불러오기
-//    List<ListDto> getRate(PageInfoDto pi);
 
     int getTotalCount();
+
+    double getAvgRate(int boardNo);
 
 }
