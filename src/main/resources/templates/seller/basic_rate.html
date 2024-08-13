@@ -43,7 +43,7 @@
                 <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Stay With Me</h3>
             </a>
             <div class="navbar-nav w-100">
-                <a href="seller.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>대시보드</a>
+                <a href="seller.html" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>대시보드</a>
                 <div class="nav-item dropdown show">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>숙소관리</a>
                     <div class="dropdown-menu show bg-transparent border-0">
@@ -69,7 +69,7 @@
                 <div class="nav-item dropdown show">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-cog me-2"></i>판매 환경설정</a>
                     <div class="dropdown-menu show bg-transparent border-0">
-                        <a th:href="@{/basic_rate_list.do}" class="dropdown-item">기본요금 수정</a>
+                        <a th:href="@{/basic_rate_list.do}" class="dropdown-item active">기본요금 수정</a>
                         <a href="season_period.html" class="dropdown-item">성수기/기간 관리</a>
                         <a href="./discount.html" class="dropdown-item">할인판매 설정</a>
                     </div>
@@ -126,7 +126,7 @@
                 <button id="addRateType" class="btn btn-outline-secondary btn-sm" style="width: 20%;">요금타입 추가</button>
                 <button class="btn btn-outline-secondary btn-sm" style="width: 20%;">요금 달력 보기</button>
             </div>
-            <form class="card" action="/basic_rate.do" method="post" id="rateForm">
+            <form class="card" action="/basic_rate_write.do" method="post" id="rateForm">
                 <div class="card-body">
                     <div class="room_type">
                         <select name="roomName" id="room_name" class="room_2deps" onchange="loadRoomRates(this.value)">

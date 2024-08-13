@@ -6,19 +6,15 @@ import kr.co.swm.model.dto.SellerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
-public class SellerServiceImpl implements SellerService{
+public class SellerServiceImpl implements SellerService {
 
     private final SellerMapper mapper;
 
     @Autowired
     public SellerServiceImpl(SellerMapper mapper) {
-
         this.mapper = mapper;
     }
 
@@ -30,80 +26,168 @@ public class SellerServiceImpl implements SellerService{
 
     // 기본 요금 조회
     @Override
-    public List<SellerDto> basicRateList(String roomName) {
-        List<SellerDto> basicRateList = mapper.basicRateList(roomName);
+    public List<SellerDto> basicRateList(String roomName, int accommodationNo) {
+        List<SellerDto> basicRateList = mapper.basicRateList(roomName, accommodationNo);
         return processRates(basicRateList, false);
     }
 
     // 추가 요금 조회
     @Override
-    public List<SellerDto> extraRateList(String roomName) {
-        List<SellerDto> extraRateList = mapper.extraRateList(roomName);
-        return processRates(extraRateList, true);
+    public List<SellerDto> extraRateList(String roomName, int accommodationNo) {
+        List<SellerDto> extraRateList = mapper.extraRateList(roomName, accommodationNo);
+
+        for (SellerDto sellerDto : extraRateList) {
+            System.out.println("Room Name: " + sellerDto.getRoomName());
+
+            // 각 SellerDto 객체의 ExtraDto 리스트에 접근
+            List<SellerDto.ExtraDto> extraRates = sellerDto.getExtraRates();
+            for (SellerDto.ExtraDto extraDto : extraRates) {
+                System.out.println("Room No: " + extraDto.getExtraRoomNo());
+                System.out.println("Extra Name: " + extraDto.getExtraName());
+                System.out.println("Extra Day No: " + extraDto.getExtraDayNo());
+                System.out.println("Extra Date Start: " + extraDto.getExtraDateStart());
+                System.out.println("Extra Date End: " + extraDto.getExtraDateEnd());
+                System.out.println("Extra Rate: " + extraDto.getExtraRate());
+                System.out.println("Extra Weekday Rate: " + extraDto.getExtraWeekdayRate());
+                System.out.println("Extra Friday Rate: " + extraDto.getExtraFridayRate());
+                System.out.println("Extra Saturday Rate: " + extraDto.getExtraSaturdayRate());
+                System.out.println("Extra Sunday Rate: " + extraDto.getExtraSundayRate());
+                System.out.println("-----------");
+            }
+        }
+
+
+        return processExtraRates(extraRateList);
     }
 
 
+    // BASIC_RATE 요금 수정
+    @Override
+    public int basicRateUpdate(SellerDto sellerDto, int accommodationNo) {
+        List<SellerDto> roomInfoList = mapper.bRoomInfoSearch(sellerDto.getRoomName(), accommodationNo);
 
+        int updateCount = 0;
 
+        for (SellerDto roomInfo : roomInfoList) {
+            SellerDto basicRate = new SellerDto();
+            basicRate.setRoomNo(roomInfo.getRoomNo());
 
+            // 요일에 맞는 요금을 설정합니다.
+            for (int dayNo = 1; dayNo <= 4; dayNo++) {
+                switch (dayNo) {
+                    case 1:
+                        basicRate.setBasicRate(sellerDto.getWeekdayRate());
+                        break;
+                    case 2:
+                        basicRate.setBasicRate(sellerDto.getFridayRate());
+                        break;
+                    case 3:
+                        basicRate.setBasicRate(sellerDto.getSaturdayRate());
+                        break;
+                    case 4:
+                        basicRate.setBasicRate(sellerDto.getSundayRate());
+                        break;
+                }
+                basicRate.setBasicDayNo(dayNo);
+                updateCount += mapper.basicRateUpdate(basicRate);
+            }
+        }
+        return updateCount;
+    }
 
+    // 추가 요금 업데이트 또는 삽입
+    @Override
+    public int extraRateUpdate(SellerDto sellerDto, int accommodationNo) {
+        int updateCount = 0;
+        int insertCount = 0;
+
+        for (SellerDto.ExtraDto extraRate : sellerDto.getExtraRates()) {
+            extraRate.setExtraRoomNo(sellerDto.getRoomNo());
+
+            int result = mapper.extraRateUpdate(extraRate);
+
+            if (result == 0) {
+                insertCount += mapper.extraRateInsert(extraRate);
+            } else {
+                updateCount += result;
+            }
+        }
+        return updateCount + insertCount;
+    }
+
+    // 요금 처리 로직 (기본 요금은 기존 방식 사용)
     private List<SellerDto> processRates(List<SellerDto> rateList, boolean isExtraRate) {
         Map<String, SellerDto> rateMap = new HashMap<>();
 
         for (SellerDto dto : rateList) {
             String roomName = dto.getRoomName();
-            String extraName = dto.getExtraName();
-
-            String key = roomName + ":" + extraName;
-            SellerDto existingDto = rateMap.get(key);
+            SellerDto existingDto = rateMap.get(roomName);
 
             if (existingDto == null) {
-                // 없으면 새로 생성하고 추가
                 existingDto = new SellerDto();
-                existingDto.setExtraName(dto.getExtraName());
                 existingDto.setRoomName(roomName);
-                rateMap.put(key, existingDto);
+                rateMap.put(roomName, existingDto);
             }
 
-            // 요일별로 데이터를 기존 객체에 채워 넣음
-            if (isExtraRate) {
-                switch (dto.getExtraDayNo()) {
-                    case 1:
-                        existingDto.setExtraWeekdayRate(dto.getExtraRate());
-                        break;
-                    case 2:
-                        existingDto.setExtraFridayRate(dto.getExtraRate());
-                        break;
-                    case 3:
-                        existingDto.setExtraSaturdayRate(dto.getExtraRate());
-                        break;
-                    case 4:
-                        existingDto.setExtraSundayRate(dto.getExtraRate());
-                        break;
-                }
-            } else {
+            // 기본 요금
+            if (!isExtraRate) {
                 switch (dto.getBasicDayNo()) {
+                    case 1: existingDto.setWeekdayRate(dto.getBasicRate()); break;
+                    case 2: existingDto.setFridayRate(dto.getBasicRate()); break;
+                    case 3: existingDto.setSaturdayRate(dto.getBasicRate()); break;
+                    case 4: existingDto.setSundayRate(dto.getBasicRate()); break;
+                }
+            }
+        }
+
+        return new ArrayList<>(rateMap.values());
+    }
+
+    // 추가 요금 처리 로직 (각 요금 항목을 ExtraDto로 처리)
+    private List<SellerDto> processExtraRates(List<SellerDto> rateList) {
+        Map<String, SellerDto.ExtraDto> extraRateMap = new HashMap<>();
+
+        for (SellerDto dto : rateList) {
+            for (SellerDto.ExtraDto extra : dto.getExtraRates()) {
+                String extraKey = extra.getExtraName() + "_" + extra.getExtraDateStart() + "_" + extra.getExtraDateEnd();
+
+                SellerDto.ExtraDto existingExtraDto = extraRateMap.get(extraKey);
+
+                if (existingExtraDto == null) {
+                    existingExtraDto = new SellerDto.ExtraDto();
+                    existingExtraDto.setExtraName(extra.getExtraName());
+                    existingExtraDto.setExtraDateStart(extra.getExtraDateStart());
+                    existingExtraDto.setExtraDateEnd(extra.getExtraDateEnd());
+                    extraRateMap.put(extraKey, existingExtraDto);
+                }
+
+                switch (extra.getExtraDayNo()) {
                     case 1:
-                        existingDto.setWeekdayRate(dto.getRoomRate());
+                        existingExtraDto.setExtraWeekdayRate(extra.getExtraRate());
                         break;
                     case 2:
-                        existingDto.setFridayRate(dto.getRoomRate());
+                        existingExtraDto.setExtraFridayRate(extra.getExtraRate());
                         break;
                     case 3:
-                        existingDto.setSaturdayRate(dto.getRoomRate());
+                        existingExtraDto.setExtraSaturdayRate(extra.getExtraRate());
                         break;
                     case 4:
-                        existingDto.setSundayRate(dto.getRoomRate());
+                        existingExtraDto.setExtraSundayRate(extra.getExtraRate());
+                        break;
+                    default:
+                        // Handle any other cases if needed
                         break;
                 }
             }
         }
 
-        // 결과를 리스트로 반환
-        return new ArrayList<>(rateMap.values());
+        // 이제 ExtraDto 리스트를 SellerDto에 추가합니다.
+        SellerDto resultDto = new SellerDto();
+        resultDto.setExtraRates(new ArrayList<>(extraRateMap.values()));
+
+        return Collections.singletonList(resultDto);
     }
 
 
 }
-
 

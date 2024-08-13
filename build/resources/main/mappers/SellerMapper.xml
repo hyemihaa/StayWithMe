@@ -8,71 +8,105 @@
         <result column="ADMIN_ID" property="sellerId"/>
         <result column="ADMIN_TYPE" property="sellerType"/>
 
+        <!-- 숙소 정보 -->
+        <result column="ACCOMMODATION_NO" property="accommodationNo"/>
+        <result column="NAME" property="accommodationName"/>
+        <result column="ACCOMMODATION_TYPE" property="accommodationType"/>
+        <result column="PHONE" property="accommodationPhone"/>
+        <result column="POST_NO" property="accommodationPost"/>
+        <result column="ADDRESS" property="accommodationAddress"/>
+
         <!-- 객실 정보 -->
         <result column="ROOM_NO" property="roomNo"/>
-        <result column="ROOM_TYPE_NAME" property="roomType"/>
+        <result column="ROOM_TYPE_NO" property="roomTypeNo"/>
         <result column="ROOM_NAME" property="roomName"/>
         <result column="CHECK_IN_TIME" property="roomCheckIn"/>
         <result column="CHECK_OUT_TIME" property="roomCheckOut"/>
         <result column="STANDARD_OCCUPANCY" property="roomPersonnel"/>
         <result column="MAX_OCCUPANCY" property="roomMaxPersonnel"/>
+        <result column="ROOM_VALUES" property="roomvalues"/>
 
         <!-- 요금 정보 -->
-        <result column="DAY_NO" property="dayNo"/>
-        <result column="RATE" property="roomRate"/>
+        <result column="BASIC_RATE_NO" property="roomRateNo"/>
+        <result column="DAY_NO" property="basicDayNo"/>
+        <result column="BASIC_RATE" property="basicRate"/>
 
 
         <!-- 추가 요금 정보 -->
         <result column="EXTRA_NO" property="extraNo"/>
+        <result column="EXTRA_DAY_NO" property="extraDayNo"/>
         <result column="EXTRA_NAME" property="extraName"/>
         <result column="EXTRA_DATE_START" property="extraDateStart"/>
         <result column="EXTRA_DATE_END" property="extraDateEnd"/>
         <result column="EXTRA_RATE" property="extraRate"/>
-        <result column="DAY_NO" property="extraDayNo"/>
 
     </resultMap>
 
-    <select id="basicRate" resultMap="seller">
-        select BASIC_RATE_NO, ROOM_RATE_INVENTORY_NO, DAY_NO, BASIC_RATE
-        from BASIC_RATE
-        where ROOM_RATE_INVENTORY_NO = #{roomCode}
+    <!-- 객실 이름 리스트 조회 -->
+    <select id="roomNameSearch" resultType="String">
+        SELECT DISTINCT ROOM_NAME
+        FROM ROOM
+        WHERE ACCOMMODATION_NO = #{accommodationNo}
     </select>
 
-    <select id="extraRate" resultMap="seller">
-        select EXTRA_NO, ROOM_RATE_INVENTORY_NO, EXTRA_NAME, EXTRA_DATE_START, EXTRA_DATE_END, EXTRA_RATE
-        from EXTRA_RATE
-        where ROOM_RATE_INVENTORY_NO = #{roomCode}
+    <!-- 객실 정보 조회 -->
+    <select id="roomNameSearch" resultType="String">
+        SELECT ROOM_NO,
+               ROOM_TYPE_NO,
+               ACCOMMODATION_NO,
+               ROOM_NAME,
+               CHECK_IN_TIME,
+               CHECK_OUT_TIME,
+               STANDARD_OCCUPANCY,
+               MAX_OCCUPANCY
+        FROM ROOM
+        WHERE ACCOMMODATION_NO = #{accommodationNo}
+        AND ROOM_NAME = #{roomName}
     </select>
 
-    <select id="roomInventorySearch" resultType="int">
-        select ROOM_RATE_INVENTORY_NO
-        from room r
-        join room_rate_inventory rri ON r.ROOM_NO = rri.ROOM_NO
-        where r.ACCOMMODATION_NO = #{adminNo}
-        LIMIT 1
+    <!-- 객실 기본 요금 조회 -->
+    <select id="basicRateList" resultMap="seller">
+        SELECT br.ROOM_NO,
+               br.BASIC_RATE_NO,
+               br.DAY_NO,
+               br.BASIC_RATE,
+               r.ROOM_NAME
+        FROM BASIC_RATE br
+        JOIN ROOM r ON br.ROOM_NO = r.ROOM_NO
+        WHERE r.ROOM_NAME = #{roomName}
     </select>
 
+    <!-- 객실 추가 요금 조회 -->
+    <select id="extraRateList" resultMap="seller">
+        SELECT ext.ROOM_NO,
+               ext.EXTRA_NO,
+               ext.DAY_NO AS EXTRA_DAY_NO,
+               ext.EXTRA_NAME,
+               ext.EXTRA_DATE_START,
+               ext.EXTRA_DATE_END,
+               ext.EXTRA_RATE,
+               r.ROOM_NAME
+        FROM EXTRA_RATE ext
+        JOIN ROOM r ON ext.ROOM_NO = r.ROOM_NO
+        WHERE r.ROOM_NAME = #{roomName}
+    </select>
+
+    <!-- 기본 요금 업데이트 -->
     <update id="basicRateUpdate">
-        update basic_rate
-        set basic_rate =
-        case
-        when day_no = 1 then #{sellerDto.weekdayRate}
-        when day_no = 2 then #{sellerDto.fridayRate}
-        when day_no = 3 then #{sellerDto.saturdayRate}
-        when day_no = 4 then #{sellerDto.sundayRate}
-        end
-        where ROOM_RATE_INVENTORY_NO = #{roomInventory};
+        UPDATE BASIC_RATE
+        SET BASIC_RATE = #{basicRate}
+        WHERE ROOM_NO = #{roomNo}
+        AND DAY_NO = #{basicDayNo}
     </update>
 
-    <insert id="extraRateInsert">
-        insert into extra_rate
-        values
-        (null, #{roomInventory}, #{extraName}, null, null, #{weekdayRate}, 1),
-        (null, #{roomInventory}, #{extraName}, null, null, #{fridayRate}, 2),
-        (null, #{roomInventory}, #{extraName}, null, null, #{saturdayRate}, 3),
-        (null, #{roomInventory}, #{extraName}, null, null, #{sundayRate}, 4);
-    </insert>
-
+    <!-- 추가 요금 업데이트 -->
+    <update id="extraRateUpdate">
+        UPDATE EXTRA_RATE
+        SET EXTRA_RATE = #{extraRate}
+        WHERE ROOM_NO = #{roomNo}
+        AND EXTRA_NAME = #{extraName}
+        AND EXTRA_DAY_NO = #{extraDayNo}
+    </update>
 
 
 </mapper>

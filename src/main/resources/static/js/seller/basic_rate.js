@@ -3,11 +3,11 @@ let rowCount = document.querySelectorAll('#rateTableBody tr').length;
 document.getElementById('addRateType').addEventListener('click', function() {
     const newRow = `
         <tr>
-            <td><input type="text" name="extraName" placeholder="요금타입 입력" class="text-center"></td>
-            <td><input type="text" name="extraWeekdayRate" class="text-center"></td>
-            <td><input type="text" name="extraFridayRate" class="text-center"></td>
-            <td><input type="text" name="extraSaturdayRate" class="text-center"></td>
-            <td><input type="text" name="extraSundayRate" class="text-center"></td>
+            <td><input type="text" name="extraRates[${rowCount}].extraName" placeholder="요금타입 입력" class="text-center"></td>
+            <td><input type="text" name="extraRates[${rowCount}].extraWeekdayRate" class="text-center"></td>
+            <td><input type="text" name="extraRates[${rowCount}].extraFridayRate" class="text-center"></td>
+            <td><input type="text" name="extraRates[${rowCount}].extraSaturdayRate" class="text-center"></td>
+            <td><input type="text" name="extraRates[${rowCount}].extraSundayRate" class="text-center"></td>
             <td><button class="deleteRow btn btn-danger btn-sm">삭제</button></td>
         </tr>`;
     document.getElementById('rateTableBody').insertAdjacentHTML('beforeend', newRow);
@@ -26,9 +26,9 @@ function addDeleteEventListeners() {
     });
 }
 
-// 초기 페이지 로드 시 기존 행들에 대한 삭제 이벤트 리스너를 추가합니다.
 addDeleteEventListeners();
 
+// 데이터를 받아와서 테이블에 삽입하는 코드
 function loadRoomRates(roomName) {
     if (roomName === "") {
         document.getElementById('rateTableBody').innerHTML = "";
@@ -44,33 +44,36 @@ function loadRoomRates(roomName) {
             let basicRatesHtml = "";
             let extraRatesHtml = "";
 
-            console.log(data);
+            console.log(JSON.stringify(data, null, 2)); // 데이터를 확인합니다.
 
             // 기본 요금 출력
             if (data.basicRates) {
                 basicRatesHtml += `
                     <tr>
                         <td>기본가</td>
-                        <td><input type="text" name="weekdayRate" value="${data.basicRates.weekdayRate}" class="text-center"></td>
-                        <td><input type="text" name="fridayRate" value="${data.basicRates.fridayRate}" class="text-center"></td>
-                        <td><input type="text" name="saturdayRate" value="${data.basicRates.saturdayRate}" class="text-center"></td>
-                        <td><input type="text" name="sundayRate" value="${data.basicRates.sundayRate}" class="text-center"></td>
+                        <td><input type="text" name="weekdayRate" value="${data.basicRates.weekdayRate || ''}" class="text-center"></td>
+                        <td><input type="text" name="fridayRate" value="${data.basicRates.fridayRate || ''}" class="text-center"></td>
+                        <td><input type="text" name="saturdayRate" value="${data.basicRates.saturdayRate || ''}" class="text-center"></td>
+                        <td><input type="text" name="sundayRate" value="${data.basicRates.sundayRate || ''}" class="text-center"></td>
                         <td><button type="button" class="deleteRow btn btn-danger btn-sm">삭제</button></td>
                     </tr>`;
             }
 
             // 추가 요금 출력
-            data.extraRates.forEach(item => {
-                extraRatesHtml += `
-                    <tr>
-                        <td>${item.extraName}</td>
-                        <td><input type="text" name="extraWeekdayRate" value="${item.extraWeekdayRate}" class="text-center"></td>
-                        <td><input type="text" name="extraFridayRate" value="${item.extraFridayRate}" class="text-center"></td>
-                        <td><input type="text" name="extraSaturdayRate" value="${item.extraSaturdayRate}" class="text-center"></td>
-                        <td><input type="text" name="extraSundayRate" value="${item.extraSundayRate}" class="text-center"></td>
-                        <td><button type="button" class="deleteRow btn btn-danger btn-sm">삭제</button></td>
-                    </tr>`;
-            });
+            // 여기서 data.extraRates[0].extraRates 배열을 탐색하여 렌더링
+            if (data.extraRates[0].extraRates.length > 0) {
+                data.extraRates[0].extraRates.forEach((item, index) => {
+                    extraRatesHtml += `
+                        <tr>
+                            <td>${item.extraName || 'N/A'}</td>
+                            <td><input type="text" name="extraRates[${index}].extraWeekdayRate" value="${item.extraWeekdayRate || ''}" class="text-center"></td>
+                            <td><input type="text" name="extraRates[${index}].extraFridayRate" value="${item.extraFridayRate || ''}" class="text-center"></td>
+                            <td><input type="text" name="extraRates[${index}].extraSaturdayRate" value="${item.extraSaturdayRate || ''}" class="text-center"></td>
+                            <td><input type="text" name="extraRates[${index}].extraSundayRate" value="${item.extraSundayRate || ''}" class="text-center"></td>
+                            <td><button type="button" class="deleteRow btn btn-danger btn-sm">삭제</button></td>
+                        </tr>`;
+                });
+            }
 
             document.getElementById('rateTableBody').innerHTML = basicRatesHtml + extraRatesHtml;
             addDeleteEventListeners();  // 새로 추가된 삭제 버튼에도 리스너를 추가합니다.
@@ -79,13 +82,8 @@ function loadRoomRates(roomName) {
     xhr.send();
 }
 
-function addDeleteEventListeners() {
-    const deleteButtons = document.querySelectorAll('.deleteRow');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const row = button.closest('tr');
-            row.remove();
-        });
-    });
-}
+
+
+
+
 

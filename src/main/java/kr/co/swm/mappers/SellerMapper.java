@@ -2,6 +2,7 @@ package kr.co.swm.mappers;
 
 import kr.co.swm.model.dto.SellerDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,9 +13,18 @@ public interface SellerMapper {
     List<String> roomNameSearch(int accommodationNo);
 
     // 기본 요금 조회
-    List<SellerDto> basicRateList(String roomName);
+    List<SellerDto> basicRateList(@Param("roomName") String roomName, @Param("accommodationNo") int accommodationNo);
 
     // 추가 요금 조회
-    List<SellerDto> extraRateList(String roomName);
+    List<SellerDto> extraRateList(@Param("roomName") String roomName, @Param("accommodationNo") int accommodationNo);
 
+    // 객실 정보 조회(BASIC_RATE)
+    List<SellerDto> bRoomInfoSearch(@Param("roomName") String str, @Param("accommodationNo") int accommodationNo);
+
+    int basicRateUpdate(SellerDto sellerDto);
+
+    int extraRateUpdate(SellerDto.ExtraDto extraDto);
+
+    int extraRateInsert(SellerDto.ExtraDto extraDto);
 }
+
