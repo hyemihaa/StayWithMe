@@ -43,6 +43,16 @@ public class SellerDto {
     private int saturdayRate;
     private int sundayRate;
 
+    // 생성자
+    public SellerDto() {
+        this.roomNo = 0;
+        this.roomName = "";
+        this.extraRates = new ArrayList<>();
+    }
+
+// □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+// □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
     // 추가 요금 정보
     private List<ExtraDto> extraRates = new ArrayList<>();  // 기본 초기화
 
@@ -60,6 +70,21 @@ public class SellerDto {
         private int extraFridayRate;
         private int extraSaturdayRate;
         private int extraSundayRate;
+
+        // 생성자
+        public ExtraDto() {
+            this.extraRoomNo = 0;
+            this.extraName = "";
+            this.extraDayNo = 0;
+            this.extraDateStart = "";
+            this.extraDateEnd = "";
+            this.extraRate = 0;
+            this.extraWeekdayRate = 0;
+            this.extraFridayRate = 0;
+            this.extraSaturdayRate = 0;
+            this.extraSundayRate = 0;
+        }
+
     }
 }
 

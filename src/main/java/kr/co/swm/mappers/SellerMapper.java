@@ -21,10 +21,22 @@ public interface SellerMapper {
     // 객실 정보 조회(BASIC_RATE)
     List<SellerDto> bRoomInfoSearch(@Param("roomName") String str, @Param("accommodationNo") int accommodationNo);
 
+    // 객실 정보 조회(EXTRA_RATE)
+    List<SellerDto.ExtraDto> eRoomInfoSearch(@Param("roomName") String roomName, @Param("accommodationNo") int accommodationNo);
+
     int basicRateUpdate(SellerDto sellerDto);
 
     int extraRateUpdate(SellerDto.ExtraDto extraDto);
 
     int extraRateInsert(SellerDto.ExtraDto extraDto);
+
+
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
+    List<SellerDto.ExtraDto> extraSeasonList(@Param("accommodationNo") int accommodationNo);
+
+    List<SellerDto.ExtraDto> getExtraRateInfo(@Param("accommodationNo") int accommodationNo)
+
+
 }
 

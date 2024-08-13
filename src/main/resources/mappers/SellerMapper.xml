@@ -47,6 +47,24 @@
         </collection>
     </resultMap>
 
+    <!-- 추가 요금 전용 ResultMap -->
+    <resultMap id="extraDtoResultMap" type="kr.co.swm.model.dto.SellerDto$ExtraDto">
+        <result column="EXTRA_ROOM_NO" property="extraRoomNo"/>
+        <result column="EXTRA_NO" property="extraNo"/>
+        <result column="EXTRA_DAY_NO" property="extraDayNo"/>
+        <result column="EXTRA_NAME" property="extraName"/>
+        <result column="EXTRA_DATE_START" property="extraDateStart"/>
+        <result column="EXTRA_DATE_END" property="extraDateEnd"/>
+        <result column="EXTRA_RATE" property="extraRate"/>
+        <result column="EXTRA_WEEKDAY_RATE" property="extraWeekdayRate"/>
+        <result column="EXTRA_FRIDAY_RATE" property="extraFridayRate"/>
+        <result column="EXTRA_SATURDAY_RATE" property="extraSaturdayRate"/>
+        <result column="EXTRA_SUNDAY_RATE" property="extraSundayRate"/>
+    </resultMap>
+
+<!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+<!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+
     <!-- 객실 이름 리스트 조회 -->
     <select id="roomNameSearch" resultType="String">
         SELECT DISTINCT ROOM_NAME
@@ -54,17 +72,8 @@
         WHERE ACCOMMODATION_NO = #{accommodationNo}
     </select>
 
-    <!-- 객실 정보 조회(BASIC_RATE) -->
-    <select id="bRoomInfoSearch" resultMap="seller">
-        SELECT r.ROOM_NO,
-        br.BASIC_RATE_NO,
-        br.DAY_NO,
-        br.BASIC_RATE
-        FROM ROOM r
-        JOIN BASIC_RATE br on r.ROOM_NO = br.ROOM_NO
-        WHERE r.ACCOMMODATION_NO = #{accommodationNo}
-        AND r.ROOM_NAME = #{roomName}
-    </select>
+<!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+<!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
 
     <!-- 객실 기본 요금 조회 -->
     <select id="basicRateList" resultMap="seller">
@@ -82,18 +91,51 @@
     <!-- 객실 추가 요금 조회 -->
     <select id="extraRateList" resultMap="seller">
         SELECT ext.ROOM_NO AS EXTRA_ROOM_NO,
-               ext.EXTRA_NO,
-               ext.DAY_NO AS EXTRA_DAY_NO,
-               ext.EXTRA_NAME,
-               ext.EXTRA_DATE_START,
-               ext.EXTRA_DATE_END,
-               ext.EXTRA_RATE,
-               r.ROOM_NAME
+        ext.EXTRA_NO,
+        ext.DAY_NO AS EXTRA_DAY_NO,
+        ext.EXTRA_NAME,
+        ext.EXTRA_DATE_START,
+        ext.EXTRA_DATE_END,
+        ext.EXTRA_RATE,
+        r.ROOM_NAME
         FROM ROOM r
         JOIN EXTRA_RATE ext ON ext.ROOM_NO = r.ROOM_NO
         WHERE r.ROOM_NAME = #{roomName}
         AND r.ACCOMMODATION_NO = #{accommodationNo}
     </select>
+
+<!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+<!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+
+    <!-- [Update] 객실 정보 조회(BASIC_RATE) -->
+    <select id="bRoomInfoSearch" resultMap="seller">
+        SELECT r.ROOM_NO,
+        br.BASIC_RATE_NO,
+        br.DAY_NO,
+        br.BASIC_RATE
+        FROM ROOM r
+        JOIN BASIC_RATE br on r.ROOM_NO = br.ROOM_NO
+        WHERE r.ACCOMMODATION_NO = #{accommodationNo}
+        AND r.ROOM_NAME = #{roomName}
+    </select>
+
+    <!-- [Update] 객실 정보 조회(EXTRA_RATE) -->
+    <select id="eRoomInfoSearch" resultMap="extraDtoResultMap">
+        SELECT ext.EXTRA_NO,
+        r.ROOM_NO AS EXTRA_ROOM_NO,
+        ext.DAY_NO,
+        ext.EXTRA_NAME,
+        ext.EXTRA_DATE_START,
+        ext.EXTRA_DATE_END,
+        ext.EXTRA_RATE
+        FROM ROOM r
+        LEFT JOIN EXTRA_RATE ext on r.ROOM_NO = ext.ROOM_NO
+        WHERE r.ACCOMMODATION_NO = #{accommodationNo}
+        AND r.ROOM_NAME = #{roomName}
+    </select>
+
+<!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+<!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
 
     <!-- 기본 요금 업데이트 -->
     <update id="basicRateUpdate">
@@ -107,7 +149,7 @@
     <update id="extraRateUpdate">
         UPDATE EXTRA_RATE
         SET EXTRA_RATE = #{extraRate}
-        WHERE ROOM_NO = #{roomNo}
+        WHERE ROOM_NO = #{extraRoomNo}
         AND EXTRA_NAME = #{extraName}
         AND DAY_NO = #{extraDayNo}
     </update>
@@ -115,8 +157,29 @@
     <!-- 추가 요금 삽입 -->
     <insert id="extraRateInsert">
         INSERT INTO EXTRA_RATE (ROOM_NO, DAY_NO, EXTRA_NAME, EXTRA_DATE_START, EXTRA_DATE_END, EXTRA_RATE)
-        VALUES (#{roomNo}, #{extraDayNo}, #{extraName}, #{extraDateStart}, #{extraDateEnd}, #{extraRate})
+        VALUES (
+        #{extraRoomNo},
+        #{extraDayNo},
+        #{extraName},
+        #{extraDateStart},
+        #{extraDateEnd},
+        #{extraRate}
+        )
     </insert>
 
+<!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+<!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+
+    <select id="extraSeasonList" resultMap="extraDtoResultMap">
+        SELECT DISTINCT ext.EXTRA_NAME,
+               ext.EXTRA_DATE_START,
+               ext.EXTRA_DATE_END,
+        FROM ROOM r
+        LEFT JOIN EXTRA_RATE ext on r.ROOM_NO = ext.ROOM_NO
+        WHERE r.ACCOMMODATION_NO = #{accommodationNo}
+    </select>
+
+
 </mapper>
+
 
