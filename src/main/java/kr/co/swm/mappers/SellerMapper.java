@@ -33,9 +33,17 @@ public interface SellerMapper {
 
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
+    // 기간 수정 페이지 로드에 필요한 자료 조회
     List<SellerDto.ExtraDto> extraSeasonList(@Param("accommodationNo") int accommodationNo);
 
-    List<SellerDto.ExtraDto> getExtraRateInfo(@Param("accommodationNo") int accommodationNo)
+    // 추가 요금 항목 삭제(EXTRA NAME 기준)
+    int extraRateDelete(@Param("extraName") String extraName, @Param("accommodationNo") int accommodationNo);
+
+    // 추가 요금 항목 모든 조회(관리자 번호에 관련한 자료)
+    List<SellerDto.ExtraDto> extraTableSearch(@Param("accommodationNo") int accommodationNo);
+
+    // 기간 수정에 따른 DB 데이터 수정
+    int extraSeasonUpdate(SellerDto.ExtraDto extraDto);
 
 
 }

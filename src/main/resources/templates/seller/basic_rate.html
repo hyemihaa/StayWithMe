@@ -43,7 +43,7 @@
                 <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Stay With Me</h3>
             </a>
             <div class="navbar-nav w-100">
-                <a href="seller.html" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>대시보드</a>
+                <a th:href="@{/seller-main.do}" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>대시보드</a>
                 <div class="nav-item dropdown show">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>숙소관리</a>
                     <div class="dropdown-menu show bg-transparent border-0">
@@ -69,9 +69,8 @@
                 <div class="nav-item dropdown show">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-cog me-2"></i>판매 환경설정</a>
                     <div class="dropdown-menu show bg-transparent border-0">
-                        <a th:href="@{/basic_rate_list.do}" class="dropdown-item active">기본요금 수정</a>
-                        <a th:href="@{/season_period.do}" class="dropdown-item">성수기/기간 관리</a>
-                        <a href="./discount.html" class="dropdown-item">할인판매 설정</a>
+                        <a th:href="@{/basic-rate-list.do}" class="dropdown-item active">기본요금 수정</a>
+                        <a th:href="@{/season-period.do}" class="dropdown-item">성수기/기간 관리</a>
                     </div>
                 </div>
                 <div class="nav-item dropdown show">
@@ -93,25 +92,6 @@
             <a href="seller.html" class="navbar-brand d-flex d-lg-none me-4">
                 <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
             </a>
-            <a href="#" class="sidebar-toggler flex-shrink-0">
-                <i class="fa fa-bars"></i>
-            </a>
-            <div class="navbar-nav align-items-center ms-auto">
-                <div class="nav-item dropdown">
-                    <i class="fa fa-envelope me-lg-2"></i>
-                    <span class="d-none d-lg-inline-flex">Message</span>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <span class="d-none d-lg-inline-flex">John Doe</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">My Profile</a>
-                        <a href="#" class="dropdown-item">Settings</a>
-                        <a href="#" class="dropdown-item">Log Out</a>
-                    </div>
-                </div>
-            </div>
         </nav>
         <!-- Navbar End -->
 
@@ -126,7 +106,7 @@
                 <button id="addRateType" class="btn btn-outline-secondary btn-sm" style="width: 20%;">요금타입 추가</button>
                 <button class="btn btn-outline-secondary btn-sm" style="width: 20%;">요금 달력 보기</button>
             </div>
-            <form class="card" action="/basic_rate_write.do" method="post" id="rateForm">
+            <form class="card" action="/basic-rate-write.do" method="post" id="rateForm">
                 <div class="card-body">
                     <div class="room_type">
                         <select name="roomName" id="room_name" class="room_2deps" onchange="loadRoomRates(this.value)">
@@ -190,7 +170,6 @@
 
 
 <!-- Template Javascript -->
-<script th:src="@{js/seller/main.js}"></script>
 <script th:src="@{js/seller/basic_rate.js}"></script>
 </body>
 

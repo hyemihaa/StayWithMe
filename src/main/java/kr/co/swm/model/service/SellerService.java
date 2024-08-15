@@ -27,9 +27,10 @@ public interface SellerService {
     // 추가 요금 관련 리스트 조회
     List<SellerDto.ExtraDto> extraSeasonList(int accommodationNo);
 
-    List<SellerDto.ExtraDto> getExtraRateInfo(int accommodationNo);
+    // 추가 요금 항목 삭제(extraName 기준)
+    boolean extraRateDelete(String extraName, int accommodationNo);
 
-
-
+    // 추가 요금 기간 수정(extraDateStart, extraDateEnd)
+    boolean extraSeasonUpdate(List<SellerDto.ExtraDto> extraSeasonUpdate, int accommodationNo);
 
 }

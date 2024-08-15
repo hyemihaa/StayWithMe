@@ -25,11 +25,18 @@ public class SellerController {
         this.seller = seller;
     }
 
+    @GetMapping("/seller-main.do")
+    public String main() {
+        int accommodationNo = 1;
+
+        return "seller/seller";
+    }
+
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
     // 요금 페이지 로드(객실 이름 리스트 조회)
-    @GetMapping("/basic_rate_list.do")
+    @GetMapping("/basic-rate-list.do")
     public String basicList(Model model) {
         int accommodationNo = 1;
 
@@ -77,8 +84,8 @@ public class SellerController {
         return response;
     }
 
-
-    @PostMapping("/basic_rate_write.do")
+    // 기본 요금 및 추가 요금 수정/삽입
+    @PostMapping("/basic-rate-write.do")
     public String setRate(@ModelAttribute SellerDto sellerDto, RedirectAttributes redirectAttributes) {
         // 필터링된 유효한 추가 요금 정보 출력 (디버깅용)
         System.out.println("========== 입력된 기본 요금 정보 ==========");
@@ -123,7 +130,7 @@ public class SellerController {
             redirectAttributes.addFlashAttribute("icon", "success");
             redirectAttributes.addFlashAttribute("title", "수정 성공");
             redirectAttributes.addFlashAttribute("text", "요금 수정이 정상적으로 완료되었습니다.");
-            return "redirect:/basic_rate_list.do"; // 수정 성공 시 목록 페이지로 리다이렉트
+            return "redirect:/basic-rate-list.do"; // 수정 성공 시 목록 페이지로 리다이렉트
         } else {
             redirectAttributes.addFlashAttribute("icon", "error");
             redirectAttributes.addFlashAttribute("title", "수정 실패");
@@ -158,9 +165,9 @@ public class SellerController {
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
-    @GetMapping("/season_period.do")
+    // 기간 수정 페이지 로드(추가 요금 정보 조회)
+    @GetMapping("/season-period.do")
     public String seasonList(Model model) {
-
         int accommodationNo = 1;  // 실제 accommodationNo에 맞게 설정
 
         // 추가 요금 조회
@@ -172,42 +179,43 @@ public class SellerController {
         return "seller/season_period";
     }
 
-    // 추가 요금 데이터 불러오는 메소드
-    @GetMapping("/getExtraRates")
+    // 요금타입 삭제 요청을 처리하는 메소드
+    @DeleteMapping("/extra-delete")
     @ResponseBody
-    public List<SellerDto.ExtraDto> getExtraRates() {
+    public Map<String, Object> extraRateDelete(@RequestParam("extraName") String extraName) {
         int accommodationNo = 1;  // 실제 accommodationNo에 맞게 설정
+        Map<String, Object> response = new HashMap<>();
 
-        return seller.getExtraRateInfo(accommodationNo);
+        // 해당 요금타입 삭제
+        boolean isDeleted = seller.extraRateDelete(extraName, accommodationNo);
+
+        // 삭제 결과를 클라이언트에 반환
+        response.put("success", isDeleted);
+
+        return response; // 삭제 성공 여부 반환
     }
 
-    // 기간 삭제 메소드
-    @DeleteMapping("/deletePeriod")
+    // 기간 수정 요청을 처리하는 메소드
+    @PostMapping("/periods-update")
     @ResponseBody
-    public Map<String, Object> deletePeriod(@RequestParam String extraName) {
-        int accommodationNo = 1;  // 실제 accommodationNo에 맞게 설정
+    public Map<String, Object> updatePeriods(@ModelAttribute SellerDto sellerDto) {
+        int accommodationNo = 1; // 실제 accommodationNo에 맞게 설정
 
-        boolean success = seller.deleteExtraRateByName(extraName, accommodationNo);
+        // DTO의 내용을 출력하여 확인
+        System.out.println("Received Periods: " + sellerDto.getExtraRates());
+
+        for (SellerDto.ExtraDto period : sellerDto.getExtraRates()) {
+            System.out.println("Received Period: " + period.getExtraName() + ", Start: " + period.getExtraDateStart() + ", End: " + period.getExtraDateEnd());
+        }
+
+        boolean updateSuccess = seller.extraSeasonUpdate(sellerDto.getExtraRates(), accommodationNo);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("success", success);
+        response.put("success", updateSuccess);
 
         return response;
     }
 
-    // 기간 수정 메소드
-    @PostMapping("/updatePeriods")
-    @ResponseBody
-    public Map<String, Object> updatePeriods(@RequestBody List<SellerDto.ExtraDto> periods) {
-        int accommodationNo = 1;  // 실제 accommodationNo에 맞게 설정
-
-        boolean success = seller.updateExtraRates(periods, accommodationNo);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("success", success);
-
-        return response;
-    }
 
 }
 

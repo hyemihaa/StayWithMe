@@ -1,41 +1,17 @@
-/********** Template CSS **********/
+/* Global Variables */
 :root {
     --primary: #009CFF;
     --light: #F3F6F9;
     --dark: #191C24;
 }
 
-.back-to-top {
-    position: fixed;
-    display: none;
-    right: 45px;
-    bottom: 45px;
-    z-index: 99;
-}
-
-
-/*** Spinner ***/
-#spinner {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .5s ease-out, visibility 0s linear .5s;
-    z-index: 99999;
-}
-
-#spinner.show {
-    transition: opacity .5s ease-out, visibility 0s linear 0s;
-    visibility: visible;
-    opacity: 1;
-}
-
-
-/*** Layout ***/
+/* Layout */
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    width: 300px;
+    width: 250px; /* 사이드바 폭을 줄임 */
     height: 100vh;
     overflow-y: auto;
     background: var(--light);
@@ -44,222 +20,91 @@
 }
 
 .content {
-    margin-left: 300px;
+    margin-left: 250px; /* 사이드바 폭에 맞춤 */
     min-height: 100vh;
-    width: 100%;
+    width: calc(100% - 250px);
     background: #FFFFFF;
     transition: 0.5s;
-}
-
-@media (min-width: 992px) {
-    .sidebar {
-        margin-left: 0;
-    }
-
-    .sidebar.open {
-        margin-left: -250px;
-    }
-
-    .content {
-        width: calc(100% - 250px);
-    }
-
-    .content.open {
-        width: 100%;
-        margin-left: 0;
-    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 @media (max-width: 991.98px) {
     .sidebar {
-        margin-left: -250px;
-    }
-
-    .sidebar.open {
-        margin-left: 0;
+        width: 200px;
     }
 
     .content {
-        width: 100%;
-        margin-left: 0;
+        margin-left: 200px;
+        width: calc(100% - 200px);
     }
 }
 
+@media (max-width: 767.98px) {
+    .sidebar {
+        width: 150px;
+    }
 
-/*** Navbar ***/
-.sidebar .navbar .navbar-nav .nav-link {
-    padding: 7px 20px;
-    color: var(--dark);
-    font-weight: 500;
-    border-left: 3px solid var(--light);
-    border-radius: 0 30px 30px 0;
-    outline: none;
+    .content {
+        margin-left: 150px;
+        width: calc(100% - 150px);
+    }
 }
 
-.sidebar .navbar .navbar-nav .nav-link:hover,
-.sidebar .navbar .navbar-nav .nav-link.active {
-    color: var(--primary);
-    background: #FFFFFF;
-    border-color: var(--primary);
+/* Content */
+.container-fluid {
+    width: 90%;
+    max-width: 1200px; /* 최대 폭 설정 */
 }
 
-.sidebar .navbar .navbar-nav .nav-link i {
-    width: 40px;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: #FFFFFF;
-    border-radius: 40px;
+.row.g-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 그리드 레이아웃 사용 */
+    gap: 1rem;
 }
 
-.sidebar .navbar .navbar-nav .nav-link:hover i,
-.sidebar .navbar .navbar-nav .nav-link.active i {
+.col-sm-6.col-xl-3 {
+    padding: 1rem;
     background: var(--light);
-}
-
-.sidebar .navbar .dropdown-toggle::after {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    border: none;
-    content: "\f107";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    transition: .5s;
-}
-
-.sidebar .navbar .dropdown-toggle[aria-expanded=true]::after {
-    transform: rotate(-180deg);
-}
-
-.sidebar .navbar .dropdown-item {
-    padding-left: 25px;
-    border-radius: 0 30px 30px 0;
-}
-
-.dropdown-item {
-    margin-left: 25px;
-}
-
-.content .navbar .navbar-nav .nav-link {
-    margin-left: 25px;
-    padding: 12px 0;
-    color: var(--dark);
-    outline: none;
-}
-
-.content .navbar .navbar-nav .nav-link:hover,
-.content .navbar .navbar-nav .nav-link.active {
-    color: var(--primary);
-}
-
-.content .navbar .sidebar-toggler,
-.content .navbar .navbar-nav .nav-link i {
-    width: 40px;
-    height: 40px;
-    display: inline-flex;
+    border-radius: 8px;
+    display: flex;
     align-items: center;
-    justify-content: center;
-    background: #FFFFFF;
-    border-radius: 40px;
+    justify-content: space-between;
+    transition: transform 0.2s ease-in-out;
 }
 
-.content .navbar .dropdown-toggle::after {
-    margin-left: 6px;
-    vertical-align: middle;
-    border: none;
-    content: "\f107";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    transition: .5s;
+.col-sm-6.col-xl-3:hover {
+    transform: scale(1.05);
 }
 
-.content .navbar .dropdown-toggle[aria-expanded=true]::after {
-    transform: rotate(-180deg);
+.table-responsive {
+    width: 100%;
+    max-width: 1200px;
+    margin: 1rem 0;
+    font-size: 14px; /* 테이블 내 글자 크기 조정 */
 }
 
-@media (max-width: 575.98px) {
-    .content .navbar .navbar-nav .nav-link {
-        margin-left: 15px;
+/* Sales Charts */
+.bg-light.rounded {
+    padding: 1rem;
+    background-color: var(--light);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.bg-light.rounded:hover {
+    transform: scale(1.05);
+}
+
+@media (max-width: 767.98px) {
+    .bg-light.rounded {
+        padding: 0.5rem;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
     }
 }
-
-
-/*** Date Picker ***/
-.bootstrap-datetimepicker-widget.bottom {
-    top: auto !important;
-}
-
-.bootstrap-datetimepicker-widget .table * {
-    border-bottom-width: 0px;
-}
-
-.bootstrap-datetimepicker-widget .table th {
-    font-weight: 500;
-}
-
-.bootstrap-datetimepicker-widget.dropdown-menu {
-    padding: 10px;
-    border-radius: 2px;
-}
-
-.bootstrap-datetimepicker-widget table td.active,
-.bootstrap-datetimepicker-widget table td.active:hover {
-    background: var(--primary);
-}
-
-.bootstrap-datetimepicker-widget table td.today::before {
-    border-bottom-color: var(--primary);
-}
-
-
-/*** Testimonial ***/
-.progress .progress-bar {
-    width: 0px;
-    transition: 2s;
-}
-
-
-/*** Testimonial ***/
-.testimonial-carousel .owl-dots {
-    margin-top: 24px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-}
-
-.testimonial-carousel .owl-dot {
-    position: relative;
-    display: inline-block;
-    margin: 0 5px;
-    width: 15px;
-    height: 15px;
-    border: 5px solid var(--primary);
-    border-radius: 15px;
-    transition: .5s;
-}
-
-.testimonial-carousel .owl-dot.active {
-    background: var(--dark);
-    border-color: var(--primary);
-}
-
-.mb-0 {
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-
-
-
-
-/*  */
-.season_button {
-    margin: 0 auto;
-    margin-bottom: 20px;
-}
-
-
-

@@ -252,14 +252,68 @@ public class SellerServiceImpl implements SellerService {
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
+    // 기간 수정 페이지 정보 조회
+    @Override
     public List<SellerDto.ExtraDto> extraSeasonList(int accommodationNo) {
         return mapper.extraSeasonList(accommodationNo);
     }
 
-    public List<SellerDto.ExtraDto> getExtraRateInfo(int accommodationNo) {
-        return mapper.getExtraRateInfo(accommodationNo);
+    // EXTRA NAME 기준으로 데이터 삭제
+    @Override
+    public boolean extraRateDelete(String extraName, int accommodationNo) {
+        return mapper.extraRateDelete(extraName, accommodationNo) > 0;
     }
 
+    // 추가 요금 기간 수정
+    @Override
+    public boolean extraSeasonUpdate(List<SellerDto.ExtraDto> extraSeasonUpdate, int accommodationNo) {
+        // 기존의 추가 요금 정보를 조회
+        List<SellerDto.ExtraDto> existingExtraRates = mapper.extraTableSearch(accommodationNo);
+
+        // 조회된 기존 요금 정보 출력
+        System.out.println("Existing Extra Rates:");
+        for (SellerDto.ExtraDto existingDto : existingExtraRates) {
+            System.out.println("ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
+            System.out.println(" Extra Name: " + existingDto.getExtraName());
+            System.out.println(" RoomNo: " + existingDto.getExtraRoomNo());
+            System.out.println(" Start: " + existingDto.getExtraDateStart());
+            System.out.println(" End: " + existingDto.getExtraDateEnd());
+            System.out.println("ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
+        }
+
+        boolean result = true;
+
+        for (SellerDto.ExtraDto updatedDto : extraSeasonUpdate) {
+            for (SellerDto.ExtraDto existingDto : existingExtraRates) {
+                // 요금타입 이름이 동일한 경우, 기존 정보의 RoomNo를 사용하여 업데이트
+                if (existingDto.getExtraName().equals(updatedDto.getExtraName())) {
+                    updatedDto.setExtraRoomNo(existingDto.getExtraRoomNo());
+                    updatedDto.setExtraDayNo(existingDto.getExtraDayNo());
+
+                    try {
+                        // Update 실행 전 로그
+                        System.out.println("Updating: " + updatedDto.getExtraName() + ", Start: " + updatedDto.getExtraDateStart() + ", End: " + updatedDto.getExtraDateEnd() + ", RoomNo: " + updatedDto.getExtraRoomNo());
+
+                        int updateResult = mapper.extraSeasonUpdate(updatedDto);
+
+                        // Update 실행 후 로그 (성공 여부 확인)
+                        if (updateResult == 0) {
+                            result = false;
+                            System.out.println("Update failed for: " + updatedDto.getExtraName());
+                            break;
+                        } else {
+                            System.out.println("Update successful for: " + updatedDto.getExtraName());
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Exception during update: " + e.getMessage());
+                        result = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
 }
 
 

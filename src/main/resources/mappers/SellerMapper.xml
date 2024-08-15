@@ -171,14 +171,47 @@
 <!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
 
     <select id="extraSeasonList" resultMap="extraDtoResultMap">
-        SELECT DISTINCT ext.EXTRA_NAME,
-               ext.EXTRA_DATE_START,
-               ext.EXTRA_DATE_END,
+        SELECT ext.EXTRA_NAME,
+               MIN(ext.EXTRA_DATE_START) as EXTRA_DATE_START,
+               MAX(ext.EXTRA_DATE_END) as EXTRA_DATE_END,
+               MIN(r.ROOM_NO) as ROOM_NO
+        FROM EXTRA_RATE ext
+        JOIN ROOM r on r.ROOM_NO = ext.ROOM_NO
+        WHERE r.ACCOMMODATION_NO = #{accommodationNo}
+        GROUP BY ext.EXTRA_NAME
+    </select>
+
+    <delete id="extraRateDelete">
+        DELETE FROM EXTRA_RATE
+        WHERE EXTRA_NAME = #{extraName}
+        AND ROOM_NO IN (
+        SELECT ROOM_NO
+        FROM ROOM
+        WHERE ACCOMMODATION_NO = #{accommodationNo}
+        )
+    </delete>
+
+    <!-- 추가 요금 테이블 조회 -->
+    <select id="extraTableSearch" resultMap="extraDtoResultMap">
+        SELECT ext.ROOM_NO AS EXTRA_ROOM_NO,
+        ext.EXTRA_NO,
+        ext.DAY_NO AS EXTRA_DAY_NO,
+        ext.EXTRA_NAME,
+        ext.EXTRA_DATE_START,
+        ext.EXTRA_DATE_END,
+        ext.EXTRA_RATE
         FROM ROOM r
-        LEFT JOIN EXTRA_RATE ext on r.ROOM_NO = ext.ROOM_NO
+        JOIN EXTRA_RATE ext ON ext.ROOM_NO = r.ROOM_NO
         WHERE r.ACCOMMODATION_NO = #{accommodationNo}
     </select>
 
+    <update id="extraSeasonUpdate">
+        UPDATE EXTRA_RATE
+        SET EXTRA_DATE_START = #{extraDateStart},
+        EXTRA_DATE_END = #{extraDateEnd}
+        WHERE EXTRA_NAME = #{extraName}
+        AND ROOM_NO = #{extraRoomNo}
+    </update>
 
 </mapper>
 
