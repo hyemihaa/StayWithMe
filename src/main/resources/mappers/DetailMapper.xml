@@ -7,12 +7,29 @@
         <result column="ACCOMMODATION_TYPE" property="boardType"></result>
         <result column="POST_NO" property="boardAddress"></result>
         <result column="CHECK_IN_TIME" property="boardCheckIn"></result>
+        <result column="ROOM_NAME" property="boardRoomType"></result>
+        <result column="STANDARD_OCCUPANCY" property="boardMinPerson"></result>
+        <result column="MAX_OCCUPANCY" property="boardMaxPerson"></result>
+        <result column="LAT" property="lat"></result>
+        <result column="LNG" property="lon"></result>
     </resultMap>
 
 <!-- 장소 -->
     <select id="getPlace" resultMap="placeResultMap">
-        select a.name, a.ACCOMMODATION_NO, a.ACCOMMODATION_TYPE, a.POST_NO, r.CHECK_IN_TIME from ACCOMMODATION a
-        JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO;
+        select
+        distinct
+        a.name,
+        a.ACCOMMODATION_NO,
+        a.ACCOMMODATION_TYPE,
+        a.POST_NO,
+        a.LAT,
+        a.LNG,
+        r.CHECK_IN_TIME,
+        r.ROOM_NAME,
+        r.STANDARD_OCCUPANCY,
+        r.MAX_OCCUPANCY
+        from ACCOMMODATION a
+        JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO
 
     </select>
 
@@ -24,7 +41,10 @@
     </select>
 
     <select id="getPost" resultMap="placeResultMap">
-    "SELECT * FROM posts WHERE id = #{id}"
+        SELECT * FROM ACCOMMODATION a
+        JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+        WHERE a.ACCOMMODATION_NO = #{boardNo}
+        LIMIT 1
     </select>
 
 </mapper>

@@ -16,6 +16,16 @@ import java.util.List;
 @Controller
 public class ListController {
 
+      //ListService 의존성 주입
+    private final ListService listService;
+      //pagenation 의존성 주입
+    private final Pagenation pagenation;
+
+    @Autowired
+    public ListController(ListService listService, Pagenation pagenation) {
+        this.listService = listService;
+        this.pagenation = pagenation;
+    }
 
     @GetMapping("/tour")    //  tour에 대한 Get요청을 메소드와 mapping시킴
     public String list(@RequestParam(value="currentPage", defaultValue="1") int currentPage, Model model) {
@@ -46,16 +56,6 @@ public class ListController {
 
 
 
-      //ListService 의존성 주입
-    private final ListService listService;
-      //pagenation 의존성 주입
-    private final Pagenation pagenation;
-
-    @Autowired
-    public ListController(ListService listService, Pagenation pagenation) {
-        this.listService = listService;
-        this.pagenation = pagenation;
-    }
 
 
 

@@ -30,8 +30,6 @@
 								<h5>숙소유형</h5>
 								<div class="form-group">
 									<div class="select-wrap one-third">
-										<!-- <div class="icon"><span class="ion-ios-arrow-down"></span></div> -->
-										<!-- <select name="" id="" class="form-control" placeholder="Keyword search"> -->
 										<input type="radio" name="accommodation" value="hotel"><label
 											for="전체">전체</label><br>
 										<input type="radio" name="accommodation" value="hotel"><label
@@ -40,12 +38,6 @@
 											for="모텔">모텔</label><br>
 										<input type="radio" name="accommodation" value="hotel"><label
 											for="펜션">펜션</label><br>
-										<!-- <option value="">Select Location</option>
-	                      <option value="">San Francisco USA</option>
-	                      <option value="">Berlin Germany</option>
-	                      <option value="">Lodon United Kingdom</option>
-	                      <option value="">Paris Italy</option> -->
-										<!-- </select> -->
 									</div>
 								</div>
 
@@ -71,14 +63,17 @@
 										<button class="convenient"><span>주차장</span></button>
 										<button class="convenient"><span>헬스장</span></button>
 									</div>
-									<!-- 서치 버튼 -->
 								</div>
+									<!-- 서치 버튼 -->
 								<div class="form-group">
 									<input type="submit" value="Search" class="btn btn-primary py-3 px-5">
 								</div>
 							</div>
 						</form>
 					</div>
+
+					<!-- 별점 영역 -->
+
 					<div class="sidebar-wrap bg-light ftco-animate">
 						<h3 class="heading mb-4">별점</h3>
 						<form method="post" class="star-rating">
@@ -150,7 +145,8 @@
 							<span th:text="${post.boardType}">숙박유형</span>
 							<h2 th:text="${post.boardName}">숙박명</h2>
 							<p class="rate mb-5">
-								<span class="loc"><a href="#" th:text="${post.boardAddress}"><i class="icon-map"></i> 숙박 주소</a></span>
+								<span class="loc"><a href="#" th:text="${post.boardAddress}">
+									<i class="icon-map"></i> 숙박 주소</a></span>
 								<br>
 								<span class="star" th:each="rate : ${rate}">
 									<i class="icon-star" th:if="${rate >= 1}"></i>
@@ -168,7 +164,7 @@
 							</p>
 							<div class="d-md-flex mt-5 mb-5">
 								<!-- 호텔 정보 -->
-								<ul class="facilities" style="width: 400px;">
+								<ul class="facilities" style="width: 500px;">
 									<li>
 										<h5>객실내 부대시설</h5>
 									</li>
@@ -178,18 +174,50 @@
 								</ul>
 
 								<!-- 지도 영역 -->
-								<div class="map">
-									<h5 style="margin-left: 30px;">위치</h5>
-									<iframe
-											src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3163.036360159914!2d126.97036767538587!3d37.55420712483577!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca2672a0c4a13%3A0xee111573cb10964e!2z7ISc7Jq47Yq567OE7IucIOyEnOyauOyXreyVng!5e0!3m2!1sko!2skr!4v1722491575454!5m2!1sko!2skr"
-											width="100%" height="300px" frameborder="0"
-											style="border:0; border-radius: 20px; margin-left: 30px;"
-											allowfullscreen=""></iframe>
+								<div class="map-container" style="margin-left: 70px;">
+									<h5>위치</h5>
+									<div id="map" style= "width: 300px; height: 300px; border: 2px solid #aaa;"></div>
+								<!-- 카카오 지도 스크립트 -->
+									<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7e9abb233f506c3551de8af0c2fd6e5d"></script>
+									<script>
+
+                                       var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                                           mapOption = {
+                                               center: new kakao.maps.LatLng(37.55579781221101, 127.00533049016774), // 지도의 중심좌표
+                                               level: 2 // 지도의 확대 레벨
+                                           };
+
+                                       var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+                                       // 마커가 표시될 위치
+                                       var markerPosition  = new kakao.maps.LatLng(37.55579781221101, 127.00533049016774);
+
+                                       // 마커를 생성합니다
+                                       var marker = new kakao.maps.Marker({
+                                       position: markerPosition
+                                       });
+
+                                       // 마커가 지도 위에 표시되도록 설정합니다
+                                       marker.setMap(map);
+
+                                       // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+                                       var mapTypeControl = new kakao.maps.MapTypeControl();
+
+                                       // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+                                       // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+                                       map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+                                       // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+                                       var zoomControl = new kakao.maps.ZoomControl();
+                                       map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+									</script>
 								</div>
+
+
 
 								<!-- 예약공지 -->
 							</div>
-							<p>
+							<div class="infomation">
 							<h5>예약공지</h5>
 							<br>
 							체크인 15:00 이후, 체크아웃 12:00 이전
@@ -216,17 +244,10 @@
 							<br>
 							무료 Wi-Fi
 							<br>
-							모든 추가비용 현장결제</p>
+							모든 추가비용 현장결제
+							</div>
 						</div>
-						<!-- <div class="col-md-12 hotel-single ftco-animate mb-5 mt-4">
-          			<h4 class="mb-4">Take A Tour</h4>
-          			<div class="block-16">
-		              <figure>
-		                <img src="images/hotel-6.jpg" alt="Image placeholder" class="img-fluid">
-		                <a href="https://vimeo.com/45830194" class="play-button popup-vimeo"><span class="icon-play"></span></a>
-		              </figure>
-		            </div>
-          		</div> -->
+
 
 
 
@@ -300,65 +321,36 @@
 							<h4 class="mb-4">객실선택</h4>
 							<div class="row">
 								<div class="col-md-4">
-									<div class="destination">
+									<div class="destination" th:each="place : ${place}">
 										<a href="#" class="img img-3"
 										   style="background-image: url(images/room-4.jpg);"></a>
 										<div class="text-tour p-3">
 											<div class="d-flex">
 												<div class="one">
-													<h3><a href="#">숙박 명</a></h3>
+													<h3><a href="#" th:text="${place.boardRoomType}">방 유형</a></h3>
 													<p class="rate">
-														<i class="icon-star"></i>
-														<i class="icon-star"></i>
-														<i class="icon-star"></i>
-														<i class="icon-star"></i>
-														<i class="icon-star-o"></i>
-														<span>8 Rating</span>
+														<i class="icon-star" th:if="${rate >= 1}"></i>
+														<i class="icon-star" th:if="${rate >= 2}"></i>
+														<i class="icon-star" th:if="${rate >= 3}"></i>
+														<i class="icon-star" th:if="${rate >= 4}"></i>
+														<i class="icon-star" th:if="${rate >= 5}"></i>
+														<i class="icon-star-o" th:if="${rate < 1}"></i>
+														<i class="icon-star-o" th:if="${rate < 2}"></i>
+														<i class="icon-star-o" th:if="${rate < 3}"></i>
+														<i class="icon-star-o" th:if="${rate < 4}"></i>
+														<i class="icon-star-o" th:if="${rate < 5}"></i>
+														<span th:text="${post.boardRating}">0.0</span>
 													</p>
 												</div>
-												<div class="two">
-													<p>숙박유형</p>
-												</div>
 											</div>
-											<span><i class="icon-map-o"></i> 장소 명</span>
-											<p class="days"><span>체크인 : 15:00&nbsp;&nbsp;&nbsp;기준2인 · 최대3인</span></p>
+											<p class="days"><span>체크인 : <span th:text="${post.boardCheckIn}"/>
+											&nbsp;&nbsp;&nbsp;
+											기준<span th:text="${post.boardMinPerson}"/>인 · 최대<span th:text="${post.boardMaxPerson}"/>인</span></p>
 											<hr>
-											<span class="price" style="text-decoration: line-through;">200,000원</span>
+											<span class="price" style="font-weight: bold; font-size: 17px;">200,000원</span>
 											<br>
-											<p class="price">쿠폰적용가 : 170,000원</p>
 											<p class="bottom-area d-flex">
 												<span class="ml-auto"><a href="#">예약</a></span>
-											</p>
-										</div>
-									</div>
-								</div>
-
-								<div class="col-md-4">
-									<div class="destination">
-										<a href="#" class="img img-3"
-										   style="background-image: url(images/room-6.jpg);"></a>
-										<div class="text-tour p-3">
-											<div class="d-flex">
-												<div class="one">
-													<h3><a href="#">Hotel, Italy</a></h3>
-													<p class="rate">
-														<i class="icon-star"></i>
-														<i class="icon-star"></i>
-														<i class="icon-star"></i>
-														<i class="icon-star"></i>
-														<i class="icon-star-o"></i>
-														<span>8 Rating</span>
-													</p>
-												</div>
-												<div class="two">
-													<span class="price per-price">$40<br><small>/night</small></span>
-												</div>
-											</div>
-											<p>Far far away, behind the word mountains, far from the countries</p>
-											<hr>
-											<p class="bottom-area d-flex">
-												<span><i class="icon-map-o"></i> Miami, Fl</span>
-												<span class="ml-auto"><a href="#">Book Now</a></span>
 											</p>
 										</div>
 									</div>

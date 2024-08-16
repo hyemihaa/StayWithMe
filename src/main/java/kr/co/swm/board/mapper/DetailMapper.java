@@ -12,5 +12,5 @@ public interface DetailMapper {
 
     double getAvgRate(@Param("boardNo") int boardNo);
 
-    DetailDto findPostById(Long id);
+    DetailDto getPost(@Param("boardNo") int boardNo);
 }

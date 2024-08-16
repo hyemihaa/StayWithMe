@@ -18,16 +18,19 @@ public class DetailServiceImpl implements DetailService{
         this.detailMapper = detailMapper;
     }
 
+    //  장소 불러오기
    @Override
    public List<DetailDto> getPlace() {
        return detailMapper.getPlace();
    }
 
+   //   게시글 상세정보 조회
     @Override
-    public DetailDto getPost(Long id) {
-        return detailMapper.findPostById(id);
+    public DetailDto getPost(int boardNo) {
+        return detailMapper.getPost(boardNo);
     }
 
+    // 평균 별점 불러오기
     @Override
     public double getAvgRate(int boardNo) {
         return detailMapper.getAvgRate(boardNo);
