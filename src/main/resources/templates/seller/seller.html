@@ -68,7 +68,6 @@
                 <div class="nav-item dropdown show">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-cog me-2"></i>판매 환경설정</a>
                     <div class="dropdown-menu show bg-transparent border-0">
-<!--                        <a href="basic_rate.html" class="dropdown-item">기본요금 수정</a>-->
                         <a th:href="@{/basic-rate-list.do}" class="dropdown-item">기본요금 수정</a>
                         <a th:href="@{/season-period.do}" class="dropdown-item">성수기/기간 관리</a>
                     </div>
@@ -103,7 +102,7 @@
                         <i class="fa fa-chart-line fa-3x text-primary"></i>
                         <div class="ms-3">
                             <p class="mb-2">사용자 조회수</p>
-                            <h6 class="mb-0">250</h6>
+                            <h6 class="mb-0" th:text="${roomViews}"></h6> <!-- DB에서 가져온 조회수 데이터 -->
                         </div>
                     </div>
                 </div>
@@ -112,7 +111,7 @@
                         <i class="fa fa-chart-bar fa-3x text-primary"></i>
                         <div class="ms-3">
                             <p class="mb-2">예약 신청</p>
-                            <h6 class="mb-0">180</h6>
+                            <h6 class="mb-0" th:text="${reservationCount}"></h6> <!-- 오늘 날짜 기준 예약 신청 건수 -->
                         </div>
                     </div>
                 </div>
@@ -121,7 +120,7 @@
                         <i class="fa fa-chart-area fa-3x text-primary"></i>
                         <div class="ms-3">
                             <p class="mb-2">예약 취소</p>
-                            <h6 class="mb-0">30</h6>
+                            <h6 class="mb-0" th:text="${cancelCount}"></h6> <!-- 오늘 날짜 기준 예약 취소 건수 -->
                         </div>
                     </div>
                 </div>
@@ -130,7 +129,7 @@
                         <i class="fa fa-chart-pie fa-3x text-primary"></i>
                         <div class="ms-3">
                             <p class="mb-2">결제 금액</p>
-                            <h6 class="mb-0">23400000</h6>
+                            <h6 class="mb-0" th:text="${netAmount}"></h6> <!-- 오늘 날짜 기준 총 결제 금액 -->
                         </div>
                     </div>
                 </div>
@@ -141,33 +140,23 @@
         <!-- Sales Chart Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="row g-4">
-                <div class="col-sm-12 col-xl-6">
+                <div class="col-sm-12 col-xl-12">
                     <div class="bg-light text-center rounded p-4">
                         <div class="d-flex align-items-center justify-content-between mb-4">
-                            <h6 class="mb-0">일별 매출 현황</h6>
+                            <h6 class="mb-0">월별 현황</h6>
                         </div>
-                        <canvas id="worldwide-sales"></canvas>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-xl-6">
-                    <div class="bg-light text-center rounded p-4">
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                            <h6 class="mb-0">월별 매출 현황</h6>
-                        </div>
-                        <canvas id="salse-revenue"></canvas>
+                        <canvas id="salse-revenue" style="max-height: 350px;"></canvas>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Sales Chart End -->
 
-
-
         <!-- Recent Sales Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="bg-light text-center rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">숙소 별 매출 현황</h6>
+                    <h6 class="mb-0">숙소 매출 현황</h6>
                 </div>
                 <div class="table-responsive">
                     <table class="table text-start align-middle table-bordered table-hover mb-0">
@@ -181,11 +170,20 @@
                             <th scope="col">매출액</th>
                         </tr>
                         </thead>
-                        <tbody id="sales-data">
-                        <!-- 데이터가 JavaScript를 통해 동적으로 채워짐 -->
+                        <tbody>
+                        <!-- 서버에서 가져온 예약 데이터를 테이블에 표시 -->
+                        <tr>
+                            <td th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"></td>
+                            <td th:text="${reservationType}"></td>
+                            <td th:text="${reservationCount}"></td>
+                            <td th:text="${reservationCount - cancelCount}"></td>
+                            <td th:text="${cancelCount}"></td>
+                            <td th:text="${netAmount}"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
         <!-- Recent Sales End -->
@@ -227,6 +225,15 @@
 <script th:src="@{js/lib/tempusdominus/js/moment-timezone.min.js}"></script>
 <script th:src="@{js/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js}"></script>
 
+<!-- Thymeleaf를 통한 JavaScript 변수 주입 -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var monthlyLabels = [[${monthlyLabels}]];
+    var monthlyReservationCounts = [[${monthlyReservationCounts}]];
+    var monthlyCancelCounts = [[${monthlyCancelCounts}]];
+    var monthlyPaymentCounts = [[${monthlyPaymentCounts}]];
+    /*]]>*/
+</script>
 <!-- Template Javascript -->
 <script th:src="@{js/seller/main.js}"></script>
 </body>

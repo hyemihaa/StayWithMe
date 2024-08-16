@@ -11,7 +11,7 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 250px; /* 사이드바 폭을 줄임 */
+    width: 250px;
     height: 100vh;
     overflow-y: auto;
     background: var(--light);
@@ -19,16 +19,28 @@
     z-index: 999;
 }
 
+/* 기본적으로 모든 .nav-link.active 요소에 동일한 스타일을 적용합니다 */
+.nav-link.active, .dropdown-item.active {
+    color: #ffffff !important;
+    background-color: #007bff !important; /* Bootstrap 기본 Primary 색상 */
+    border-color: #007bff !important;
+    font-weight: bold;
+}
+
+/* 추가로 .nav-item과 .dropdown-item의 active 상태에 대한 스타일을 추가합니다 */
+.nav-item.active .nav-link,
+.dropdown-item.active {
+    background-color: #007bff !important; /* 활성화된 메뉴의 배경 색상 */
+    color: #ffffff !important; /* 활성화된 메뉴의 글자 색상 */
+}
+
 .content {
-    margin-left: 250px; /* 사이드바 폭에 맞춤 */
+    margin-left: 250px;
     min-height: 100vh;
     width: calc(100% - 250px);
     background: #FFFFFF;
     transition: 0.5s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    padding: 20px;
 }
 
 @media (max-width: 991.98px) {
@@ -55,48 +67,59 @@
 
 /* Content */
 .container-fluid {
-    width: 90%;
-    max-width: 1200px; /* 최대 폭 설정 */
+    width: 100%;
+    padding: 0 15px;
 }
 
 .row.g-4 {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 그리드 레이아웃 사용 */
+    display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
 }
 
-.col-sm-6.col-xl-3 {
-    padding: 1rem;
-    background: var(--light);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: transform 0.2s ease-in-out;
+.col-sm-6.col-xl-3,
+.col-sm-12.col-xl-6 {
+    flex: 1 1 calc(25% - 1rem);
+    max-width: calc(25% - 1rem);
 }
 
-.col-sm-6.col-xl-3:hover {
-    transform: scale(1.05);
+.col-sm-12.col-xl-6 {
+    flex: 1 1 calc(50% - 1rem);
+    max-width: calc(50% - 1rem);
 }
 
+@media (max-width: 991.98px) {
+    .col-sm-6.col-xl-3 {
+        flex: 1 1 calc(50% - 1rem);
+        max-width: calc(50% - 1rem);
+    }
+
+    .col-sm-12.col-xl-6 {
+        flex: 1 1 calc(100% - 1rem);
+        max-width: calc(100% - 1rem);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .col-sm-6.col-xl-3,
+    .col-sm-12.col-xl-6 {
+        flex: 1 1 calc(100% - 1rem);
+        max-width: calc(100% - 1rem);
+    }
+}
+
+/* 테이블 스타일 */
 .table-responsive {
     width: 100%;
-    max-width: 1200px;
     margin: 1rem 0;
-    font-size: 14px; /* 테이블 내 글자 크기 조정 */
+    font-size: 14px;
 }
 
-/* Sales Charts */
 .bg-light.rounded {
     padding: 1rem;
     background-color: var(--light);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
-}
-
-.bg-light.rounded:hover {
-    transform: scale(1.05);
 }
 
 @media (max-width: 767.98px) {

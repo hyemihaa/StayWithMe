@@ -22,6 +22,7 @@ public class SellerDto {
     private String accommodationPhone;
     private String accommodationPost;
     private String accommodationAddress;
+    private int accommodationViews;
 
     // 객실 정보
     private int roomNo;
@@ -31,7 +32,6 @@ public class SellerDto {
     private String roomCheckOut;
     private int roomPersonnel;
     private int roomMaxPersonnel;
-    private int roomvalues;
 
     // 객실 요금 정보
     private int roomRateNo;
@@ -42,6 +42,15 @@ public class SellerDto {
     private int fridayRate;
     private int saturdayRate;
     private int sundayRate;
+
+    // 예약 정보
+    private int reserveRoomNo;
+    private String reserveCheckIn;
+    private String reserveCheckOut;
+    private int reserveAmount;
+    private String reservationDate;
+    private String reservationStatus;
+    private String reservationType;
 
     // 생성자
     public SellerDto() {

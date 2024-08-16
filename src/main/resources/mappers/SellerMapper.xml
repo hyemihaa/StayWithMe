@@ -15,6 +15,7 @@
         <result column="PHONE" property="accommodationPhone"/>
         <result column="POST_NO" property="accommodationPost"/>
         <result column="ADDRESS" property="accommodationAddress"/>
+        <result column="VIEWS" property="accommodationViews"/>
 
         <!-- 객실 정보 -->
         <result column="ROOM_NO" property="roomNo"/>
@@ -24,7 +25,15 @@
         <result column="CHECK_OUT_TIME" property="roomCheckOut"/>
         <result column="STANDARD_OCCUPANCY" property="roomPersonnel"/>
         <result column="MAX_OCCUPANCY" property="roomMaxPersonnel"/>
-        <result column="ROOM_VALUES" property="roomvalues"/>
+
+        <!-- 예약 정보 -->
+        <result column="RESERVE_ROOM_NO" property="reserveRoomNo"/>
+        <result column="CHECK_IN_DATE" property="reserveCheckIn"/>
+        <result column="CHECK_OUT_DATE" property="reserveCheckOut"/>
+        <result column="RESULT_AMOUNT" property="reserveAmount"/>
+        <result column="RESERVATION_DATE" property="reservationDate"/>
+        <result column="RESERVATION_STATUS" property="reservationStatus"/>
+        <result column="RESERVE_ACCOMMODATION_TYPE" property="reservationType"/>
 
         <!-- 요금 정보 -->
         <result column="BASIC_RATE_NO" property="roomRateNo"/>
@@ -63,6 +72,32 @@
     </resultMap>
 
 <!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+<!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+
+    <!-- 객실 및 조회수 조회 -->
+    <select id="roomViews" resultType="java.lang.Integer">
+        SELECT VIEWS
+        FROM ACCOMMODATION
+        WHERE ACCOMMODATION_NO = #{accommodationNo}
+    </select>
+
+    <!-- 예약 및 결제 정보 조회 -->
+    <select id="reserveData" resultMap="seller">
+        SELECT re.ROOM_NO AS RESERVE_ROOM_NO,
+               re.CHECK_IN_DATE,
+               re.CHECK_OUT_DATE,
+               re.RESULT_AMOUNT,
+               re.RESERVATION_DATE,
+               re.RESERVATION_STATUS,
+               a.ACCOMMODATION_TYPE AS RESERVE_ACCOMMODATION_TYPE
+        FROM RESERVE re
+        JOIN ROOM ro ON re.ROOM_NO = ro.ROOM_NO
+        JOIN ACCOMMODATION a ON ro.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+        WHERE a.ACCOMMODATION_NO = #{accommodationNo}
+    </select>
+
+
+    <!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
 <!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
 
     <!-- 객실 이름 리스트 조회 -->

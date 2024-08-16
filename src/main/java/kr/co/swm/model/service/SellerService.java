@@ -6,6 +6,16 @@ import java.util.List;
 
 public interface SellerService {
 
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
+    // 업소 조회수
+    int roomViews(int accommodationNo);
+
+    // 대시보드 정보 조회
+    List<SellerDto> mainList(int accommodationNo);
+
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
     // 객실 리스트 조회
     List<String> roomNameSearch(int accommodationNo);
 

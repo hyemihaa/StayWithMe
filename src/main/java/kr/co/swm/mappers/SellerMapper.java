@@ -9,6 +9,18 @@ import java.util.List;
 @Mapper
 public interface SellerMapper {
 
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
+    // 객실 및 조회수 조회
+    int roomViews(@Param("accommodationNo") int accommodationNo);
+
+    // 예약 및 결제 정보 조회
+    List<SellerDto> reserveData(@Param("accommodationNo") int accommodationNo);
+
+
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
+
     // 객실 리스트 조회
     List<String> roomNameSearch(int accommodationNo);
 
@@ -31,7 +43,7 @@ public interface SellerMapper {
     int extraRateInsert(SellerDto.ExtraDto extraDto);
 
 
-//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
     // 기간 수정 페이지 로드에 필요한 자료 조회
     List<SellerDto.ExtraDto> extraSeasonList(@Param("accommodationNo") int accommodationNo);

@@ -21,6 +21,38 @@ public class SellerServiceImpl implements SellerService {
         this.transactionTemplate = transactionTemplate;
     }
 
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
+    // 업소 조회수
+    @Override
+    public int roomViews(int accommodationNo) {
+        return mapper.roomViews(accommodationNo);
+    }
+
+    // 대시보드 정보 조회
+    @Override
+    public List<SellerDto> mainList(int accommodationNo) {
+
+        List<SellerDto> resultList = mapper.reserveData(accommodationNo);
+
+        // 디버깅용 출력
+        System.out.println("Result List Size: " + resultList.size());
+        for (SellerDto item : resultList) {
+            System.out.println("Reservation Date: " + item.getReservationDate());
+            System.out.println("Reservation Type: " + item.getReservationType());
+            System.out.println("Reservation Status: " + item.getReservationStatus());
+            System.out.println("Reserve Amount: " + item.getReserveAmount());
+            System.out.println("------------------------------------------");
+        }
+
+        return resultList;
+    }
+
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
+
     // 객실 리스트 조회
     @Override
     public List<String> roomNameSearch(int accommodationNo) {
