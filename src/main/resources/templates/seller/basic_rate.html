@@ -54,9 +54,9 @@
                 <div class="nav-item dropdown show">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-book me-2"></i>예약관리</a>
                     <div class="dropdown-menu show bg-transparent border-0">
-                        <a href="reservation_list.html" class="dropdown-item">예약리스트</a>
-                        <a href="daily_status.html" class="dropdown-item">일별 현황보기</a>
-                        <a href="./monthly_status.html" class="dropdown-item">월별 현황보기</a>
+                        <a th:href="@{/reservation.do}" class="dropdown-item">예약리스트</a>
+                        <a th:href="@{/reservation-daily.do}" class="dropdown-item">일별 현황보기</a>
+                        <a th:href="@{/reservation-monthly.do}" class="dropdown-item">월별 현황보기</a>
                     </div>
                 </div>
                 <div class="nav-item dropdown show">

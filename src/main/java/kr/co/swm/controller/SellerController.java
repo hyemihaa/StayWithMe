@@ -134,10 +134,95 @@ public class SellerController {
     }
 
 
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
+    // 예약 리스트 페이지 로드
+    @GetMapping("/reservation.do")
+    public String reservation(Model model) {
+
+        int accommodationNo = 1;
+
+        // 예약 및 결제 정보 가져오기
+        List<SellerDto> reservation = seller.mainList(accommodationNo);
+
+        for(SellerDto item : reservation) {
+            System.out.println();
+            System.out.println("= = = = = = reservation controller = = = = = =");
+            System.out.println("예약 정보 : " + item.getReserveRoomName());
+            System.out.println("입실일 : " + item.getReserveCheckIn());
+            System.out.println("퇴실일 : " + item.getReserveCheckOut());
+            System.out.println("예약자 : " + item.getUserName());
+            System.out.println("예약연락처 : " + item.getUserPhone());
+            System.out.println("결제금액 : " + item.getReserveAmount());
+            System.out.println("예약상태 : " + item.getReservationStatus());
+            System.out.println("예약취소일 : " + item.getReservationCancellationDate());
+            System.out.println("= = = = = = = = = = = = = = = = = = = = = = =");
+            System.out.println();
+        }
+
+        model.addAttribute("reservation", reservation);
+
+        return "seller/reservation";
+    }
+
+    // 특정 검색 조건으로 예약 리스트 조회
+    @PostMapping("/reservation-search.do")
+    public String reservationSearch(@RequestParam(value = "dateType", required = false) String dateType,
+                              @RequestParam(value = "startDate", required = false) String startDate,
+                              @RequestParam(value = "endDate", required = false) String endDate,
+                              @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+                              @RequestParam(value = "reservationStatus", required = false) String reservationStatus,
+                              Model model) {
+
+        System.out.println("<<<<<<<<<<<< 입력값 확인 디버깅 >>>>>>>>>>>>>>");
+        System.out.println("dateType: " + dateType);
+        System.out.println("startDate: " + startDate);
+        System.out.println("endDate: " + endDate);
+        System.out.println("searchKeyword: " + searchKeyword);
+        System.out.println("reservationStatus: " + reservationStatus);
+        System.out.println("============================================");
+
+        int accommodationNo = 1;
+
+        // 예약 및 결제 정보 가져오기
+        List<SellerDto> reservationSearch = seller.reservationSearch(accommodationNo, dateType, startDate, endDate, searchKeyword, reservationStatus);
+
+        for(SellerDto item : reservationSearch) {
+            System.out.println();
+            System.out.println("= = = = reservationSearch controller = = = = =");
+            System.out.println("예약 정보 : " + item.getReserveRoomName());
+            System.out.println("입실일 : " + item.getReserveCheckIn());
+            System.out.println("퇴실일 : " + item.getReserveCheckOut());
+            System.out.println("예약자 : " + item.getUserName());
+            System.out.println("예약연락처 : " + item.getUserPhone());
+            System.out.println("결제금액 : " + item.getReserveAmount());
+            System.out.println("예약상태 : " + item.getReservationStatus());
+            System.out.println("예약취소일 : " + item.getReservationCancellationDate());
+            System.out.println("= = = = = = = = = = = = = = = = = = = = = = =");
+            System.out.println();
+        }
+
+        model.addAttribute("reservationSearch", reservationSearch);
+
+        // 검색 조건들을 모델에 담아 다시 전달
+        model.addAttribute("dateType", dateType);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("searchKeyword", searchKeyword);
+        model.addAttribute("reservationStatus", reservationStatus);
+
+        return "seller/reservation";
+    }
+
+
+
+
 
 
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
 
     // 요금 페이지 로드(객실 이름 리스트 조회)
     @GetMapping("/basic-rate-list.do")

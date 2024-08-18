@@ -15,6 +15,10 @@ public class SellerDto {
     private String sellerId;
     private String sellerType;
 
+    // 유저 정보
+    private String userName;
+    private String userPhone;
+
     // 숙소 정보
     private int accommodationNo;
     private String accommodationName;
@@ -45,10 +49,12 @@ public class SellerDto {
 
     // 예약 정보
     private int reserveRoomNo;
+    private String reserveRoomName;
     private String reserveCheckIn;
     private String reserveCheckOut;
     private int reserveAmount;
     private String reservationDate;
+    private String reservationCancellationDate;
     private String reservationStatus;
     private String reservationType;
 

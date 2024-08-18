@@ -8,6 +8,10 @@
         <result column="ADMIN_ID" property="sellerId"/>
         <result column="ADMIN_TYPE" property="sellerType"/>
 
+        <!-- 유저 정보 -->
+        <result column="USER_NAME" property="userName"/>
+        <result column="USER_PHONE" property="userPhone"/>
+
         <!-- 숙소 정보 -->
         <result column="ACCOMMODATION_NO" property="accommodationNo"/>
         <result column="NAME" property="accommodationName"/>
@@ -28,10 +32,12 @@
 
         <!-- 예약 정보 -->
         <result column="RESERVE_ROOM_NO" property="reserveRoomNo"/>
+        <result column="RESERVE_ROOM_NAME" property="reserveRoomName"/>
         <result column="CHECK_IN_DATE" property="reserveCheckIn"/>
         <result column="CHECK_OUT_DATE" property="reserveCheckOut"/>
         <result column="RESULT_AMOUNT" property="reserveAmount"/>
         <result column="RESERVATION_DATE" property="reservationDate"/>
+        <result column="RESERVATION_CANCELLATION_DATE" property="reservationCancellationDate"/>
         <result column="RESERVATION_STATUS" property="reservationStatus"/>
         <result column="RESERVE_ACCOMMODATION_TYPE" property="reservationType"/>
 
@@ -88,13 +94,81 @@
                re.CHECK_OUT_DATE,
                re.RESULT_AMOUNT,
                re.RESERVATION_DATE,
+               re.RESERVATION_CANCELLATION_DATE,
                re.RESERVATION_STATUS,
-               a.ACCOMMODATION_TYPE AS RESERVE_ACCOMMODATION_TYPE
+               a.ACCOMMODATION_TYPE AS RESERVE_ACCOMMODATION_TYPE,
+               ro.ROOM_NAME AS RESERVE_ROOM_NAME,
+               us.USER_NAME,
+               us.USER_PHONE
         FROM RESERVE re
         JOIN ROOM ro ON re.ROOM_NO = ro.ROOM_NO
         JOIN ACCOMMODATION a ON ro.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+        JOIN USER us ON re.USER_NO = us.USER_NO
         WHERE a.ACCOMMODATION_NO = #{accommodationNo}
     </select>
+
+
+<!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+<!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+
+    <!-- [SearchText] 예약 및 결제 정보 조회 -->
+    <select id="reservationSearch" resultMap="seller">
+
+        <!-- SELECT 절: 필요한 모든 컬럼을 선택 -->
+        SELECT
+        re.ROOM_NO AS RESERVE_ROOM_NO,
+        re.CHECK_IN_DATE,
+        re.CHECK_OUT_DATE,
+        re.RESULT_AMOUNT,
+        re.RESERVATION_DATE,
+        re.RESERVATION_CANCELLATION_DATE,
+        re.RESERVATION_STATUS,
+        a.ACCOMMODATION_TYPE AS RESERVE_ACCOMMODATION_TYPE,
+        ro.ROOM_NAME AS RESERVE_ROOM_NAME,
+        us.USER_NAME,
+        us.USER_PHONE
+        FROM
+        RESERVE re
+        JOIN ROOM ro ON re.ROOM_NO = ro.ROOM_NO
+        JOIN ACCOMMODATION a ON ro.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+        JOIN USER us ON re.USER_NO = us.USER_NO
+        WHERE
+        a.ACCOMMODATION_NO = #{accommodationNo} <!-- 필수 조건: 숙소 번호로 필터링 -->
+
+        <!-- 날짜 필터 조건: 접수일 기준으로 필터링 -->
+        <if test="dateType == 'reception' and startDate != null and startDate != '' and endDate != null and endDate != ''">
+            AND re.RESERVATION_DATE BETWEEN #{startDate} AND #{endDate}
+        </if>
+
+        <!-- 날짜 필터 조건: 이용일 기준으로 필터링 -->
+        <if test="dateType == 'usage' and startDate != null and startDate != '' and endDate != null and endDate != ''">
+            AND re.CHECK_IN_DATE &gt;= #{startDate} AND re.CHECK_OUT_DATE &lt;= #{endDate}
+        </if>
+
+        <!-- 검색어 필터 조건: 객실 이름, 사용자 이름, 사용자 전화번호, 결제 금액으로 필터링 -->
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND (
+            ro.ROOM_NAME LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR us.USER_NAME LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR us.USER_PHONE LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR re.RESULT_AMOUNT LIKE CONCAT('%', #{searchKeyword}, '%')
+            )
+        </if>
+
+        <!-- 예약 상태 필터 조건: 예약 상태가 특정 값으로 필터링될 때만 적용 -->
+        <if test="reservationStatus != null and reservationStatus != 'all'">
+            AND re.RESERVATION_STATUS = #{reservationStatus}
+        </if>
+
+    </select>
+
+
+
+
+
+
+
+
 
 
     <!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->

@@ -52,6 +52,47 @@ public class SellerServiceImpl implements SellerService {
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
+    // 예약 검색 조회
+    public List<SellerDto> reservationSearch(int accommodationNo, String dateType, String startDate, String endDate, String searchKeyword, String reservationStatus) {
+
+        // 입력 값에 대한 유효성 검사
+        if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
+            throw new IllegalArgumentException("Start date cannot be after end date");
+        }
+
+        // 2. 필수 입력값에 대한 기본적인 유효성 검사
+        if (accommodationNo <= 0) {
+            throw new IllegalArgumentException("Invalid accommodation number");
+        }
+
+        List<SellerDto> reservationSearch = mapper.reservationSearch(accommodationNo, dateType, startDate, endDate, searchKeyword, reservationStatus);
+
+        // 디버깅: 검색 결과 출력
+        if (reservationSearch != null && !reservationSearch.isEmpty()) {
+            for (SellerDto item : reservationSearch) {
+                System.out.println("---------- reservationSearch ServiceImpl ----------");
+                System.out.println("예약 정보: " + item.getReserveRoomName());
+                System.out.println("입실일: " + item.getReserveCheckIn());
+                System.out.println("퇴실일: " + item.getReserveCheckOut());
+                System.out.println("예약자: " + item.getUserName());
+                System.out.println("예약연락처: " + item.getUserPhone());
+                System.out.println("결제금액: " + item.getReserveAmount());
+                System.out.println("예약상태: " + item.getReservationStatus());
+                System.out.println("예약취소일: " + item.getReservationCancellationDate());
+                System.out.println("-----------------------------------------");
+            }
+        } else {
+            System.out.println("검색 결과가 없습니다.");
+        }
+
+        return reservationSearch;
+    }
+
+
+
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
 
     // 객실 리스트 조회
     @Override

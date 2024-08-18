@@ -20,6 +20,17 @@ public interface SellerMapper {
 
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
+    // 예약 검색 조회
+    List<SellerDto> reservationSearch(@Param("accommodationNo") int accommodationNo,
+                                      @Param("dateType") String dateType,
+                                      @Param("startDate") String startDate,
+                                      @Param("endDate") String endDate,
+                                      @Param("searchKeyword") String searchKeyword,
+                                      @Param("reservationStatus") String reservationStatus);
+
+
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
 
     // 객실 리스트 조회
     List<String> roomNameSearch(int accommodationNo);

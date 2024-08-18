@@ -42,15 +42,15 @@
                 backgroundColor: "rgba(0, 156, 255, .5)" // 예약 건수 막대 색상
             },
             {
-                label: "취소 건수",
-                data: monthlyCancelCounts, // 월별 취소 건수 데이터
-                backgroundColor: "rgba(255, 99, 132, .5)" // 취소 건수 막대 색상
-            },
-            {
                 label: "결제 건수",
                 data: monthlyPaymentCounts, // 월별 결제 건수 데이터
                 backgroundColor: "rgba(75, 192, 192, .5)" // 결제 건수 막대 색상
-            }]
+            },
+            {
+                label: "취소 건수",
+                data: monthlyCancelCounts, // 월별 취소 건수 데이터
+                backgroundColor: "rgba(255, 99, 132, .5)" // 취소 건수 막대 색상
+            },]
         },
         options: {
             responsive: true,
