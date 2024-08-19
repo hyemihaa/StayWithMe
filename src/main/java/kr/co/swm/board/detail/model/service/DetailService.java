@@ -1,15 +1,15 @@
 package kr.co.swm.board.detail.model.service;
 
-import kr.co.swm.board.detail.model.dto.DetailDto;
+import kr.co.swm.board.detail.model.DTO.DetailDTO;
 
 import java.util.List;
 
 public interface DetailService {
 
 //   장소
-    List<DetailDto> getPlace();
+    List<DetailDTO> getPlace();
 //  게시글 상세조회
-    DetailDto getPost(int boardNo);
+    DetailDTO getPost(int boardNo);
 //  평균 별점
     double getAvgRate(int boardNo);
 

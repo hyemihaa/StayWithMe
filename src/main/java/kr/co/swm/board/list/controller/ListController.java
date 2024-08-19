@@ -1,7 +1,7 @@
 package kr.co.swm.board.list.controller;
 
-import kr.co.swm.board.list.model.dto.ListDto;
-import kr.co.swm.board.list.model.dto.PageInfoDto;
+import kr.co.swm.board.list.model.DTO.ListDTO;
+import kr.co.swm.board.list.model.DTO.PageInfoDTO;
 import kr.co.swm.board.list.model.sevice.ListService;
 import kr.co.swm.board.list.util.Pagenation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,20 +35,24 @@ public class ListController {
     int pageLimit = 3; // 보여질 페이지
     int boardLimit = 5; // 페이지당 게시글
 
-      PageInfoDto pi = pagenation.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+      PageInfoDTO pi = pagenation.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 //        listCount: 전체 항목, currentPage: 현재 페이지
 
         //장소 불러오기
-        List<ListDto> place = listService.getPlace(pi);
+        List<ListDTO> place = listService.getPlace(pi);
 
 
         // 평균 별점 계산
         double rate = listService.getAvgRate(place.get(0).getBoardNo());
 
         //데이터 바인딩
+        //장소
       model.addAttribute("place", place);
+        //별점 평균
       model.addAttribute("rate", rate);
+        // 페이징
       model.addAttribute("pi",pi);
+        // 검색
         return "tour";  // tour위치 반환
         //templates / ** .html
 

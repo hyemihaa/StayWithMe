@@ -1,11 +1,11 @@
-package kr.co.swm.board.list.model.dto;
+package kr.co.swm.board.list.model.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class PageInfoDto {
+public class PageInfoDTO {
     private int listCount;  // 전체 게시글 수
     private int currentPage;    // 현재 페이지
     private int pageLimit;  // 한 페이지에 보여질 페이지 수

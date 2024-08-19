@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.swm.board.mapper.DetailMapper">
-    <resultMap id="placeResultMap" type="kr.co.swm.board.detail.model.dto.DetailDto">
+    <resultMap id="placeResultMap" type="kr.co.swm.board.detail.model.DTO.DetailDTO">
         <result column="ACCOMMODATION_NO" property="boardNo"></result>
         <result column="NAME" property="boardName"></result>
         <result column="ACCOMMODATION_TYPE" property="boardType"></result>
@@ -16,10 +16,8 @@
 
 <!-- 장소 -->
     <select id="getPlace" resultMap="placeResultMap">
-        select
-        distinct
+        select DISTINCT
         a.name,
-        a.ACCOMMODATION_NO,
         a.ACCOMMODATION_TYPE,
         a.POST_NO,
         a.LAT,
@@ -29,7 +27,8 @@
         r.STANDARD_OCCUPANCY,
         r.MAX_OCCUPANCY
         from ACCOMMODATION a
-        JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+        inner JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+
 
     </select>
 

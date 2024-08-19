@@ -1,6 +1,6 @@
 package kr.co.swm.board.detail.model.service;
 
-import kr.co.swm.board.detail.model.dto.DetailDto;
+import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import kr.co.swm.board.mapper.DetailMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +20,13 @@ public class DetailServiceImpl implements DetailService{
 
     //  장소 불러오기
    @Override
-   public List<DetailDto> getPlace() {
+   public List<DetailDTO> getPlace() {
        return detailMapper.getPlace();
    }
 
    //   게시글 상세정보 조회
     @Override
-    public DetailDto getPost(int boardNo) {
+    public DetailDTO getPost(int boardNo) {
         return detailMapper.getPost(boardNo);
     }
 

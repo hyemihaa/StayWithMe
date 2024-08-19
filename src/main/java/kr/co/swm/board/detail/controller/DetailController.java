@@ -1,13 +1,12 @@
 package kr.co.swm.board.detail.controller;
 
 
-import kr.co.swm.board.detail.model.dto.DetailDto;
+import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import kr.co.swm.board.detail.model.service.DetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -27,10 +26,10 @@ public class DetailController {
     public String detail(@RequestParam("boardNo") String boardNo, Model model) {
 
         //  장소 불러오기
-        List<DetailDto> place = detailService.getPlace();
+        List<DetailDTO> place = detailService.getPlace();
 
         //  게시글 상세 조회
-        DetailDto post = detailService.getPost(Integer.parseInt(boardNo));
+        DetailDTO post = detailService.getPost(Integer.parseInt(boardNo));
 
         //  별점 평균
         double rate = detailService.getAvgRate(post.getBoardNo());

@@ -1,8 +1,8 @@
 package kr.co.swm.board.list.model.sevice;
 
 
-import kr.co.swm.board.list.model.dto.ListDto;
-import kr.co.swm.board.list.model.dto.PageInfoDto;
+import kr.co.swm.board.list.model.DTO.ListDTO;
+import kr.co.swm.board.list.model.DTO.PageInfoDTO;
 import kr.co.swm.board.mapper.ListMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +22,8 @@ public class ListServiceImpl implements ListService {
 
     //장소 불러오기
       @Override
-      public List<ListDto> getPlace(PageInfoDto pi){
-        List<ListDto> place = listMapper.getPlace(pi);
+      public List<ListDTO> getPlace(PageInfoDTO pi){
+        List<ListDTO> place = listMapper.getPlace(pi);
           return listMapper.getPlace(pi);
       }
 
