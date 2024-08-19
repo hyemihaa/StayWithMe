@@ -36,11 +36,16 @@ public class JWTUtil {
     }
 
     // JWT 생성 메서드
-    public String create(Map<String, Object> claims, LocalDateTime expireAt) {
+    public String create(Map<String, Object> claims, LocalDateTime expireAt, Long accommAdminKey) {
         // 임의로 만든 암호키로 key 설정
         var key = getKey();
         // token의 Expire(만기) 시간을 객체로 변환
         var _expireAt = Date.from(expireAt.atZone(ZoneId.systemDefault()).toInstant());
+
+        // 업소 관리자 키가 있는 경우에만 추가
+        if (accommAdminKey != null) {
+            claims.put("accommAdminKey", accommAdminKey);
+        }
 
         // JWT 생성 및 로그 출력
         String token = Jwts.builder()
@@ -103,6 +108,21 @@ public class JWTUtil {
             return null;
         }
     }
+
+    public Long getAccommAdminKeyFromToken(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(getKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+            return claims.get("accommAdminKey", Long.class);
+        } catch (Exception e) {
+            log.error("JWT에서 업소 관리자 키를 추출하는 중 오류 발생: " + e.getMessage());
+            return null;
+        }
+    }
+
 
     // JWT 유효성 검사
     public void validate(String token) {
