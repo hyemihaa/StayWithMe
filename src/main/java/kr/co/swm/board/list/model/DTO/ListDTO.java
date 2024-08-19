@@ -18,6 +18,7 @@ public class ListDTO {
     private String boardCheckIn;   //  체크인 시간
     private int boardCount; //  최저 기본 가격
 
+
     private String filePath;    // 파일경로
     private String fileName;    // 파일 명
 
