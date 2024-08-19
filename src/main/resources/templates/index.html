@@ -9,6 +9,16 @@
 	<nav th:include="fragments/navbar.html :: navbar"></nav>
     <!-- END nav -->
 
+<<<<<<< HEAD
+=======
+	<!-- 로그아웃 메시지를 확인하고 알림 창으로 표시 -->
+	<div th:if="${logoutMessage}">
+		<script>
+			alert("[[${logoutMessage}]]");
+		</script>
+	</div>
+
+>>>>>>> 02fc4bf57dd32e0f2f5c1d5ea0636e3ad9abb9cf
     <div class="hero-wrap js-fullheight" th:attr="style='background-image: url(images/bg_1.jpg);'">
       <div class="overlay"></div>
       <div class="container">
@@ -48,7 +58,11 @@
       </div>
     </div>
 
+<<<<<<< HEAD
     <section class="ftco-section services-section bg-light" >
+=======
+    <section class="ftco-section services-section bg-light">
+>>>>>>> 02fc4bf57dd32e0f2f5c1d5ea0636e3ad9abb9cf
       <div class="container">
         <div class="row d-flex">
           <div class="col-md-3 d-flex align-self-stretch ftco-animate">

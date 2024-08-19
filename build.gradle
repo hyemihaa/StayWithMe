@@ -24,17 +24,55 @@ repositories {
 }
 
 dependencies {
+<<<<<<< HEAD
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.projectlombok:lombok'
 
+=======
+	// 스프링 시큐리티 의존성 추가
+	// Spring Security의 기본 기능 추가
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	//Thymeleaf 템플릿 엔진과 Spring Security를 연동
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	// 유효성 검사
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'jakarta.validation:jakarta.validation-api:3.0.0'
+
+	// cool sms 의존성 추가
+	implementation 'net.nurigo:sdk:4.3.0'
+
+	testImplementation 'org.mockito:mockito-core:4.0.0'
+	testImplementation 'org.mockito:mockito-junit-jupiter:4.0.0'
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+
+	// Lombok dependency
+	implementation 'org.projectlombok:lombok:1.18.26'
+	annotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+	compileOnly 'org.projectlombok:lombok'
+>>>>>>> 02fc4bf57dd32e0f2f5c1d5ea0636e3ad9abb9cf
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+<<<<<<< HEAD
+=======
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// JWT 의존성 추가
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.12.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.12.5'
+>>>>>>> 02fc4bf57dd32e0f2f5c1d5ea0636e3ad9abb9cf
 }
 
 tasks.named('test') {

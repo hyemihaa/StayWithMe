@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="en">
 <head>
   <title>DirEngine - Free Bootstrap 4 Template by Colorlib</title>
@@ -52,11 +53,29 @@
     <!-- END nav -->
     
     <div class="hero-wrap js-fullheight" style="background-image: url('../static/images/bg_2.jpg');">
+=======
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>DirEngine - Free Bootstrap 4 Template by Colorlib</title>
+  <div th:include="fragments/css.html :: css"></div>
+  <link rel="stylesheet" th:href="@{css/sign.css}">
+</head>
+<body>
+
+<nav th:include="fragments/navbar.html :: navbar"></nav>
+    <!-- END nav -->
+    
+    <div class="hero-wrap js-fullheight" style="background-image: url('images/bg_2.jpg');">
+>>>>>>> 02fc4bf57dd32e0f2f5c1d5ea0636e3ad9abb9cf
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
           <div class="col-md-9 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
+<<<<<<< HEAD
             <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a href="index.html">Home</a></span> <span>Contact</span></p>
+=======
+            <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a href="../static/index.html">Home</a></span> <span>Contact</span></p>
+>>>>>>> 02fc4bf57dd32e0f2f5c1d5ea0636e3ad9abb9cf
             <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Contact Us</h1>
           </div>
         </div>
@@ -111,6 +130,7 @@
     </section>
 
 
+<<<<<<< HEAD
     <footer class="ftco-footer ftco-bg-dark ftco-section">
       <div class="container">
         <div class="row mb-5">
@@ -202,3 +222,14 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
 <script src="/resources/js/google-map.js"></script>
 <script src="/resources/js/main.js"></script>
+=======
+<div th:include="fragments/footer.html :: footer"></div>
+<!-- loader -->
+<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+
+</body>
+<div th:include="fragments/js.html :: js"></div>
+</html>
+>>>>>>> 02fc4bf57dd32e0f2f5c1d5ea0636e3ad9abb9cf
