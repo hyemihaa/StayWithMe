@@ -18,6 +18,7 @@
     <select id="getPlace" resultMap="placeResultMap">
         select DISTINCT
         a.name,
+        a.ACCOMMODATION_NO,
         a.ACCOMMODATION_TYPE,
         a.POST_NO,
         a.LAT,

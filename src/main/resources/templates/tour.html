@@ -36,7 +36,10 @@
 				<div class="col-lg-3 sidebar ftco-animate" >
 					<div class="sidebar-wrap bg-light ftco-animate">
 						<h3 class="heading mb-4">필터</h3>
-						<form action="#">
+
+						<!-- 폼 태그  -->
+
+						<form action="/tour" method="get">
 							<div class="fields">
 
 								<!-- 숙소 유형 라디오버튼 -->
@@ -59,11 +62,11 @@
 									<h5>가격</h5>
 									<div class="range-slider">
 										<span>
-											<input type="number" value="25000" min="0" max="120000" />원 -
-											<input type="number" value="50000" min="0" max="120000" />원
+											<input type="number" style="width:80px;" value="0" min="0" max="1000000" />원&nbsp-
+											<input type="number" style="width:80px;" value="1000000" min="0" max="1000000" />원
 										</span>
-										<input value="1000" min="0" max="120000" step="500" type="range" />
-										<input value="50000" min="0" max="120000" step="500" type="range" />
+										<input value="0" min="0" max="1000000" step="1000" type="range" />
+										<input value="1000000" min="0" max="1000000" step="1000" type="range" />
 										</svg>
 									</div>
 								</div>
@@ -170,7 +173,7 @@
 										<div class="one" >
 											<h3><a th:href="@{/hotel-single(boardNo=${place.boardNo})}" th:text="${place.boardName}"></a></h3>
 												<!-- 별점 평균 값에 따른 아이콘 변화 -->
-											<p class="rate" th:each="rate : ${rate}">
+											<p class="rate" th:each="rate : ${rate}" th:if="${place.boardNo != null}">
 												<i class="icon-star" th:if="${rate >= 1}"></i>
 												<i class="icon-star" th:if="${rate >= 2}"></i>
 												<i class="icon-star" th:if="${rate >= 3}"></i>
@@ -190,13 +193,12 @@
 										</div>
 									</div>
 									<span><i class="icon-map-o"></i> &nbsp <span th:text="${place.boardAddress}" /></span>
-									<p class="days"><span>체크인 : &nbsp <span th:text="${place.boardCheckIn}" /></span></p>
+									<p class="days"><span>체크인: &nbsp <span th:text="${place.boardCheckIn}" /></span></p>
 									<hr>
                                     <!-- 최저 기본값 영역 -->
-									<span class="price" style="font-weight:bold; font-size: 17px;">
-											120000
-										<!-- <span th:text="${place?.boardCount}"/> -->
-										원&nbsp~</span>
+									<span class="price" style="font-weight:bold; font-size: 17px;" th:each="cost: ${cost}">
+										<span th:text="${cost.boardCount}"/>원 &nbsp ~
+									</span>
 									<br>
 <!--									<p class="price" style="font-weight:bold">-->
 <!--										쿠폰적용가 : 170000-->

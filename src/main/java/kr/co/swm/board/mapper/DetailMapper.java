@@ -8,9 +8,12 @@ import java.util.List;
 
 @Mapper
 public interface DetailMapper {
+    // 게시글 정보 불러오기
     public List<DetailDTO> getPlace();
-
+    // 평균 점수
     double getAvgRate(@Param("boardNo") int boardNo);
-
+    // 게시글 상세 정보 불러오기
     DetailDTO getPost(@Param("boardNo") int boardNo);
+
+//    double getRoomRate(int boardNo);
 }

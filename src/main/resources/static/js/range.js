@@ -27,9 +27,9 @@
           slide2 = parseFloat(rangeS[1].value); // 우측 슬라이더
 
       if (this === rangeS[0] && slide1 >= slide2) { // 좌측 슬라이더가 우측 슬라이더를 넘어가려 할 때
-        slide1 = slide2 - 10000; // 슬라이더가 겹치지 않도록 10000만큼 차이 둠
+        slide1 = slide2 - 50000; // 슬라이더가 겹치지 않도록 50000만큼 차이 둠
       } else if (this === rangeS[1] && slide2 <= slide1) { // 우측 슬라이더가 좌측 슬라이더를 넘어가려 할 때
-        slide2 = slide1 + 10000; // 슬라이더가 겹치지 않도록 10000만큼 차이 둠
+        slide2 = slide1 + 50000; // 슬라이더가 겹치지 않도록 50000만큼 차이 둠
       }
 
       rangeS[0].value = slide1;

@@ -32,12 +32,20 @@ public class DetailController {
         DetailDTO post = detailService.getPost(Integer.parseInt(boardNo));
 
         //  별점 평균
-        double rate = detailService.getAvgRate(post.getBoardNo());
+        double avgRate = detailService.getAvgRate(post.getBoardNo());
+
+        //  방 평균 점수
+//        double roomRate = detailService.getRoomRate(post.getBoardNo());
 
         //  데이터 바인딩
         model.addAttribute("place",place);
         model.addAttribute("post",post);
-        model.addAttribute("rate",rate);
+        model.addAttribute("avgRate",avgRate);
+
+        //  각 페이지마다 boardNo에 대한 다른 값 불러오기
+        // http://localhost:8080/hotel-single?boardNo=1 이면 boardNo=1
+        // http://localhost:8080/hotel-single?boardNo=2 이면 boardNo=2
+        model.addAttribute("boardNo", boardNo);
 
 
         return "hotel-single"; //templates / ** .html

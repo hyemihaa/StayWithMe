@@ -36,6 +36,11 @@ public class DetailServiceImpl implements DetailService{
         return detailMapper.getAvgRate(boardNo);
     }
 
+    // 방 평균 별점
+//    @Override
+//    public double getRoomRate(int boardNo) {
+//        return detailMapper.getRoomRate(boardNo);
+//    }
 
 
 }

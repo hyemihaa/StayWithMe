@@ -9,10 +9,12 @@ import java.util.List;
 
 @Mapper
 public interface ListMapper {
-//  게시글 불러오기
+  //  게시글 불러오기
   List<ListDTO> getPlace(@Param("pi") PageInfoDTO pi);
-// 총 게시글 개수
+  // 총 게시글 개수
   int getTotalCount();
-// 별점 평균
+  // 별점 평균
   double getAvgRate(@Param("boardNo") int boardNo);
+  // 기본 가격
+  List<ListDTO> getCost();
 }

@@ -7,19 +7,19 @@
         <result column="ACCOMMODATION_TYPE" property="boardType"></result>
         <result column="POST_NO" property="boardAddress"></result>
         <result column="CHECK_IN_TIME" property="boardCheckIn"></result>
+        <result column="BASIC_RATE" property="boardCount"></result>
     </resultMap>
 
 
-<!-- 장소 -->
+    <!-- 장소 -->
     <select id="getPlace" resultMap="placeResultMap">
-        select a.name, a.ACCOMMODATION_NO, a.ACCOMMODATION_TYPE, a.POST_NO, r.CHECK_IN_TIME from ACCOMMODATION a
+        select distinct a.name, a.ACCOMMODATION_NO, a.ACCOMMODATION_TYPE, a.POST_NO, r.CHECK_IN_TIME from ACCOMMODATION a
         JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO
         ORDER BY a.ACCOMMODATION_NO
         LIMIT #{pi.boardLimit} OFFSET #{pi.offset}
-
     </select>
 
-<!-- 별점 평균 -->
+    <!-- 별점 평균 -->
     <select id="getAvgRate" resultType="double">
         SELECT COALESCE(ROUND(AVG(r2.rating), 1), 0) AS avgRate
         FROM room r
@@ -27,9 +27,15 @@
         where r.ACCOMMODATION_NO = #{boardNo}
     </select>
 
-<!-- 게시글의 총 개수 -->
+    <!-- 게시글의 총 개수 -->
     <select id="getTotalCount" resultType="int">
-        select count(*) from ACCOMMODATION a JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+        select count(*) from ACCOMMODATION a
+    </select>
+
+    <!-- 최저 기본 가격 -->
+    <select id="getCost" resultMap="placeResultMap">
+        select distinct basic_rate_no,basic_rate from BASIC_RATE
+        where basic_rate_no = 1
     </select>
 
 </mapper>

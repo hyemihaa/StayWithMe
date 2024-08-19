@@ -12,30 +12,36 @@ import java.util.List;
 @Service
 public class ListServiceImpl implements ListService {
 
-      //Mapper 의존성 주입
+    //Mapper 의존성 주입
     private final ListMapper listMapper;
 
     @Autowired
     public ListServiceImpl(ListMapper listMapper){
-    this.listMapper = listMapper;
+        this.listMapper = listMapper;
     }
 
     //장소 불러오기
-      @Override
-      public List<ListDTO> getPlace(PageInfoDTO pi){
+    @Override
+    public List<ListDTO> getPlace(PageInfoDTO pi){
         List<ListDTO> place = listMapper.getPlace(pi);
-          return listMapper.getPlace(pi);
-      }
+        return listMapper.getPlace(pi);
+    }
 
     //별점 불러오기
-        @Override
-        public double getAvgRate(int boardNo) {
+    @Override
+    public double getAvgRate(int boardNo) {
         return listMapper.getAvgRate(boardNo);
     }
 
-      @Override
-      public int getTotalCount(){
-          return listMapper.getTotalCount();
-      }
+    //게시글의 수
+    @Override
+    public int getTotalCount(){
+        return listMapper.getTotalCount();
+    }
 
+    //최저 기본 가격
+    @Override
+    public List<ListDTO> getCost() {
+        return listMapper.getCost();
+    }
 }

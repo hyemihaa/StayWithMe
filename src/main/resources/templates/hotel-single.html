@@ -147,19 +147,19 @@
 								<span class="loc"><a href="#" th:text="${post.boardAddress}">
 									<i class="icon-map"></i> 숙박 주소</a></span>
 								<br>
-								<span class="star" th:each="rate : ${rate}">
-									<i class="icon-star" th:if="${rate >= 1}"></i>
-									<i class="icon-star" th:if="${rate >= 2}"></i>
-									<i class="icon-star" th:if="${rate >= 3}"></i>
-									<i class="icon-star" th:if="${rate >= 4}"></i>
-									<i class="icon-star" th:if="${rate >= 5}"></i>
+								<span class="star" th:each="avgRate : ${avgRate}">
+									<i class="icon-star" th:if="${avgRate >= 1}"></i>
+									<i class="icon-star" th:if="${avgRate >= 2}"></i>
+									<i class="icon-star" th:if="${avgRate >= 3}"></i>
+									<i class="icon-star" th:if="${avgRate >= 4}"></i>
+									<i class="icon-star" th:if="${avgRate >= 5}"></i>
 									<!-- "icon-star" = 채워져있는 별 / "icon-star-o" = 비어있는 별 -->
-									<i class="icon-star-o" th:if="${rate < 1}"></i>
-									<i class="icon-star-o" th:if="${rate < 2}"></i>
-									<i class="icon-star-o" th:if="${rate < 3}"></i>
-									<i class="icon-star-o" th:if="${rate < 4}"></i>
-									<i class="icon-star-o" th:if="${rate < 5}"></i>
-									<span th:text="${rate}"/></span>
+									<i class="icon-star-o" th:if="${avgRate < 1}"></i>
+									<i class="icon-star-o" th:if="${avgRate < 2}"></i>
+									<i class="icon-star-o" th:if="${avgRate < 3}"></i>
+									<i class="icon-star-o" th:if="${avgRate < 4}"></i>
+									<i class="icon-star-o" th:if="${avgRate < 5}"></i>
+									<span th:text="${avgRate}"/></span>
 							</p>
 							<div class="d-md-flex mt-5 mb-5">
 
@@ -322,7 +322,7 @@
 							<h4 class="mb-4">객실선택</h4>
 							<div class="row">
 								<div class="col-md-4">
-									<div class="destination" th:each="place : ${place}">
+									<div class="destination" th:each="place : ${place}" th:if="${place.boardNo == 1}">
 										<a href="#" class="img img-3"
 										   style="background-image: url(images/room-4.jpg);"></a>
 										<div class="text-tour p-3">
