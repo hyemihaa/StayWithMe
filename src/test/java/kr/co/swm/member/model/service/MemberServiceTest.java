@@ -23,7 +23,7 @@ class MemberServiceTest {
     private SmsCertificationUtil smsCertificationUtil;
 
     @InjectMocks
-    private MemberService memberService;
+    private MemberServiceImpl memberService;
 
     @BeforeEach
     void setUp() {
