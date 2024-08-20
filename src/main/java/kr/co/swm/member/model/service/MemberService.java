@@ -113,7 +113,7 @@ public class MemberService {
 
             // 토큰생성
             LocalDateTime expireAt = LocalDateTime.now().plusHours(1);
-            String token = jwtUtil.create(claims, expireAt);
+            String token = jwtUtil.create(claims, expireAt, accommAdminKey);
 
             // 토큰 쿠키에 저장
             Cookie accessCookie = new Cookie("Authorization", token);
