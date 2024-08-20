@@ -61,9 +61,9 @@ public class AccommodationController {
         AccommodationImageDto mainImage = uploadFile.uploadSingleFile(mainFile.get(1), "MAIN");
         System.out.println("main : " + mainImage);
 
-        int result = accommodationService.saveAccommodation(accommodationDto, mainImage);
+//        int result = accommodationService.saveAccommodation(accommodationDto, mainImage);
 
-        System.out.println("result : " + result);
+//        System.out.println("result : " + result);
 
 
         for (int i = 1; i < roomForm.getRooms().size()  ; i++) {
@@ -89,9 +89,9 @@ public class AccommodationController {
 
         int roomsSize = roomForm.getRooms().size()-1;
         int startIndex =  roomsSize;
-
 //        System.out.println(roomForm.getRooms().get(i).getRoomName());
         for (int i = 1; i < roomForm.getRooms().size(); i++) {
+
             System.out.println("222222 : " + roomForm.getRooms().get(i).getRoomCount());
             System.out.println("====>  " + roomForm.getRooms().get(i).getRoomCategory());
             String roomCategory = roomForm.getRooms().get(i).getRoomCategory();
@@ -101,24 +101,28 @@ public class AccommodationController {
 
             System.out.println("checkIn : " + roomForm.getRooms().get(i).getCheckInTime());
             System.out.println("chckkk : " + accommodationDto.getCheckInTime());
+            int roomValues = roomForm.getRooms().get(i).getRoomValues();
+            System.out.println("value:  " + roomValues);
 
             String roomName = roomForm.getRooms().get(i).getRoomName();
+
+            AccommodationDto roomRate = new AccommodationDto(roomForm.getRooms().get(i).getWeekdayRate(), roomForm.getRooms().get(i).getFridayRate(), roomForm.getRooms().get(i).getSaturdayRate(), roomForm.getRooms().get(i).getSundayRate());
 
             // 객실1에 이미지 1개, 객실2에 이미지 2개
             // endIndex = 1, 3
             // roomsSize = 2
             // startIndex = 2;
             // 배열 접근할 때 객실1은 2번, 객실2는 3~4
-            for (int j = 0; j < accommodationDto.getRoomValues(); j++) {
-                int enrollRoom = accommodationService.enrollRooms(accommodationDto, roomCategory, roomName, checkIn,checkOut);
-            }
+            int enrollRoom = accommodationService.enrollRooms(accommodationDto, roomCategory, roomName, checkIn, checkOut, roomValues, roomRate);
             for (int k = startIndex; k <= roomForm.getRooms().get(i).getEndIndex()+roomsSize-1; k++) {
-
                 System.out.println(" K : " + k);
                 System.out.println("subFile Length : " + subFile.size());
                 System.out.println(subFile.get(k).getOriginalFilename());
                 AccommodationImageDto roomsImage = uploadFile.uploadSingleFile(subFile.get(k), "PREVIEW");
-//                accommodationService.enrollSubImages(roomsImage);
+                for (int j = 1; j <= roomValues; j++) {
+                    // 이미지 업로드
+                }
+//                accommodationService.enrollSubImages(roomsImage, accommodationDto);
                 System.out.println();
             }
             startIndex = roomForm.getRooms().get(i).getEndIndex()+ roomsSize;

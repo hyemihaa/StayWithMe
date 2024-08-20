@@ -14,7 +14,12 @@ public interface AccommodationMapper {
 
     int enrollMainImage(@Param("mainImage")AccommodationImageDto mainImage,@Param("no")int no);
 
-    int enrollRoom(@Param("accommodation")AccommodationDto accommodationDto,@Param("no")int no, @Param("categoryNo")int categoryNo, @Param("roomName")String roomName, @Param("checkIn")String checkIn, @Param("checkOut")String checkOut, @Param("roomValue")int roomValue);
+    int enrollRoom(@Param("accommodation")AccommodationDto accommodationDto,@Param("no")int no, @Param("categoryNo")int categoryNo, @Param("roomName")String roomName, @Param("checkIn")String checkIn, @Param("checkOut")String checkOut);
 
-    int enrollRoomImages(@Param("subImage")AccommodationImageDto subImage, @Param("roomNo")int roomNo);
+    int enrollRoomImages(@Param("subImage")AccommodationImageDto subImage);
+
+    void enrollWeekdayRate(@Param("roomRate")AccommodationDto roomRate, @Param("roomNo")int roomNo, @Param("no")int no);
+    void enrollFridayRate(@Param("roomRate")AccommodationDto roomRate, @Param("roomNo")int roomNo, @Param("no")int no);
+    void enrollSaturdayRate(@Param("roomRate")AccommodationDto roomRate, @Param("roomNo")int roomNo, @Param("no")int no);
+    void enrollSundayRate(@Param("roomRate")AccommodationDto roomRate, @Param("roomNo")int roomNo, @Param("no")int no);
 }

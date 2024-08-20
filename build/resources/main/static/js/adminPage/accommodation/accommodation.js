@@ -425,9 +425,9 @@ document.getElementById('addRoomBtn').addEventListener('click', function() {
         <div class="row mb-3">
             <label class="col-sm-2 col-form-label">동일 객실 수</label>
             <div class="col-sm-10 d-flex align-items-center">
-                <div class="btn btn-secondary decrement" data-room-id="${roomCount}" data-type="roomValue">-</div>
-                <input type="text" class="form-control text-center mx-2 maxPeople" name="roomValue" id="roomValue-${roomCount}" value="1" readonly>
-                <div class="btn btn-secondary increment" data-room-id="${roomCount}" data-type="roomValue">+</div>
+                <div class="btn btn-secondary decrement" data-room-id="${roomCount}" data-type="roomValues">-</div>
+                <input type="text" class="form-control text-center mx-2 maxPeople" name="roomValues" id="roomValues-${roomCount}" value="1" readonly>
+                <div class="btn btn-secondary increment" data-room-id="${roomCount}" data-type="roomValues">+</div>
             </div>
         </div>
         <button class="btn btn-delete" data-room-id="${roomCount}">삭제</button>
@@ -667,8 +667,8 @@ document.addEventListener('click', function(event) {
             inputField = document.getElementById('basicPeople-' + roomId);
         } else if (type === 'max') {
             inputField = document.getElementById('maxPeople-' + roomId);
-        } else if (type === 'roomValue') {
-            inputField = document.getElementById('roomValue-' + roomId);
+        } else if (type === 'roomValues') {
+            inputField = document.getElementById('roomValues-' + roomId);
         }
 
         var currentValue = parseInt(inputField.value);
@@ -686,8 +686,8 @@ document.addEventListener('click', function(event) {
             inputField = document.getElementById('basicPeople-' + roomId);
         } else if (type === 'max') {
             inputField = document.getElementById('maxPeople-' + roomId);
-        }else if (type === 'roomValue') {
-            inputField = document.getElementById('roomValue-' + roomId);
+        }else if (type === 'roomValues') {
+            inputField = document.getElementById('roomValues-' + roomId);
         }
 
         var currentValue = parseInt(inputField.value);
@@ -799,7 +799,7 @@ document.getElementById('accommodationForm').addEventListener('submit', function
         formData.append(`rooms[${i}].standardOccupation`, document.getElementById(`basicPeople-${i}`).value);
         console.log("------------>  " + formData.get(`rooms[${i}].standardOccupation`, document.getElementById(`basicPeople-${i}`).value));
         formData.append(`rooms[${i}].maxOccupation`, document.getElementById(`maxPeople-${i}`).value);
-        formData.append(`rooms[${i}].roomValue`, document.getElementById(`roomValue-${i}`).value);
+        formData.append(`rooms[${i}].roomValues`, document.getElementById(`roomValues-${i}`).value);
 
         // Check-in and Check-out Time
         formData.append(`rooms[${i}].checkInTime`, document.getElementById(`checkInTime-${i}`).value);
