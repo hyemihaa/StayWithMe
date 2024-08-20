@@ -19,7 +19,7 @@ public class UploadFile {
 
     // UPLOAD_PATH에 이미지가 담길 경로를 써주세요
 
-    private final String UPLOAD_PATH = "/Users/abc/Desktop/final/swm_final/src/main/resources/static/images/";
+    private final String UPLOAD_PATH = "/Users/abc/Downloads/StayWithMe-feature-accommodation-enroll/swm_final/src/main/resources/static/images/";
 
     public List<AccommodationImageDto> upload(List<MultipartFile> mainImage ,List<MultipartFile> subImage) {
         System.out.println("uploadFile ========");

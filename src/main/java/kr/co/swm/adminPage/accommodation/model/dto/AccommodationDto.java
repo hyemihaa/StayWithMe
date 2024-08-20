@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class AccommodationDto {
-    private int acAdminNo =4 ;
+    private int acAdminNo =12 ;
     private String accommodationInfo;
 
     private int accommodationNo;

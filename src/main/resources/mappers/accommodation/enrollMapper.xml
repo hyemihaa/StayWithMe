@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.swm.adminPage.accommodation.mapper.AccommodationMapper">
+
+<!--    <resultMap id="test" type="kr.co.swm.adminPage.accommodation.model.dto.AccommodationDto">-->
+
+<!--&lt;!&ndash;        업소    &ndash;&gt;-->
+<!--        <result column="accommodation_no" property="accommodationNo"/>-->
+<!--        <result column="name" property="accommodationName"/>-->
+<!--        <result column="accommodation_type" property="accommodationType"/>-->
+<!--        <result column="phone" property="accommodationPhone"/>-->
+<!--        <result column="post_no" property="roadName"/>-->
+<!--        <result column="address" property="region"/>-->
+<!--        <result column="lat" property="lat"/>-->
+<!--        <result column="lon" property="lon"/>-->
+<!--        <result column="views" property="views"/>-->
+<!--        <result column="info" property="accommodationInfo"/>-->
+
+<!--&lt;!&ndash;        객실    &ndash;&gt;-->
+<!--        <result column="t_id5" property="roomName"/>-->
+<!--        <result column="t_id7" property="weekdayRate"/>-->
+<!--        <result column="t_id8" property="fridayRate"/>-->
+<!--        <result column="t_id9" property="saturdayRate"/>-->
+<!--        <result column="t_i9d" property="sundayRate"/>-->
+
+<!--    </resultMap>-->
+
+<!--    <select id="selectAll" resultMap="test">-->
+<!--        select * from sys.test-->
+<!--        where name = #{name}-->
+<!--    </select>-->
+    <insert id="enrollAccommodation">
+        INSERT INTO accommodation VALUES (
+                     #{no},
+                     #{accommodation.accommodationName},
+                     #{accommodation.accommodationPhone},
+                     #{accommodation.roadName},
+                     #{accommodation.region},
+                     #{accommodation.lat},
+                     #{accommodation.lon},
+                     default,
+                     #{accommodation.accommodationInfo}
+                 )
+    </insert>
+
+    <insert id="enrollMainImage" parameterType="map">
+        INSERT INTO accommodation_image VALUES (
+            null,
+            #{no},
+            #{mainImage.uploadOriginName},
+            #{mainImage.uploadUniqueName},
+            #{mainImage.uploadImagePath}
+            )
+    </insert>
+
+    <insert id="enrollRoom">
+        INSERT INTO room VALUES (
+                     null,
+                     #{categoryNo},
+                     #{no},
+                     #{roomName},
+                     #{checkIn},
+                     #{checkOut},
+                     #{accommodation.standardOccupation},
+                     #{accommodation.maxOccupation},
+                     #{roomValue}
+                 )
+    </insert>
+
+
+    <insert id="enrollFacilities" parameterType="map">
+        INSERT INTO facilities values (
+        null,
+        #{no},
+        #{facility}
+        )
+    </insert>
+    
+    
+    <insert id="enrollRoomImages">
+        INSERT INTO room_images values (
+                                        null,
+                                        #{subImage.uploadOriginName},
+                                        #{subImage.uploadUniqueName},
+                                        #{subImage.uploadImagePath}
+                                      )
+    </insert>
+</mapper>
+
