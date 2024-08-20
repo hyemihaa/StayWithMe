@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 
     private final PasswordEncoder passwordEncoder;

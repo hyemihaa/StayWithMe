@@ -4,13 +4,100 @@
 <head>
     <meta charset="utf-8">
     <title>Stay With Me</title>
-    <div th:replace="~{fragments/admin/head.html :: head}"></div>
+    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{css/adminPage/accommodation/accommodation.css}">
+    <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            /*background-image: url(/image/background-img.svg);svg*/
+            background-position: top;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+
+        .editor-main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .editor-container {
+            height: 800px;
+            width: 800px;
+            margin: 100px;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .editor-container h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #333;
+            text-align: center;
+            border-bottom: 2px solid #f2f2f2;
+            padding-bottom: 10px;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .toolbar-btn {
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toolbar-btn:hover {
+            background-color: #ddd;
+        }
+
+        .editor-content {
+            min-height: 500px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .submit-btn {
+            padding: 10px 20px;
+            border: 0px;
+            background-color: #28a745;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            display: block;
+            margin-left: auto;
+            width: max-content;
+
+        }
+
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+    <div th:replace="~{fragments/admin/head.html :: head}"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 
-<body>
+
+<body style="margin-left: 20% !important;">
 <div  class="container-xxl position-relative bg-white d-flex p-0">
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -56,59 +143,129 @@
 
         <!-- Sale & Revenue Start -->
         <div class="container">
-            <div class="row">
-                <label for="photo">대표사진</label>
-                <input type="file" id="photo">
-                <button class="photo-button">사진 추가버튼</button>
-            </div>
-            <div class="row">
-                <label for="name">숙소 이름</label>
-                <input type="text" id="name">
-            </div>
-            <div class="row">
-                <label for="sub-facility">부대시설</label>
-                <input type="text" id="sub-facility" readonly>
-            </div>
-            <div class="row">
-                <label>카테고리 태그 (중복 선택 가능)</label>
-                <div class="tags">
+            <form  th:object="${location}" name="location" id="accommodationForm" >
+                <div class="row">
+                    <label for="photo">대표사진</label>
+                    <input name="mainPhoto" type="file" id="photo" accept="image/*">
+                    <div style="height: 20%; width: 50%;" id="photo-preview-container" class="preview-container"></div>
+                </div>
+                <div class="row">
+                    <label for="name">숙소 이름</label>
+                    <input type="text" id="name" th:field="*{accommodationName}">
+                </div>
+                <div class="row">
+                    <label for="phone">핸드폰 번호</label>
+                    <input type="text" id="phone" th:field="*{accommodationPhone}">
+                </div>
+                <div class="row">
+                    <label for="sub-facility">부대시설 * 이외 시설은 직접 기입 부탁드립니다.</label>
+                    <input type="text" id="sub-facility" name="accommodationType[]" >
+                </div>
+                <div class="row">
+                    <label>부대시설 태그 (중복 선택 가능)</label>
+                    <div class="tags">
+                        <!-- 태그 정보를 배열로 정의 -->
+                        <script>
+                            const tags = [
+                                { id: "wifi", label: "Wi-Fi" },
+                                { id: "parking", label: "주차장" },
+                                { id: "pool", label: "수영장" },
+                                { id: "gym", label: "헬스장" },
+                                { id: "restaurant", label: "레스토랑" },
+                                { id: "bar", label: "취사 가능" },
+                                { id: "laundry", label: "세탁실" },
+                                { id: "spa", label: "스파" },
+                                { id: "room_service", label: "룸 서비스" },
+                                { id: "concierge", label: "카페" },
+                                { id: "pet_friendly", label: "반려동물 동반 가능" },
+                                { id: "BBQ", label: "BBQ" },
+                                { id: "lounge", label: "라운지" }
+                            ];
+
+                            tags.forEach(tag => {
+                                document.write(`
                     <div class="tag">
-                        <input type="checkbox" id="tag1" data-tag="Tag 1">
-                        <label for="tag1">Tag 1</label>
+                        <input type="checkbox" id="${tag.id}" data-tag="${tag.label}">
+                        <label for="${tag.id}">${tag.label}</label>
                     </div>
-                    <div class="tag">
-                        <input type="checkbox" id="tag2" data-tag="Tag 2">
-                        <label for="tag2">Tag 2</label>
-                    </div>
-                    <div class="tag">
-                        <input type="checkbox" id="tag3" data-tag="Tag 3">
-                        <label for="tag3">Tag 3</label>
-                    </div>
-                    <div class="tag">
-                        <input type="checkbox" id="tag4" data-tag="Tag 4">
-                        <label for="tag4">Tag 4</label>
-                    </div>
-                    <div class="tag">
-                        <input type="checkbox" id="tag5" data-tag="Tag 5">
-                        <label for="tag5">Tag 5</label>
+                `);
+                            });
+                        </script>
                     </div>
                 </div>
-            </div>
-            <label><p>객실 소개</p>
-                <textarea style="width: 100%; height: 100px"></textarea>
-            </label>
-            <div class="container">
-                <h1>객실</h1>
-                <button id="addRoomBtn" class="btn btn-primary" style="margin-bottom: 30px;">객실 추가</button>
-                <div id="roomsContainer"></div>
-            </div>
 
+                <!--            tv, 취사 가능, 에어컨, 노래방, 짐보관가능, 금연, BBQ, 라운지,  골프장, 스키장, 해변, 키즈클럽, -->
 
-            <!-- Recent Sales End -->
+                <div class="editor-container">
+                    <span style="align-items: center; font-size: 30px; font-weight: bold">객실 소개</span><br>
+                    <b>필수 기입형식</b><br>
+                    <span>* 숙소 소개</span><br>
+                    <span>* 객실 정보</span><br>
+                    <span>* 입/퇴실 시간</span><br>
+                    <span>* 부대시설 소개</span><br>
+                    <div class="editor-toolbar">
+                        <button type="button" class="toolbar-btn" data-command="bold"><i class="fa fa-bold"></i></button>
+                        <button type="button" class="toolbar-btn" data-command="italic"><i class="fa fa-italic"></i></button>
+                        <button type="button" class="toolbar-btn" data-command="justifyLeft"><i class="fa fa-align-left"></i></button>
+                        <button type="button" class="toolbar-btn" data-command="justifyCenter"><i class="fa fa-align-center"></i></button>
+                        <button type="button" class="toolbar-btn" data-command="insertUnorderedList"><i class="fa fa-list-ul"></i></button>
+                        <button type="button" class="toolbar-btn" data-command="insertOrderedList"><i class="fa fa-list-ol"></i></button>
+                        <select id="fontSize" class="toolbar-select">
+                            <option value="3">10px</option>
+                            <option value="4">12px</option>
+                            <option value="5">16px</option>
+                            <option value="6">20px</option>
+                            <option value="7">30px</option>
+                        </select>
+                    </div>
+                    <div th:name="accommodationInfo" id="editor" contenteditable="true" class="editor-content"></div>
+                </div>
 
-            <input type="text" id="sample5_address" placeholder="주소">
-            <input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
-            <div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', (event) => {
+                        const toolbarButtons = document.querySelectorAll('.toolbar-btn');
+                        toolbarButtons.forEach(button => {
+                            button.addEventListener('click', () => {
+                                const command = button.getAttribute('data-command');
+                                document.execCommand(command, false, null);
+                            });
+                        });
+
+                        document.getElementById('fontSize').addEventListener('change', function() {
+                            const fontSize = this.value;
+                            document.execCommand('fontSize', false, fontSize);
+                        });
+
+                        document.querySelector('.submit-btn').addEventListener('click', () => {
+                            const content = document.getElementById('editor').innerHTML;
+                            // 등록할 내용을 서버로 전송하는 로직을 여기에 작성합니다.
+                            console.log('Content:', content);
+                        });
+                    });
+
+                </script>
+                <div class="container">
+                    <h1>객실</h1>
+                    <input type="hidden" th:field="*{roomCount}">
+                    <input type="button" id="addRoomBtn" class="btn btn-primary" style="margin-bottom: 30px;" th:value="@{객실 추가}">
+                    <div id="roomsContainer"></div>
+                </div>
+
+                <!--            TODO : 기준 인원 기입, 텍스트 에리어 넣기, 카테고리 추가, -->
+
+                <!-- Recent Sales End -->
+                <input type="text" id="sample5_address" name="address" readonly>
+                <input type="hidden" id="sample5_region" name="region">
+                <input type="hidden" id="sample5_roadName" name="roadName">
+                <input type="hidden" id="sample5_lat" name="lat">
+                <input type="hidden" id="sample5_lon" name="lon">
+                <div onclick="sample5_execDaumPostcode()">주소 검색</div>
+
+                <div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
+
+                <br>
+                <button type="submit">업소 등록 하기</button>
+            </form>
 
 
             <!-- Footer Start -->
@@ -137,17 +294,18 @@
     </div>
 
     <!-- JavaScript Libraries -->
-<!--    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>-->
-<!--    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a8f3c460613adc2cb691b893c7f0b43d&libraries=services"></script>-->
-<!--    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?a8f3c460613adc2cb691b893c7f0b43d"></script>-->
+    <!--    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>-->
+    <!--    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a8f3c460613adc2cb691b893c7f0b43d&libraries=services"></script>-->
+    <!--    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?a8f3c460613adc2cb691b893c7f0b43d"></script>-->
 
 
 
+    <script type="text/javascript" src="/smarteditor/js/editor.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f7b0e969dab557ac2ccd2d246136826&libraries=services"></script>
     <script th:src="@{js/addressAPI.js}"></script>
     <script th:src="@{js/adminPage/accommodation/accommodation.js}"></script>
-<!--    <div th:replace="~{fragments/admin/js.html :: adminJs}"></div>-->
+    <!--    <div th:replace="~{fragments/admin/js.html :: adminJs}"></div>-->
 
 </div>
 
