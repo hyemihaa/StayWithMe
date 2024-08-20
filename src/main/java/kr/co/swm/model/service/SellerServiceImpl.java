@@ -120,7 +120,6 @@ public class SellerServiceImpl implements SellerService {
             System.out.println("============ Servive AccommodationRoomData ============");
             System.out.println("ROON NO : " + item.getRoomNo());
             System.out.println("ROON NAME : " + item.getRoomName());
-            System.out.println("ROON TYPE NAME : " + item.getRoomTypeName());
             System.out.println("=======================================================");
             System.out.println();
         }
@@ -449,7 +448,4 @@ public class SellerServiceImpl implements SellerService {
         return result;
     }
 }
-
-
-
 

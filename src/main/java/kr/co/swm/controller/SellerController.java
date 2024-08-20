@@ -1,6 +1,8 @@
 package kr.co.swm.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.service.SellerService;
 import kr.co.swm.model.service.SellerServiceImpl;
@@ -280,21 +282,37 @@ public class SellerController {
     // 월별 현황 조회
     @GetMapping("/reservation-monthly.do")
     public String reservationMonthly(Model model) {
-
-        // 관리자 번호(업소키)
         int accommodationNo = 1;
 
+        // 관리자 보유 객실 조회
+        List<SellerDto> accommodationRoomData = seller.accommodationRoomData(accommodationNo);
+
+        // 해당 데이터를 페이지 로드시에 Thymeleaf 템플릿으로 전달
+        model.addAttribute("accommodationRoomData", accommodationRoomData);
+
+        return "seller/reservation_monthly";  // 뷰 이름 반환
+    }
+
+    // 비동기 요청 처리
+    @GetMapping("/reservation-monthly-data")
+    @ResponseBody
+    public Map<String, Object> getReservationMonthlyData(@RequestParam("accommodationNo") int accommodationNo) {
         // 관리자 보유 객실 조회
         List<SellerDto> accommodationRoomData = seller.accommodationRoomData(accommodationNo);
 
         // 관리자 객실 예약 조회
         List<SellerDto> monthlyData = seller.monthlyData(accommodationNo);
 
-        // 모델에 데이터를 추가하여 뷰로 전달
-        model.addAttribute("accommodationRoomData", accommodationRoomData);
-        model.addAttribute("monthlyData", monthlyData);
+        // 데이터를 맵에 담아 반환
+        Map<String, Object> result = new HashMap<>();
+        result.put("accommodationRoomData", accommodationRoomData);
+        result.put("monthlyData", monthlyData);
 
-        return "seller/reservation_monthly";
+        // 로그로 데이터 확인
+        System.out.println("Accommodation Room Data: " + accommodationRoomData);
+        System.out.println("Monthly Data: " + monthlyData);
+
+        return result;  // JSON으로 반환
     }
 
 
