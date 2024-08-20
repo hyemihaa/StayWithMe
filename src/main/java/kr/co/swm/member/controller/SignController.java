@@ -36,22 +36,6 @@ public class SignController {
         return "member/sign";
     }
 
-    // 로그인(인증)된 사용자의 정보
-    @GetMapping("/")
-    public String home(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        // 사용자가 존재하는지(로그인 상태) 확인   anonymousUser: 로그인 하지 않은 경우
-        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
-            model.addAttribute("userid", auth.getName());
-            model.addAttribute("isAuthenticated", true);
-        } else {
-            model.addAttribute("isAuthenticated", false);
-        }
-        return "/index";
-
-    }
-
     // 휴대전화 인증
     @PostMapping("/sms/send")
     @ResponseBody
@@ -178,6 +162,11 @@ public class SignController {
             // 예외 발생 시 에러 메시지 반환
             return "error: 임시 비밀번호 발급 중 오류가 발생했습니다. 다시 시도해주세요.";
         }
+    }
+
+    @GetMapping("/mypage")
+    public String mypage() {
+        return "/member/mypage";
     }
 }
 
