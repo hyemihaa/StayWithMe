@@ -1,0 +1,133 @@
+/* Global Variables */
+:root {
+    --primary: #009CFF;
+    --light: #F3F6F9;
+    --dark: #191C24;
+}
+
+/* Layout */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--light);
+    transition: 0.5s;
+    z-index: 999;
+}
+
+/* 기본적으로 모든 .nav-link.active 요소에 동일한 스타일을 적용합니다 */
+.nav-link.active, .dropdown-item.active {
+    color: #ffffff !important;
+    background-color: #007bff !important; /* Bootstrap 기본 Primary 색상 */
+    border-color: #007bff !important;
+    font-weight: bold;
+}
+
+/* 추가로 .nav-item과 .dropdown-item의 active 상태에 대한 스타일을 추가합니다 */
+.nav-item.active .nav-link,
+.dropdown-item.active {
+    background-color: #007bff !important; /* 활성화된 메뉴의 배경 색상 */
+    color: #ffffff !important; /* 활성화된 메뉴의 글자 색상 */
+}
+
+.content {
+    margin-left: 250px;
+    min-height: 100vh;
+    width: calc(100% - 250px);
+    background: #FFFFFF;
+    transition: 0.5s;
+    padding: 20px;
+}
+
+@media (max-width: 991.98px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .sidebar {
+        width: 150px;
+    }
+
+    .content {
+        margin-left: 150px;
+        width: calc(100% - 150px);
+    }
+}
+
+/* Content */
+.container-fluid {
+    width: 100%;
+    padding: 0 15px;
+}
+
+.row.g-4 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.col-sm-6.col-xl-3,
+.col-sm-12.col-xl-6 {
+    flex: 1 1 calc(25% - 1rem);
+    max-width: calc(25% - 1rem);
+}
+
+.col-sm-12.col-xl-6 {
+    flex: 1 1 calc(50% - 1rem);
+    max-width: calc(50% - 1rem);
+}
+
+@media (max-width: 991.98px) {
+    .col-sm-6.col-xl-3 {
+        flex: 1 1 calc(50% - 1rem);
+        max-width: calc(50% - 1rem);
+    }
+
+    .col-sm-12.col-xl-6 {
+        flex: 1 1 calc(100% - 1rem);
+        max-width: calc(100% - 1rem);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .col-sm-6.col-xl-3,
+    .col-sm-12.col-xl-6 {
+        flex: 1 1 calc(100% - 1rem);
+        max-width: calc(100% - 1rem);
+    }
+}
+
+/* 테이블 스타일 */
+.table-responsive {
+    width: 100%;
+    margin: 1rem 0;
+    font-size: 14px;
+}
+
+.bg-light.rounded {
+    padding: 1rem;
+    background-color: var(--light);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 767.98px) {
+    .bg-light.rounded {
+        padding: 0.5rem;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+}
