@@ -1,3 +1,8 @@
+.monthView {
+    font-size: 25px;
+    font-weight: bold;
+}
+
 /* 전체 테이블의 기본 스타일을 지정 */
 table {
     width: 100%; /* 테이블 너비를 100%로 설정 */
@@ -19,4 +24,56 @@ th {
 td.today {
     background-color: #ffeb3b; /* 노란색 배경으로 오늘 날짜 강조 */
     font-weight: bold; /* 오늘 날짜의 텍스트를 굵게 표시 */
+}
+
+/* 객실 정보 스타일 */
+.room-info {
+    margin-top: 5px;
+    text-align: left;
+}
+
+/* 객실 이름 스타일 */
+.room-name {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+/* 객실 박스 스타일 */
+.room-box {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    line-height: 20px;
+    text-align: center;
+    margin-right: 2px;
+    margin-bottom: 2px;
+}
+
+/* 예약 가능한 객실 (초록색) */
+.room-box.available {
+    background-color: lightgreen;
+    color: white;
+}
+
+/* 예약 불가능한 객실 (빨간색) */
+.room-box.unavailable {
+    background-color: lightred;
+    color: white;
+}
+
+.room-btn {
+    margin: 2px;
+    /*padding: 5px;*/
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.available {
+    background-color: lightgreen;
+}
+
+.unavailable {
+    background-color: lightred;
 }

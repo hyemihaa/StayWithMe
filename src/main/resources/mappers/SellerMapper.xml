@@ -191,7 +191,7 @@
     <!-- 관리자 보유 객실 조회 -->
     <select id="accommodationRoomData" resultMap="seller">
         SELECT r.ROOM_NO,
-               r.ROOM_NAME,
+               r.ROOM_NAME
         FROM ROOM r
         WHERE r.ACCOMMODATION_NO = #{accommodationNo}
     </select>
