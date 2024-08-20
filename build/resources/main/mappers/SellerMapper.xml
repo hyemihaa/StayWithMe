@@ -32,19 +32,13 @@
     </resultMap>
 
     <select id="basicRate" resultMap="seller">
-        select r.room_no, r.room_name, br.day_no, br.rate, er.extra_name, er.EXTRA_RATE
+        select r.room_no, r.room_name, br.day_no, br.basic_rate, exr.extra_name, exr.day_no, exr.EXTRA_RATE
         from room r
         join room_rate_inventory rri on r.room_no = rri.room_no
         join BASIC_RATE br on rri.ROOM_RATE_INVENTORY_NO = br.ROOM_RATE_INVENTORY_NO
-        join extra_rate er on rri.ROOM_RATE_INVENTORY_NO = er.ROOM_RATE_INVENTORY_NO
+        join extra_rate exr on rri.ROOM_RATE_INVENTORY_NO = exr.ROOM_RATE_INVENTORY_NO
         where ACCOMMODATION_NO = #{roomCode}
     </select>
-
-<!--    <select id="roomInventorySearch" resultType="int">-->
-<!--        select COALESCE(ROOM_RATE_INVENTORY_NO, 0)-->
-<!--        from room-->
-<!--        where ROOM_NO = #{roomNo}-->
-<!--    </select>-->
 
     <select id="roomInventorySearch" resultType="int">
         select ROOM_RATE_INVENTORY_NO
@@ -56,7 +50,7 @@
 
     <update id="basicRateUpdate">
         update basic_rate
-        set rate =
+        set basic_rate =
         case
         when day_no = 1 then #{sellerDto.weekdayRate}
         when day_no = 2 then #{sellerDto.fridayRate}
