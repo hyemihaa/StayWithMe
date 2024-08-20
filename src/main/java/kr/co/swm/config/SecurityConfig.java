@@ -22,7 +22,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration // 설정파일
 @EnableWebSecurity
-@EnableMethodSecurity(securedEnabled = true ,prePostEnabled = true) // 특정 권한에 따라  메서드 호출 제어하기 위해 설정
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true) // 특정 권한에 따라  메서드 호출 제어하기 위해 설정
 @RequiredArgsConstructor// 웹사이트 보안 활성화 (모든 요청 URL이 스프링 시큐리티의 제어를 받도록 만드는 어노테이션)
 public class SecurityConfig {
     private final JWTUtil jwtUtil;
@@ -43,13 +43,17 @@ public class SecurityConfig {
         // 모든 페이지에 대한 접근권한 설정, 사이트 위변조 방지 해제
         http    //authorizeHttpRequests 어떤 요청에 대해 어떤 권한이 필요한지 설정
                 .authorizeHttpRequests(auth -> auth
-                        //.requestMatchers : 특정 URL 지정
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/scss/**").permitAll()
-//                                                        // hasRole([role]) : 현재 사용자의 권한이 파라미터의 권한과 동일한 경우 true
-//                        .requestMatchers("/accommodation-admin/**").hasRole("ACCOMMODATION_ADMIN") // ACCOMMODATION_ADMIN 권한을 가진 사용자만 접근
-                        .anyRequest().permitAll()
+                                //.requestMatchers : 특정 URL 지정
+                                // 인증 없이 접근 가능
+                                .requestMatchers("/", "/sms/send", "/signin", "/signup", "/idcheck", "/signform", "/lostpass", "/find-userId", "find-password",
+                                        "/logout-success","/css/**", "/js/**", "/images/**", "/fonts/**", "/scss/**").permitAll()
+                                .requestMatchers("/member/mypage", "/mypage").hasRole("USER") // 일반유저 권한을 가진 사용자만 접근 (추후 수정)
+                                // hasRole([role]) : 현재 사용자의 권한이 파라미터의 권한과 동일한 경우 true
+                                //.hasAnyRole("ACCOMMODATION_ADMIN", "SITE_ADMIN", "USER")  //여러 권한 허용
+                                .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요
                         // .authenticated()는 특정 권한이 아니라, 사용자가 로그인되어 있는지 여부
                 )
+
                 // 보안상의 이유로 다른 도메인에서 온 요청 차단
                 // CSRF 비활성화 -> 모든 도메인의 요청 허용
                 .csrf(AbstractHttpConfigurer::disable)
@@ -66,9 +70,7 @@ public class SecurityConfig {
                             response.addCookie(accessCookie);
                         })
                         .logoutSuccessHandler((request, response, authentication) -> {
-                            // 로그아웃 성공 메시지를 세션에 추가
-                            request.getSession().setAttribute("logoutMessage", "로그아웃 되었습니다.");
-                            response.sendRedirect("/");
+                            response.sendRedirect("/logout-success");
                         }))
 
 
