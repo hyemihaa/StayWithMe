@@ -1,0 +1,22 @@
+/* 전체 테이블의 기본 스타일을 지정 */
+table {
+    width: 100%; /* 테이블 너비를 100%로 설정 */
+    border-collapse: collapse; /* 테이블 셀 간의 경계선을 겹치지 않게 함 */
+}
+
+/* 테이블 헤더와 셀의 기본 스타일 지정 */
+th, td {
+    text-align: center; /* 텍스트를 중앙 정렬 */
+    padding: 10px; /* 패딩 추가 */
+}
+
+/* 테이블 헤더에 대한 배경색 설정 */
+th {
+    background-color: #f2f2f2; /* 헤더 배경색을 밝은 회색으로 설정 */
+}
+
+/* 오늘 날짜를 강조하기 위한 클래스 */
+td.today {
+    background-color: #ffeb3b; /* 노란색 배경으로 오늘 날짜 강조 */
+    font-weight: bold; /* 오늘 날짜의 텍스트를 굵게 표시 */
+}
