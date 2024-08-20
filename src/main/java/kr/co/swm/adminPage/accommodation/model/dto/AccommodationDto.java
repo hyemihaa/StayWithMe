@@ -21,6 +21,8 @@ public class AccommodationDto {
     private int standardOccupation;
     private int maxOccupation;
 
+    private int roomNo;
+
     private List<Integer> roomCount;
     private int roomValues;
 
@@ -53,9 +55,17 @@ public class AccommodationDto {
     private String lon;
 
 
+    public AccommodationDto(int weekdayRate, int fridayRate, int saturdayRate, int sundayRate) {
+        this.weekdayRate = weekdayRate;
+        this.fridayRate = fridayRate;
+        this.saturdayRate = saturdayRate;
+        this.sundayRate = sundayRate;
+    }
+
     /**
      * 업소 사진
      */
+//
 
     private int endIndex;
 //    private List<MultipartFile> previewFiles;

@@ -46,7 +46,7 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
-    public int enrollRooms(AccommodationDto  accommodationDto, String roomCategory, String roomName, String checkIn, String checkOut) {
+    public int enrollRooms(AccommodationDto  accommodationDto, String roomCategory, String roomName, String checkIn, String checkOut, int roomValue, AccommodationDto roomRate) {
         int no = accommodationDto.getAcAdminNo();
         int categoryNo = 0;
         System.out.println("service : " + roomCategory);
@@ -59,8 +59,25 @@ public class AccommodationServiceImpl implements AccommodationService {
         } else if ("마운틴뷰".equals(roomCategory)) {
             categoryNo = 4;
         }
-        for (int i = 1; i <= accommodationDto.getRoomValues(); i++) {
-            mapper.enrollRoom(accommodationDto,no, categoryNo, roomName, checkIn, checkOut, i);
+        System.out.println("category NO : " + categoryNo);
+        System.out.println("v : " + accommodationDto.getRoomValues());
+
+        for (int i = 1; i <= roomValue; i++) {
+            int result = mapper.enrollRoom(accommodationDto, no, categoryNo, roomName, checkIn, checkOut);
+
+            System.out.println("roomNo : " +accommodationDto.getRoomNo());
+            int roomNo = accommodationDto.getRoomNo();
+            if (result == 1) {
+                mapper.enrollWeekdayRate(roomRate, roomNo, no);
+                mapper.enrollFridayRate(roomRate, roomNo, no);
+                mapper.enrollSaturdayRate(roomRate, roomNo, no);
+                mapper.enrollSundayRate(roomRate, roomNo, no);
+            }
+                System.out.println("주중 : " + accommodationDto.getWeekdayRate());
+                System.out.println("금 : " + accommodationDto.getFridayRate());
+                System.out.println("토 : " + accommodationDto.getSaturdayRate());
+                System.out.println("일 : " + accommodationDto.getSundayRate());
+//                mapper.enrollBasicRate(accommodationDto);
         }
         System.out.println("NO : " + categoryNo);
         System.out.println("nameService : " + roomName);
@@ -74,8 +91,12 @@ public class AccommodationServiceImpl implements AccommodationService {
 
 
     @Override
-    public void enrollSubImages(AccommodationImageDto roomImages, int roomNo) {
-
+    public int enrollSubImages(AccommodationImageDto roomImages, AccommodationDto accommodationDto) {
+        for (int i = 1; i <= accommodationDto.getRoomValues(); i++) {
+            return mapper.enrollRoomImages(roomImages);
+            
+        }
+    return 0;
     }
 }
 
