@@ -51,11 +51,7 @@
 
 	// loader
 	var loader = function() {
-<<<<<<< HEAD
 		setTimeout(function() {
-=======
-		setTimeout(function() { 
->>>>>>> 02fc4bf57dd32e0f2f5c1d5ea0636e3ad9abb9cf
 			if($('#ftco-loader').length > 0) {
 				$('#ftco-loader').removeClass('show');
 			}
@@ -170,34 +166,21 @@
 
 			if (st > 150) {
 				if ( !navbar.hasClass('scrolled') ) {
-<<<<<<< HEAD
-					navbar.addClass('scrolled');
-				}
-			}
-=======
+
 					navbar.addClass('scrolled');	
 				}
 			} 
->>>>>>> 02fc4bf57dd32e0f2f5c1d5ea0636e3ad9abb9cf
 			if (st < 150) {
 				if ( navbar.hasClass('scrolled') ) {
 					navbar.removeClass('scrolled sleep');
 				}
-<<<<<<< HEAD
-			}
-			if ( st > 350 ) {
-				if ( !navbar.hasClass('awake') ) {
-					navbar.addClass('awake');
-				}
 
-=======
 			} 
 			if ( st > 350 ) {
 				if ( !navbar.hasClass('awake') ) {
 					navbar.addClass('awake');	
 				}
 				
->>>>>>> 02fc4bf57dd32e0f2f5c1d5ea0636e3ad9abb9cf
 				if(sd.length > 0) {
 					sd.addClass('sleep');
 				}
@@ -236,15 +219,10 @@
 		}
 	};
 
-<<<<<<< HEAD
 
-	var counter = function() {
-
-=======
 	
 	var counter = function() {
 		
->>>>>>> 02fc4bf57dd32e0f2f5c1d5ea0636e3ad9abb9cf
 		$('#section-counter').waypoint( function( direction ) {
 
 			if( direction === 'down' && !$(this.element).hasClass('ftco-animated') ) {
@@ -261,11 +239,6 @@
 					  }, 7000
 					);
 				});
-<<<<<<< HEAD
-
-=======
-				
->>>>>>> 02fc4bf57dd32e0f2f5c1d5ea0636e3ad9abb9cf
 			}
 
 		} , { offset: '95%' } );
@@ -278,11 +251,7 @@
 		$('.ftco-animate').waypoint( function( direction ) {
 
 			if( direction === 'down' && !$(this.element).hasClass('ftco-animated') ) {
-<<<<<<< HEAD
 
-=======
-				
->>>>>>> 02fc4bf57dd32e0f2f5c1d5ea0636e3ad9abb9cf
 				i++;
 
 				$(this.element).addClass('item-animate');
@@ -304,15 +273,10 @@
 							el.removeClass('item-animate');
 						},  k * 50, 'easeInOutExpo' );
 					});
-<<<<<<< HEAD
 
-				}, 100);
-
-=======
 					
 				}, 100);
 				
->>>>>>> 02fc4bf57dd32e0f2f5c1d5ea0636e3ad9abb9cf
 			}
 
 		} , { offset: '95%' } );
