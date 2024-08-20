@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AccommodationServiceImpl {
+public class AccommodationServiceImpl implements AccommodationService {
 
     private final AccommodationMapper mapper;
 
@@ -23,6 +23,7 @@ public class AccommodationServiceImpl {
     // 객실 인입 ( 1 )
     // 객실 사진 인입 ( 1, 1 )
 //                 ( 1, 2 )
+    @Override
     public int saveAccommodation(AccommodationDto accommodationDto, AccommodationImageDto mainImage) {
 
         int no = accommodationDto.getAcAdminNo();
@@ -44,6 +45,7 @@ public class AccommodationServiceImpl {
         }
     }
 
+    @Override
     public int enrollRooms(AccommodationDto  accommodationDto, String roomCategory, String roomName, String checkIn, String checkOut) {
         int no = accommodationDto.getAcAdminNo();
         int categoryNo = 0;
@@ -69,6 +71,9 @@ public class AccommodationServiceImpl {
 
             return 1;
     }
+
+
+    @Override
     public void enrollSubImages(AccommodationImageDto roomImages, int roomNo) {
 
     }

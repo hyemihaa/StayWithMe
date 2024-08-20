@@ -32,8 +32,6 @@ public class AddressRestController {
 
         System.out.println("지번 : " + region);
         System.out.println("도로명 : " + roadName);
-
-
         return "success";
 
     }
