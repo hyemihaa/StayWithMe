@@ -53,7 +53,7 @@
             )
     </insert>
 
-    <insert id="enrollRoom">
+    <insert id="enrollRoom" useGeneratedKeys="true" keyProperty="accommodation.roomNo">
         INSERT INTO room VALUES (
                      null,
                      #{categoryNo},
@@ -62,8 +62,7 @@
                      #{checkIn},
                      #{checkOut},
                      #{accommodation.standardOccupation},
-                     #{accommodation.maxOccupation},
-                     #{roomValue}
+                     #{accommodation.maxOccupation}
                  )
     </insert>
 
@@ -85,5 +84,39 @@
                                         #{subImage.uploadImagePath}
                                       )
     </insert>
+
+    <insert id="enrollWeekdayRate">
+        INSERT INTO basic_rate values (
+                                       null,
+                                       #{roomNo},
+                                       1,
+                                       #{roomRate.weekdayRate}
+                                      )
+    </insert>
+    <insert id="enrollFridayRate">
+        INSERT INTO basic_rate values (
+                                          null,
+                                          #{roomNo},
+                                          2,
+                                          #{roomRate.fridayRate}
+                                      )
+    </insert>
+    <insert id="enrollSaturdayRate">
+        INSERT INTO basic_rate values (
+                                          null,
+                                          #{roomNo},
+                                          3,
+                                          #{roomRate.saturdayRate}
+                                      )
+    </insert>
+    <insert id="enrollSundayRate">
+        INSERT INTO basic_rate values (
+                                          null,
+                                          #{roomNo},
+                                          4,
+                                          #{roomRate.sundayRate}
+                                      )
+    </insert>
+
 </mapper>
 
