@@ -54,7 +54,7 @@ public class AccommodationController {
                                           @RequestParam MultiValueMap<String, String> rooms,
                                           @ModelAttribute AccommodationDto accommodationDto,
                                           @ModelAttribute RoomForm roomForm
-                                           ) {
+    ) {
 
 
         System.out.println(mainFile.get(1).getOriginalFilename());
@@ -104,23 +104,14 @@ public class AccommodationController {
 
             String roomName = roomForm.getRooms().get(i).getRoomName();
 
-//            List<Integer> standard = roomForm.getRooms().get(i).getStandardOccupation();
-//            System.out.println("standard : " + standard);
-//            List<Integer> max = roomForm.getRooms().get(i).getMaxOccupation();
-//            System.out.println("max : " + max);
-//            List<Integer> roomCount = roomForm.getRooms().get(i).getRoomCount();
-//
-//
-//
-//
-//            System.out.println("endIndex : " + roomForm.getRooms().get(i).getEndIndex());
-//            System.out.println("i : " + i);
             // 객실1에 이미지 1개, 객실2에 이미지 2개
             // endIndex = 1, 3
             // roomsSize = 2
             // startIndex = 2;
             // 배열 접근할 때 객실1은 2번, 객실2는 3~4
-            int enrollRoom = accommodationService.enrollRooms(accommodationDto, roomCategory, roomName, checkIn,checkOut);
+            for (int j = 0; j < accommodationDto.getRoomValues(); j++) {
+                int enrollRoom = accommodationService.enrollRooms(accommodationDto, roomCategory, roomName, checkIn,checkOut);
+            }
             for (int k = startIndex; k <= roomForm.getRooms().get(i).getEndIndex()+roomsSize-1; k++) {
 
                 System.out.println(" K : " + k);

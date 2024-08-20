@@ -21,8 +21,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequiredArgsConstructor //final로 선언된 필드가 있다면, 이 필드들을 초기화하는 생성자를 자동으로 생성
 @Controller
+@RequiredArgsConstructor //final로 선언된 필드가 있다면, 이 필드들을 초기화하는 생성자를 자동으로 생성
 public class SignController {
 
     private final MemberService memberService;
@@ -35,22 +35,6 @@ public class SignController {
         model.addAttribute("signUp", new MemberDTO());
         model.addAttribute("signIn", new MemberDTO());
         return "member/sign";
-    }
-
-    // 로그인(인증)된 사용자의 정보
-    @GetMapping("/")
-    public String home(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        // 사용자가 존재하는지(로그인 상태) 확인   anonymousUser: 로그인 하지 않은 경우
-        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
-            model.addAttribute("userid", auth.getName());
-            model.addAttribute("isAuthenticated", true);
-        } else {
-            model.addAttribute("isAuthenticated", false);
-        }
-        return "/index";
-
     }
 
     // 휴대전화 인증
