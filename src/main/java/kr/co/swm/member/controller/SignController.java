@@ -3,6 +3,7 @@ package kr.co.swm.member.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.member.model.dto.MemberDTO;
 import kr.co.swm.member.model.service.MemberService;
 import kr.co.swm.member.util.PasswordUtils;
@@ -24,6 +25,7 @@ import java.util.Map;
 public class SignController {
 
     private final MemberService memberService;
+    private final JWTUtil jwtUtil;
 
     // 회원가입 & 로그인 페이지 이동
     @GetMapping("/signform")
@@ -36,14 +38,7 @@ public class SignController {
 
     // 로그인(인증)된 사용자의 정보
     @GetMapping("/")
-    public String home(Model model, HttpServletRequest request) {
-        String logoutMessage = (String) request.getSession().getAttribute("logoutMessage");
-        if (logoutMessage != null) {
-            model.addAttribute("logoutMessage", logoutMessage);
-            // 세션에서 메시지를 제거하여 중복 알림 방지
-            request.getSession().removeAttribute("logoutMessage");
-        }
-
+    public String home(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         // 사용자가 존재하는지(로그인 상태) 확인   anonymousUser: 로그인 하지 않은 경우
@@ -119,12 +114,31 @@ public class SignController {
         String token = memberService.authenticate(userId, userPwd, response);
 
         if (token != null) {
-            return "redirect:/";
+            String role = jwtUtil.getRoleFromToken(token);
+
+            System.out.println("로그인 시도: " + role);  // 권한이 제대로 추출되는지 확인
+
+            // 권한에 따라 리다이렉트할 페이지 결정
+            if ("ROLE_SITE_ADMIN".equals(role)) {
+                return "redirect:/site-admin/dashboard"; // 사이트 관리자 페이지로 리다이렉트
+
+            } else if ("ROLE_ACCOMMODATION_ADMIN".equals(role)) {
+                return "redirect:/"; // 업소 관리자 페이지로 리다이렉트 ( 추후수정 )
+            } else {
+                return "redirect:/"; // 일반 사용자 -> 메인
+            }
         } else {
             // 인증 실패: 로그인 페이지로 다시 이동하고 에러 메시지 전달
             redirectAttributes.addFlashAttribute("error", "아이디 또는 비밀번호가 틀립니다.");
             return "redirect:/signform";
         }
+    }
+
+    // 로그아웃 메세지
+    @GetMapping("/logout-success")
+    public String logoutSuccess(Model model) {
+        model.addAttribute("logoutMessage", "로그아웃 되었습니다.");
+        return "/index";
     }
 
     // 아이디 찾기 & 비밀번호 찾기 페이지 이동
@@ -149,7 +163,6 @@ public class SignController {
             return "error: 해당 정보를 가진 사용자를 찾을 수 없습니다.";
         }
     }
-
 
     // 비밀번호 찾기 (임시비밀번호 발급)
     @PostMapping("/find-password")
