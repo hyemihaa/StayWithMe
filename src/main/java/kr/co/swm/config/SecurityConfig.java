@@ -44,7 +44,7 @@ public class SecurityConfig {
         http    //authorizeHttpRequests 어떤 요청에 대해 어떤 권한이 필요한지 설정
                 .authorizeHttpRequests(auth -> auth
                         //.requestMatchers : 특정 URL 지정
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/scss/**").permitAll()
+                        .requestMatchers("/**", "/css/**", "/js/**", "/images/**", "/fonts/**", "/scss/**").permitAll()
 //                                                        // hasRole([role]) : 현재 사용자의 권한이 파라미터의 권한과 동일한 경우 true
 //                        .requestMatchers("/accommodation-admin/**").hasRole("ACCOMMODATION_ADMIN") // ACCOMMODATION_ADMIN 권한을 가진 사용자만 접근
                         .anyRequest().permitAll()
