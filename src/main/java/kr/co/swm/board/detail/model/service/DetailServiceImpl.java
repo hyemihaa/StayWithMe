@@ -30,11 +30,17 @@ public class DetailServiceImpl implements DetailService{
         return detailMapper.getPost(boardNo);
     }
 
-    // 평균 별점 불러오기
+    //  업체 평균 별점 불러오기
     @Override
     public double getAvgRate(int boardNo) {
         return detailMapper.getAvgRate(boardNo);
     }
+
+    //  금액
+//    @Override
+//    public List<DetailDTO> getCost() {
+//        return detailMapper.getCost();
+//    }
 
     // 방 평균 별점
 //    @Override
