@@ -1,0 +1,45 @@
+/* 테이블의 전체 크기와 위치를 조정 */
+.reservation-table {
+    margin: 20px auto; /* 테이블을 화면 중앙에 위치시키고 상하로 20px의 여백을 둠 */
+    width: 100%; /* 테이블의 너비를 화면의 100%로 설정 */
+}
+
+/* 테이블의 헤더와 셀의 텍스트 정렬 및 세로 정렬 설정 */
+.reservation-table th, .reservation-table td {
+    text-align: center; /* 텍스트를 중앙 정렬 */
+    vertical-align: middle; /* 텍스트를 세로 방향으로 중앙에 배치 */
+}
+
+/* 날짜 선택 섹션의 스타일 설정 */
+.date-selector {
+    font-size: 1.25rem; /* 날짜 텍스트 크기를 조금 더 크게 설정 */
+    font-weight: bold; /* 텍스트 굵게 설정 */
+}
+
+.arrow {
+    cursor: pointer; /* 화살표에 마우스 포인터를 올리면 클릭 가능한 상태로 표시 */
+    margin: 0 15px; /* 화살표와 날짜 텍스트 사이에 간격을 둠 */
+}
+
+.clickable {
+    cursor: pointer; /* 날짜 텍스트도 클릭할 수 있음을 표시 */
+}
+
+/* 예약 상태 버튼의 스타일 설정 */
+.status-btn {
+    width: 100px; /* 버튼의 너비를 100px로 고정 */
+    font-size: 0.875rem; /* 버튼 내 텍스트의 폰트 크기를 설정 (약 14px) */
+    pointer-events: none; /* 버튼을 클릭할 수 없도록 설정 (비활성화) */
+}
+
+/* 예약 가능 상태의 버튼 스타일 (초록색) */
+.btn-success.status-btn {
+    background-color: #d4edda; /* 버튼의 배경색을 초록색 계열로 설정 (성공 상태) */
+    color: #155724; /* 텍스트 색상을 진한 초록색으로 설정 */
+}
+
+/* 예약중 상태의 버튼 스타일 (빨간색) */
+.btn-danger.status-btn {
+    background-color: #f8d7da; /* 버튼의 배경색을 빨간색 계열로 설정 (위험 상태) */
+    color: #721c24; /* 텍스트 색상을 진한 빨간색으로 설정 */
+}

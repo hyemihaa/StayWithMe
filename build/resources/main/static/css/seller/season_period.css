@@ -1,0 +1,24 @@
+.form-select, .form-control {
+    border: none;
+    box-shadow: none;
+    background: none;
+    font-size: 14px;
+    text-align: center;
+    color: black;
+}
+
+.bi-calendar-date {
+    color: black;
+    cursor: pointer;
+}
+
+.delete-period-btn {
+    color: red;
+}
+
+/* 수정기간 필드 스타일 */
+input[type="date"] {
+    border: none;
+    background: none;
+    text-align: center;
+}
