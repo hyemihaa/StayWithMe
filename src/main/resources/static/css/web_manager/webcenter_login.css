@@ -1,3 +1,5 @@
+/* 전체 페이지 설정: 기본 여백 제거, 폰트 설정, 
+   중앙 정렬을 위한 Flexbox 사용, 페이지 높이 설정 */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -8,6 +10,8 @@ body {
     background-color: #ffffff;
 }
 
+/* 컨테이너 설정: 페이지 중앙에 배치, 그림자와 
+   둥근 모서리로 스타일링 */
 .container {
     display: flex;
     width: 80%;
@@ -17,6 +21,7 @@ body {
     overflow: hidden;
 }
 
+/* 왼쪽 섹션: 배경색, 텍스트 색상 설정, 중앙 정렬 */
 .left-section {
     background-color: #1E90FF;
     color: white;
@@ -28,16 +33,19 @@ body {
     align-items: center;
 }
 
+/* 로고 섹션: 아래쪽 여백 설정, 중앙 정렬 */
 .left-section .logo {
     margin-bottom: 40px;
     text-align: center;
 }
 
+/* 왼쪽 섹션의 제목: 아래쪽 여백 및 글꼴 크기 설정 */
 .left-section h1 {
     margin-bottom: 20px;
     font-size: 36px;
 }
 
+/* 왼쪽 섹션의 설명 텍스트: 여백, 글꼴 크기 및 행 간격 설정, 중앙 정렬 */
 .left-section p {
     margin-bottom: 20px;
     font-size: 14px;
@@ -45,6 +53,7 @@ body {
     text-align: center;
 }
 
+/* 오른쪽 섹션: 배경색 설정, 중앙 정렬을 위한 Flexbox 사용 */
 .right-section {
     background-color: #ffffff;
     flex: 1;
@@ -54,12 +63,14 @@ body {
     justify-content: center;
 }
 
+/* 오른쪽 섹션의 제목: 텍스트 색상 및 여백 설정 */
 .right-section h2 {
     color: #1E90FF;
     margin-bottom: 10px;
     font-size: 24px;
 }
 
+/* 오른쪽 섹션의 설명 텍스트: 색상, 여백 및 행 간격 설정 */
 .right-section p {
     color: #888888;
     margin-bottom: 20px;
@@ -67,11 +78,14 @@ body {
     line-height: 1.6;
 }
 
+/* 폼의 전반적인 설정: 세로 방향 정렬 */
 .right-section form {
     display: flex;
     flex-direction: column;
 }
 
+/* 텍스트 입력 및 비밀번호 입력 필드 스타일링: 
+   패딩, 여백, 테두리, 둥근 모서리 설정 */
 .right-section input[type="text"],
 .right-section input[type="password"] {
     padding: 15px;
@@ -81,38 +95,40 @@ body {
     font-size: 14px;
 }
 
+/* 옵션 섹션 설정: 라디오 버튼 및 라벨을 수평으로 배치 */
 .right-section .options {
     display: flex;
-    justify-content: space-between;
+    gap: 20px;
+    justify-content: center;
     align-items: center;
     margin-bottom: 20px;
+
 }
 
+/* 라디오 버튼 라벨의 스타일: 폰트 크기 및 색상 설정 */
 .right-section .options label {
-    font-size: 14px;
+    font-size: 16px;
     color: #666666;
 }
 
-.right-section .options a {
-    color: #1E90FF;
-    text-decoration: none;
-    font-size: 14px;
-}
-
+/* 버튼 스타일: 패딩, 배경색, 테두리, 
+   둥근 모서리 및 커서 설정 */
 .right-section button {
     padding: 15px;
     background-color: #1E90FF;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
 }
 
+/* 버튼 호버 시 스타일: 배경색 조금 어둡게 */
 .right-section button:hover {
     background-color: #1c86ee;
 }
 
+/* 로그인 이미지 설정: 크기 지정 */
 .loginImage {
     width: 600px;
     height: 400px;
