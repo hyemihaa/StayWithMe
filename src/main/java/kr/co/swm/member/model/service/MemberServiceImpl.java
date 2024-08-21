@@ -54,6 +54,30 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    // 업소관리자 등록
+    public int setSellerSignup(MemberDTO memberDTO) {
+        String userPwd = memberDTO.getUserPwd();
+
+        // 비밀번호와 비밀번호 확인이 일치하는지 체크
+        String encodedPassword = passwordEncoder.encode(userPwd);
+        // 암호화 비밀번호 DTO에 저장
+        memberDTO.setUserPwd(encodedPassword);
+
+        return memberMapper.setSellerSignup(memberDTO);
+    }
+
+    // 사이트 관리자 등록
+    public int setManagerSignup(MemberDTO memberDTO) {
+        String userPwd = memberDTO.getUserPwd();
+
+        // 비밀번호와 비밀번호 확인이 일치하는지 체크
+        String encodedPassword = passwordEncoder.encode(userPwd);
+        // 암호화 비밀번호 DTO에 저장
+        memberDTO.setUserPwd(encodedPassword);
+
+        return memberMapper.setManagerSignup(memberDTO);
+    }
+
     // id 중복검사
     @Override
     public int idCheck(String userId) {

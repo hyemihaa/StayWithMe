@@ -30,4 +30,7 @@ public interface MemberMapper {
     // 임시비밀번호 암호화 update
     public void updateResetPassword(@Param("userId") String userId, @Param("userPhone") String userPhone, @Param("encodedPassword") String encodedPassword);
 
+    int setSellerSignup(@Param("memberDTO") MemberDTO memberDTO);
+
+    int setManagerSignup(@Param("memberDTO") MemberDTO memberDTO);
 }
