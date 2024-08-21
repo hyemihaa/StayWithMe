@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.swm.member.model.mapper.MemberMapper">
+
+    <insert id="setSignUp">
+        INSERT INTO USER (USER_ID, USER_PWD, USER_NAME, USER_PHONE, CREATED_DATE, DELETED_DATE)
+        VALUES (#{memberDTO.userId}, #{memberDTO.userPwd}, #{memberDTO.userName}, #{memberDTO.userPhone}, #{memberDTO.createdDate}, #{memberDTO.deletedDate})
+    </insert>
+
+    <select id="idCheck">
+        SELECT count(*) FROM USER
+        WHERE USER_ID = #{userId}
+    </select>
+
+</mapper>
+
