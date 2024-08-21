@@ -54,6 +54,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
             // 유효한 토큰인 경우 사용자 정보 추출
             String loginId = jwtUtil.getUserIdFromToken(token); // 사용자 ID 추출
+            Long userNo = jwtUtil.getUserNoFromToken(token);
             String role = jwtUtil.getRoleFromToken(token); // 사용자 권한 추출
             Long accommAdminKey = jwtUtil.getAccommAdminKeyFromToken(token); // 업소 관리자 키 추출
 
@@ -62,6 +63,7 @@ public class JWTFilter extends OncePerRequestFilter {
             memberDTO.setUserId(loginId);
             memberDTO.setRole(role);
             memberDTO.setAccommodationAdminNo(accommAdminKey);
+            memberDTO.setUserNo(userNo);
 
             // CustomUserDetails에 사용자 정보 설정
             CustomUserDetails customUserDetails = new CustomUserDetails(memberDTO);
@@ -69,6 +71,7 @@ public class JWTFilter extends OncePerRequestFilter {
             log.info("JWTFilter: JWT 토큰 유효! 사용자 이름: {}", customUserDetails.getUsername());
             log.info("JWTFilter: JWT 토큰 유효! 사용자 권한: {}", customUserDetails.getAuthorities());
             log.info("JWTFilter: JWT 토큰 유효! 업소관리자 키: {}", accommAdminKey);
+            log.info("JWTFilter: JWT 토큰 유효! 사용자 키: {}", userNo);
 
             // 스프링 시큐리티 인증 토큰 생성
             Authentication authToken = new UsernamePasswordAuthenticationToken(

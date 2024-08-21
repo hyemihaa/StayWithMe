@@ -27,7 +27,7 @@ public interface MemberService {
     void sendSMSViaCoolSMS(String phoneNumber, String certificationCode);
 
     // 로그인
-    String authenticate(String userId, String userPwd, HttpServletResponse response);
+    String authenticate(String userId, String userPwd, HttpServletResponse response, String signRole);
 
     // 아이디 찾기
     String findUserId(String userName, String userPhone);
