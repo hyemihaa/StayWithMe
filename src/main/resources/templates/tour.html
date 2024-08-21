@@ -39,20 +39,20 @@
 
 					<!-- 폼 태그  -->
 
-					<form action="/tour" method="get">
+					<form action="/tour" method="get" th:object="${searchDTO}">
 						<div class="fields">
 
 							<!-- 숙소 유형 라디오버튼 -->
 							<h5>숙소유형</h5>
 							<div class="form-group">
 								<div class="select-wrap one-third">
-									<input type="radio" name="accommodation" value="hotel"><label
+									<input type="radio" th:field="*{type}" name="accommodation" value="전체" id="전체" ><label
 										for="전체">전체</label><br>
-									<input type="radio" name="accommodation" value="hotel"><label
-										for="호텔·리조트">호텔·리조트</label><br>
-									<input type="radio" name="accommodation" value="hotel"><label
-										for="모텔">모텔</label><br>
-									<input type="radio" name="accommodation" value="hotel"><label
+									<input type="radio" th:field="*{type}" name="accommodation" value="호텔" id="호텔"  ><label
+										for="호텔">호텔</label><br>
+									<input type="radio" th:field="*{type}" name="accommodation" value="리조트" id="리조트"  ><label
+										for="호텔">리조트</label><br>
+									<input type="radio" th:field="*{type}" name="accommodation" value="펜션" id="펜션" ><label
 										for="펜션">펜션</label><br>
 								</div>
 							</div>
@@ -62,25 +62,34 @@
 								<h5>가격</h5>
 								<div class="range-slider">
 										<span>
-											<input type="number" style="width:80px;" value="0" min="0" max="1000000" />원&nbsp-
-											<input type="number" style="width:80px;" value="1000000" min="0" max="1000000" />원
+											<input type="number" style="width:80px;" th:field="*{minRate}" value="0" min="0" max="1000000" />원&nbsp-
+											<input type="number" style="width:80px;" th:field="*{maxRate}" value="1000000" min="0" max="1000000" />원
 										</span>
 									<input value="0" min="0" max="1000000" step="1000" type="range" />
 									<input value="1000000" min="0" max="1000000" step="1000" type="range" />
-									</svg>
 								</div>
 							</div>
 							<!-- 옵션 선택영역  -->
 							<h5>옵션</h5>
-							<div class="form-group">
-								<div class="convenient-select">
-									<button class="convenient"><span>WIFI</span></button>
-									<button class="convenient"><span>TV</span></button>
-									<button class="convenient"><span>주차장</span></button>
-									<button class="convenient"><span>헬스장</span></button>
-								</div>
+								<div class="form-group">
+									<div class="toggle">
+										<input type="checkbox" name="options" th:field="*{options}" value="WIFI" id="wifi" class="toggle-input">
+										<label for="wifi" class="toggle-label">WIFI</label>
+									</div>
+									<div class="toggle">
+										<input type="checkbox" name="options" th:field="*{options}" value="TV" id="tv" class="toggle-input" >
+										<label for="tv" class="toggle-label">TV</label>
+									</div>
+									<div class="toggle">
+										<input type="checkbox" name="options" th:field="*{options}" value="주차장" id="parking" class="toggle-input" >
+										<label for="parking" class="toggle-label">주차장</label>
+									</div>
+									<div class="toggle">
+										<input type="checkbox" name="options" th:field="*{options}" value="헬스장" id="gym" class="toggle-input" >
+										<label for="gym" class="toggle-label">헬스장</label>
+									</div>
 								<!-- 서치 버튼 -->
-							</div>
+								</div>
 							<div class="form-group">
 								<input type="submit" value="Search" class="btn btn-primary py-3 px-5">
 							</div>
