@@ -1,6 +1,7 @@
 <!-- src/main/resources/templates/fragments/navbar.html -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <th:block th:fragment="navbar">
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
@@ -18,14 +19,16 @@
                     <li class="nav-item"><a href="/hotel" class="nav-link">Hotels</a></li>
                     <li class="nav-item"><a href="/blog" class="nav-link">Blog</a></li>
                     <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
-                    <li class="nav-item cta"><a href="/contact" class="nav-link"><span>Add listing</span></a></li>
-                    <li class="nav-item"><a href="/mypage" class="nav-link"><span>Mypage</span></a></li>
-                    <!--로그인 되어 있을때 로그아웃-->
-                    <li th:if="${isAuthenticated}" class="nav-item">
+
+                    <!--로그인 되어 있을때 로그아웃, 마이페이지-->
+                    <li sec:authorize="isAuthenticated()" class="nav-item">
+                        <a href="/mypage" class="nav-link"><span>Mypage</span></a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item">
                         <a href="/logout" class="nav-link"><span>Logout</span></a>
                     </li>
                     <!--로그인 안 되어 있을때-->
-                    <li th:unless="${isAuthenticated}" class="nav-item cta">
+                    <li sec:authorize="!isAuthenticated()" class="nav-item cta">
                         <a href="/signform" class="nav-link"><span>Sign</span></a>
                     </li>
                 </ul>
