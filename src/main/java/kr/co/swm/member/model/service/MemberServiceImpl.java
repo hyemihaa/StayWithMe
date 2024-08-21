@@ -55,6 +55,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 업소관리자 등록
+    @Override
     public int setSellerSignup(MemberDTO memberDTO) {
         String userPwd = memberDTO.getUserPwd();
 
@@ -67,6 +68,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 사이트 관리자 등록
+    @Override
     public int setManagerSignup(MemberDTO memberDTO) {
         String userPwd = memberDTO.getUserPwd();
 
