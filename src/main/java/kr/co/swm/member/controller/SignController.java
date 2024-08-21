@@ -3,15 +3,11 @@ package kr.co.swm.member.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import kr.co.swm.config.auth.CustomUserDetailsService;
 import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.member.model.dto.MemberDTO;
-import kr.co.swm.member.model.service.MemberService;
-import kr.co.swm.member.util.PasswordUtils;
+import kr.co.swm.member.model.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +21,7 @@ import java.util.Map;
 @Controller
 public class SignController {
 
-    private final MemberService memberService;
+    private final MemberServiceImpl memberServiceImpl;
     private final JWTUtil jwtUtil;
 
     // 회원가입 & 로그인 페이지 이동
@@ -35,22 +31,6 @@ public class SignController {
         model.addAttribute("signUp", new MemberDTO());
         model.addAttribute("signIn", new MemberDTO());
         return "member/sign";
-    }
-
-    // 로그인(인증)된 사용자의 정보
-    @GetMapping("/")
-    public String home(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        // 사용자가 존재하는지(로그인 상태) 확인   anonymousUser: 로그인 하지 않은 경우
-        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
-            model.addAttribute("userid", auth.getName());
-            model.addAttribute("isAuthenticated", true);
-        } else {
-            model.addAttribute("isAuthenticated", false);
-        }
-        return "/index";
-
     }
 
     // 휴대전화 인증
@@ -64,9 +44,9 @@ public class SignController {
             String phoneNumber = param.get("phoneNumber");
 
             // 인증번호 생성 요청
-            String certificationCode = memberService.generateCertificationCode();
+            String certificationCode = memberServiceImpl.generateCertificationCode();
             // 생성된 인증번호 -> sms 전송
-            memberService.sendSMSViaCoolSMS(phoneNumber, certificationCode);
+            memberServiceImpl.sendSMSViaCoolSMS(phoneNumber, certificationCode);
 
             // 성공 응답
             response.put("success", true);
@@ -89,7 +69,7 @@ public class SignController {
 
         String userId = param.get("userId");
         // 아이디 체크
-        int result = memberService.idCheck(userId);
+        int result = memberServiceImpl.idCheck(userId);
         response.put("result", result);
         // 응답 결과 반환
         return response;
@@ -103,22 +83,23 @@ public class SignController {
             return "member/sign";
         }
 
-        int result = memberService.setSignup(memberDTO);
+        int result = memberServiceImpl.setSignup(memberDTO);
         return "redirect:/signform";
     }
 
+    // 관리자(사이트 관리자 or 숙소 관리자)
     @PostMapping("/admin-signup")
-    public String adminSignUp(@Valid MemberDTO memberDTO, BindingResult bindingResult) {
+    public String adminSignUp(@Valid MemberDTO memberDTO) {
 
         if(memberDTO.getRole().equals("ROLE_ACCOMMODATION_ADMIN")) {
-            int result = memberService.setSellerSignup(memberDTO);
+            int result = memberServiceImpl.setSellerSignup(memberDTO);
             if(result != 0) {
                 return "redirect:/web-seller";
             } else {
                 return "error";
             }
         } else if(memberDTO.getRole().equals("ROLE_SITE_ADMIN")) {
-            int result = memberService.setManagerSignup(memberDTO);
+            int result = memberServiceImpl.setManagerSignup(memberDTO);
             if(result != 0) {
                 return "redirect:/web-manager";
             } else {
@@ -131,10 +112,13 @@ public class SignController {
 
     // 첫 로그인 요청
     @PostMapping("/signin")
-    public String signIn(@RequestParam(value = "userId") String userId, @RequestParam(value = "userPwd") String userPwd,
+    public String signIn(@RequestParam(value = "userId") String userId, @RequestParam(value = "userPwd") String userPwd,@RequestParam(value = "role") String signRole,
                          RedirectAttributes redirectAttributes, HttpServletResponse response) {
+        System.out.println("로그인 요청");
+        System.out.println("로그인 요청" + signRole);
+
         // 사용자 로그인 호출
-        String token = memberService.authenticate(userId, userPwd, response);
+        String token = memberServiceImpl.authenticate(userId, userPwd, response, signRole);
 
         if (token != null) {
             String role = jwtUtil.getRoleFromToken(token);
@@ -143,8 +127,7 @@ public class SignController {
 
             // 권한에 따라 리다이렉트할 페이지 결정
             if ("ROLE_SITE_ADMIN".equals(role)) {
-                return "redirect:/site-admin/dashboard"; // 사이트 관리자 페이지로 리다이렉트
-
+                return "redirect:/"; // 사이트 관리자 페이지로 리다이렉트
             } else if ("ROLE_ACCOMMODATION_ADMIN".equals(role)) {
                 return "redirect:/"; // 업소 관리자 페이지로 리다이렉트 ( 추후수정 )
             } else {
@@ -177,7 +160,7 @@ public class SignController {
         System.out.println("아이디찾기 컨트롤러 : " + userName + " " + userPhone);
 
         // 사용자 아이디를 찾는 서비스 호출
-        String userId = memberService.findUserId(userName, userPhone);
+        String userId = memberServiceImpl.findUserId(userName, userPhone);
         System.out.println("========================" + userId);
 
         if (userId != null) {
@@ -193,7 +176,7 @@ public class SignController {
     public String findPassword(@RequestParam("userId") String userId, @RequestParam("userPhone") String userPhone) {
         try {
             // 비밀번호 재설정 서비스 호출
-            String changePassword = memberService.passwordReset(userId, userPhone);
+            String changePassword = memberServiceImpl.passwordReset(userId, userPhone);
 
             // 임시 비밀번호 반환 (에러 메시지일 수 있음)
             return changePassword;
