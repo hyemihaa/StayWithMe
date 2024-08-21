@@ -8,9 +8,27 @@ import java.util.List;
 
 public interface AccommodationService {
 
+    /**
+     * 업소 저장
+     * @param accommodationDto
+     * @param mainImage
+     * @return
+     */
     int saveAccommodation(AccommodationDto accommodationDto, AccommodationImageDto mainImage);
 
-    int enrollRooms(AccommodationDto  accommodationDto, String roomCategory, String roomName, String checkIn,
-                    String checkOut, int roomValue, AccommodationDto roomRate, int roomsSize, int endIndex, List<MultipartFile> subFile, int startIndex);
+    /**
+     * 객실 저장
+     * @param accommodationDto
+     * @param room
+     * @param roomsSize
+     * @param subFile
+     * @param startIndex
+     * @return
+     */
+    int enrollRooms(AccommodationDto  accommodationDto,
+                    AccommodationDto room,
+                    int roomsSize,
+                    List<MultipartFile> subFile,
+                    int startIndex);
 
 }

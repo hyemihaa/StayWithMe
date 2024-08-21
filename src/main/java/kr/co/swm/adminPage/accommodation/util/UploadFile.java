@@ -21,7 +21,7 @@ public class UploadFile {
 
     private final String UPLOAD_PATH = "/Users/abc/Downloads/StayWithMe-feature-accommodation-enroll/swm_final/src/main/resources/static/images/";
 
-    public List<AccommodationImageDto> upload(List<MultipartFile> mainImage ,List<MultipartFile> subImage) {
+    public List<AccommodationImageDto> upload(List<MultipartFile> mainImage, List<MultipartFile> subImage) {
         System.out.println("uploadFile ========");
         List<AccommodationImageDto> mainImageDtos = mainImage.stream()
                 .map(file -> uploadSingleFile(file, "MAIN"))
@@ -37,40 +37,33 @@ public class UploadFile {
     }
 
     public AccommodationImageDto uploadSingleFile(MultipartFile upload, String imageType) {
-        if (!upload.isEmpty()) {
-            String originName = upload.getOriginalFilename();
-            String extension = originName.substring(originName.lastIndexOf('.'));
-            LocalDateTime now = LocalDateTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddHHmmss");
-            String output = now.format(formatter);
-
-//            System.out.println("originName : " + originName);
-//            System.out.println("extension : " + extension);
-//            System.out.println("output : " + output);
-
-            int stringLength = 8;
-            String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            Random random = new Random();
-            String randomString = random.ints(stringLength, 0, characters.length())
-                    .mapToObj(characters::charAt)
-                    .map(Object::toString)
-                    .collect(Collectors.joining());
-
-            String fileName = output + "_" + randomString + extension;
-            String filePathName = UPLOAD_PATH + fileName;
-            Path filePath = Paths.get(filePathName);
-//            System.out.println("path : " + filePath);
-
-            try {
-                upload.transferTo(filePath);
-                AccommodationImageDto imageDto = new AccommodationImageDto(originName, fileName, UPLOAD_PATH, imageType);
-                return imageDto;
-            } catch (IllegalStateException | IOException e) {
-                System.out.println("오류");
-                e.printStackTrace();
-            }
+        if (upload.isEmpty()) {
+            return null;
         }
-        return null;
-    }
 
+        String originName = upload.getOriginalFilename();
+        String extension = originName.substring(originName.lastIndexOf('.'));
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddHHmmss");
+        String output = now.format(formatter);
+
+        int stringLength = 8;
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        Random random = new Random();
+        String randomString = random.ints(stringLength, 0, characters.length())
+                .mapToObj(characters::charAt)
+                .map(Object::toString)
+                .collect(Collectors.joining());
+
+        String fileName = output + "_" + randomString + extension;
+        String filePathName = UPLOAD_PATH + fileName;
+        Path filePath = Paths.get(filePathName);
+        try {
+            upload.transferTo(filePath);
+            return new AccommodationImageDto(originName, fileName, UPLOAD_PATH, imageType);
+        } catch (IllegalStateException | IOException e) {
+            System.out.println("오류");
+            throw new RuntimeException("이미지 업로드 도중 실패되었습니다.");
+        }
+    }
 }

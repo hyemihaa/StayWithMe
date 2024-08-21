@@ -29,11 +29,11 @@ public class AccommodationServiceImpl implements AccommodationService {
 
         int no = accommodationDto.getAcAdminNo();   // 임시 업소관리자 번호
 
-        int result = mapper.enrollAccommodation(accommodationDto, no) ;
+        int result = mapper.enrollAccommodation(accommodationDto, no);
         if (result == 1) {
             for (int i = 0; i < accommodationDto.getAccommodationType().size(); i++) {
                 String facility = accommodationDto.getAccommodationType().get(i);
-                mapper.enrollFacilities(facility,no);
+                mapper.enrollFacilities(facility, no);
             }
             return mapper.enrollMainImage(mainImage, no);
         } else {
@@ -42,52 +42,45 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
-    public int enrollRooms(AccommodationDto  accommodationDto, String roomCategory, String roomName, String checkIn, String checkOut,
-                           int roomValue, AccommodationDto roomRate, int roomsSize, int endIndex, List<MultipartFile> subFile, int startIndex) {
-
+    public int enrollRooms(AccommodationDto accommodationDto,
+                           AccommodationDto room,
+                           int roomsSize,
+                           List<MultipartFile> subFile,
+                           int startIndex) {
         int result = 0;     // return 값
         int categoryNo = 0;     // db 데이터에 맞추기 위한 변수 초기화
         int no = accommodationDto.getAcAdminNo();   // 임시 업소 관리자 번호
-        
-        if ("오션뷰".equals(roomCategory)) {
-            categoryNo = 1;
-        } else if ("리버뷰".equals(roomCategory)) {
-            categoryNo = 2;
-        } else if ("시티뷰".equals(roomCategory)) {
-            categoryNo = 3;
-        } else if ("마운틴뷰".equals(roomCategory)) {
-            categoryNo = 4;
-        }
+        categoryNo = room.getCategoryNo(room, categoryNo);
 
-        /**
-         *  객실 추가
-         */
-        for (int i = 1; i <= roomValue; i++) {
-
+        // 객실 추가
+        for (int i = 1; i <= room.getRoomValues(); i++) {
             // 객식 인입
-            int enrollRoom = mapper.enrollRoom(accommodationDto, no, categoryNo, roomName, checkIn, checkOut);
+            int enrollRoom = mapper.enrollRoom(accommodationDto,
+                    no,
+                    categoryNo,
+                    room.getRoomName(),
+                    room.getCheckInTime(),
+                    room.getCheckOutTime());
 
             int roomNo = accommodationDto.getRoomNo();      // 객실 인입될 때 만들어진 객실 번호
 
-            // 객실별 금액 인입
-            if (enrollRoom == 1) {
-                mapper.enrollWeekdayRate(roomRate, roomNo, no);
-                mapper.enrollFridayRate(roomRate, roomNo, no);
-                mapper.enrollSaturdayRate(roomRate, roomNo, no);
-                result = mapper.enrollSundayRate(roomRate, roomNo, no);
-            }else {
+            if (enrollRoom != 1) {
                 return result;
             }
 
-            // 객실별 다중 이미지 인입
-            for (int k = startIndex; k <= endIndex+roomsSize-1; k++) {
+            // C 객실별 금액 인입
+            mapper.enrollWeekdayRate(accommodationDto, roomNo, no);
+            mapper.enrollFridayRate(accommodationDto, roomNo, no);
+            mapper.enrollSaturdayRate(accommodationDto, roomNo, no);
+            result = mapper.enrollSundayRate(accommodationDto, roomNo, no);
+
+            // C 객실별 다중 이미지 인입
+            for (int k = startIndex; k <= room.getEndIndex() + roomsSize - 1; k++) {
                 AccommodationImageDto subImage = uploadFile.uploadSingleFile(subFile.get(k), "PREVIEW");
                 mapper.enrollRoomImages(subImage, roomNo);
             }
         }
         return result;
     }
-
-
 }
 
