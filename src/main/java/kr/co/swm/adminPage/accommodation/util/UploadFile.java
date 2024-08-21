@@ -44,7 +44,7 @@ public class UploadFile {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddHHmmss");
             String output = now.format(formatter);
 
-            System.out.println("originName : " + originName);
+//            System.out.println("originName : " + originName);
 //            System.out.println("extension : " + extension);
 //            System.out.println("output : " + output);
 
@@ -59,7 +59,7 @@ public class UploadFile {
             String fileName = output + "_" + randomString + extension;
             String filePathName = UPLOAD_PATH + fileName;
             Path filePath = Paths.get(filePathName);
-            System.out.println("path : " + filePath);
+//            System.out.println("path : " + filePath);
 
             try {
                 upload.transferTo(filePath);
