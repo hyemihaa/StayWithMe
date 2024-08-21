@@ -895,8 +895,9 @@ pre {
   .col-md-4 {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 33.33333%;
-    flex: 0 0 33.33333%;
-    max-width: 33.33333%; }
+    /* flex: 0 0 33.33333%;
+    max-width: 33.33333%;  */
+  }
   .col-md-5 {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 41.66667%;
@@ -1561,7 +1562,7 @@ pre {
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   line-height: 1.5;
-  color: #495057;
+  color: #456483;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
@@ -1720,7 +1721,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
   margin-top: 0.3rem;
   margin-left: -1.25rem; }
   .form-check-input:disabled ~ .form-check-label {
-    color: #6c757d; }
+    color: #0f3353; }
 
 .form-check-label {
   margin-bottom: 0; }
@@ -2924,7 +2925,7 @@ input[type="button"].btn-block {
     color: #fff;
     background-color: white; }
   .custom-control-input:disabled ~ .custom-control-label {
-    color: #6c757d; }
+    color: #193c5a; }
     .custom-control-input:disabled ~ .custom-control-label::before {
       background-color: #e9ecef; }
 
@@ -4623,7 +4624,7 @@ button.close {
   .bs-popover-top .arrow::before, .bs-popover-auto[x-placement^="top"] .arrow::before {
     bottom: 0;
     border-top-color: rgba(0, 0, 0, 0.25); }
-  
+
   .bs-popover-top .arrow::after,
   .bs-popover-auto[x-placement^="top"] .arrow::after {
     bottom: 1px;
@@ -4643,7 +4644,7 @@ button.close {
   .bs-popover-right .arrow::before, .bs-popover-auto[x-placement^="right"] .arrow::before {
     left: 0;
     border-right-color: rgba(0, 0, 0, 0.25); }
-  
+
   .bs-popover-right .arrow::after,
   .bs-popover-auto[x-placement^="right"] .arrow::after {
     left: 1px;
@@ -4660,7 +4661,7 @@ button.close {
   .bs-popover-bottom .arrow::before, .bs-popover-auto[x-placement^="bottom"] .arrow::before {
     top: 0;
     border-bottom-color: rgba(0, 0, 0, 0.25); }
-  
+
   .bs-popover-bottom .arrow::after,
   .bs-popover-auto[x-placement^="bottom"] .arrow::after {
     top: 1px;
@@ -4689,7 +4690,7 @@ button.close {
   .bs-popover-left .arrow::before, .bs-popover-auto[x-placement^="left"] .arrow::before {
     right: 0;
     border-left-color: rgba(0, 0, 0, 0.25); }
-  
+
   .bs-popover-left .arrow::after,
   .bs-popover-auto[x-placement^="left"] .arrow::after {
     right: 1px;
@@ -4710,6 +4711,8 @@ button.close {
 .popover-body {
   padding: 0.5rem 0.75rem;
   color: #212529; }
+
+/* 캐러셀 1차*/
 
 .carousel {
   position: relative; }
@@ -4921,6 +4924,8 @@ button.close {
   padding-bottom: 20px;
   color: #fff;
   text-align: center; }
+
+  /* 캐러셀 1차 끝 */
 
 .align-baseline {
   vertical-align: baseline !important; }
@@ -7311,18 +7316,18 @@ h1, h2, h3, h4, h5,
       position: relative;
       top: 0; } }
   .ftco-navbar-light .navbar-brand {
-    color: #fff; }
+    color: #17a2b8; }
   .ftco-navbar-light .navbar-nav > .nav-item > .nav-link {
     font-size: 14px;
     padding-top: .9rem;
     padding-bottom: .9rem;
     padding-left: 20px;
     padding-right: 20px;
-    color: #fff;
+    color: #17a2b8;
     font-weight: 400;
     opacity: 1 !important; }
     .ftco-navbar-light .navbar-nav > .nav-item > .nav-link:hover {
-      color: #fff; }
+      color: #78d5ef; }
   .ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu {
     border: none;
     background: #fff;
@@ -7349,6 +7354,7 @@ h1, h2, h3, h4, h5,
         .ftco-navbar-light .navbar-nav > .nav-item.ftco-seperator:before {
           display: none; } }
   .ftco-navbar-light .navbar-nav > .nav-item.cta > a {
+    background-color: #17a2b8;
     color: #fff;
     border: 1px solid rgba(255, 255, 255, 0.4);
     padding-top: .5rem;
@@ -7364,12 +7370,13 @@ h1, h2, h3, h4, h5,
       display: inline-block;
       color: #fff; }
     .ftco-navbar-light .navbar-nav > .nav-item.cta > a:hover {
-      background: #f85959;
-      border: 1px solid #f85959; }
+      background: #007bff;
+      border: 1px solid #007bff; }
   .ftco-navbar-light .navbar-nav > .nav-item.cta.cta-colored span {
     border-color: #f85959; }
   .ftco-navbar-light .navbar-nav > .nav-item.active > a {
-    color: rgba(255, 255, 255, 0.5); }
+    color: rgba(0, 0, 255, 0.5);
+  }
   .ftco-navbar-light .navbar-toggler {
     border: none;
     color: rgba(255, 255, 255, 0.5) !important;
@@ -7388,10 +7395,10 @@ h1, h2, h3, h4, h5,
     -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); }
     .ftco-navbar-light.scrolled .nav-item.active > a {
-      color: #f85959 !important; }
+      color: #78d5ef !important; }
     .ftco-navbar-light.scrolled .nav-item.cta > a {
       color: #fff !important;
-      background: #f85959;
+      background: #17a2b8;
       border: none !important;
       padding-top: 0.5rem !important;
       padding-bottom: .5rem !important;
@@ -7430,7 +7437,7 @@ h1, h2, h3, h4, h5,
     .ftco-navbar-light.scrolled .nav-link {
       padding-top: 0.9rem !important;
       padding-bottom: 0.9rem !important;
-      color: #000000 !important; }
+      color: #17a2b8 !important; }
       .ftco-navbar-light.scrolled .nav-link.active {
         color: #f85959 !important; }
     .ftco-navbar-light.scrolled.awake {
@@ -7557,7 +7564,7 @@ h1, h2, h3, h4, h5,
       -ms-transform: translateY(-50%);
       transform: translateY(-50%);
       margin-top: -10px;
-      color: #f85959 !important;
+      color: #17a2b8 !important;
       -moz-transition: all 0.7s ease;
       -o-transition: all 0.7s ease;
       -webkit-transition: all 0.7s ease;
@@ -7573,6 +7580,14 @@ h1, h2, h3, h4, h5,
       right: 0; }
   .owl-carousel .owl-dots {
     text-align: center; }
+
+    /* 리뷰영역 점 제거 */
+
+    #review.owl-carousel .owl-dots {
+      text-align: center;
+      display: none;
+    }
+
     .owl-carousel .owl-dots .owl-dot {
       width: 10px;
       height: 10px;
@@ -7636,13 +7651,13 @@ h1, h2, h3, h4, h5,
   .btn:hover, .btn:active, .btn:focus {
     outline: none; }
   .btn.btn-primary {
-    background: #f85959;
-    border: 1px solid #f85959;
+    background: #17a2b8;
+    border: 1px solid #17a2b8;
     color: #fff; }
     .btn.btn-primary:hover {
-      border: 1px solid #f85959;
+      border: 1px solid #17a2b8;
       background: transparent;
-      color: #f85959; }
+      color: #17a2b8; }
     .btn.btn-primary.btn-outline-primary {
       border: 1px solid #f85959;
       background: transparent;
@@ -7749,15 +7764,26 @@ h1, h2, h3, h4, h5,
 .destination {
   display: block;
   width: 100%;
+  height: 300px;
   margin-bottom: 30px; }
   @media (max-width: 991.98px) {
-    .destination {
-      margin-bottom: 30px; } }
+    /* .destination  */
+    /* {margin-bottom: 30px; }  */
+    }
   .destination .img {
     display: block;
     height: 300px; }
+    /* 이미지 영역 */
+    /* index(메인) 이미지 */
   .destination .img-2 {
     height: 200px; }
+    /* tour(리스트) 이미지 */
+  .destination .img-3 {
+    height: 300px;
+    float: left;
+    width: 33%;
+  }
+
   .destination .icon {
     width: 60px;
     height: 60px;
@@ -7776,10 +7802,13 @@ h1, h2, h3, h4, h5,
       color: #000000; }
   .destination:hover .icon {
     opacity: 1; }
+    /* 상품 상세 영역 */
   .destination .text {
     border: 1px solid #e6e6e6;
     border-top: 1px solid transparent;
-    background: #fff; }
+    background: #fff;
+    margin-bottom: 30px;
+  }
     .destination .text h3 {
       font-size: 18px; }
       .destination .text h3 a {
@@ -7788,7 +7817,7 @@ h1, h2, h3, h4, h5,
       font-size: 14px; }
     .destination .text .rate i {
       font-size: 10px;
-      color: #f85959; }
+      color: #17a2b8, ; }
     .destination .text .rate span {
       padding-left: 5px;
       font-size: 10px; }
@@ -7817,7 +7846,7 @@ h1, h2, h3, h4, h5,
           .destination .text .bottom-area span:last-child {
             margin-left: 5px; } }
         .destination .text .bottom-area span:last-child a {
-          background: #8bc34a;
+          background: #17a2b8;
           color: #fff;
           -webkit-border-radius: 4px;
           -moz-border-radius: 4px;
@@ -7825,7 +7854,7 @@ h1, h2, h3, h4, h5,
           border-radius: 4px;
           padding: 3px 5px; }
           .destination .text .bottom-area span:last-child a:hover {
-            background: #8bc34a;
+            background: #007bff;
             color: #fff; }
 
 .hotel-img {
@@ -7841,7 +7870,7 @@ h1, h2, h3, h4, h5,
     color: #999999; }
 
 .hotel-single .star i {
-  color: #f85959; }
+  color: #17a2b8; }
 
 .hotel-single ul {
   margin: 0;
@@ -8086,16 +8115,71 @@ h1, h2, h3, h4, h5,
         background: transparent;
         display: none; } }
 
-.form-control {
-  height: 52px !important;
-  background: #fff !important;
-  color: #000000 !important;
-  font-size: 18px;
-  border-radius: 0px;
+  .form-control {
+    height: 45px !important;
+    background: #fff !important;
+    color: #000000 !important;
+    font-size: 18px;
+    border-radius: 0px;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important; }
+
+
+/* 체크인 체크아웃 */
+
+
+.form-control-checkin {
+  margin-top: 15px;
+  height: 35px !important;
+  background: #17a2b8 !important;
+  color: #fff !important;
+  text-align: center;
+  font-size: 15px;
+  border-radius: 25px 0px 0px 25px;
+  border: none;
   -webkit-box-shadow: none !important;
-  box-shadow: none !important; }
+  box-shadow: none !important;
+  margin-left: 10px; }
+  .form-control-checkin::-webkit-input-placeholder{
+    color: #fff;
+  }
+  .form-control-checkin::-moz-placeholder{
+    color: #fff;
+  }
+  .form-control-checkin:-ms-input-placeholder{
+    color: #fff;
+  }
+  .form-control-checkin:-moz-placeholder{
+    color: #fff;
+  }
   .form-control:focus, .form-control:active {
     border-color: #000000; }
+
+.form-control-checkout {
+  margin-top: 15px;
+  height: 35px !important;
+  background: #17a2b8 !important;
+  color: #fff !important;
+  text-align: center;
+  font-size: 15px;
+  border-radius: 0px 25px 25px 0px;
+  border: none;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important; }
+  .form-control-checkout::-webkit-input-placeholder{
+    color: #fff;
+  }
+  .form-control-checkout::-moz-placeholder{
+    color: #fff;
+  }
+  .form-control-checkout:-ms-input-placeholder{
+    color: #fff;
+  }
+  .form-control-checkiout:-moz-placeholder{
+    color: #fff;
+  }
+
+
 
 textarea.form-control {
   height: inherit !important; }
@@ -8364,6 +8448,9 @@ textarea.form-control {
     padding-bottom: 2em;
     position: relative; }
 
+
+
+
 .testimony-wrap {
   -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.03);
   -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.03);
@@ -8408,7 +8495,8 @@ textarea.form-control {
 .ftco-section {
   position: relative;
   width: 100%;
-  display: block; }
+  display: block;
+}
   .ftco-section .nav-pills p {
     margin-bottom: 0; }
   .ftco-section .nav-pills .nav-link {
@@ -8742,17 +8830,17 @@ textarea.form-control {
     margin-bottom: 4px;
     font-weight: 400; }
     .block-27 ul li a, .block-27 ul li span {
-      color: #f85959;
+      color: #17a2b8;
       text-align: center;
       display: inline-block;
       width: 40px;
       height: 40px;
       line-height: 40px;
       border-radius: 50%;
-      border: 1px solid #fdd3d3; }
+      border: 1px solid #17a2b8; }
     .block-27 ul li.active a, .block-27 ul li.active span {
-      background: #fdd3d3;
-      color: #f85959;
+      background: #17a2b8;
+      color: #fff;
       border: 1px solid transparent; }
 
 .block-8 .accordion-item .heading {
@@ -9052,7 +9140,7 @@ textarea.form-control {
   border: 1px solid #e6e6e6;
   margin-bottom: 30px; }
   .sidebar-wrap .heading {
-    font-size: 18px;
+    font-size: 30px;
     text-transform: uppercase; }
   .sidebar-wrap .fields {
     width: 100%;
@@ -9132,24 +9220,24 @@ textarea.form-control {
     -webkit-appearance: none; }
   .sidebar-wrap input[type=number]:invalid,
   .sidebar-wrap input[type=number]:out-of-range {
-    border: 2px solid #ff6347; }
+    border: 2px solid #17a2b8; }
   .sidebar-wrap input[type=range] {
     -webkit-appearance: none;
     width: 100%; }
   .sidebar-wrap input[type=range]:focus {
     outline: none; }
   .sidebar-wrap input[type=range]:focus::-webkit-slider-runnable-track {
-    background: #f85959; }
+    background: #17a2b8; }
   .sidebar-wrap input[type=range]:focus::-ms-fill-lower {
-    background: #f85959; }
+    background: #17a2b8; }
   .sidebar-wrap input[type=range]:focus::-ms-fill-upper {
-    background: #f85959; }
+    background: #17a2b8; }
   .sidebar-wrap input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
     height: 5px;
     cursor: pointer;
     animate: 0.2s;
-    background: #f85959;
+    background: #17a2b8;
     border-radius: 1px;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -9159,11 +9247,11 @@ textarea.form-control {
     position: relative;
     -webkit-box-shadow: 0px 0px 0px #000;
     box-shadow: 0px 0px 0px #000;
-    border: 1px solid #f85959;
+    border: 1px solid #17a2b8;
     height: 18px;
     width: 18px;
     border-radius: 25px;
-    background: #f85959;
+    background: #17a2b8;
     cursor: pointer;
     -webkit-appearance: none;
     margin-top: -7px; }
@@ -9211,8 +9299,9 @@ textarea.form-control {
     background: #f85959;
     cursor: pointer; }
 
+    /* 전체 별점 아이콘  */
 .rate i {
-  color: #f85959;
+  color: #17a2b8;
   margin: 0 4px; }
 
 .sidebar-box {
@@ -9339,3 +9428,92 @@ textarea.form-control {
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+
+
+/* 추가 영역 */
+
+/* 토글 버튼 */
+.toggle {
+}
+
+.toggle-input {
+    display: none; /* 기본 체크박스 숨기기 */
+}
+
+.toggle-label {
+    cursor: pointer;
+    text-align:center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    margin-right: 10px;
+    height: 30px;
+    width: 70px;
+    line-height: 10px;
+    float: left;
+}
+
+.toggle-input:checked + .toggle-label {
+    background-color: #17a2b8; /* 체크된 상태의 배경색 */
+    color: white; /* 체크된 상태의 텍스트 색상 */
+}
+
+
+/* 상품 상세 영역[tour(리스트)&hotel-single(상세페이지)] */
+.destination .text-tour {
+  border: 1px solid #e6e6e6;
+  border-left: 1px solid transparent;
+  background: #fff;
+  width: 67%;
+  float: right;
+  height: 300px;
+}
+  .destination .text-tour h3 {
+    font-size: 18px; }
+    .destination .text-tour h3 a {
+      color: #000000; }
+      .destination .text-tour span.listing {
+        font-size: 14px; }
+      .destination .text-tour .rate i {
+        font-size: 10px;
+        color: #17a2b8, ; }
+      .destination .text-tour .rate span {
+        padding-left: 5px;
+        font-size: 10px; }
+      .destination .text-tour .one {
+        width: calc(100% - 70px); }
+      .destination .text-tour .two {
+        width: 70px;
+        text-align: right; }
+        .destination .text-tour .two .price {
+          font-weight: 400;
+          font-size: 18px;
+          color: #2f89fc; }
+        .destination .text-tour .two .per-price {
+          font-size: 20px;
+          line-height: 1.4; }
+          .destination .text-tour .two .per-price small {
+            font-size: 12px; }
+      .destination .text-tour .days span {
+        font-size: 13px;}
+      .destination .text-tour .bottom-area {
+        margin-bottom: 0; }
+        .destination .text-tour .bottom-area span {
+          font-size: 14px; }
+          @media (min-width: 768px) {
+            .destination .text-tour .bottom-area span:last-child {
+              margin-left: 5px; } }
+          .destination .text-tour .bottom-area span:last-child a {
+            background: #17a2b8;
+            color: #fff;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            -ms-border-radius: 4px;
+            border-radius: 4px;
+            padding: 3px 5px; }
+            .destination .text-tour .bottom-area span:last-child a:hover {
+              background: #007bff;
+              color: #fff; }
+
+
+

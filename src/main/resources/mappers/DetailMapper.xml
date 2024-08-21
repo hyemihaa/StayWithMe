@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.swm.board.mapper.DetailMapper">
+    <resultMap id="placeResultMap" type="kr.co.swm.board.detail.model.DTO.DetailDTO">
+        <result column="ACCOMMODATION_NO" property="boardNo"></result>
+        <result column="NAME" property="boardName"></result>
+        <result column="ACCOMMODATION_TYPE" property="boardType"></result>
+        <result column="POST_NO" property="boardAddress"></result>
+        <result column="CHECK_IN_TIME" property="boardCheckIn"></result>
+        <result column="ROOM_NAME" property="boardRoomType"></result>
+        <result column="STANDARD_OCCUPANCY" property="boardMinPerson"></result>
+        <result column="MAX_OCCUPANCY" property="boardMaxPerson"></result>
+        <result column="LAT" property="lat"></result>
+        <result column="LNG" property="lon"></result>
+    </resultMap>
+
+<!-- 장소 -->
+    <select id="getPlace" resultMap="placeResultMap">
+        select DISTINCT
+        a.name,
+        a.ACCOMMODATION_NO,
+        a.ACCOMMODATION_TYPE,
+        a.POST_NO,
+        a.LAT,
+        a.LNG,
+        r.CHECK_IN_TIME,
+        r.ROOM_NAME,
+        r.STANDARD_OCCUPANCY,
+        r.MAX_OCCUPANCY
+        from ACCOMMODATION a
+        inner JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+
+
+    </select>
+
+    <select id="getAvgRate" resultType="double">
+        SELECT COALESCE(ROUND(AVG(r2.rating), 1), 0) AS avgRate
+        FROM room r
+        JOIN review r2 ON r.ROOM_NO = r2.ROOM_NO
+        where r.ACCOMMODATION_NO = #{boardNo}
+    </select>
+
+    <select id="getPost" resultMap="placeResultMap">
+        SELECT * FROM ACCOMMODATION a
+        JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+        WHERE a.ACCOMMODATION_NO = #{boardNo}
+        LIMIT 1
+    </select>
+
+</mapper>
