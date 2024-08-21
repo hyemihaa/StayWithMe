@@ -3,6 +3,7 @@ package kr.co.swm.board.list.model.sevice;
 
 import kr.co.swm.board.list.model.DTO.ListDTO;
 import kr.co.swm.board.list.model.DTO.PageInfoDTO;
+import kr.co.swm.board.list.model.DTO.SearchDTO;
 import kr.co.swm.board.mapper.ListMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +23,8 @@ public class ListServiceImpl implements ListService {
 
     //장소 불러오기
     @Override
-    public List<ListDTO> getPlace(PageInfoDTO pi){
-        List<ListDTO> place = listMapper.getPlace(pi);
-        return listMapper.getPlace(pi);
+    public List<ListDTO> getPlace(PageInfoDTO pi, SearchDTO searchDTO) {
+        return listMapper.getPlace(pi, searchDTO);
     }
 
     //별점 불러오기
@@ -35,8 +35,8 @@ public class ListServiceImpl implements ListService {
 
     //게시글의 수
     @Override
-    public int getTotalCount(){
-        return listMapper.getTotalCount();
+    public int getTotalCount(SearchDTO searchDTO){
+        return listMapper.getTotalCount(searchDTO);
     }
 
     //최저 기본 가격
