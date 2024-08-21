@@ -1,0 +1,119 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.container {
+    display: flex;
+    width: 80%;
+    max-width: 1200px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.left-section {
+    background-color: #1E90FF;
+    color: white;
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-section .logo {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.left-section h1 {
+    margin-bottom: 20px;
+    font-size: 36px;
+}
+
+.left-section p {
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.right-section {
+    background-color: #ffffff;
+    flex: 1;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.right-section h2 {
+    color: #1E90FF;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.right-section p {
+    color: #888888;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.right-section form {
+    display: flex;
+    flex-direction: column;
+}
+
+.right-section input[type="text"],
+.right-section input[type="password"] {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.right-section .options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.right-section .options label {
+    font-size: 14px;
+    color: #666666;
+}
+
+.right-section .options a {
+    color: #1E90FF;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.right-section button {
+    padding: 15px;
+    background-color: #1E90FF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.right-section button:hover {
+    background-color: #1c86ee;
+}
+
+.loginImage {
+    width: 600px;
+    height: 400px;
+}

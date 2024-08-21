@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link th:href="@{/css/web_manager/webcenter_dashboard.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo" th:href="@{/web-center}">#Stay With Me</div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a th:href="@{/web-center}" class="active"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
+                <li><a th:href="@{/web-coupon}"><i class="fas fa-ticket-alt"></i>Coupon</a></li>
+                <li><a href="#"><i class="fas fa-users"></i>Member</a></li>
+                <li style="margin-left: 20px;"><a th:href="@{/web-member}"><i class="fas fa-user"></i>이용자 조회</a></li>
+                <li style="margin-left: 20px;"><a th:href="@{/web-seller}"><i class="fas fa-store"></i>판매자 등록</a></li>
+                <li style="margin-left: 20px;"><a th:href="@{/web-manager}"><i class="fas fa-user-shield"></i>관리자 등록</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <main class="main-content">
+        <header class="header">
+            <div class="header-right">
+                <span>John Doe</span>
+                <a href="#">Profile</a>
+                <a href="#">Logout</a>
+            </div>
+        </header>
+        <section class="dashboard-content">
+            <div class="status-boxes">
+                <div class="status-box">
+                    <i class="fas fa-chart-line"></i>
+                    <div>
+                        <h4>사용자 조회수</h4>
+                        <p>0</p>
+                    </div>
+                </div>
+                <div class="status-box">
+                    <i class="fas fa-file-alt"></i>
+                    <div>
+                        <h4>예약 신청</h4>
+                        <p>0</p>
+                    </div>
+                </div>
+                <div class="status-box">
+                    <i class="fas fa-times-circle"></i>
+                    <div>
+                        <h4>예약 취소</h4>
+                        <p>0</p>
+                    </div>
+                </div>
+                <div class="status-box">
+                    <i class="fas fa-dollar-sign"></i>
+                    <div>
+                        <h4>결제 금액</h4>
+                        <p>0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="charts">
+                <div class="chart-container">
+                    <h3>숙박 형태별 매출 현황</h3>
+                    <canvas id="accommodationChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>월별 매출 현황</h3>
+                    <canvas id="monthlySalesChart"></canvas>
+                </div>
+            </div>
+            <div class="sales-table">
+                <h3>최근 매출 현황</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>일자</th>
+                        <th>분류</th>
+                        <th>예약</th>
+                        <th>결제</th>
+                        <th>취소</th>
+                        <th>매출액</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>2024.08.05</td>
+                        <td>호텔</td>
+                        <td>150</td>
+                        <td>2557000</td>
+                        <td>84000</td>
+                        <td>2473000</td>
+                    </tr>
+                    <tr>
+                        <td>2024.08.05</td>
+                        <td>리조트</td>
+                        <td>65</td>
+                        <td>1674000</td>
+                        <td>550000</td>
+                        <td>1124000</td>
+                    </tr>
+                    <tr>
+                        <td>2024.08.05</td>
+                        <td>펜션</td>
+                        <td>37</td>
+                        <td>850000</td>
+                        <td>120000</td>
+                        <td>730000</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:src="@{js/web_manager/webcenter_dashboard.js}"></script>
+</body>
+</html>
