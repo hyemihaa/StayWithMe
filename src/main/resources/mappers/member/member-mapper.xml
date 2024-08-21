@@ -2,36 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.swm.member.model.mapper.MemberMapper">
 
-    <resultMap id="userResultMap" type="kr.co.swm.member.model.dto.MemberDTO">
-        <result column="USER_NO" property="userNo"></result>
+    <resultMap id="userResultMap" type="kr.co.swm.member.model.dto.UserDTO">
         <result column="USER_ID" property="userId"></result>
         <result column="USER_PWD" property="userPwd"></result>
+        <result column="ROLES" property="role"></result>
+        <result column="USER_NO" property="no"></result>
         <result column="USER_NAME" property="userName"></result>
         <result column="USER_PHONE" property="userPhone"></result>
         <result column="CREATED_DATE" property="createdDate"></result>
         <result column="DELETED_DATE" property="deletedDate"></result>
-        <result column="ROLES" property="role"></result>
+    </resultMap>
 
-        <result column="ACCOMODATION_ADMIN_NO" property="accommodationAdminNo"></result>
+    <resultMap id="adminResultMap" type="kr.co.swm.member.model.dto.AdminDTO">
+        <result column="ACCOMODATION_ADMIN_NO" property="no"></result>
+        <result column="USER_ID" property="userId"></result>
+        <result column="USER_PWD" property="userPwd"></result>
+        <result column="ROLES" property="role"></result>
         <result column="ADMIN_ID" property="userId"></result>
         <result column="ADMIN_PWD" property="userPwd"></result>
         <result column="ADMIN_TYPE" property="role"></result>
     </resultMap>
 
+
     <!--회원가입 insert-->
     <insert id="setSignUp" >
         INSERT INTO USER (USER_ID, USER_PWD, USER_NAME, USER_PHONE, CREATED_DATE, DELETED_DATE)
-        VALUES (#{memberDTO.userId}, #{memberDTO.userPwd}, #{memberDTO.userName}, #{memberDTO.userPhone}, #{memberDTO.createdDate}, #{memberDTO.deletedDate})
-
-<!--        &lt;!&ndash;숙소 관리자 계정 임시&ndash;&gt;-->
-<!--        INSERT INTO ACCOMMODATIONADMINS (ADMIN_ID, ADMIN_PWD, ADMIN_TYPE)-->
-<!--        VALUES-->
-<!--        (#{memberDTO.userId}, #{memberDTO.userPwd}, 'ROLE_ACCOMMODATION_ADMIN')-->
-
-        <!--사이트 관리자 계정 임시-->
-<!--        INSERT INTO SITEADMINS (ADMIN_ID, ADMIN_PWD, ADMIN_TYPE)-->
-<!--        VALUES-->
-<!--        (#{memberDTO.userId}, #{memberDTO.userPwd}, 'ROLE_SITE_ADMIN')-->
+        VALUES (#{userDTO.userId}, #{userDTO.userPwd}, #{userDTO.userName}, #{userDTO.userPhone}, #{userDTO.createdDate}, #{userDTO.deletedDate})
     </insert>
 
     <!--중복아이디-->
@@ -41,7 +37,7 @@
     </select>
 
     <!--아이디 찾기-->
-    <select id="findUserId" resultType="java.lang.String">
+    <select id="findUserId" resultType="String">
         SELECT USER_ID FROM USER
         WHERE USER_NAME = #{userName} AND USER_PHONE = #{userPhone}
     </select>
@@ -66,25 +62,25 @@
     </select>
 
     <!--로그인한 숙소관리자의 전체 정보-->
-    <select id="findByAccommAdminInfo" resultMap="userResultMap">
+    <select id="findByAccommAdminInfo" resultMap="adminResultMap">
         SELECT * FROM ACCOMMODATIONADMINS
         WHERE ADMIN_ID = #{userId}
     </select>
 
     <!--로그인한 사이트관리자의 전체 정보-->
-    <select id="findBySiteAdminInfo" resultMap="userResultMap">
+    <select id="findBySiteAdminInfo" resultMap="adminResultMap">
         SELECT * FROM SITEADMINS
         WHERE ADMIN_ID = #{userId}
     </select>
 
     <insert id="setSellerSignup">
         INSERT INTO ACCOMMODATIONADMINS
-        VALUES (NULL, #{memberDTO.userId}, #{memberDTO.userPwd}, #{memberDTO.role})
+        VALUES (NULL, #{adminDTO.userId}, #{adminDTO.userPwd}, #{adminDTO.role})
     </insert>
 
     <insert id="setManagerSignup">
         INSERT INTO SITEADMINS
-        VALUES (NULL, #{memberDTO.userId}, #{memberDTO.userPwd}, #{memberDTO.role})
+        VALUES (NULL, #{adminDTO.userId}, #{adminDTO.userPwd}, #{adminDTO.role})
     </insert>
 
 </mapper>

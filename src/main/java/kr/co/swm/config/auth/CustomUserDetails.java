@@ -1,6 +1,8 @@
 package kr.co.swm.config.auth;
 
+import kr.co.swm.member.model.dto.AdminDTO;
 import kr.co.swm.member.model.dto.MemberDTO;
+import kr.co.swm.member.model.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,24 +13,28 @@ import java.util.List;
 
 // 사용자 정보를 스프링 시큐리티가 이해할 수 있는 형식으로 제공 하는 역할
 // (사용자 인증, 사용자 권한 관리)
-@RequiredArgsConstructor
-public class CustomUserDetails implements UserDetails {
-    private final MemberDTO memberDTO;
+//@RequiredArgsConstructor
+public class CustomUserDetails<T extends MemberDTO> implements UserDetails {
+    private final T dto;
+
+    public CustomUserDetails(T dto) {
+        this.dto = dto;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        System.out.println("CustomUserDetails 권한 : " + memberDTO.getRole());
-        return List.of(new SimpleGrantedAuthority(memberDTO.getRole()));
+        System.out.println("CustomUserDetails 권한 : " + dto.getRole());
+        return List.of(new SimpleGrantedAuthority(dto.getRole()));
     }
 
     @Override
     public String getPassword() {
-        return memberDTO.getUserPwd();
+        return dto.getUserPwd();
     }
 
     @Override
     public String getUsername() {
-        return memberDTO.getUserId();
+        return dto.getUserId();
     }
 
     @Override
@@ -51,8 +57,7 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
-    // MemberDTO 객체를 반환하는 메서드
-    public MemberDTO getMemberDTO() {
-        return memberDTO;
+    public T getMemberDTO() {
+        return dto;
     }
 }
