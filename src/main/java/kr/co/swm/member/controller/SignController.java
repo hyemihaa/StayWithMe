@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -105,6 +106,28 @@ public class SignController {
         int result = memberService.setSignup(memberDTO);
         return "redirect:/signform";
     }
+
+    @PostMapping("/admin-signup")
+    public String adminSignUp(@Valid MemberDTO memberDTO, BindingResult bindingResult) {
+
+        if(memberDTO.getRole().equals("ROLE_ACCOMMODATION_ADMIN")) {
+            int result = memberService.setSellerSignup(memberDTO);
+            if(result != 0) {
+                return "redirect:/web-seller";
+            } else {
+                return "error";
+            }
+        } else if(memberDTO.getRole().equals("ROLE_SITE_ADMIN")) {
+            int result = memberService.setManagerSignup(memberDTO);
+            if(result != 0) {
+                return "redirect:/web-manager";
+            } else {
+                return "error";
+            }
+        }
+        return "";
+    }
+
 
     // 첫 로그인 요청
     @PostMapping("/signin")

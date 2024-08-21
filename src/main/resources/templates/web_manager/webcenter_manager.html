@@ -23,20 +23,27 @@
         </nav>
     </aside>
     <main class="main-content">
+        <header class="header">
+            <div class="header-right">
+                <span>John Doe</span>
+                <a href="#">Profile</a>
+                <a href="#">Logout</a>
+            </div>
+        </header>
         <section class="form-section">
             <h3>웹서버 관리자 등록</h3>
-            <form class="seller-form">
+            <form th:action="@{/admin-signup}" method="POST" class="seller-form">
                 <div class="form-group">
                     <label for="adminId">아이디:</label>
-                    <input type="text" id="adminId" name="adminId" placeholder="아이디를 입력하세요" required>
+                    <input type="text" id="adminId" name="userId" placeholder="아이디를 입력하세요" required>
                 </div>
                 <div class="form-group">
                     <label for="adminPwd">비밀번호:</label>
-                    <input type="password" id="adminPwd" name="adminPwd" placeholder="비밀번호를 입력하세요" required>
+                    <input type="password" id="adminPwd" name="userPwd" placeholder="비밀번호를 입력하세요" required>
                 </div>
                 <div class="form-group">
                     <label for="adminType">권한:</label>
-                    <input type="text" id="adminType" name="adminType" value="ROLE_SITE_ADMIN" readonly>
+                    <input type="text" id="adminType" name="role" value="ROLE_SITE_ADMIN" readonly>
                 </div>
                 <div class="form-actions">
                     <button type="submit">등록</button>

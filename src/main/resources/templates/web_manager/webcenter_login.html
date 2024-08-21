@@ -20,15 +20,19 @@
     <div class="right-section">
         <h2>Login Account</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        <form action="/admin/dashboard" method="post">
-            <input type="text" name="username" placeholder="Email ID" required>
-            <input type="password" name="password" placeholder="Password" required>
+        <form th:action="@{/signin}" method="post">
+            <input type="text" name="userId" placeholder="Email ID" required>
+            <input type="password" name="userPwd" placeholder="Password" required>
             <div class="options">
+                <!-- 판매자(Seller) 또는 관리자(Admin) 선택 라디오 버튼 -->
                 <label>
-                    <input type="checkbox" name="keep-signed-in">
-                    Keep me signed in
+                    <input type="radio" name="role" value="ROLE_ACCOMMODATION_ADMIN" required checked>
+                    판매자
                 </label>
-                <a href="#">Already a member?</a>
+                <label>
+                    <input type="radio" name="role" value="ROLE_SITE_ADMIN" required>
+                    관리자
+                </label>
             </div>
             <button type="submit">SUBSCRIBE</button>
         </form>

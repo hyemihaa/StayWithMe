@@ -67,5 +67,15 @@
         WHERE ADMIN_ID = #{userId}
     </select>
 
+    <insert id="setSellerSignup">
+        INSERT INTO ACCOMMODATIONADMINS
+        VALUES (NULL, #{memberDTO.userId}, #{memberDTO.userPwd}, #{memberDTO.role})
+    </insert>
+
+    <insert id="setManagerSignup">
+        INSERT INTO SITEADMINS
+        VALUES (NULL, #{memberDTO.userId}, #{memberDTO.userPwd}, #{memberDTO.role})
+    </insert>
+
 </mapper>
 

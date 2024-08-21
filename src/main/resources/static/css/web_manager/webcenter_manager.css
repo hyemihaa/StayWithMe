@@ -69,6 +69,13 @@ body {
     overflow-y: auto;
 }
 
+.header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
 .form-section {
     background-color: #ecf0f1;
     padding: 20px;

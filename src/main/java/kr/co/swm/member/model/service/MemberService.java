@@ -53,6 +53,28 @@ public class MemberService {
         }
     }
 
+    public int setSellerSignup(MemberDTO memberDTO) {
+        String userPwd = memberDTO.getUserPwd();
+
+            // 비밀번호와 비밀번호 확인이 일치하는지 체크
+            String encodedPassword = passwordEncoder.encode(userPwd);
+            // 암호화 비밀번호 DTO에 저장
+            memberDTO.setUserPwd(encodedPassword);
+
+            return memberMapper.setSellerSignup(memberDTO);
+    }
+
+    public int setManagerSignup(MemberDTO memberDTO) {
+        String userPwd = memberDTO.getUserPwd();
+
+        // 비밀번호와 비밀번호 확인이 일치하는지 체크
+        String encodedPassword = passwordEncoder.encode(userPwd);
+        // 암호화 비밀번호 DTO에 저장
+        memberDTO.setUserPwd(encodedPassword);
+
+        return memberMapper.setManagerSignup(memberDTO);
+    }
+
     // id 중복검사
     public int idCheck(String userId) {
         return memberMapper.idCheck(userId);
