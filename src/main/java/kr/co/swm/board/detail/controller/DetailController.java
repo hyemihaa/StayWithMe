@@ -3,6 +3,7 @@ package kr.co.swm.board.detail.controller;
 
 import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import kr.co.swm.board.detail.model.service.DetailService;
+import kr.co.swm.board.list.model.DTO.ListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +24,8 @@ public class DetailController {
       }
 
     @GetMapping("/hotel-single")
-    public String detail(@RequestParam("boardNo") String boardNo, Model model) {
+    public String detail(@RequestParam("boardNo") String boardNo,
+                         Model model) {
 
         //  장소 불러오기
         List<DetailDTO> place = detailService.getPlace();
@@ -33,6 +35,10 @@ public class DetailController {
 
         //  별점 평균
         double avgRate = detailService.getAvgRate(post.getBoardNo());
+
+        //  금액 조회
+
+//        List<DetailDTO> cost = detailService.getCost();
 
         //  방 평균 점수
 //        double roomRate = detailService.getRoomRate(post.getBoardNo());

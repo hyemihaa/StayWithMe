@@ -8,10 +8,12 @@
         <result column="POST_NO" property="boardAddress"></result>
         <result column="CHECK_IN_TIME" property="boardCheckIn"></result>
         <result column="ROOM_NAME" property="boardRoomType"></result>
+        <result column="ROOM_TYPE_NO" property="boardRoomNo"></result>
         <result column="STANDARD_OCCUPANCY" property="boardMinPerson"></result>
         <result column="MAX_OCCUPANCY" property="boardMaxPerson"></result>
         <result column="LAT" property="lat"></result>
         <result column="LNG" property="lon"></result>
+        <result column="BASIC_RATE" property="boardCount"></result>
     </resultMap>
 
 <!-- 장소 -->
@@ -30,7 +32,6 @@
         from ACCOMMODATION a
         inner JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO
 
-
     </select>
 
     <select id="getAvgRate" resultType="double">
@@ -43,8 +44,17 @@
     <select id="getPost" resultMap="placeResultMap">
         SELECT * FROM ACCOMMODATION a
         JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+        join basic_rate br on br.ROOM_NO = r.ROOM_NO
         WHERE a.ACCOMMODATION_NO = #{boardNo}
         LIMIT 1
+    </select>
+
+    <select id="getCost" resultMap="placeResultMap">
+        SELECT a.ACCOMMODATION_NO, r.ROOM_NO ,br.BASIC_RATE  FROM ACCOMMODATION a
+        JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+        join basic_rate br on br.ROOM_NO = r.ROOM_NO
+        where r.ACCOMMODATION_NO = #{boardNo}
+        and r.ROOM_TYPE_NO = #{board}
     </select>
 
 </mapper>
