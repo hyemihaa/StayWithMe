@@ -31,6 +31,7 @@ public class MemberServiceImpl implements MemberService {
     private final JWTUtil jwtUtil;
 
     // 회원가입
+    @Override
     public int setSignup(MemberDTO memberDTO) {
         String userPwd = memberDTO.getUserPwd();
         String userConfirmPwd = memberDTO.getConfirmPassword();
@@ -54,11 +55,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // id 중복검사
+    @Override
     public int idCheck(String userId) {
         return memberMapper.idCheck(userId);
     }
 
     // 인증번호 생성 메서드
+    @Override
     public String generateCertificationCode() {
         Random random = new Random();
         int code = 100000 + random.nextInt(900000);
@@ -66,16 +69,21 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // Cool SMS API 호출 메서드
+    @Override
     public void sendSMSViaCoolSMS(String phoneNumber, String certificationCode) {
         smsCertificationUtill.sendSMS(phoneNumber, certificationCode); // SmsCertificationUtil을 사용하여 SMS 발송
     }
 
     // 로그인
-    public String authenticate(String userId, String userPwd, HttpServletResponse response) {
+    @Override
+    public String authenticate(String userId, String userPwd, HttpServletResponse response, String signRole) {
+        System.out.println("-----------memberService상단------------------");
+
         // 사용자 정보 로드 및 권한 초기화
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId);
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId, signRole);
         String role = "ROLE_USER"; // 기본 권한 (기본값은 일반 사용자)
         Long accommAdminKey = null; // 숙소 관리자 키 초기화
+        Long userNo = null;
 
         // 사용자 정보가 존재하는 경우 (일반 유저, 사이트 관리자 또는 숙소 관리자)
         if (userDetails != null) {
@@ -85,11 +93,21 @@ public class MemberServiceImpl implements MemberService {
                     .findFirst()
                     .orElse("ROLE_USER");
         }
-        if ("ROLE_ACCOMMODATION_ADMIN".equals(role)) {
-                if (userDetails instanceof CustomUserDetails) {
-                    accommAdminKey = ((CustomUserDetails) userDetails).getMemberDTO().getAccommodationAdminNo();
-                }
+
+        if ("ROLE_USER".equals(role)) {
+            if (userDetails instanceof CustomUserDetails) {
+                userNo = ((CustomUserDetails) userDetails).getMemberDTO().getUserNo();
+            }
+            role = "ROLE_USER";
+        }
+        else if ("ROLE_ACCOMMODATION_ADMIN".equals(role)) {
+            if (userDetails instanceof CustomUserDetails) {
+                accommAdminKey = ((CustomUserDetails) userDetails).getMemberDTO().getAccommodationAdminNo();
+            }
             role = "ROLE_ACCOMMODATION_ADMIN";
+        }
+        else if ("ROLE_SITE_ADMIN".equals(role)) {
+            role = "ROLE_SITE_ADMIN";
         }
 
         System.out.println("========memberService========");
@@ -100,6 +118,7 @@ public class MemberServiceImpl implements MemberService {
             Map<String, Object> claims = new HashMap<>();
             claims.put("userId", userId);
             claims.put("role", role);
+            claims.put("userNo", userNo);
 
             // 숙소 관리자일 경우 숙소 키 추가
             if ("ROLE_ACCOMMODATION_ADMIN".equals(role)) {
@@ -113,7 +132,7 @@ public class MemberServiceImpl implements MemberService {
 
             // 토큰생성
             LocalDateTime expireAt = LocalDateTime.now().plusHours(1);
-            String token = jwtUtil.create(claims, expireAt, accommAdminKey);
+            String token = jwtUtil.create(claims, expireAt, accommAdminKey, userNo);
 
             // 토큰 쿠키에 저장
             Cookie accessCookie = new Cookie("Authorization", token);
@@ -131,11 +150,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 아이디 찾기
+    @Override
     public String findUserId(String userName, String userPhone) {
         return memberMapper.findUserId(userName, userPhone);
     }
 
     // 비밀번호 찾기(임시 비밀번호 발급)
+    @Override
     public String passwordReset(String userId, String userPhone) {
         // 사용자검증
         String userExists =  memberMapper.verifyUser(userId, userPhone);
