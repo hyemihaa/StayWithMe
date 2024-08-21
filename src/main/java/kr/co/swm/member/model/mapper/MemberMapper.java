@@ -7,17 +7,17 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface MemberMapper {
 
-    public MemberDTO findByUserId(@Param("userId") String userId);
+    MemberDTO findByUserId(@Param("userId") String userId);
 
-    public int setSignUp(@Param("memberDTO") MemberDTO memberDTO);
+    int setSignUp(@Param("memberDTO") MemberDTO memberDTO);
 
-    public int idCheck(@Param("userId") String userId);
+    int idCheck(@Param("userId") String userId);
 
-    public MemberDTO accommodationAdminByUserId(@Param("userId") String userId);
+    MemberDTO accommodationAdminByUserId(@Param("userId") String userId);
 
-    public String findUserId(@Param("userName") String userName, @Param("userPhone") String userPhone);
+    String findUserId(@Param("userName") String userName, @Param("userPhone") String userPhone);
 
-    public String verifyUser(@Param("userId") String userId, @Param("userPhone") String userPhone);
+    String verifyUser(@Param("userId") String userId, @Param("userPhone") String userPhone);
 
-    public void updateResetPassword(@Param("userId") String userId, @Param("userPhone") String userPhone, @Param("encodedPassword") String encodedPassword);
+    void updateResetPassword(@Param("userId") String userId, @Param("userPhone") String userPhone, @Param("encodedPassword") String encodedPassword);
 }
