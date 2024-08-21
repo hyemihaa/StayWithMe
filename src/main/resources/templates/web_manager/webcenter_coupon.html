@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coupon Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link th:href="@{/css/web_manager/webcenter_coupon.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo" th:href="@{/web-center}">#Stay With Me</div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a th:href="@{/web-center}"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
+                <li><a th:href="@{/web-coupon}" class="active"><i class="fas fa-ticket-alt"></i>Coupon</a></li>
+                <li><a href="#"><i class="fas fa-users"></i>Member</a></li>
+                <li style="margin-left: 20px;"><a th:href="@{/web-member}"><i class="fas fa-user"></i>이용자 조회</a></li>
+                <li style="margin-left: 20px;"><a th:href="@{/web-seller}"><i class="fas fa-store"></i>판매자 등록</a></li>
+                <li style="margin-left: 20px;"><a th:href="@{/web-manager}"><i class="fas fa-user-shield"></i>관리자 등록</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <main class="main-content">
+        <header class="header">
+            <div class="header-right">
+                <span>John Doe</span>
+                <a href="#">Profile</a>
+                <a href="#">Logout</a>
+            </div>
+        </header>
+        <section class="coupon-section">
+            <div class="coupon-left">
+                <div class="image-container">
+                    <h3>쿠폰 등록</h3>
+                    <img th:src="@{/images/coupon.png}" alt="Coupon Image">
+                </div>
+            </div>
+            <div class="coupon-form">
+                <h3>Coupon Management</h3>
+                <form>
+                    <table>
+                        <tr>
+                            <td><label for="couponName">쿠폰 이름</label></td>
+                            <td><input type="text" id="couponName" name="couponName"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="couponType">쿠폰 타입</label></td>
+                            <td>
+                                <select id="couponType" name="couponType">
+                                    <option value="pay">금액 할인</option>
+                                    <option value="percent">퍼센트 할인</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="discountValue">할인 값</label></td>
+                            <td><input type="text" id="discountValue" name="discountValue"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="couponQuantity">쿠폰 수량</label></td>
+                            <td><input type="number" id="couponQuantity" name="couponQuantity"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="couponStartDate">쿠폰 시작일</label></td>
+                            <td><input type="date" id="couponStartDate" name="couponStartDate"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="couponEndDate">쿠폰 종료일</label></td>
+                            <td><input type="date" id="couponEndDate" name="couponEndDate"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="minimumAmount">사용 최소금액</label></td>
+                            <td><input type="text" id="minimumAmount" name="minimumAmount"></td>
+                        </tr>
+                    </table>
+                    <div class="form-actions">
+                        <button type="submit">Save Coupon</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section class="coupon-list">
+            <h3>쿠폰 리스트</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>쿠폰 이름</th>
+                    <th>쿠폰 타입</th>
+                    <th>할인 값</th>
+                    <th>쿠폰 수량</th>
+                    <th>쿠폰 시작일</th>
+                    <th>쿠폰 종료일</th>
+                    <th>사용 최소금액</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 예시 데이터 -->
+                <tr>
+                    <td>Example Coupon</td>
+                    <td>금액 할인</td>
+                    <td>5000</td>
+                    <td>100</td>
+                    <td>2024-08-20</td>
+                    <td>2024-12-31</td>
+                    <td>20000</td>
+                </tr>
+                <!-- 더 많은 데이터는 여기에 추가 -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+</div>
+<script th:src="@{/js/web_manager/webcenter_coupon.js}"></script>
+</body>
+</html>

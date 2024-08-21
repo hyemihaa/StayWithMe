@@ -1,5 +1,6 @@
 package kr.co.swm.member.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import kr.co.swm.config.auth.CustomUserDetailsService;
@@ -86,6 +87,29 @@ public class SignController {
         return "redirect:/signform";
     }
 
+    // 관리자(사이트 관리자 or 숙소 관리자)
+    @PostMapping("/admin-signup")
+    public String adminSignUp(@Valid MemberDTO memberDTO) {
+
+        if(memberDTO.getRole().equals("ROLE_ACCOMMODATION_ADMIN")) {
+            int result = memberServiceImpl.setSellerSignup(memberDTO);
+            if(result != 0) {
+                return "redirect:/web-seller";
+            } else {
+                return "error";
+            }
+        } else if(memberDTO.getRole().equals("ROLE_SITE_ADMIN")) {
+            int result = memberServiceImpl.setManagerSignup(memberDTO);
+            if(result != 0) {
+                return "redirect:/web-manager";
+            } else {
+                return "error";
+            }
+        }
+        return "";
+    }
+
+
     // 첫 로그인 요청
     @PostMapping("/signin")
     public String signIn(@RequestParam(value = "userId") String userId, @RequestParam(value = "userPwd") String userPwd,@RequestParam(value = "role") String signRole,
@@ -162,3 +186,6 @@ public class SignController {
         }
     }
 }
+
+
+
