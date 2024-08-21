@@ -38,14 +38,15 @@ public class SignController {
     }
 
     // 휴대전화 인증
-    @PostMapping("/sms/send")
+    @PostMapping("/sms/send/{phoneNumber}")
     @ResponseBody
-    public Map<String, Object> sendSMS(@RequestBody Map<String, String> param) {
+    public Map<String, Object> sendSMS(@PathVariable String phoneNumber, @RequestBody Map<String, String> param) {
         // 응답을 담을 Map 객체 생성
         Map<String, Object> response = new HashMap<>();
         try {
+            // TODO 요거 MemberController 에 /sms/send path 겹쳐서 오류나요 path 변경하셔야 해요 안그러면 application 안돌아가요 - 어진이가
             // param에서 userPhone 키의 값 추출, 휴대전화 번호 저장
-            String phoneNumber = param.get("phoneNumber");
+            // String phoneNumber = param.get("phoneNumber");
 
             // 인증번호 생성 요청
             String certificationCode = memberService.generateCertificationCode();
