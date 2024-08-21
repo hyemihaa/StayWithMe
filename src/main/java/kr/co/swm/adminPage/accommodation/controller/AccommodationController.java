@@ -51,37 +51,34 @@ public class AccommodationController {
     @PostMapping("/save-location")
     public ResponseEntity<?> saveLocation(@RequestParam("previewFiles") List<MultipartFile> subFile,
                                           @RequestParam("mainPhoto") List<MultipartFile> mainFile,
-                                          @ModelAttribute AccommodationDto accommodationDto,
-                                          @ModelAttribute RoomForm roomForm
+                                          @ModelAttribute AccommodationDto accommodationDto, // 업소
+                                          @ModelAttribute RoomForm roomForm // 객실
     ) {
-
-
         AccommodationImageDto mainImage = uploadFile.uploadSingleFile(mainFile.get(1), "MAIN");
-        int result = accommodationService.saveAccommodation(accommodationDto, mainImage);
+        accommodationService.saveAccommodation(accommodationDto, mainImage);
 
-        int roomsSize = roomForm.getRooms().size()-1;
+        int roomsSize = roomForm.getRooms().size() - 1;
         int startIndex = roomsSize;
 
         for (int i = 1; i < roomForm.getRooms().size(); i++) {
-        AccommodationDto room = roomForm.getRooms().get(i);
+            AccommodationDto room = roomForm.getRooms().get(i);
+            accommodationDto.changeRate(room.getWeekdayRate(),
+                    room.getFridayRate(),
+                    room.getSaturdayRate(),
+                    room.getSundayRate());
 
-            String roomCategory = room.getRoomCategory();
-            String checkIn = room.getCheckInTime();
-            String checkOut = room.getCheckOutTime();
-
-            int roomValues = room.getRoomValues();
-            String roomName = room.getRoomName();
             int endIndex = room.getEndIndex();
+            accommodationService.enrollRooms(accommodationDto,
+                    room,
+                    roomsSize,
+                    subFile,
+                    startIndex);
 
-            AccommodationDto roomRate = new AccommodationDto(room.getWeekdayRate(), room.getFridayRate(), room.getSaturdayRate(), room.getSundayRate());
-
-            accommodationService.enrollRooms(accommodationDto, roomCategory, roomName, checkIn, checkOut, roomValues, roomRate, roomsSize, endIndex, subFile, startIndex);
             startIndex = (endIndex + roomsSize);
         }
         Map<String, String> response = new HashMap<>();
         try {
             response.put("message", "Upload successful!");
-            // 데이터 저장 로직 수행
             response.put("success", "true");
             return ResponseEntity.ok(response);
         } catch (Exception e) {

@@ -29,12 +29,8 @@ public class AccommodationDto {
     private String lon;         // 경도
 
     private int views;         // 조회수
-
     private int standardOccupation;         // 기준인원
     private int maxOccupation;         // 최대인원
-
-
-
     /**
      * 객실
      */
@@ -55,11 +51,26 @@ public class AccommodationDto {
 
     private int endIndex;       // 객실별 이미지 개수
 
-    public AccommodationDto(int weekdayRate, int fridayRate, int saturdayRate, int sundayRate) {
+    public AccommodationDto changeRate(int weekdayRate, int fridayRate, int saturdayRate, int sundayRate) {
         this.weekdayRate = weekdayRate;
         this.fridayRate = fridayRate;
         this.saturdayRate = saturdayRate;
         this.sundayRate = sundayRate;
+        return this;
     }
 
+
+    public int getCategoryNo(AccommodationDto room, int categoryNo) {
+        if ("오션뷰".equals(room.getRoomCategory())) {
+            categoryNo = 1;
+        } else if ("리버뷰".equals(room.getRoomCategory())) {
+            categoryNo = 2;
+        } else if ("시티뷰".equals(room.getRoomCategory())) {
+            categoryNo = 3;
+        } else if ("마운틴뷰".equals(room.getRoomCategory())) {
+            categoryNo = 4;
+        }
+
+        return categoryNo;
+    }
 }

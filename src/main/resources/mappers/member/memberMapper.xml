@@ -2,14 +2,69 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.swm.member.model.mapper.MemberMapper">
 
-    <insert id="setSignUp">
+    <resultMap id="userResultMap" type="kr.co.swm.member.model.dto.MemberDTO">
+        <result column="USER_ID" property="userId"></result>
+        <result column="USER_PWD" property="userPwd"></result>
+        <result column="USER_NAME" property="userName"></result>
+        <result column="USER_PHONE" property="userPhone"></result>
+        <result column="CREATED_DATE" property="createdDate"></result>
+        <result column="DELETED_DATE" property="deletedDate"></result>
+        <result column="ROLES" property="role"></result>
+    </resultMap>
+
+    <insert id="setSignUp" >
         INSERT INTO USER (USER_ID, USER_PWD, USER_NAME, USER_PHONE, CREATED_DATE, DELETED_DATE)
         VALUES (#{memberDTO.userId}, #{memberDTO.userPwd}, #{memberDTO.userName}, #{memberDTO.userPhone}, #{memberDTO.createdDate}, #{memberDTO.deletedDate})
+
+        <!--        &lt;!&ndash;사이트 관리자 계정 임시&ndash;&gt;-->
+        <!--        INSERT INTO USER (USER_ID, USER_PWD, USER_NAME, USER_PHONE, CREATED_DATE, DELETED_DATE, ROLES)-->
+        <!--        VALUES (#{memberDTO.userId}, #{memberDTO.userPwd}, #{memberDTO.userName}, #{memberDTO.userPhone}, #{memberDTO.createdDate}, #{memberDTO.deletedDate}, 'ROLE_SITE_ADMIN')-->
+
+        <!--        &lt;!&ndash;숙소 관리자 계정 임시&ndash;&gt;-->
+        <!--        INSERT INTO ACCOMMODATIONADMINS (ADMIN_ID, ADMIN_PWD, ADMIN_TYPE)-->
+        <!--        VALUES-->
+        <!--        (#{memberDTO.userId}, #{memberDTO.userPwd}, 'ROLE_ACCOMMODATION_ADMIN')-->
     </insert>
 
     <select id="idCheck">
         SELECT count(*) FROM USER
         WHERE USER_ID = #{userId}
+    </select>
+
+    <select id="findByUserId" resultMap="userResultMap">
+        SELECT * FROM USER
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <!--아이디 찾기-->
+    <select id="findUserId" resultType="java.lang.String">
+        SELECT USER_ID FROM USER
+        WHERE USER_NAME = #{userName} AND USER_PHONE = #{userPhone}
+    </select>
+
+    <!--비밀번호 찾기에서 사용자 검증-->
+    <select id="verifyUser" resultType="String">
+        SELECT USER_ID, USER_PWD FROM USER
+        WHERE USER_ID = #{userId} AND USER_PHONE = #{userPhone}
+    </select>
+
+    <update id="updateResetPassword">
+        UPDATE USER
+        SET USER_PWD = #{encodedPassword}
+        WHERE user_id = #{userId} AND user_phone = #{userPhone}
+    </update>
+
+    <resultMap id="adminResultMap" type="kr.co.swm.member.model.dto.MemberDTO">
+        <result column="ACCOMODATION_ADMIN_NO" property="accommodationAdminNo"></result>
+        <result column="ADMIN_ID" property="userId"></result>
+        <result column="ADMIN_PWD" property="userPwd"></result>
+        <result column="ADMIN_TYPE" property="role"></result>
+
+    </resultMap>
+
+    <select id="accommodationAdminByUserId" resultMap="adminResultMap">
+        SELECT * FROM ACCOMMODATIONADMINS
+        WHERE ADMIN_ID = #{userId}
     </select>
 
 </mapper>
