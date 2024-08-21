@@ -1,17 +1,19 @@
 package kr.co.swm.member.model.service;
 
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.swm.member.model.dto.AdminDTO;
 import kr.co.swm.member.model.dto.MemberDTO;
+import kr.co.swm.member.model.dto.UserDTO;
 
 public interface MemberService {
     // 회원가입
-    public int setSignup(MemberDTO memberDTO);
+    public int setSignup(UserDTO userDTO);
 
     // 업소 관리자 가입
-    int setSellerSignup(MemberDTO memberDTO);
+    int setSellerSignup(AdminDTO adminDTO);
 
     // 사이트 관리자 가입
-    int setManagerSignup(MemberDTO memberDTO);
+    int setManagerSignup(AdminDTO adminDTO);
 
     // id 중복검사
     public int idCheck(String userId);
