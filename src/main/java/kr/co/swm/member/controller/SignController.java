@@ -5,7 +5,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import kr.co.swm.config.auth.CustomUserDetailsService;
 import kr.co.swm.jwt.util.JWTUtil;
+import kr.co.swm.member.model.dto.AdminDTO;
 import kr.co.swm.member.model.dto.MemberDTO;
+import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.member.model.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -28,8 +30,8 @@ public class SignController {
     @GetMapping("/signform")
     public String showSignForm(Model model) {
         // th:object로 바인딩되어 폼 필드와 연결
-        model.addAttribute("signUp", new MemberDTO());
-        model.addAttribute("signIn", new MemberDTO());
+        model.addAttribute("signUp", new UserDTO());
+        model.addAttribute("signIn", new UserDTO());
         return "member/sign";
     }
 
@@ -77,29 +79,29 @@ public class SignController {
 
     // 회원가입
     @PostMapping("/signup")
-    public String signUp(@Valid MemberDTO memberDTO, BindingResult bindingResult) {
+    public String signUp(@Valid UserDTO userDTO, BindingResult bindingResult) {
         // bindingResult -> model.Attribute 하지 않아도 Model 객체에 자동 바인딩
         if (bindingResult.hasErrors()) {  // 유효성 검사에서 발생한 에러확인 -> 있을시 true, 없을시 false
             return "member/sign";
         }
 
-        int result = memberServiceImpl.setSignup(memberDTO);
+        int result = memberServiceImpl.setSignup(userDTO);
         return "redirect:/signform";
     }
 
     // 관리자(사이트 관리자 or 숙소 관리자)
     @PostMapping("/admin-signup")
-    public String adminSignUp(@Valid MemberDTO memberDTO) {
+    public String adminSignUp(@Valid AdminDTO AdminDTO) {
 
-        if(memberDTO.getRole().equals("ROLE_ACCOMMODATION_ADMIN")) {
-            int result = memberServiceImpl.setSellerSignup(memberDTO);
+        if(AdminDTO.getRole().equals("ROLE_ACCOMMODATION_ADMIN")) {
+            int result = memberServiceImpl.setSellerSignup(AdminDTO);
             if(result != 0) {
                 return "redirect:/web-seller";
             } else {
                 return "error";
             }
-        } else if(memberDTO.getRole().equals("ROLE_SITE_ADMIN")) {
-            int result = memberServiceImpl.setManagerSignup(memberDTO);
+        } else if(AdminDTO.getRole().equals("ROLE_SITE_ADMIN")) {
+            int result = memberServiceImpl.setManagerSignup(AdminDTO);
             if(result != 0) {
                 return "redirect:/web-manager";
             } else {
@@ -122,9 +124,7 @@ public class SignController {
 
         if (token != null) {
             String role = jwtUtil.getRoleFromToken(token);
-
             System.out.println("로그인 시도: " + role);  // 권한이 제대로 추출되는지 확인
-
             // 권한에 따라 리다이렉트할 페이지 결정
             if ("ROLE_SITE_ADMIN".equals(role)) {
                 return "redirect:/"; // 사이트 관리자 페이지로 리다이렉트

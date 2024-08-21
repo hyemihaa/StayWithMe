@@ -5,7 +5,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import kr.co.swm.config.auth.CustomUserDetails;
 import kr.co.swm.config.auth.CustomUserDetailsService;
 import kr.co.swm.jwt.util.JWTUtil;
+import kr.co.swm.member.model.dto.AdminDTO;
 import kr.co.swm.member.model.dto.MemberDTO;
+import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.member.model.mapper.MemberMapper;
 import kr.co.swm.member.util.PasswordUtils;
 import kr.co.swm.member.util.SmsCertificationUtil;
@@ -32,21 +34,21 @@ public class MemberServiceImpl implements MemberService {
 
     // 회원가입
     @Override
-    public int setSignup(MemberDTO memberDTO) {
-        String userPwd = memberDTO.getUserPwd();
-        String userConfirmPwd = memberDTO.getConfirmPassword();
+    public int setSignup(UserDTO userDTO) {
+        String userPwd = userDTO.getUserPwd();
+        String userConfirmPwd = userDTO.getConfirmPassword();
 
         if(userPwd.equals(userConfirmPwd)) {
             // 비밀번호와 비밀번호 확인이 일치하는지 체크
             String encodedPassword = passwordEncoder.encode(userPwd);
             System.out.println("encodedPassword : " + encodedPassword);
             // 암호화 비밀번호 DTO에 저장
-            memberDTO.setUserPwd(encodedPassword);
+            userDTO.setUserPwd(encodedPassword);
             // 현재 날짜와 시간 설정
-            memberDTO.setCreatedDate(LocalDateTime.now());
-            System.out.println("memberDTO : " + memberDTO.getUserPwd());
+            userDTO.setCreatedDate(LocalDateTime.now());
+            System.out.println("userDTO : " + userDTO.getUserPwd());
 
-            return memberMapper.setSignUp(memberDTO);
+            return memberMapper.setSignUp(userDTO);
         }
         else {
             System.out.println("else");
@@ -56,28 +58,28 @@ public class MemberServiceImpl implements MemberService {
 
     // 업소관리자 등록
     @Override
-    public int setSellerSignup(MemberDTO memberDTO) {
-        String userPwd = memberDTO.getUserPwd();
+    public int setSellerSignup(AdminDTO adminDTO) {
+        String userPwd = adminDTO.getUserPwd();
 
         // 비밀번호와 비밀번호 확인이 일치하는지 체크
         String encodedPassword = passwordEncoder.encode(userPwd);
         // 암호화 비밀번호 DTO에 저장
-        memberDTO.setUserPwd(encodedPassword);
+        adminDTO.setUserPwd(encodedPassword);
 
-        return memberMapper.setSellerSignup(memberDTO);
+        return memberMapper.setSellerSignup(adminDTO);
     }
 
     // 사이트 관리자 등록
     @Override
-    public int setManagerSignup(MemberDTO memberDTO) {
-        String userPwd = memberDTO.getUserPwd();
+    public int setManagerSignup(AdminDTO adminDTO) {
+        String userPwd = adminDTO.getUserPwd();
 
         // 비밀번호와 비밀번호 확인이 일치하는지 체크
         String encodedPassword = passwordEncoder.encode(userPwd);
         // 암호화 비밀번호 DTO에 저장
-        memberDTO.setUserPwd(encodedPassword);
+        adminDTO.setUserPwd(encodedPassword);
 
-        return memberMapper.setManagerSignup(memberDTO);
+        return memberMapper.setManagerSignup(adminDTO);
     }
 
     // id 중복검사
@@ -104,31 +106,35 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String authenticate(String userId, String userPwd, HttpServletResponse response, String signRole) {
         System.out.println("-----------memberService상단------------------");
-
+        System.out.println(userId);
+        System.out.println(userPwd);
+        System.out.println(signRole);
         // 사용자 정보 로드 및 권한 초기화
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId, signRole);
+        System.out.println(userDetails.getPassword());
         String role = "ROLE_USER"; // 기본 권한 (기본값은 일반 사용자)
         Long accommAdminKey = null; // 숙소 관리자 키 초기화
         Long userNo = null;
 
-        // 사용자 정보가 존재하는 경우 (일반 유저, 사이트 관리자 또는 숙소 관리자)
+
         if (userDetails != null) {
             // 권한을 확인하여 부여
             role = userDetails.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
                     .findFirst()
                     .orElse("ROLE_USER");
-        }
 
+        }
         if ("ROLE_USER".equals(role)) {
             if (userDetails instanceof CustomUserDetails) {
-                userNo = ((CustomUserDetails) userDetails).getMemberDTO().getUserNo();
+                userNo = ((CustomUserDetails) userDetails).getMemberDTO().getNo();
             }
+            System.out.println(userNo);
             role = "ROLE_USER";
         }
         else if ("ROLE_ACCOMMODATION_ADMIN".equals(role)) {
             if (userDetails instanceof CustomUserDetails) {
-                accommAdminKey = ((CustomUserDetails) userDetails).getMemberDTO().getAccommodationAdminNo();
+                accommAdminKey = ((CustomUserDetails) userDetails).getMemberDTO().getNo();
             }
             role = "ROLE_ACCOMMODATION_ADMIN";
         }
@@ -138,6 +144,7 @@ public class MemberServiceImpl implements MemberService {
 
         System.out.println("========memberService========");
 
+        System.out.println(userDetails);
         // JWT 토큰 생성 및 쿠키 저장
         if (userDetails != null && passwordEncoder.matches(userPwd, userDetails.getPassword())) {
             // JWT에 포함할 클레임(정보) 생성
