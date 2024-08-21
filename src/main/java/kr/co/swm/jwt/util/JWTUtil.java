@@ -36,7 +36,7 @@ public class JWTUtil {
     }
 
     // JWT 생성 메서드
-    public String create(Map<String, Object> claims, LocalDateTime expireAt, Long accommAdminKey) {
+    public String create(Map<String, Object> claims, LocalDateTime expireAt, Long accommAdminKey, Long userNo) {
         // 임의로 만든 암호키로 key 설정
         var key = getKey();
         // token의 Expire(만기) 시간을 객체로 변환
@@ -45,6 +45,11 @@ public class JWTUtil {
         // 업소 관리자 키가 있는 경우에만 추가
         if (accommAdminKey != null) {
             claims.put("accommAdminKey", accommAdminKey);
+        }
+
+        // 클레임에 userNo를 추가
+        if (userNo != null) {
+            claims.put("userNo", userNo); // 클레임에 추가
         }
 
         // JWT 생성 및 로그 출력
@@ -94,6 +99,21 @@ public class JWTUtil {
         }
     }
 
+    // JWT에서 userNo 추출
+    public Long getUserNoFromToken(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(getKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+            return claims.get("userNo", Long.class);
+        } catch (Exception e) {
+            log.error("JWT에서 사용자 키를 추출하는 중 오류 발생: " + e.getMessage());
+            return null;
+        }
+    }
+
     // JWT에서 role을 추출
     public String getRoleFromToken(String token) {
         try {
@@ -109,6 +129,7 @@ public class JWTUtil {
         }
     }
 
+    // JWT에서 업소관리자 키 추출
     public Long getAccommAdminKeyFromToken(String token) {
         try {
             Claims claims = Jwts.parser()

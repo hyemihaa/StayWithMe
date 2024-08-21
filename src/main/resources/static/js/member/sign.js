@@ -223,12 +223,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // 로그인
 document.addEventListener("DOMContentLoaded", function() {
-    // 로그인 성공 메시지
-    const successMessage = document.getElementById("successMessage");
-    if (successMessage && successMessage.value.trim() !== "") {
-        alert(successMessage.value.trim());
-    }
-
     // 로그인 실패 메시지
     const errorMessage = document.getElementById("errorMessage");
     if (errorMessage && errorMessage.value.trim() !== "") {
