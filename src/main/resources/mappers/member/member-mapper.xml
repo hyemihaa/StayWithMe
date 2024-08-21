@@ -3,6 +3,7 @@
 <mapper namespace="kr.co.swm.member.model.mapper.MemberMapper">
 
     <resultMap id="userResultMap" type="kr.co.swm.member.model.dto.MemberDTO">
+        <result column="USER_NO" property="userNo"></result>
         <result column="USER_ID" property="userId"></result>
         <result column="USER_PWD" property="userPwd"></result>
         <result column="USER_NAME" property="userName"></result>
@@ -10,29 +11,32 @@
         <result column="CREATED_DATE" property="createdDate"></result>
         <result column="DELETED_DATE" property="deletedDate"></result>
         <result column="ROLES" property="role"></result>
+
+        <result column="ACCOMODATION_ADMIN_NO" property="accommodationAdminNo"></result>
+        <result column="ADMIN_ID" property="userId"></result>
+        <result column="ADMIN_PWD" property="userPwd"></result>
+        <result column="ADMIN_TYPE" property="role"></result>
     </resultMap>
 
+    <!--회원가입 insert-->
     <insert id="setSignUp" >
         INSERT INTO USER (USER_ID, USER_PWD, USER_NAME, USER_PHONE, CREATED_DATE, DELETED_DATE)
         VALUES (#{memberDTO.userId}, #{memberDTO.userPwd}, #{memberDTO.userName}, #{memberDTO.userPhone}, #{memberDTO.createdDate}, #{memberDTO.deletedDate})
-
-<!--        &lt;!&ndash;사이트 관리자 계정 임시&ndash;&gt;-->
-<!--        INSERT INTO USER (USER_ID, USER_PWD, USER_NAME, USER_PHONE, CREATED_DATE, DELETED_DATE, ROLES)-->
-<!--        VALUES (#{memberDTO.userId}, #{memberDTO.userPwd}, #{memberDTO.userName}, #{memberDTO.userPhone}, #{memberDTO.createdDate}, #{memberDTO.deletedDate}, 'ROLE_SITE_ADMIN')-->
 
 <!--        &lt;!&ndash;숙소 관리자 계정 임시&ndash;&gt;-->
 <!--        INSERT INTO ACCOMMODATIONADMINS (ADMIN_ID, ADMIN_PWD, ADMIN_TYPE)-->
 <!--        VALUES-->
 <!--        (#{memberDTO.userId}, #{memberDTO.userPwd}, 'ROLE_ACCOMMODATION_ADMIN')-->
+
+        <!--사이트 관리자 계정 임시-->
+<!--        INSERT INTO SITEADMINS (ADMIN_ID, ADMIN_PWD, ADMIN_TYPE)-->
+<!--        VALUES-->
+<!--        (#{memberDTO.userId}, #{memberDTO.userPwd}, 'ROLE_SITE_ADMIN')-->
     </insert>
 
+    <!--중복아이디-->
     <select id="idCheck">
         SELECT count(*) FROM USER
-        WHERE USER_ID = #{userId}
-    </select>
-
-    <select id="findByUserId" resultMap="userResultMap">
-        SELECT * FROM USER
         WHERE USER_ID = #{userId}
     </select>
 
@@ -48,22 +52,28 @@
         WHERE USER_ID = #{userId} AND USER_PHONE = #{userPhone}
     </select>
 
+    <!--임시비밀번호 인코딩-->
     <update id="updateResetPassword">
         UPDATE USER
         SET USER_PWD = #{encodedPassword}
         WHERE user_id = #{userId} AND user_phone = #{userPhone}
     </update>
 
-    <resultMap id="adminResultMap" type="kr.co.swm.member.model.dto.MemberDTO">
-        <result column="ACCOMODATION_ADMIN_NO" property="accommodationAdminNo"></result>
-        <result column="ADMIN_ID" property="userId"></result>
-        <result column="ADMIN_PWD" property="userPwd"></result>
-        <result column="ADMIN_TYPE" property="role"></result>
+    <!--로그인한 유저의 전체 정보-->
+    <select id="findByUserInfo" resultMap="userResultMap">
+        SELECT * FROM USER
+        WHERE USER_ID = #{userId}
+    </select>
 
-    </resultMap>
-
-    <select id="accommodationAdminByUserId" resultMap="adminResultMap">
+    <!--로그인한 숙소관리자의 전체 정보-->
+    <select id="findByAccommAdminInfo" resultMap="userResultMap">
         SELECT * FROM ACCOMMODATIONADMINS
+        WHERE ADMIN_ID = #{userId}
+    </select>
+
+    <!--로그인한 사이트관리자의 전체 정보-->
+    <select id="findBySiteAdminInfo" resultMap="userResultMap">
+        SELECT * FROM SITEADMINS
         WHERE ADMIN_ID = #{userId}
     </select>
 
