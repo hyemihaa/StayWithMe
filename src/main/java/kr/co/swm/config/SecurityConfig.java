@@ -18,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration // 설정파일
 @EnableWebSecurity
@@ -30,17 +29,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        // 모든 페이지에 대한 접근권한 설정, 사이트 위변조 방지 해제
-//        http    //authorizeHttpRequests 어떤 요청에 대해 어떤 권한이 필요한지 설정
-//                .authorizeHttpRequests(authorizeRequests ->
-//                                authorizeRequests  //.requestMatchers : 특정 URL 지정
-//                                        .requestMatchers("/", "/sms/send", "/signin", "/signup", "/idcheck", "/signform","/lostpass",
-//                                                "/find-userId","find-password","/member/mypage","/mypage",
-//                                                "/css/**", "/js/**", "/images/**", "/fonts/**", "/scss/**").permitAll() // 특정 경로에 대한 접근 권한 허용
-//                                        .anyRequest().authenticated() // 그 외 모든 요청은 권한 필요
-
-//                )
-// 모든 페이지에 대한 접근권한 설정, 사이트 위변조 방지 해제
+        // 모든 페이지에 대한 접근권한 설정, 사이트 위변조 방지 해제
         http    //authorizeHttpRequests 어떤 요청에 대해 어떤 권한이 필요한지 설정
                 .authorizeHttpRequests(auth -> auth
                                 //.requestMatchers : 특정 URL 지정
@@ -101,8 +90,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
-
-// 모든 페이지에 대한 접근권한 설정, 사이트 위변조 방지 해제
-//        http.authorizeHttpRequests(auth -> auth
-//        .requestMatchers(new AntPathRequestMatcher("/**"))
-//        .permitAll())
