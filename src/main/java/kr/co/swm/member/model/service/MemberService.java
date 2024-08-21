@@ -1,21 +1,17 @@
 package kr.co.swm.member.model.service;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.co.swm.config.auth.CustomUserDetails;
 import kr.co.swm.member.model.dto.MemberDTO;
-import kr.co.swm.member.util.PasswordUtils;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
 public interface MemberService {
     // 회원가입
     public int setSignup(MemberDTO memberDTO);
+
+    // 업소 관리자 가입
+    int setSellerSignup(MemberDTO memberDTO);
+
+    // 사이트 관리자 가입
+    int setManagerSignup(MemberDTO memberDTO);
 
     // id 중복검사
     public int idCheck(String userId);
