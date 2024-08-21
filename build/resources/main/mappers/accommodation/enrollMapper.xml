@@ -76,9 +76,10 @@
     </insert>
     
     
-    <insert id="enrollRoomImages">
+    <insert id="enrollRoomImages" parameterType="map">
         INSERT INTO room_images values (
                                         null,
+                                        #{roomNo},
                                         #{subImage.uploadOriginName},
                                         #{subImage.uploadUniqueName},
                                         #{subImage.uploadImagePath}
