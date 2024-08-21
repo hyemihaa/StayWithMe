@@ -1,0 +1,58 @@
+/* 사이드바와 컨텐츠 사이의 마진 조정 */
+.content {
+    margin-left: 300px !important; /* 사이드바의 너비와 일치하도록 설정 */
+    min-height: 100vh !important; /* 화면 높이에 맞게 최소 높이를 설정하여 footer가 화면 하단에 고정되도록 함 */
+    padding: 20px !important; /* 컨텐츠와 경계 사이에 여백을 추가 */
+    width: 83%;
+    background: #FFFFFF !important; /* 배경색을 흰색으로 설정 */
+    transition: margin-left 0.5s ease !important; /* 사이드바가 토글될 때의 부드러운 전환 효과를 위해 transition 속성 추가 */
+    z-index: 1 !important; /* 사이드바보다 위에 오도록 설정 */
+}
+
+.searchText {
+    width: 70%;
+}
+
+.text-end {
+    text-align: center;
+}
+
+.search-button {
+    width: 300px;
+}
+
+/* 테이블 스타일 조정: 모든 페이지에서 일관된 테이블 스타일을 보장 */
+.table td {
+    font-size: 16px !important;  /* 텍스트 크기를 16px로 설정하여 사이드바 텍스트와 일치 */
+    font-weight: 400 !important; /* 기본 글꼴 두께로 설정 */
+    color: var(--dark) !important; /* 텍스트 색상을 다크 모드 변수에 맞게 설정 */
+    vertical-align: middle !important; /* 테이블 셀 내의 텍스트가 가운데에 정렬되도록 설정 */
+}
+
+.table th {
+    font-size: 16px !important;  /* 테이블 헤더의 텍스트 크기를 16px로 설정 */
+    font-weight: 700 !important; /* 텍스트를 굵게 설정하여 헤더를 강조 */
+    color: var(--dark) !important; /* 헤더 텍스트 색상을 다크 모드 변수에 맞게 설정 */
+    background-color: var(--light) !important; /* 헤더 배경색을 사이드바와 일치시키기 위해 설정 */
+    text-align: center !important; /* 헤더 텍스트를 중앙 정렬 */
+}
+
+/* 테이블 행 hover 시 배경색 조정 */
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 156, 255, 0.1) !important; /* 호버 시 배경색을 주 색상의 반투명한 파란색으로 설정하여 가시성 향상 */
+}
+
+/* 추가: 컨텐츠 영역의 flexbox 사용으로 footer를 하단에 고정 */
+.container-xxl {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* 화면 높이를 기준으로 최소 높이 설정 */
+}
+
+.footer {
+    margin-top: auto; /* footer가 항상 페이지 하단에 위치하도록 설정 */
+    background-color: var(--light); /* footer 배경색을 light로 설정 */
+    padding: 20px;
+    text-align: center;
+}
+

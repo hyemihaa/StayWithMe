@@ -43,6 +43,10 @@
                     <form th:action="@{/signin}" th:object="${signIn}" method="POST">
                     <!-- 로그인 실패 메시지 -->
                     <input type="hidden" id="errorMessage" th:if="${error}" th:value="${error}">
+                        <!-- role 값 전달 -->
+                        <input type="hidden" id="userRole" name="role" value="ROLE_USER">
+<!--                        <input type="hidden" id="siteAdminRole" name="role" value="ROLE_SITE_ADMIN">-->
+<!--                        <input type="hidden" id="accommAdminRole" name="role" value="ROLE_ACCOMMODATION_ADMIN">-->
 
                     <div class="group">
                         <label for="signInId" class="label">아이디</label>
@@ -182,8 +186,7 @@
     </svg>
 </div>
 
-
 </body>
 <script th:src="@{/js/member/sign.js}"></script>
-<div th:include="fragments/js.html :: js"></div>
+<div th:include="fragments/js.html :: js"></div>g
 </html>

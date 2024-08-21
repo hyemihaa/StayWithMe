@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link  th:href="@{/css/web_manager/webcenter_login.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="left-section">
+        <div class="logo">
+            <img th:src="@{/images/login-image.jpg}" class="loginImage" alt="Company Logo" />
+            <h2>STAY WITH ME</h2>
+        </div>
+        <h1>WELCOME BACK</h1>
+        <p>Nice to see you again</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+    <div class="right-section">
+        <h2>Login Account</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <form th:action="@{/signin}" method="post">
+            <input type="text" name="userId" placeholder="Email ID" required>
+            <input type="password" name="userPwd" placeholder="Password" required>
+            <div class="options">
+                <!-- 판매자(Seller) 또는 관리자(Admin) 선택 라디오 버튼 -->
+                <label>
+                    <input type="radio" name="role" value="ROLE_ACCOMMODATION_ADMIN" required checked>
+                    판매자
+                </label>
+                <label>
+                    <input type="radio" name="role" value="ROLE_SITE_ADMIN" required>
+                    관리자
+                </label>
+            </div>
+            <button type="submit">SUBSCRIBE</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

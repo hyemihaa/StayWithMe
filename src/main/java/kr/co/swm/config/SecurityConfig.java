@@ -39,12 +39,14 @@ public class SecurityConfig {
                                 .requestMatchers("/tour/**","/hotel-single/**").permitAll()
                                 .requestMatchers("/seller-main.do", "/reservation.do", "/reservation-search.do", "/reservation-daily.do", "/reservation-monthly.do",
                                                          "/basic-rate-list.do", "/getRoomRates", "/basic-rate-write.do", "/season-period.do", "/extra-delete", "/periods-update").permitAll()
+                                .requestMatchers("/seller-main.do", "/reservation.do", "/reservation-search.do", "/reservation-daily.do", "/reservation-monthly.do", "/basic-rate-list.do", "/getRoomRates", "/basic-rate-write.do", "/season-period.do", "/extra-delete", "/periods-update", "/reservation-monthly-data", "/web-login", "/web-center", "/web-coupon", "/web-member", "/web-seller", "/web-manager", "/admin-signup").permitAll()
                                 .requestMatchers("/member/mypage", "/mypage").hasRole("USER") // 일반유저 권한을 가진 사용자만 접근 (추후 수정)
                                 // hasRole([role]) : 현재 사용자의 권한이 파라미터의 권한과 동일한 경우 true
                                 //.hasAnyRole("ACCOMMODATION_ADMIN", "SITE_ADMIN", "USER")  //여러 권한 허용
                                 .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요
                         // .authenticated()는 특정 권한이 아니라, 사용자가 로그인되어 있는지 여부
                 )
+
                 // 보안상의 이유로 다른 도메인에서 온 요청 차단
                 // CSRF 비활성화 -> 모든 도메인의 요청 허용
                 .csrf(AbstractHttpConfigurer::disable)
@@ -91,8 +93,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
-
-// 모든 페이지에 대한 접근권한 설정, 사이트 위변조 방지 해제
-//        http.authorizeHttpRequests(auth -> auth
-//        .requestMatchers(new AntPathRequestMatcher("/**"))
-//        .permitAll())
