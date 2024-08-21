@@ -42,4 +42,5 @@ class MemberServiceTest {
         // Assert
         verify(smsCertificationUtil, times(1)).sendSMS(phoneNumber, certificationCode);
     }
+
 }
