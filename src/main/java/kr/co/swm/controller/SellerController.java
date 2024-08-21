@@ -1,10 +1,7 @@
 package kr.co.swm.controller;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.swm.model.dto.SellerDto;
-import kr.co.swm.model.service.SellerService;
 import kr.co.swm.model.service.SellerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
