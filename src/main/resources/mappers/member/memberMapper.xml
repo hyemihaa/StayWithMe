@@ -67,6 +67,7 @@
         WHERE ADMIN_ID = #{userId}
     </select>
 
+<<<<<<< HEAD
     <!--로그인한 사이트관리자의 전체 정보-->
     <select id="findBySiteAdminInfo" resultMap="adminResultMap">
         SELECT * FROM SITEADMINS
