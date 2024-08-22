@@ -23,7 +23,7 @@ class MemberServiceTest {
     private SmsCertificationUtil smsCertificationUtil;
 
     @InjectMocks
-    private MemberService memberService;
+    private MemberServiceImpl memberService;
 
     @BeforeEach
     void setUp() {
@@ -42,4 +42,5 @@ class MemberServiceTest {
         // Assert
         verify(smsCertificationUtil, times(1)).sendSMS(phoneNumber, certificationCode);
     }
+
 }

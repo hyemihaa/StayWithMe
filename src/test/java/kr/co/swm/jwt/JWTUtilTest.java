@@ -25,10 +25,11 @@ class JWTUtilTest {
         claims.put("userId", "testUser");
         claims.put("role", "USER");
         LocalDateTime expireAt = LocalDateTime.now().plusMinutes(10);
-        Long accommAdminKey = 12345L; // 테스트용 관리자 키 설정
+        Long accommAdminKey = 1L; // 테스트용 관리자 키 설정
+        Long userNo = 1L;
 
         // when
-        String token = jwtUtil.create(claims, expireAt, accommAdminKey);
+        String token = jwtUtil.create(claims, expireAt, accommAdminKey, userNo);
 
         // then
         assertNotNull(token);
@@ -42,9 +43,10 @@ class JWTUtilTest {
         claims.put("userId", "testUser");
         claims.put("role", "USER");
         LocalDateTime expireAt = LocalDateTime.now().minusMinutes(10); // 이미 만료된 시간
-        Long accommAdminKey = 12345L; // 테스트용 관리자 키 설정
+        Long accommAdminKey = 1L; // 테스트용 관리자 키 설정
+        Long userNo = 1L;
 
-        String expiredToken = jwtUtil.create(claims, expireAt, accommAdminKey);
+        String expiredToken = jwtUtil.create(claims, expireAt, accommAdminKey, userNo);
 
         // when
         Boolean isExpired = jwtUtil.isExpired(expiredToken);
@@ -61,9 +63,10 @@ class JWTUtilTest {
         claims.put("userId", "testUser");
         claims.put("role", "USER");
         LocalDateTime expireAt = LocalDateTime.now().plusMinutes(10);
-        Long accommAdminKey = 12345L; // 테스트용 관리자 키 설정
+        Long accommAdminKey = 1L; // 테스트용 관리자 키 설정
+        Long userNo = 1L;
 
-        String token = jwtUtil.create(claims, expireAt, accommAdminKey);
+        String token = jwtUtil.create(claims, expireAt, accommAdminKey, userNo);
 
         // when & then
         assertDoesNotThrow(() -> jwtUtil.validate(token));
@@ -76,9 +79,10 @@ class JWTUtilTest {
         claims.put("userId", "testUser");
         claims.put("role", "USER");
         LocalDateTime expireAt = LocalDateTime.now().plusMinutes(10);
-        Long accommAdminKey = 12345L; // 테스트용 관리자 키 설정
+        Long accommAdminKey = 1L; // 테스트용 관리자 키 설정
+        Long userNo = 1L;
 
-        String token = jwtUtil.create(claims, expireAt, accommAdminKey);
+        String token = jwtUtil.create(claims, expireAt, accommAdminKey, userNo);
 
         // when
         String userId = jwtUtil.getUserIdFromToken(token);
@@ -94,9 +98,10 @@ class JWTUtilTest {
         claims.put("userId", "testUser");
         claims.put("role", "USER");
         LocalDateTime expireAt = LocalDateTime.now().plusMinutes(10);
-        Long accommAdminKey = 12345L; // 테스트용 관리자 키 설정
+        Long accommAdminKey = 1L; // 테스트용 관리자 키 설정
+        Long userNo = 1L;
 
-        String token = jwtUtil.create(claims, expireAt, accommAdminKey);
+        String token = jwtUtil.create(claims, expireAt, accommAdminKey, userNo);
 
         // when
         String role = jwtUtil.getRoleFromToken(token);
@@ -112,9 +117,10 @@ class JWTUtilTest {
         claims.put("userId", "testUser");
         claims.put("role", "USER");
         LocalDateTime expireAt = LocalDateTime.now().plusMinutes(10);
-        Long accommAdminKey = 12345L; // 테스트용 관리자 키 설정
+        Long accommAdminKey = 1L; // 테스트용 관리자 키 설정
+        Long userNo = 1L;
 
-        String token = jwtUtil.create(claims, expireAt, accommAdminKey);
+        String token = jwtUtil.create(claims, expireAt, accommAdminKey, userNo);
 
         // when
         Long extractedAdminKey = jwtUtil.getAccommAdminKeyFromToken(token);
