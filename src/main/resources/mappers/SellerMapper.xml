@@ -19,7 +19,9 @@
         <result column="PHONE" property="accommodationPhone"/>
         <result column="POST_NO" property="accommodationPost"/>
         <result column="ADDRESS" property="accommodationAddress"/>
-        <result column="VIEWS" property="accommodationViews"/>
+
+        <result column="VIEWS_DATE" property="viewsDate"/>
+        <result column="VIEWS_COUNT" property="viewsCount"/>
 
         <!-- 객실 정보 -->
         <result column="ROOM_NO" property="roomNo"/>
@@ -82,9 +84,10 @@
 <!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
 
     <!-- 객실 및 조회수 조회 -->
-    <select id="roomViews" resultType="java.lang.Integer">
-        SELECT VIEWS
-        FROM ACCOMMODATION
+    <select id="roomViews" resultMap="seller">
+        SELECT VIEWS_DATE,
+                VIEWS_COUNT
+        FROM ACCOMMODATION_VIEWS
         WHERE ACCOMMODATION_NO = #{accommodationNo}
     </select>
 
@@ -103,9 +106,9 @@
                us.USER_PHONE
         FROM RESERVE re
         JOIN ROOM ro ON re.ROOM_NO = ro.ROOM_NO
-        JOIN ACCOMMODATION a ON ro.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+        JOIN ACCOMMODATION a ON ro.ACCOMMODATION_NO = a.ACCOMODATION_ADMIN_NO
         JOIN USER us ON re.USER_NO = us.USER_NO
-        WHERE a.ACCOMMODATION_NO = #{accommodationNo}
+        WHERE a.ACCOMODATION_ADMIN_NO = #{accommodationNo}
     </select>
 
 
@@ -131,10 +134,10 @@
         FROM
         RESERVE re
         JOIN ROOM ro ON re.ROOM_NO = ro.ROOM_NO
-        JOIN ACCOMMODATION a ON ro.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+        JOIN ACCOMMODATION a ON ro.ACCOMMODATION_NO = a.ACCOMODATION_ADMIN_NO
         JOIN USER us ON re.USER_NO = us.USER_NO
         WHERE
-        a.ACCOMMODATION_NO = #{accommodationNo} <!-- 필수 조건: 숙소 번호로 필터링 -->
+        a.ACCOMODATION_ADMIN_NO = #{accommodationNo} <!-- 필수 조건: 숙소 번호로 필터링 -->
 
         <!-- 날짜 필터 조건: 접수일 기준으로 필터링 -->
         <if test="dateType == 'reception' and startDate != null and startDate != '' and endDate != null and endDate != ''">
