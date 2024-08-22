@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>Stay With Me</title>
+    <div th:replace="~{fragments/admin/head.html :: head}"></div>
+    <link rel="stylesheet" th:href="@{css/adminPage/accommodation/accommodation.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+<div  class="container-xxl position-relative bg-white d-flex p-0">
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <div th:replace="~{fragments/admin/sideBar.html :: side}"></div>
+    <!-- Sidebar End -->
+
+
+    <!-- Content Start -->
+    <div class="content">
+        <!-- Navbar Start -->
+        <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+            </a>
+            <a href="#" class="sidebar-toggler flex-shrink-0">
+                <i class="fa fa-bars"></i>
+            </a>
+            <div class="navbar-nav align-items-center ms-auto">
+                <div class="nav-item dropdown">
+                    <i class="fa fa-envelope me-lg-2"></i>
+                    <span class="d-none d-lg-inline-flex">Message</span>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <span class="d-none d-lg-inline-flex">John Doe</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#" class="dropdown-item">My Profile</a>
+                        <a href="#" class="dropdown-item">Settings</a>
+                        <a href="#" class="dropdown-item">Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Navbar End -->
+
+        <!-- Sale & Revenue Start -->
+        <div class="container">
+            <div class="row">
+                <label for="photo">대표사진</label>
+                <input type="file" id="photo">
+                <button class="photo-button">사진 추가버튼</button>
+            </div>
+            <div class="row">
+                <label for="name">숙소 이름</label>
+                <input type="text" id="name">
+            </div>
+            <div class="row">
+                <label for="sub-facility">부대시설</label>
+                <input type="text" id="sub-facility" readonly>
+            </div>
+            <div class="row">
+                <label>카테고리 태그 (중복 선택 가능)</label>
+                <div class="tags">
+                    <div class="tag">
+                        <input type="checkbox" id="tag1" data-tag="Tag 1">
+                        <label for="tag1">Tag 1</label>
+                    </div>
+                    <div class="tag">
+                        <input type="checkbox" id="tag2" data-tag="Tag 2">
+                        <label for="tag2">Tag 2</label>
+                    </div>
+                    <div class="tag">
+                        <input type="checkbox" id="tag3" data-tag="Tag 3">
+                        <label for="tag3">Tag 3</label>
+                    </div>
+                    <div class="tag">
+                        <input type="checkbox" id="tag4" data-tag="Tag 4">
+                        <label for="tag4">Tag 4</label>
+                    </div>
+                    <div class="tag">
+                        <input type="checkbox" id="tag5" data-tag="Tag 5">
+                        <label for="tag5">Tag 5</label>
+                    </div>
+                </div>
+            </div>
+            <label><p>객실 소개</p>
+                <textarea style="width: 100%; height: 100px"></textarea>
+            </label>
+            <div class="container">
+                <h1>객실</h1>
+                <button id="addRoomBtn" class="btn btn-primary" style="margin-bottom: 30px;">객실 추가</button>
+                <div id="roomsContainer"></div>
+            </div>
+
+
+            <!-- Recent Sales End -->
+
+            <input type="text" id="sample5_address" placeholder="주소">
+            <input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
+            <div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
+
+
+            <!-- Footer Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-light rounded-top p-4">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center text-sm-start">
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+                        </div>
+                        <div class="col-12 col-sm-6 text-center text-sm-end">
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                            </br>
+                            Distributed By <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer End -->
+        </div>
+        <!-- Content End -->
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+    <!-- JavaScript Libraries -->
+<!--    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>-->
+<!--    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a8f3c460613adc2cb691b893c7f0b43d&libraries=services"></script>-->
+<!--    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?a8f3c460613adc2cb691b893c7f0b43d"></script>-->
+
+
+
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f7b0e969dab557ac2ccd2d246136826&libraries=services"></script>
+    <script th:src="@{js/addressAPI.js}"></script>
+    <script th:src="@{js/adminPage/accommodation/accommodation.js}"></script>
+<!--    <div th:replace="~{fragments/admin/js.html :: adminJs}"></div>-->
+
+</div>
+
+</body>
+
+</html>
