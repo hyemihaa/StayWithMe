@@ -6,7 +6,6 @@ import kr.co.swm.config.auth.CustomUserDetails;
 import kr.co.swm.config.auth.CustomUserDetailsService;
 import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.member.model.dto.AdminDTO;
-import kr.co.swm.member.model.dto.MemberDTO;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.member.model.mapper.MemberMapper;
 import kr.co.swm.member.util.PasswordUtils;
@@ -14,6 +13,7 @@ import kr.co.swm.member.util.SmsCertificationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -116,14 +116,12 @@ public class MemberServiceImpl implements MemberService {
         Long accommAdminKey = null; // 숙소 관리자 키 초기화
         Long userNo = null;
 
-
         if (userDetails != null) {
             // 권한을 확인하여 부여
             role = userDetails.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
                     .findFirst()
                     .orElse("ROLE_USER");
-
         }
         if ("ROLE_USER".equals(role)) {
             if (userDetails instanceof CustomUserDetails) {
@@ -144,7 +142,6 @@ public class MemberServiceImpl implements MemberService {
 
         System.out.println("========memberService========");
 
-        System.out.println(userDetails);
         // JWT 토큰 생성 및 쿠키 저장
         if (userDetails != null && passwordEncoder.matches(userPwd, userDetails.getPassword())) {
             // JWT에 포함할 클레임(정보) 생성
@@ -206,5 +203,46 @@ public class MemberServiceImpl implements MemberService {
         memberMapper.updateResetPassword(userId, userPhone, encodedPassword);
 
         return changePassword;
+    }
+
+    // 마이페이지 사용자 정보 불러오기
+    @Override
+    public UserDTO userInfo(String userId) {
+        return memberMapper.findByUserInfo(userId);
+    }
+
+    // 마이페이지 비밀번호 변경
+    @Override
+    public boolean checkCurrentPassword(String userId, String currentPassword) {
+        // 사용자 정보 가져오기
+        UserDTO userDTO = memberMapper.findByUserInfo(userId);
+
+        // 데이터베이스에 담긴 현재 비밀번호
+        String password = userDTO.getUserPwd();
+        // 사용자가 입력한 비밀번호와 확인
+        return passwordEncoder.matches(currentPassword, password);
+    }
+
+    // 새로운 비밀번호로 업데이트
+    @Override
+    public void updatePassword(String userId, String newPassword) {
+        UserDTO userDTO = memberMapper.findByUserInfo(userId);
+
+        // 새비밀번호 암호화
+        String password = passwordEncoder.encode(newPassword);
+        userDTO.setUserPwd(password);
+
+        // 암호화된 새 비밀번호로 업데이트
+        memberMapper.updatePassword(userDTO);
+
+    }
+    
+    // 마이페이지 새로운 휴대전화 번호 업데이트
+    @Override
+    public void updatePhoneNumber(String newPhone, String userId) {
+        UserDTO userDTO = memberMapper.findByUserInfo(userId);
+
+        // 새 전화번호 업데이트
+        memberMapper.updatePhoneNumber(newPhone, userId);
     }
 }
