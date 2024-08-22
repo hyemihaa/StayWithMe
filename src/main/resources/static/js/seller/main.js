@@ -65,11 +65,4 @@
             }
         }
     });
-
-    // 디버깅용 데이터 확인
-    console.log("monthlyLabels: ", monthlyLabels);
-    console.log("monthlyReservationCounts: ", monthlyReservationCounts);
-    console.log("monthlyCancelCounts: ", monthlyCancelCounts);
-    console.log("monthlyPaymentCounts: ", monthlyPaymentCounts);
-
 })(jQuery);

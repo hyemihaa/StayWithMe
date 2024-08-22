@@ -6,6 +6,7 @@
     <title>Seller Registration</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link th:href="@{/css/web_manager/webcenter_seller.css}" rel="stylesheet">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
 <div class="container">
@@ -25,9 +26,8 @@
     <main class="main-content">
         <header class="header">
             <div class="header-right">
-                <span>John Doe</span>
-                <a href="#">Profile</a>
-                <a href="#">Logout</a>
+                <span th:text="${userId}">Username</span>
+                <a th:href="@{/logout}">Logout</a>
             </div>
         </header>
         <section class="form-section">
@@ -61,21 +61,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>admin01</td>
-                    <td>ROLE_ACCOMMODATION_ADMIN</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>admin02</td>
-                    <td>ROLE_ACCOMMODATION_ADMIN</td>
+                <!-- sellerList를 반복하면서 데이터를 출력 -->
+                <tr th:each="seller, iterStat : ${sellerList}">
+                    <td th:text="${iterStat.index + 1}">번호</td>  <!-- 반복문 인덱스를 번호로 표시 -->
+                    <td th:text="${seller.sellerId}">아이디</td>  <!-- 판매자의 아이디 표시 -->
+                    <td th:text="${seller.sellerRoles}">권한</td>  <!-- 판매자의 권한 표시 -->
                 </tr>
                 </tbody>
+
             </table>
         </section>
     </main>
 </div>
-<script th:src="@{js/web_manager/webcenter_seller.js}"></script>
+<!--<script th:src="@{js/web_manager/webcenter_seller.js}"></script>-->
 </body>
 </html>

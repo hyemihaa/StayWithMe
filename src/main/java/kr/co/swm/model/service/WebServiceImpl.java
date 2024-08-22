@@ -5,12 +5,9 @@ import kr.co.swm.model.dto.WebDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class WebServiceImpl implements WebService {
@@ -25,98 +22,82 @@ public class WebServiceImpl implements WebService {
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
     @Override
-    public List<WebDto> dashboardData() {
-        List<WebDto> bookingData = mapper.bookingData();
-        List<WebDto> views = mapper.views();
-
-        List<WebDto> dashboardData = new ArrayList<>();
-
-        LocalDate today = LocalDate.now();
-        String todayStr = today.toString();
-
-        int totalViewsToday = views.stream()
-                .filter(view -> todayStr.equals(view.getViewsDate()))
-                .mapToInt(WebDto::getViewsCount)
-                .sum();
-
-        int totalBookingsToday = 0;
-        int totalCancellationsToday = 0;
-        int totalConfirmedAmountToday = 0;
-
-        Map<String, Integer> accommodationTypeRevenue = new HashMap<>();
-        Map<String, Integer> monthlyRevenue = new HashMap<>();
-        Map<String, WebDto> recentSales = new HashMap<>();
-
-        for (WebDto item : bookingData) {
-            String reservationStatus = item.getReservationStatus();
-            String accommodationType = item.getAccommodationType();
-            String reservationDate = item.getReservationDate();
-
-            if (accommodationType == null || accommodationType.trim().isEmpty()) {
-                accommodationType = "Unknown"; // 또는 "기타", "알 수 없음" 등으로 설정 가능
-            }
-
-            if (todayStr.equals(reservationDate)) {
-                if (reservationStatus != null) {
-                    reservationStatus = reservationStatus.trim().toLowerCase();
-                } else {
-                    reservationStatus = "";
-                }
-
-                if ("confirmed".equals(reservationStatus)) {
-                    totalBookingsToday++;
-                    totalConfirmedAmountToday += item.getReservationAmount();
-                } else if ("cancelled".equals(reservationStatus)) {
-                    totalCancellationsToday++;
-                }
-            }
-
-            accommodationTypeRevenue.put(accommodationType,
-                    accommodationTypeRevenue.getOrDefault(accommodationType, 0) + item.getReservationAmount());
-
-            if (reservationDate != null) {
-                String month = reservationDate.substring(0, 7);
-                monthlyRevenue.put(month, monthlyRevenue.getOrDefault(month, 0) + item.getReservationAmount());
-            }
-
-            WebDto salesDto = recentSales.getOrDefault(accommodationType, new WebDto());
-            salesDto.setAccommodationType(accommodationType);
-            salesDto.setReservationDate(todayStr);
-
-            if ("confirmed".equals(reservationStatus)) {
-                salesDto.setReservationCount(salesDto.getReservationCount() + 1);
-                salesDto.setReservationAmount(salesDto.getReservationAmount() + item.getReservationAmount());
-            } else if ("cancelled".equals(reservationStatus)) {
-                salesDto.setCancellationCount(salesDto.getCancellationCount() + 1);
-                salesDto.setReservationAmount(salesDto.getReservationAmount() - item.getReservationAmount());
-            }
-
-            recentSales.put(accommodationType, salesDto);
-        }
-
-        WebDto summaryDto = new WebDto();
-        summaryDto.setViewsCount(totalViewsToday);
-        summaryDto.setReservationCount(totalBookingsToday);
-        summaryDto.setCancellationCount(totalCancellationsToday);
-        summaryDto.setReservationAmount(totalConfirmedAmountToday);
-        dashboardData.add(summaryDto);
-
-        dashboardData.addAll(accommodationTypeRevenue.entrySet().stream().map(entry -> {
-            WebDto revenueDto = new WebDto();
-            revenueDto.setAccommodationType(entry.getKey());
-            revenueDto.setReservationAmount(entry.getValue());
-            return revenueDto;
-        }).collect(Collectors.toList()));
-
-        dashboardData.addAll(monthlyRevenue.entrySet().stream().map(entry -> {
-            WebDto revenueDto = new WebDto();
-            revenueDto.setReservationDate(entry.getKey());
-            revenueDto.setReservationAmount(entry.getValue());
-            return revenueDto;
-        }).collect(Collectors.toList()));
-
-        dashboardData.addAll(recentSales.values());
-
-        return dashboardData;
+    public WebDto dashboardData(String today) {
+        return mapper.dashboardData(today);
     }
+
+    @Override
+    public List<WebDto> getAccommodationRevenueData(String today) {
+        return mapper.getAccommodationRevenueData(today);
+    }
+
+    @Override
+    public List<WebDto> getMonthlySalesData(String currentYear) {
+        return mapper.getMonthlySalesData(currentYear);
+    }
+
+    @Override
+    public List<WebDto> getRecentSalesData(String today) {
+        return mapper.getReservationDataByDate(today);
+    }
+
+
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
+    // 쿠폰 리스트 조회
+    @Override
+    public List<WebDto> couponList() {
+        return mapper.couponList();
+    }
+
+    // 쿠폰 등록
+    @Override
+    public void couponInsert(WebDto webDto) {
+        // 쿠폰 코드 생성 로직
+        String couponCode = generateCouponCode(webDto);
+        webDto.setCouponCode(couponCode);
+
+        // 쿠폰 정보 DB에 삽입
+        mapper.couponInsert(webDto);
+    }
+
+    private String generateCouponCode(WebDto webDto) {
+        // 날짜와 고유 ID를 사용하여 쿠폰 코드 생성 (예: CP202408220001)
+        String currentDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        int uniqueId = mapper.countCoupons() + 1; // 쿠폰 개수에 따라 고유 ID 증가
+        return "CP" + currentDate + String.format("%04d", uniqueId);
+    }
+
+//  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
+    // 사용자 조회 =======================================================
+    @Override
+    public List<WebDto> userSearch() {
+        return mapper.getUserSearch();
+    }
+
+    @Override
+    public List<WebDto> sellerSearch() {
+        return mapper.getSellerSearch();
+    }
+
+    @Override
+    public List<WebDto> managerSearch() {
+        return mapper.getManagerSearch();
+    }
+
+
+
+    // 사용자 검색 조회 =======================================================
+    @Override
+    public List<WebDto> searchUsersByKeyword(String keyword) {
+        return mapper.searchUsersByKeyword(keyword);
+    }
+
+    @Override
+    public List<WebDto> searchSellersByKeyword(String keyword) {
+        return mapper.searchSellersByKeyword(keyword);
+    }
+
+
 }

@@ -1,14 +1,15 @@
-/* 사이드바와 컨텐츠 사이의 마진 조정 */
+/* Content 영역 스타일링 */
 .content {
-    margin-left: 300px !important; /* 사이드바의 너비와 일치하도록 설정 */
-    min-height: 100vh !important; /* 화면 높이에 맞게 최소 높이를 설정하여 footer가 화면 하단에 고정되도록 함 */
-    padding: 20px !important; /* 컨텐츠와 경계 사이에 여백을 추가 */
+    margin-left: 300px !important; /* 사이드바의 너비와 일치 */
+    min-height: 100vh !important; /* 화면 높이에 맞게 최소 높이 설정 */
+    padding: 20px !important; /* 경계와 컨텐츠 사이 여백 */
     width: 83%;
-    background: #FFFFFF !important; /* 배경색을 흰색으로 설정 */
-    transition: margin-left 0.5s ease !important; /* 사이드바가 토글될 때의 부드러운 전환 효과를 위해 transition 속성 추가 */
-    z-index: 1 !important; /* 사이드바보다 위에 오도록 설정 */
+    background: #FFFFFF !important; /* 배경색 흰색 설정 */
+    transition: margin-left 0.5s ease !important; /* 사이드바 토글 시 부드러운 전환 효과 */
+    z-index: 1 !important; /* 사이드바보다 위에 위치 */
 }
 
+/* 검색 필드 스타일링 */
 .searchText {
     width: 70%;
 }
@@ -21,25 +22,46 @@
     width: 300px;
 }
 
-/* 테이블 스타일 조정: 모든 페이지에서 일관된 테이블 스타일을 보장 */
+/* 테이블 스타일링 */
 .table td {
-    font-size: 16px !important;  /* 텍스트 크기를 16px로 설정하여 사이드바 텍스트와 일치 */
-    font-weight: 400 !important; /* 기본 글꼴 두께로 설정 */
-    color: var(--dark) !important; /* 텍스트 색상을 다크 모드 변수에 맞게 설정 */
-    vertical-align: middle !important; /* 테이블 셀 내의 텍스트가 가운데에 정렬되도록 설정 */
+    font-size: 16px !important; /* 텍스트 크기 */
+    font-weight: 400 !important; /* 글꼴 두께 */
+    color: var(--dark) !important; /* 텍스트 색상 */
+    vertical-align: middle !important; /* 텍스트 가운데 정렬 */
+    text-align: center !important; /* 모든 셀 텍스트 중앙 정렬 */
 }
 
 .table th {
-    font-size: 16px !important;  /* 테이블 헤더의 텍스트 크기를 16px로 설정 */
-    font-weight: 700 !important; /* 텍스트를 굵게 설정하여 헤더를 강조 */
-    color: var(--dark) !important; /* 헤더 텍스트 색상을 다크 모드 변수에 맞게 설정 */
-    background-color: var(--light) !important; /* 헤더 배경색을 사이드바와 일치시키기 위해 설정 */
-    text-align: center !important; /* 헤더 텍스트를 중앙 정렬 */
+    font-size: 16px !important; /* 헤더 텍스트 크기 */
+    font-weight: 700 !important; /* 헤더 텍스트 굵게 */
+    color: var(--dark) !important; /* 헤더 텍스트 색상 */
+    background-color: var(--light) !important; /* 헤더 배경색 */
+    text-align: center !important; /* 헤더 텍스트 중앙 정렬 */
 }
 
 /* 테이블 행 hover 시 배경색 조정 */
 .table-hover tbody tr:hover {
-    background-color: rgba(0, 156, 255, 0.1) !important; /* 호버 시 배경색을 주 색상의 반투명한 파란색으로 설정하여 가시성 향상 */
+    background-color: rgba(0, 156, 255, 0.1) !important; /* 호버 시 배경색 */
+}
+
+/* 예약 상태 배지 스타일링 */
+.badge {
+    padding: 0.5em 1em; /* 배지 안쪽 여백 */
+    font-size: 14px; /* 배지 텍스트 크기 */
+    font-weight: 700; /* 배지 텍스트 굵게 */
+    border-radius: 12px; /* 배지 모서리 둥글게 */
+    display: inline-block; /* 인라인 블록 요소 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+.status-complete {
+    background-color: #d4edda; /* 녹색 배경색 */
+    color: #155724; /* 녹색 텍스트 색상 */
+}
+
+.status-cancel {
+    background-color: #f8d7da; /* 붉은색 배경색 */
+    color: #721c24; /* 붉은색 텍스트 색상 */
 }
 
 /* 추가: 컨텐츠 영역의 flexbox 사용으로 footer를 하단에 고정 */
@@ -56,3 +78,23 @@
     text-align: center;
 }
 
+/* 검색 영역 스타일 조정 */
+.card {
+    margin-bottom: 20px; /* 하단 여백 추가 */
+}
+
+.card-body {
+    padding: 15px; /* 검색 영역 내부 여백 */
+}
+
+.row {
+    margin-bottom: 15px; /* 행 간격 추가 */
+}
+
+input[type="date"] {
+    width: auto; /* 날짜 필드의 자동 너비 조정 */
+}
+
+input[type="text"] {
+    width: auto; /* 텍스트 필드의 자동 너비 조정 */
+}
