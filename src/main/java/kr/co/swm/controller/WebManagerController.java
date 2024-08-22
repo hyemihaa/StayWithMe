@@ -1,5 +1,7 @@
 package kr.co.swm.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.swm.model.dto.WebDto;
 import kr.co.swm.model.service.WebServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,62 +40,109 @@ public class WebManagerController {
         // 서비스에서 가공된 대시보드 데이터를 가져옵니다.
         List<WebDto> dashboardData = web.dashboardData();
 
-        // 대시보드 데이터를 디버깅하기 위해 출력합니다.
-        for (WebDto item : dashboardData) {
-            System.out.println("=============== Controller DashBoard Data ===============");
-            System.out.println("Accommodation Type : " + item.getAccommodationType());
-            System.out.println("Reservation Date : " + item.getReservationDate());
-            System.out.println("Reservation Count : " + item.getReservationCount());
-            System.out.println("Cancellation Count : " + item.getCancellationCount());
-            System.out.println("Reservation Amount : " + item.getReservationAmount());
-            System.out.println("Views Date : " + item.getViewsDate());
-            System.out.println("Views Count : " + item.getViewsCount());
-            System.out.println("========================================================");
+        // 오늘 날짜와 현재 연도를 구합니다.
+        String today = java.time.LocalDate.now().toString();
+        String currentYear = java.time.LocalDate.now().getYear() + "-";
+
+        // 대시보드 데이터가 비어있지 않은지 확인하고, 첫 번째 요소를 요약 데이터로 사용
+        if (!dashboardData.isEmpty()) {
+            WebDto summary = dashboardData.get(0);
+
+            model.addAttribute("viewsCount", summary.getViewsCount());
+            model.addAttribute("reservationCount", summary.getReservationCount());
+            model.addAttribute("cancellationCount", summary.getCancellationCount());
+            model.addAttribute("confirmedAmount", summary.getReservationAmount());
         }
 
-        // 대시보드 데이터의 첫 번째 요소는 요약 데이터를 포함하고 있습니다.
-        WebDto summary = dashboardData.get(0);
-
-        // 요약 데이터가 올바르게 설정되었는지 디버깅하기 위해 출력합니다.
-        System.out.println("=============== Controller Summary Data ===============");
-        System.out.println(summary.getViewsCount());
-        System.out.println(summary.getReservationCount());
-        System.out.println(summary.getCancellationCount());
-        System.out.println(summary.getReservationAmount());
-        System.out.println("========================================================");
-
-        // 요약 데이터를 모델에 추가하여 뷰로 전달합니다.
-        int viewsCount = summary.getViewsCount();
-        int reservationCount = summary.getReservationCount();
-        int cancellationCount = summary.getCancellationCount();
-        int confirmedAmount = summary.getReservationAmount();
-
-        model.addAttribute("viewsCount", viewsCount);
-        model.addAttribute("reservationCount", reservationCount);
-        model.addAttribute("cancellationCount", cancellationCount);
-        model.addAttribute("confirmedAmount", confirmedAmount);
-
-        // 숙박 형태별 매출 현황 데이터를 필터링하여 모델에 추가합니다.
+        // 숙박 형태별 매출 현황 데이터를 오늘 날짜로 필터링하여 모델에 추가
         List<WebDto> accommodationData = dashboardData.stream()
-                .filter(dto -> dto.getAccommodationType() != null) // 숙박 유형이 존재하는 데이터만 필터링
+                .filter(dto -> dto.getAccommodationType() != null && today.equals(dto.getReservationDate())) // 오늘 날짜 데이터 필터링
                 .collect(Collectors.toList());
         model.addAttribute("accommodationData", accommodationData);
 
-        // 월별 매출 현황 데이터를 필터링하여 모델에 추가합니다.
-        List<WebDto> monthlySalesData = dashboardData.stream()
-                .filter(dto -> dto.getReservationDate() != null && dto.getAccommodationType() == null) // 예약 날짜가 있고 숙박 유형이 없는 데이터만 필터링
-                .collect(Collectors.toList());
-        model.addAttribute("monthlySalesData", monthlySalesData);
+        // 숙박 형태 디버깅
+        for(WebDto item : accommodationData) {
+            System.out.println("========== Controller Accommodation Data ==========");
+            System.out.println("Accommodation Type : " + item.getAccommodationType());
+            System.out.println("===================================================");
+        }
 
-        // 최근 매출 현황 데이터를 필터링하여 모델에 추가합니다.
+        // 월별 매출 현황 데이터를 현재 연도 기준으로 필터링하여 모델에 추가
+        List<WebDto> hotelSalesData = dashboardData.stream()
+                .filter(dto -> dto.getReservationDate() != null
+                        && dto.getReservationDate().startsWith(currentYear)
+                        && "호텔".equals(dto.getAccommodationType())) // 현재 연도 및 숙소 타입이 '호텔'인 데이터 필터링
+                .collect(Collectors.toList());
+
+        List<WebDto> resortSalesData = dashboardData.stream()
+                .filter(dto -> dto.getReservationDate() != null
+                        && dto.getReservationDate().startsWith(currentYear)
+                        && "리조트".equals(dto.getAccommodationType())) // 현재 연도 및 숙소 타입이 '리조트'인 데이터 필터링
+                .collect(Collectors.toList());
+
+        model.addAttribute("hotelSalesData", hotelSalesData);
+        model.addAttribute("resortSalesData", resortSalesData);
+
+        // 월별 매출 현황 디버깅
+        for(WebDto item : hotelSalesData) {
+            System.out.println("========== Controller Hotel Sales Data ==========");
+            System.out.println("Reservation Date : " + item.getReservationDate());
+            System.out.println("Accommodation Type : " + item.getAccommodationType());
+            System.out.println("Reservation Amount : " + item.getReservationAmount());
+            System.out.println("===================================================");
+        }
+
+        for(WebDto item : resortSalesData) {
+            System.out.println("========== Controller Resort Sales Data ==========");
+            System.out.println("Reservation Date : " + item.getReservationDate());
+            System.out.println("Accommodation Type : " + item.getAccommodationType());
+            System.out.println("Reservation Amount : " + item.getReservationAmount());
+            System.out.println("===================================================");
+        }
+
+        // 최근 매출 현황 데이터를 오늘 날짜 기준으로 필터링하여 모델에 추가
         List<WebDto> recentSalesData = dashboardData.stream()
-                .filter(dto -> dto.getReservationDate() != null && dto.getAccommodationType() != null) // 예약 날짜와 숙박 유형이 모두 존재하는 데이터만 필터링
+                .filter(dto -> dto.getReservationDate() != null && dto.getAccommodationType() != null && today.equals(dto.getReservationDate())) // 오늘 날짜 데이터 필터링
                 .collect(Collectors.toList());
         model.addAttribute("recentSalesData", recentSalesData);
 
-        // 뷰 페이지를 반환합니다.
+        // 최근 매출 현황 디버깅
+        for(WebDto item : recentSalesData) {
+            System.out.println("========== Controller Recent Sales Data ==========");
+            System.out.println("Accommodation Type : " + item.getAccommodationType());
+            System.out.println("Reservation Amount : " + item.getReservationAmount());
+            System.out.println("===================================================");
+        }
+
+        // JSON 문자열로 변환하여 모델에 추가
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // 숙박 형태별 매출 데이터 JSON 변환
+            String accommodationDataJson = objectMapper.writeValueAsString(accommodationData);
+
+            // 호텔 및 리조트 월별 매출 데이터 JSON 변환
+            String hotelSalesDataJson = objectMapper.writeValueAsString(hotelSalesData);
+            String resortSalesDataJson = objectMapper.writeValueAsString(resortSalesData);
+
+            // 최근 매출 데이터 JSON 변환
+            String recentSalesDataJson = objectMapper.writeValueAsString(recentSalesData);
+
+            // 모델에 JSON 데이터 추가
+            model.addAttribute("accommodationDataJson", accommodationDataJson);
+            model.addAttribute("hotelSalesDataJson", hotelSalesDataJson);
+            model.addAttribute("resortSalesDataJson", resortSalesDataJson);
+            model.addAttribute("recentSalesDataJson", recentSalesDataJson);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            // 예외 처리 코드 추가 가능
+        }
+
+
         return "web_manager/webcenter_dashboard";
     }
+
 
 
 
