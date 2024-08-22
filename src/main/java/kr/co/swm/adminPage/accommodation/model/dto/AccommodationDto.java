@@ -20,7 +20,8 @@ public class AccommodationDto {
 
     private int accommodationNo;         // 업소 넘버
     private String accommodationName;         // 업소 이름
-    private List<String> accommodationType;         // 업소 부대시설
+    private String accommodationType;           // 업소 유형
+    private List<String> accommodationFacilities;      // 업소 부대시설
     private String accommodationPhone;        // 업소 전화번호
 
     private String roadName;     // 도로명 주소

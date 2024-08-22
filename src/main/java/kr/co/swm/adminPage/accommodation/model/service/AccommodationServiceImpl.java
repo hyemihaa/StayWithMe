@@ -31,8 +31,8 @@ public class AccommodationServiceImpl implements AccommodationService {
 
         int result = mapper.enrollAccommodation(accommodationDto, no);
         if (result == 1) {
-            for (int i = 0; i < accommodationDto.getAccommodationType().size(); i++) {
-                String facility = accommodationDto.getAccommodationType().get(i);
+            for (int i = 0; i < accommodationDto.getAccommodationFacilities().size(); i++) {
+                String facility = accommodationDto.getAccommodationFacilities().get(i);
                 mapper.enrollFacilities(facility, no);
             }
             return mapper.enrollMainImage(mainImage, no);
