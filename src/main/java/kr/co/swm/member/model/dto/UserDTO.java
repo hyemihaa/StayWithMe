@@ -12,9 +12,6 @@ import java.time.LocalDateTime;
 @Setter
 @PasswordMatches
 public class UserDTO extends MemberDTO{
-    // 회원번호
-    private Long userNo;
-
     @NotBlank(message = "비밀번호 확인은 필수입니다.")
     private String confirmPassword;
 
@@ -25,7 +22,6 @@ public class UserDTO extends MemberDTO{
     @NotBlank(message = "전화번호는 필수 입력값입니다")
     @Pattern(regexp = "^010\\d{8}$", message = "'-' 없이 입력하세요.")
     private String userPhone;
-
 
     private LocalDateTime createdDate; // 생성일
     private LocalDateTime deletedDate; // 탈퇴일

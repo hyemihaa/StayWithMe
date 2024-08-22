@@ -1,12 +1,9 @@
 package kr.co.swm.member.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import kr.co.swm.config.auth.CustomUserDetailsService;
 import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.member.model.dto.AdminDTO;
-import kr.co.swm.member.model.dto.MemberDTO;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.member.model.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
