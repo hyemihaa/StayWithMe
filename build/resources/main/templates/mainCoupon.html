@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>DirEngine - Free Bootstrap 4 Template by Colorlib</title>
+    <link th:replace="~{fragments/css.html :: css}">
+    <link rel="stylesheet" th:href="@{css/coupon/mainCouponList.css}">
+
+</head>
+<body style="background-color: #0c5460">
+
+<nav th:replace="~{fragments/navbar.html :: navbar}"></nav>
+<!-- END nav -->
+
+<div class="hero-wrap js-fullheight" style="background-image: url('../static/images/bg_4.jpg');">
+    <div class=""></div>
+    <div class="">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
+            <div class="col-md-9 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
+                <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a href="index.html">Home</a></span> <span>Blog</span></p>
+                <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">쿠폰 리스트</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-bottom: 600px">
+    <div class="event-header">
+        <h1>쿠폰 리스트</h1>
+    </div>
+    <ul class="event-tabs">
+        <li class="active" onclick="showTab('all', event)">ALL</li>
+        <li onclick="showTab('hotel', event)">호텔</li>
+        <li onclick="showTab('pension', event)">펜션</li>
+        <li onclick="showTab('resort', event)">리조트</li>
+    </ul>
+    <a class="download-button" href="#">모두 내려받기</a>
+
+    <div id="all" class="event-list">
+        <div class="event-item">
+            <div class="event-content">
+                <p class="event-title">부산 워케이션 호텔 여기어때</p>
+                <p class="event-subtitle">부산 워케이션 참가자 전용</p>
+
+            </div>
+            <div class="event-price">
+                <span>10000원</span>
+                <p style="font-size: 0.5em">10만원 이상 결제시</p>
+            </div>
+            <p class="event-dates">24.07.16 - 25.08.31 23:59</p>
+            <p style="margin-bottom: 10%">
+                <a class="coupon-button" href="#">쿠폰 받기</a>
+            </p>
+        </div>
+
+        <div class="event-item">
+            <div class="event-content">
+                <p class="event-title">미국 숙소·항공 21만원 추가할인</p>
+                <p class="event-subtitle">강민경이 추천하는 미국여행!</p>
+            </div>
+            <div class="event-price">
+                <span>210000원</span>
+                <p>특별 할인</p>
+            </div>
+                <p class="event-dates">24.07.17 - 24.08.13 23:59</p>
+             <p style="margin-bottom: 10%">
+                <a class="coupon-button" href="#">쿠폰 받기</a>
+            </p>
+        </div>
+    </div>
+
+    <div id="hotel" class="event-list" style="display: none;">
+        <div class="event-item">
+            <div class="event-content">
+                <p class="event-title">부산 워케이션 호텔 여기어때</p>
+                <p class="event-subtitle">부산 워케이션 참가자 전용</p>
+            </div>
+            <div class="event-price">
+                <span>10000원</span>
+                <p>10만원 이상 결제시</p>
+            </div>
+                <p class="event-dates">24.07.16 - 25.08.31 23:59</p>
+             <p style="margin-bottom: 10%">
+                <a class="coupon-button" href="#">쿠폰 받기</a>
+            </p>
+        </div>
+
+        <div class="event-item">
+            <div class="event-content">
+                <p class="event-title">베스트 호텔팀 최대 68% 특가</p>
+                <p class="event-subtitle">단 4일! 인기 호텔 최대 할인!</p>
+            </div>
+            <div class="event-price">
+                <span>68000원</span>
+                <p>최대 할인</p>
+            </div>
+                <p class="event-dates">24.08.01 - 24.08.31 23:59</p>
+             <p style="margin-bottom: 10%">
+                <a class="coupon-button" href="#">쿠폰 받기</a>
+            </p>
+        </div>
+    </div>
+
+    <div id="pension" class="event-list" style="display: none;">
+        <div class="event-item">
+            <div class="event-content">
+                <p class="event-title">부산 워케이션 호텔 여기어때</p>
+                <p class="event-subtitle">부산 워케이션 참가자 전용</p>
+            </div>
+            <div class="event-price">
+                <span>10000원</span>
+                <p>10만원 이상 결제시</p>
+            </div>
+                <p class="event-dates">24.07.16 - 25.08.31 23:59</p>
+             <p style="margin-bottom: 10%">
+                <a class="coupon-button" href="#">쿠폰 받기</a>
+            </p>
+        </div>
+
+        <div class="event-item">
+            <div class="event-content">
+                <p class="event-title">베스트 호텔팀 최대 68% 특가</p>
+                <p class="event-subtitle">단 4일! 인기 호텔 최대 할인!</p>
+            </div>
+            <div class="event-price">
+                <span>68000원</span>
+                <p>최대 할인</p>
+            </div>
+                <p class="event-dates">24.08.01 - 24.08.31 23:59</p>
+             <p style="margin-bottom: 10%">
+                <a class="coupon-button" href="#">쿠폰 받기</a>
+            </p>
+        </div>
+    </div>
+
+    <div id="resort" class="event-list" style="display: none;">
+        <div class="event-item">
+            <div class="event-content">
+                <p class="event-title">부산 워케이션 호텔 여기어때</p>
+                <p class="event-subtitle">부산 워케이션 참가자 전용</p>
+            </div>
+            <div class="event-price">
+                <span>10000원</span>
+                <p>10만원 이상 결제시</p>
+            </div>
+                <p class="event-dates">24.07.16 - 25.08.31 23:59</p>
+             <p style="margin-bottom: 10%">
+                <a class="coupon-button" href="#">쿠폰 받기</a>
+            </p>
+        </div>
+
+        <div class="event-item">
+            <div class="event-content">
+                <p class="event-title">베스트 호텔팀 최대 68% 특가</p>
+                <p class="event-subtitle">단 4일! 인기 호텔 최대 할인!</p>
+            </div>
+            <div class="event-price">
+                <span>68000원</span>
+                <p>최대 할인</p>
+            </div>
+                <p class="event-dates">24.08.01 - 24.08.31 23:59</p>
+             <p style="margin-bottom: 10%">
+                <a class="coupon-button" href="#">쿠폰 받기</a>
+            </p>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/footer.html :: footer}"></div>
+<!-- loader -->
+<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+
+</body>
+<script th:src="@{js/coupon/couponList.js}" defer></script>
+<div th:replace="~{fragments/js.html :: js}"></div>
+</html>
