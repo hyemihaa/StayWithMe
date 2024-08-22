@@ -31,6 +31,15 @@
             </div>
         </header>
         <section class="dashboard-content">
+            <div id="dashboardData"
+                 data-views-count="[[${viewsCount}]]"
+                 data-booking-count="[[${reservationCount}]]"
+                 data-cancellation-count="[[${cancellationCount}]]"
+                 data-confirmed-amount="[[${confirmedAmount}]]"
+                 data-accommodation-data="[[${accommodationDataJson}]]"
+                 data-monthly-sales-data="[[${monthlySalesDataJson}]]"
+                 data-recent-sales-data="[[${recentSalesDataJson}]]">
+            </div>
             <div class="status-boxes">
                 <div class="status-box">
                     <i class="fas fa-chart-line"></i>
@@ -92,7 +101,36 @@
         </section>
     </main>
 </div>
+<!-- CDN Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script th:src="@{js/web_manager/webcenter_dashboard.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+<script src="https://cdn.jsdelivr.net/npm/date-fns@latest"></script>
+
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var accommodationData = /*[[${accommodationDataJson}]]*/ '[]';
+    var monthlySalesData = /*[[${monthlySalesDataJson}]]*/ '[]';
+    var recentSalesData = /*[[${recentSalesDataJson}]]*/ '[]';
+    var viewsCount = /*[[${viewsCount}]]*/ 0;
+    var bookingCount = /*[[${bookingCount}]]*/ 0;
+    var cancellationCount = /*[[${cancellationCount}]]*/ 0;
+    var confirmedAmount = /*[[${confirmedAmount}]]*/ 0;
+    /*]]>*/
+</script>
+
+<script>
+    // 필요시 Date Adapter 로케일을 설정하지만, 기본 설정을 사용할 수도 있음
+    const defaultLocale = dateFns.locale; // 기본 로케일 사용
+
+    // JavaScript 로직을 여기에 추가합니다
+    // 예시: chart.js로 차트를 생성하는 코드
+</script>
+
+
+
+<!--<script th:src="@{/js/web_manager/webcenter_dashboard.js}"></script>-->
+<script type="module" th:src="@{/js/web_manager/webcenter_dashboard.js}"></script>
+
 </body>
 </html>

@@ -91,6 +91,9 @@ public class SignController {
     @PostMapping("/admin-signup")
     public String adminSignUp(@Valid MemberDTO memberDTO) {
 
+        System.out.println(memberDTO.getUserId());
+        System.out.println(memberDTO.getRole());
+
         if(memberDTO.getRole().equals("ROLE_ACCOMMODATION_ADMIN")) {
             int result = memberServiceImpl.setSellerSignup(memberDTO);
             if(result != 0) {
@@ -127,9 +130,9 @@ public class SignController {
 
             // 권한에 따라 리다이렉트할 페이지 결정
             if ("ROLE_SITE_ADMIN".equals(role)) {
-                return "redirect:/"; // 사이트 관리자 페이지로 리다이렉트
+                return "redirect:/web-center"; // 사이트 관리자 페이지로 리다이렉트
             } else if ("ROLE_ACCOMMODATION_ADMIN".equals(role)) {
-                return "redirect:/"; // 업소 관리자 페이지로 리다이렉트 ( 추후수정 )
+                return "redirect:/seller-main.do"; // 업소 관리자 페이지로 리다이렉트 ( 추후수정 )
             } else {
                 return "redirect:/"; // 일반 사용자 -> 메인
             }
