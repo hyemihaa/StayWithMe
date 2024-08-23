@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import kr.co.swm.member.model.dto.AdminDTO;
 import kr.co.swm.member.model.dto.UserDTO;
 
+import java.util.List;
+
 public interface MemberService {
     // 회원가입
     public int setSignup(UserDTO userDTO);
@@ -41,5 +43,14 @@ public interface MemberService {
     // 마이페이지 새비밀번호 설정
     void updatePassword(String userId, String newPassword);
 
+    // 마이페이지 휴대전화 번호 변경
     void updatePhoneNumber(String newPhone, String userId);
+
+    // 로그기록 저장
+    void saveLoginLog(UserDTO userDTO);
+
+    // 로그 기록 조회
+    List<UserDTO> loginLog(Long userNo);
+
+
 }

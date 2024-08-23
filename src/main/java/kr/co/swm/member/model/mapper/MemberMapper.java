@@ -5,6 +5,8 @@ import kr.co.swm.member.model.dto.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface MemberMapper {
     // 회원가입
@@ -40,4 +42,10 @@ public interface MemberMapper {
 
     // 마이페이지 휴대전화 번호 변경
     void updatePhoneNumber(@Param("newPhone") String newPhone, @Param("userId") String userId);
+
+    // 로그인 로그 기록 저장
+    void insertLoginLog(@Param("userDTO") UserDTO userDTO);
+
+    // 로그 조회
+    List<UserDTO> getUserLogsByUserNo(@Param("no") Long no);
 }

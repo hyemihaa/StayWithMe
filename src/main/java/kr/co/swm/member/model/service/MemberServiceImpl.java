@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -105,10 +106,6 @@ public class MemberServiceImpl implements MemberService {
     // 로그인
     @Override
     public String authenticate(String userId, String userPwd, HttpServletResponse response, String signRole) {
-        System.out.println("-----------memberService상단------------------");
-        System.out.println(userId);
-        System.out.println(userPwd);
-        System.out.println(signRole);
         // 사용자 정보 로드 및 권한 초기화
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId, signRole);
         System.out.println(userDetails.getPassword());
@@ -171,6 +168,8 @@ public class MemberServiceImpl implements MemberService {
             accessCookie.setDomain("localhost"); // 도메인 설정
             accessCookie.setSecure(false);
             response.addCookie(accessCookie);
+
+            // 로그인 기록 저장
 
             return token;
         }
@@ -244,5 +243,17 @@ public class MemberServiceImpl implements MemberService {
 
         // 새 전화번호 업데이트
         memberMapper.updatePhoneNumber(newPhone, userId);
+    }
+
+    // 사용자 로그기록 저장
+    @Override
+    public void saveLoginLog(UserDTO userDTO) {
+        memberMapper.insertLoginLog(userDTO);
+    }
+
+    @Override
+    public List<UserDTO> loginLog(Long userNo) {
+        // 모든 로그인 기록을 조회하여 반환
+        return memberMapper.getUserLogsByUserNo(userNo);
     }
 }

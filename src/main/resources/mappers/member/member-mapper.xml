@@ -11,10 +11,13 @@
         <result column="USER_PHONE" property="userPhone"></result>
         <result column="CREATED_DATE" property="createdDate"></result>
         <result column="DELETED_DATE" property="deletedDate"></result>
+        <result column="LAST_LOGIN_DATE" property="lastLoginDate"></result>
+        <result column="LOG_ID" property="logId"></result>
+        <result column="USER_IP" property="userIp"></result>
     </resultMap>
 
     <resultMap id="adminResultMap" type="kr.co.swm.member.model.dto.AdminDTO">
-        <result column="ACCOMODATION_ADMIN_NO" property="no"></result>
+        <result column="ACCOMMODATION_ADMIN_NO" property="no"></result>
         <result column="USER_ID" property="userId"></result>
         <result column="USER_PWD" property="userPwd"></result>
         <result column="ROLES" property="role"></result>
@@ -54,6 +57,19 @@
         SET USER_PWD = #{encodedPassword}
         WHERE user_id = #{userId} AND user_phone = #{userPhone}
     </update>
+
+    <!--로그가 없다면 새로운 로그 삽입-->
+    <insert id="insertLoginLog">
+        INSERT INTO USER_LOG (USER_NO, LAST_LOGIN_DATE, USER_IP)
+        VALUES (#{userDTO.no}, #{userDTO.lastLoginDate}, #{userDTO.userIp})
+    </insert>
+
+    <!--로그 조회-->
+    <select id="getUserLogsByUserNo" resultMap="userResultMap">
+        SELECT * FROM USER_LOG
+        WHERE USER_NO = #{no}
+        ORDER BY LAST_LOGIN_DATE DESC
+    </select>
 
     <!--로그인한 유저의 전체 정보-->
     <select id="findByUserInfo" resultMap="userResultMap">

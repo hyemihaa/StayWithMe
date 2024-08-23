@@ -40,7 +40,7 @@ public class SecurityConfig {
                                 .requestMatchers("/seller-main.do", "/reservation.do", "/reservation-search.do", "/reservation-daily.do", "/reservation-monthly.do",
                                                          "/basic-rate-list.do", "/getRoomRates", "/basic-rate-write.do", "/season-period.do", "/extra-delete", "/periods-update").permitAll()
                                 .requestMatchers("/seller-main.do", "/reservation.do", "/reservation-search.do", "/reservation-daily.do", "/reservation-monthly.do", "/basic-rate-list.do", "/getRoomRates", "/basic-rate-write.do", "/season-period.do", "/extra-delete", "/periods-update", "/reservation-monthly-data", "/web-login", "/web-center", "/web-coupon", "/web-member", "/web-seller", "/web-manager", "/admin-signup").permitAll()
-                                .requestMatchers("/member/mypage", "/mypage", "/update-profile").hasRole("USER") // 일반유저 권한을 가진 사용자만 접근 (추후 수정)
+                                .requestMatchers("/member/mypage", "/mypage", "/update-profile", "/login-log").hasRole("USER") // 일반유저 권한을 가진 사용자만 접근 (추후 수정)
                                 // hasRole([role]) : 현재 사용자의 권한이 파라미터의 권한과 동일한 경우 true
                                 //.hasAnyRole("ACCOMMODATION_ADMIN", "SITE_ADMIN", "USER")  //여러 권한 허용
                                 .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요

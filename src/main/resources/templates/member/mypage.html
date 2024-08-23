@@ -56,7 +56,7 @@
                     </a>
                 </li>
                 <!-- 로그인관리 메뉴 -->
-                <li onclick="showSection('activity-log')">
+                <li onclick="showSection('activity-log');">
                     <a href="javascript:void(0);">
                         로그인 관리
                         <span class="arrow">></span>
@@ -106,7 +106,6 @@
                 </div>
             </div>
 
-
             <!-- 쿠폰 섹션 -->
             <div id="coupons" class="section" style="display: none;">
                 <h2>쿠폰</h2>
@@ -129,7 +128,7 @@
                 </div>
             </div>
 
-            <!-- 내 정보 수정 섹션 -->
+            <!-- 내 정보 수정 섹션-->
             <div id="profile-edit" class="section" style="display: none;">
                 <h2>내 정보 수정</h2>
                 <form id="profileForm" th:object="${user}">
@@ -204,36 +203,30 @@
             <!-- 이력 관리 섹션 -->
             <div id="activity-log" class="section" style="display: none;">
                 <h2>로그인 관리</h2>
-                <p>회원 생성일, 마지막 로그인일자, IP 주소를 확인할 수 있습니다.</p>
+                <p>최근 로그인일자, IP 주소를 확인할 수 있습니다.</p>
+
+                <!-- 날짜 선택기 -->
+                <div>
+                    <input type="date" id="startDate" value="2024-08-17">
+                    -
+                    <input type="date" id="endDate" value="2024-08-23">
+                    <button id="filter-button" onclick="filterLogsByDate()">조회</button>
+                </div>
 
                 <!-- 로그인 로그 테이블 -->
                 <table class="log-table">
                     <thead>
                     <tr>
-                        <th>회원 생성일</th>
-                        <th>마지막 로그인일자</th>
+                        <th>최근 접속일자</th>
                         <th>IP 주소</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>2024/03/13 (수) 18:56</td>
-                        <td>2024/07/31 (수) 21:44</td>
-                        <td>223.33.165.109 (대한민국)</td>
-                    </tr>
-                    <tr>
-                        <td>2024/03/13 (수) 18:56</td>
-                        <td>2024/07/31 (수) 19:49</td>
-                        <td>106.101.68.104 (대한민국)</td>
-                    </tr>
-                    <tr>
-                        <td>2024/03/14 (목) 14:43</td>
-                        <td>2024/07/29 (월) 10:45</td>
-                        <td>106.101.193.220 (대한민국)</td>
-                    </tr>
-                    <!-- 다른 로그인 기록들 추가 -->
+                    <tbody id="log-table-body">
+                    <!-- AJAX 요청 후 데이터를 여기 채움 -->
                     </tbody>
                 </table>
+                <!-- 더보기 버튼 -->
+                <button id="load-more-button" style="display: none;" onclick="loadMoreLogs()">더보기</button>
             </div>
 
             <!-- 회원 탈퇴 섹션 -->
