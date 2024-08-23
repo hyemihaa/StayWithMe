@@ -62,6 +62,10 @@ public class SellerDto {
     private String reservationStatus;
     private String reservationType;
 
+    // 설정 파일
+    private String requestDetails;
+
+
     // 생성자
     public SellerDto() {
         this.roomNo = 0;
