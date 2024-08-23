@@ -14,7 +14,7 @@
     </resultMap>
 
     <resultMap id="adminResultMap" type="kr.co.swm.member.model.dto.AdminDTO">
-        <result column="ACCOMODATION_ADMIN_NO" property="no"></result>
+        <result column="ACCOMMODATION_ADMIN_NO" property="no"></result>
         <result column="USER_ID" property="userId"></result>
         <result column="USER_PWD" property="userPwd"></result>
         <result column="ROLES" property="role"></result>
