@@ -26,13 +26,14 @@ public class SellerServiceImpl implements SellerService {
 
     // 업소 조회수
     @Override
-    public int roomViews(int accommodationNo) {
-        return mapper.roomViews(accommodationNo);
+    public int roomViews(Long accommodationNo) {
+        Integer roomViews = mapper.roomViews(accommodationNo);
+        return (roomViews != null) ? roomViews : 0;
     }
 
     // 대시보드 정보 조회
     @Override
-    public List<SellerDto> mainList(int accommodationNo) {
+    public List<SellerDto> mainList(Long accommodationNo) {
 
         List<SellerDto> resultList = mapper.reserveData(accommodationNo);
 
@@ -54,7 +55,7 @@ public class SellerServiceImpl implements SellerService {
 
     // 예약 검색 조회
     @Override
-    public List<SellerDto> reservationSearch(int accommodationNo, String dateType, String startDate, String endDate, String searchKeyword, String reservationStatus) {
+    public List<SellerDto> reservationSearch(Long accommodationNo, String dateType, String startDate, String endDate, String searchKeyword, String reservationStatus) {
 
         // 입력 값에 대한 유효성 검사
         if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
@@ -96,7 +97,7 @@ public class SellerServiceImpl implements SellerService {
 
     // 일별 예약 조회
     @Override
-    public List<SellerDto> roomData(int accommodationNo, String selectedDate) {
+    public List<SellerDto> roomData(Long accommodationNo, String selectedDate) {
 
         List<SellerDto> roomData = mapper.roomData(accommodationNo, selectedDate);
 
@@ -112,7 +113,7 @@ public class SellerServiceImpl implements SellerService {
 
     // 관리자 보유 객실 조회
     @Override
-    public List<SellerDto> accommodationRoomData(int accommodationNo) {
+    public List<SellerDto> accommodationRoomData(Long accommodationNo) {
         List<SellerDto> accommodationRoomData = mapper.accommodationRoomData(accommodationNo);
 
         for(SellerDto item : accommodationRoomData) {
@@ -129,7 +130,7 @@ public class SellerServiceImpl implements SellerService {
 
     // 관리자 객실 예약 조회
     @Override
-    public List<SellerDto> monthlyData(int accommodationNo) {
+    public List<SellerDto> monthlyData(Long accommodationNo) {
         List<SellerDto> monthlyData = mapper.monthlyData(accommodationNo);
 
         for(SellerDto item : monthlyData) {
@@ -156,20 +157,20 @@ public class SellerServiceImpl implements SellerService {
 
     // 객실 리스트 조회
     @Override
-    public List<String> roomNameSearch(int accommodationNo) {
+    public List<String> roomNameSearch(Long accommodationNo) {
         return mapper.roomNameSearch(accommodationNo);
     }
 
     // 기본 요금 조회
     @Override
-    public List<SellerDto> basicRateList(String roomName, int accommodationNo) {
+    public List<SellerDto> basicRateList(String roomName, Long accommodationNo) {
         List<SellerDto> basicRateList = mapper.basicRateList(roomName, accommodationNo);
         return processRates(basicRateList, false);
     }
 
     // 추가 요금 조회
     @Override
-    public List<SellerDto> extraRateList(String roomName, int accommodationNo) {
+    public List<SellerDto> extraRateList(String roomName, Long accommodationNo) {
         List<SellerDto> extraRateList = mapper.extraRateList(roomName, accommodationNo);
 
         // 추가 요금 정보를 콘솔에 출력 (디버깅 목적)
@@ -197,7 +198,7 @@ public class SellerServiceImpl implements SellerService {
 
     // BASIC_RATE 요금 수정
     @Override
-    public int basicRateUpdate(SellerDto sellerDto, int accommodationNo) {
+    public int basicRateUpdate(SellerDto sellerDto, Long accommodationNo) {
         List<SellerDto> roomInfoList = mapper.bRoomInfoSearch(sellerDto.getRoomName(), accommodationNo);
 
         int updateCount = 0;
@@ -231,7 +232,7 @@ public class SellerServiceImpl implements SellerService {
 
     // 추가 요금 업데이트 또는 삽입
     @Override
-    public int extraRateUpdate(SellerDto sellerDto, int accommodationNo) {
+    public int extraRateUpdate(SellerDto sellerDto, Long accommodationNo) {
             // RoomName과 AccommodationNo를 기반으로 Room 정보를 조회
             List<SellerDto.ExtraDto> roomInfoList = mapper.eRoomInfoSearch(sellerDto.getRoomName(), accommodationNo);
 
@@ -387,19 +388,19 @@ public class SellerServiceImpl implements SellerService {
 
     // 기간 수정 페이지 정보 조회
     @Override
-    public List<SellerDto.ExtraDto> extraSeasonList(int accommodationNo) {
+    public List<SellerDto.ExtraDto> extraSeasonList(Long accommodationNo) {
         return mapper.extraSeasonList(accommodationNo);
     }
 
     // EXTRA NAME 기준으로 데이터 삭제
     @Override
-    public boolean extraRateDelete(String extraName, int accommodationNo) {
+    public boolean extraRateDelete(String extraName, Long accommodationNo) {
         return mapper.extraRateDelete(extraName, accommodationNo) > 0;
     }
 
     // 추가 요금 기간 수정
     @Override
-    public boolean extraSeasonUpdate(List<SellerDto.ExtraDto> extraSeasonUpdate, int accommodationNo) {
+    public boolean extraSeasonUpdate(List<SellerDto.ExtraDto> extraSeasonUpdate, Long accommodationNo) {
         // 기존의 추가 요금 정보를 조회
         List<SellerDto.ExtraDto> existingExtraRates = mapper.extraTableSearch(accommodationNo);
 

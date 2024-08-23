@@ -19,7 +19,9 @@
         <result column="PHONE" property="accommodationPhone"/>
         <result column="POST_NO" property="accommodationPost"/>
         <result column="ADDRESS" property="accommodationAddress"/>
-        <result column="VIEWS" property="accommodationViews"/>
+
+        <result column="VIEWS_DATE" property="viewsDate"/>
+        <result column="VIEWS_COUNT" property="viewsCount"/>
 
         <!-- 객실 정보 -->
         <result column="ROOM_NO" property="roomNo"/>
@@ -82,10 +84,11 @@
 <!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
 
     <!-- 객실 및 조회수 조회 -->
-    <select id="roomViews" resultType="java.lang.Integer">
-        SELECT VIEWS
-        FROM ACCOMMODATION
-        WHERE ACCOMMODATION_NO = #{accommodationNo}
+    <select id="roomViews" resultType="int">
+        SELECT VIEWS_COUNT
+        FROM ACCOMMODATION_VIEWS
+        WHERE ACCOMODATION_ADMIN_NO = #{accommodationNo}
+        AND VIEWS_DATE = CURDATE()
     </select>
 
     <!-- 예약 및 결제 정보 조회 -->
@@ -103,9 +106,9 @@
                us.USER_PHONE
         FROM RESERVE re
         JOIN ROOM ro ON re.ROOM_NO = ro.ROOM_NO
-        JOIN ACCOMMODATION a ON ro.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+        JOIN ACCOMMODATION a ON ro.ACCOMODATION_ADMIN_NO = a.ACCOMODATION_ADMIN_NO
         JOIN USER us ON re.USER_NO = us.USER_NO
-        WHERE a.ACCOMMODATION_NO = #{accommodationNo}
+        WHERE a.ACCOMODATION_ADMIN_NO = #{accommodationNo}
     </select>
 
 
@@ -131,10 +134,10 @@
         FROM
         RESERVE re
         JOIN ROOM ro ON re.ROOM_NO = ro.ROOM_NO
-        JOIN ACCOMMODATION a ON ro.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+        JOIN ACCOMMODATION a ON ro.ACCOMODATION_ADMIN_NO = a.ACCOMODATION_ADMIN_NO
         JOIN USER us ON re.USER_NO = us.USER_NO
         WHERE
-        a.ACCOMMODATION_NO = #{accommodationNo} <!-- 필수 조건: 숙소 번호로 필터링 -->
+        a.ACCOMODATION_ADMIN_NO = #{accommodationNo} <!-- 필수 조건: 숙소 번호로 필터링 -->
 
         <!-- 날짜 필터 조건: 접수일 기준으로 필터링 -->
         <if test="dateType == 'reception' and startDate != null and startDate != '' and endDate != null and endDate != ''">
@@ -183,7 +186,7 @@
         LEFT JOIN RESERVE re ON r.ROOM_NO = re.ROOM_NO
         AND re.RESERVATION_STATUS = 'Confirmed'
         AND (#{selectedDate} BETWEEN re.CHECK_IN_DATE AND re.CHECK_OUT_DATE)
-        WHERE r.ACCOMMODATION_NO = #{accommodationNo}
+        WHERE r.ACCOMODATION_ADMIN_NO = #{accommodationNo}
         GROUP BY r.ROOM_NO, rt.ROOM_TYPE_NAME, r.ROOM_NAME, r.CHECK_IN_TIME, r.CHECK_OUT_TIME, re.RESERVATION_STATUS
     </select>
 
@@ -193,7 +196,7 @@
         SELECT r.ROOM_NO,
                r.ROOM_NAME
         FROM ROOM r
-        WHERE r.ACCOMMODATION_NO = #{accommodationNo}
+        WHERE r.ACCOMODATION_ADMIN_NO = #{accommodationNo}
     </select>
 
 
@@ -208,7 +211,7 @@
                re.RESERVATION_STATUS
         FROM RESERVE re
         JOIN ROOM r on re.ROOM_NO = r.ROOM_NO
-        WHERE r.ACCOMMODATION_NO = #{accommodationNo}
+        WHERE r.ACCOMODATION_ADMIN_NO = #{accommodationNo}
     </select>
 
 <!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
@@ -218,7 +221,7 @@
     <select id="roomNameSearch" resultType="String">
         SELECT DISTINCT ROOM_NAME
         FROM ROOM
-        WHERE ACCOMMODATION_NO = #{accommodationNo}
+        WHERE ACCOMODATION_ADMIN_NO = #{accommodationNo}
     </select>
 
 <!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
@@ -234,7 +237,7 @@
         FROM ROOM r
         JOIN BASIC_RATE br ON br.ROOM_NO = r.ROOM_NO
         WHERE r.ROOM_NAME = #{roomName}
-        AND r.ACCOMMODATION_NO = #{accommodationNo}
+        AND r.ACCOMODATION_ADMIN_NO = #{accommodationNo}
     </select>
 
     <!-- 객실 추가 요금 조회 -->
@@ -250,7 +253,7 @@
         FROM ROOM r
         JOIN EXTRA_RATE ext ON ext.ROOM_NO = r.ROOM_NO
         WHERE r.ROOM_NAME = #{roomName}
-        AND r.ACCOMMODATION_NO = #{accommodationNo}
+        AND r.ACCOMODATION_ADMIN_NO = #{accommodationNo}
     </select>
 
 <!-- □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
@@ -264,7 +267,7 @@
         br.BASIC_RATE
         FROM ROOM r
         JOIN BASIC_RATE br on r.ROOM_NO = br.ROOM_NO
-        WHERE r.ACCOMMODATION_NO = #{accommodationNo}
+        WHERE r.ACCOMODATION_ADMIN_NO = #{accommodationNo}
         AND r.ROOM_NAME = #{roomName}
     </select>
 
@@ -279,7 +282,7 @@
         ext.EXTRA_RATE
         FROM ROOM r
         LEFT JOIN EXTRA_RATE ext on r.ROOM_NO = ext.ROOM_NO
-        WHERE r.ACCOMMODATION_NO = #{accommodationNo}
+        WHERE r.ACCOMODATION_ADMIN_NO = #{accommodationNo}
         AND r.ROOM_NAME = #{roomName}
     </select>
 
@@ -326,7 +329,7 @@
                MIN(r.ROOM_NO) as ROOM_NO
         FROM EXTRA_RATE ext
         JOIN ROOM r on r.ROOM_NO = ext.ROOM_NO
-        WHERE r.ACCOMMODATION_NO = #{accommodationNo}
+        WHERE r.ACCOMODATION_ADMIN_NO = #{accommodationNo}
         GROUP BY ext.EXTRA_NAME
     </select>
 
@@ -336,7 +339,7 @@
         AND ROOM_NO IN (
         SELECT ROOM_NO
         FROM ROOM
-        WHERE ACCOMMODATION_NO = #{accommodationNo}
+        WHERE ACCOMODATION_ADMIN_NO = #{accommodationNo}
         )
     </delete>
 
@@ -351,7 +354,7 @@
         ext.EXTRA_RATE
         FROM ROOM r
         JOIN EXTRA_RATE ext ON ext.ROOM_NO = r.ROOM_NO
-        WHERE r.ACCOMMODATION_NO = #{accommodationNo}
+        WHERE r.ACCOMODATION_ADMIN_NO = #{accommodationNo}
     </select>
 
     <update id="extraSeasonUpdate">
