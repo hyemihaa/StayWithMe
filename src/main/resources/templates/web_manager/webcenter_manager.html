@@ -6,6 +6,7 @@
     <title>Manager Registration</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link th:href="@{/css/web_manager/webcenter_manager.css}" rel="stylesheet">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
 <div class="container">
@@ -25,9 +26,8 @@
     <main class="main-content">
         <header class="header">
             <div class="header-right">
-                <span>John Doe</span>
-                <a href="#">Profile</a>
-                <a href="#">Logout</a>
+                <span th:text="${userId}">Username</span>
+                <a th:href="@{/logout}">Logout</a>
             </div>
         </header>
         <section class="form-section">
@@ -61,15 +61,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>manager01</td>
-                    <td>ROLE_SITE_ADMIN</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>manager02</td>
-                    <td>ROLE_SITE_ADMIN</td>
+                <!-- managerList를 반복하면서 데이터를 출력 -->
+                <tr th:each="manager, iterStat : ${managerList}">
+                    <td th:text="${iterStat.index + 1}">번호</td>  <!-- 반복문 인덱스를 번호로 표시 -->
+                    <td th:text="${manager.adminId}">아이디</td>  <!-- 관리자의 아이디 표시 -->
+                    <td th:text="${manager.adminRoles}">권한</td>  <!-- 관리자의 권한 표시 -->
                 </tr>
                 </tbody>
             </table>

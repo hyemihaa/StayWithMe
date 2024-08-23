@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.swm.mappers.SellerMapper">
@@ -347,3 +348,5 @@
 </mapper>
 
 
+=======
+>>>>>>> d2ac6da7f81da0c3b04adb70987e3ec2dc8fdbaf

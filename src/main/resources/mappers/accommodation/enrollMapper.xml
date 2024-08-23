@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.swm.adminPage.accommodation.mapper.AccommodationMapper">
+
+    <insert id="enrollAccommodation">
+        INSERT INTO accommodation VALUES (
+                     #{no},
+                     #{accommodation.accommodationName},
+                     #{accommodation.accommodationPhone},
+                     #{accommodation.accommodationType},
+                     #{accommodation.roadName},
+                     #{accommodation.region},
+                     #{accommodation.lat},
+                     #{accommodation.lon},
+                     #{accommodation.accommodationInfo}
+                 )
+    </insert>
+
+    <insert id="enrollMainImage" parameterType="map">
+        INSERT INTO accommodation_image VALUES (
+            null,
+            #{no},
+            #{mainImage.uploadOriginName},
+            #{mainImage.uploadUniqueName},
+            #{mainImage.uploadImagePath}
+            )
+    </insert>
+
+    <insert id="enrollRoom" useGeneratedKeys="true" keyProperty="accommodation.roomNo">
+        INSERT INTO room VALUES (
+                     null,
+                     #{categoryNo},
+                     #{no},
+                     #{roomName},
+                     #{checkIn},
+                     #{checkOut},
+                     #{accommodation.standardOccupation},
+                     #{accommodation.maxOccupation}
+                 )
+    </insert>
+
+
+    <insert id="enrollFacilities" parameterType="map">
+        INSERT INTO facilities values (
+        null,
+        #{no},
+        #{facility}
+        )
+    </insert>
+    
+    
+    <insert id="enrollRoomImages" parameterType="map">
+        INSERT INTO room_images values (
+                                        null,
+                                        #{roomNo},
+                                        #{subImage.uploadOriginName},
+                                        #{subImage.uploadUniqueName},
+                                        #{subImage.uploadImagePath}
+                                      )
+    </insert>
+
+    <insert id="enrollWeekdayRate">
+        INSERT INTO basic_rate values (
+                                       null,
+                                       #{roomNo},
+                                       1,
+                                       #{roomRate.weekdayRate}
+                                      )
+    </insert>
+    <insert id="enrollFridayRate">
+        INSERT INTO basic_rate values (
+                                          null,
+                                          #{roomNo},
+                                          2,
+                                          #{roomRate.fridayRate}
+                                      )
+    </insert>
+    <insert id="enrollSaturdayRate">
+        INSERT INTO basic_rate values (
+                                          null,
+                                          #{roomNo},
+                                          3,
+                                          #{roomRate.saturdayRate}
+                                      )
+    </insert>
+    <insert id="enrollSundayRate">
+        INSERT INTO basic_rate values (
+                                          null,
+                                          #{roomNo},
+                                          4,
+                                          #{roomRate.sundayRate}
+                                      )
+    </insert>
+
+</mapper>
+

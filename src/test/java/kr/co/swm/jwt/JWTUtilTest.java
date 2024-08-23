@@ -33,7 +33,7 @@ class JWTUtilTest {
 
         // then
         assertNotNull(token);
-        log.info("Generated token: {}", token);
+//        log.info("Generated token: {}", token);
     }
 
     @Test
@@ -53,7 +53,7 @@ class JWTUtilTest {
 
         // then
         assertTrue(isExpired);
-        log.info("isExpired : {}", isExpired);
+//        log.info("isExpired : {}", isExpired);
     }
 
     @Test
