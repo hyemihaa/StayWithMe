@@ -185,7 +185,7 @@
                         <td th:if="${item.reservationStatus == 'Cancelled'}">
                             <span class="badge status-cancel" th:utext="'예약취소<br/>' + ${item.reservationCancellationDate}"></span>
                         </td>
-                        <td></td>
+                        <td th:text="${item.requestDetails}"></td> <!-- 요청사항 칼럼 -->
                     </tr>
 
                     <!-- 'reservationSearch'가 없고 'reservation'이 존재하면 그 데이터를 반복하여 테이블에 출력 -->
@@ -200,7 +200,7 @@
                         <td th:if="${item.reservationStatus == 'Cancelled'}">
                             <span class="badge status-cancel" th:utext="'예약취소<br/>' + ${item.reservationCancellationDate}"></span>
                         </td>
-                        <td></td>
+                        <td th:text="${item.requestDetails}"></td> <!-- 요청사항 칼럼 -->
                     </tr>
                     </tbody>
                 </table>

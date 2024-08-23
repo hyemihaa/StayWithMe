@@ -61,23 +61,23 @@ public class SellerController {
 
         // 오늘 날짜에 대한 결제 건수 계산
         long todayPaymentCount = todayList.stream()
-                .filter(item -> "Confirmed".equals(item.getReservationStatus()) || "Completed".equals(item.getReservationStatus()))
+                .filter(item -> "Confirmed".equalsIgnoreCase(item.getReservationStatus()) || "Completed".equalsIgnoreCase(item.getReservationStatus()))
                 .count();
         model.addAttribute("paymentCount", todayPaymentCount);
 
         // 오늘 날짜에 대한 취소 건수 계산
         long todayCancelCount = todayList.stream()
-                .filter(item -> "Cancelled".equals(item.getReservationStatus()))
+                .filter(item -> "Cancelled".equalsIgnoreCase(item.getReservationStatus()))
                 .count();
         model.addAttribute("cancelCount", todayCancelCount);
 
         // 오늘 날짜에 대한 매출액 계산
         int todayTotalAmount = todayList.stream()
-                .filter(item -> "Confirmed".equals(item.getReservationStatus()) || "Completed".equals(item.getReservationStatus()))
+                .filter(item -> "Confirmed".equalsIgnoreCase(item.getReservationStatus()) || "Completed".equalsIgnoreCase(item.getReservationStatus()))
                 .mapToInt(SellerDto::getReserveAmount)
                 .sum();
         int todayCancelledAmount = todayList.stream()
-                .filter(item -> "Cancelled".equals(item.getReservationStatus()))
+                .filter(item -> "Cancelled".equalsIgnoreCase(item.getReservationStatus()))
                 .mapToInt(SellerDto::getReserveAmount)
                 .sum();
         int netAmount = todayTotalAmount - todayCancelledAmount;
@@ -114,10 +114,10 @@ public class SellerController {
             if (monthlyReservationCounts.containsKey(reservationMonth)) {
                 monthlyReservationCounts.put(reservationMonth, monthlyReservationCounts.get(reservationMonth) + 1);
             }
-            if ("Cancelled".equals(item.getReservationStatus()) && monthlyCancelCounts.containsKey(reservationMonth)) {
+            if ("Cancelled".equalsIgnoreCase(item.getReservationStatus()) && monthlyCancelCounts.containsKey(reservationMonth)) {
                 monthlyCancelCounts.put(reservationMonth, monthlyCancelCounts.get(reservationMonth) + 1);
             }
-            if (("Confirmed".equals(item.getReservationStatus()) || "Completed".equals(item.getReservationStatus())) &&
+            if (("Confirmed".equalsIgnoreCase(item.getReservationStatus()) || "Completed".equalsIgnoreCase(item.getReservationStatus())) &&
                     monthlyPaymentCounts.containsKey(reservationMonth)) {
                 monthlyPaymentCounts.put(reservationMonth, monthlyPaymentCounts.get(reservationMonth) + 1);
             }
@@ -129,18 +129,13 @@ public class SellerController {
         model.addAttribute("monthlyCancelCounts", new ArrayList<>(monthlyCancelCounts.values()));
         model.addAttribute("monthlyPaymentCounts", new ArrayList<>(monthlyPaymentCounts.values()));
 
-        // 디버깅 로그 출력
-        System.out.println("monthlyLabels: " + monthlyLabels);
-        System.out.println("monthlyReservationCounts: " + monthlyReservationCounts.values());
-        System.out.println("monthlyCancelCounts: " + monthlyCancelCounts.values());
-        System.out.println("monthlyPaymentCounts: " + monthlyPaymentCounts.values());
-
         // 사용자 이름
         String userId = jwtUtil.getUserIdFromToken(token);
         model.addAttribute("userId", userId);
 
         return "seller/seller"; // 뷰 이름 반환
     }
+
 
 
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
