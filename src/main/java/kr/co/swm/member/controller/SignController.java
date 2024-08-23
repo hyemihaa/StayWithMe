@@ -19,8 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequiredArgsConstructor //final로 선언된 필드가 있다면, 이 필드들을 초기화하는 생성자를 자동으로 생성
 @Controller
+@RequiredArgsConstructor //final로 선언된 필드가 있다면, 이 필드들을 초기화하는 생성자를 자동으로 생성
 public class SignController {
 
     private final MemberServiceImpl memberServiceImpl;
@@ -36,14 +36,15 @@ public class SignController {
     }
 
     // 휴대전화 인증
-    @PostMapping("/sms/send")
+    @PostMapping("/sms/send/{phoneNumber}")
     @ResponseBody
-    public Map<String, Object> sendSMS(@RequestBody Map<String, String> param) {
+    public Map<String, Object> sendSMS(@PathVariable String phoneNumber, @RequestBody Map<String, String> param) {
         // 응답을 담을 Map 객체 생성
         Map<String, Object> response = new HashMap<>();
         try {
+            // TODO 요거 MemberController 에 /sms/send path 겹쳐서 오류나요 path 변경하셔야 해요 안그러면 application 안돌아가요 - 어진이가
             // param에서 userPhone 키의 값 추출, 휴대전화 번호 저장
-            String phoneNumber = param.get("phoneNumber");
+            // String phoneNumber = param.get("phoneNumber");
 
             // 인증번호 생성 요청
             String certificationCode = memberServiceImpl.generateCertificationCode();
@@ -127,9 +128,9 @@ public class SignController {
             System.out.println("로그인 시도: " + role);  // 권한이 제대로 추출되는지 확인
             // 권한에 따라 리다이렉트할 페이지 결정
             if ("ROLE_SITE_ADMIN".equals(role)) {
-                return "redirect:/"; // 사이트 관리자 페이지로 리다이렉트
+                return "redirect:/web-center"; // 사이트 관리자 페이지로 리다이렉트
             } else if ("ROLE_ACCOMMODATION_ADMIN".equals(role)) {
-                return "redirect:/"; // 업소 관리자 페이지로 리다이렉트 ( 추후수정 )
+                return "redirect:/seller-main.do"; // 업소 관리자 페이지로 리다이렉트 ( 추후수정 )
             } else {
                 return "redirect:/"; // 일반 사용자 -> 메인
             }

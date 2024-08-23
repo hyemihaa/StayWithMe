@@ -96,8 +96,6 @@ function loadRoomRates(roomName) {
             let basicRatesHtml = "";
             let extraRatesHtml = "";
 
-            console.log(JSON.stringify(data, null, 2));
-
             if (data.basicRates) {
                 basicRatesHtml += `
                     <tr>
