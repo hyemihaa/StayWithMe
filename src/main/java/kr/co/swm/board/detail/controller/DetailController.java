@@ -30,29 +30,32 @@ public class DetailController {
         //  장소 불러오기
         List<DetailDTO> place = detailService.getPlace();
 
+        //  하단 관련 장소
+//      List<DetailDTO> subPlace = detailService.getSubPlace();
+
         //  게시글 상세 조회
         DetailDTO post = detailService.getPost(Integer.parseInt(boardNo));
 
         //  별점 평균
         double avgRate = detailService.getAvgRate(post.getBoardNo());
 
-        //  금액 조회
-
-//        List<DetailDTO> cost = detailService.getCost();
 
         //  방 평균 점수
-//        double roomRate = detailService.getRoomRate(post.getBoardNo());
+        double rate = detailService.getRate(post.getBoardNo());
+
+
 
         //  데이터 바인딩
         model.addAttribute("place",place);
         model.addAttribute("post",post);
         model.addAttribute("avgRate",avgRate);
+        model.addAttribute("rate",rate);
+//        model.addAttribute("subPlace",subPlace);
 
         //  각 페이지마다 boardNo에 대한 다른 값 불러오기
         // http://localhost:8080/hotel-single?boardNo=1 이면 boardNo=1
         // http://localhost:8080/hotel-single?boardNo=2 이면 boardNo=2
         model.addAttribute("boardNo", boardNo);
-
 
         return "hotel-single"; //templates / ** .html
     }

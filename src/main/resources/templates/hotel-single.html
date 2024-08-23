@@ -240,15 +240,16 @@
 														<i class="icon-star-o" th:if="${rate < 3}"></i>
 														<i class="icon-star-o" th:if="${rate < 4}"></i>
 														<i class="icon-star-o" th:if="${rate < 5}"></i>
-														<span th:text="${post.boardRating}">0.0</span>
+														<span th:text="${rate}">0.0</span>
 													</p>
 												</div>
 											</div>
-											<p class="days"><span>체크인 : <span th:text="${post.boardCheckIn}"/>
-											&nbsp;&nbsp;&nbsp;
-											기준<span th:text="${place.boardMinPerson}"/>인 · 최대<span th:text="${place.boardMaxPerson}"/>인</span></p>
+											<p class="days">
+												<span>체크인 : <span th:text="${post.boardCheckIn}"/>
+											&nbsp;&nbsp;&nbsp; 기준<span th:text="${place.boardMinPerson}"/>인 · 최대<span th:text="${place.boardMaxPerson}" />인
+											</p>
 											<hr>
-											<span class="price" style="font-weight: bold; font-size: 17px;">200,000원</span>
+											<span class="price" style="font-weight: bold; font-size: 17px;"  th:text="${place.boardCount} + '원 &nbsp; ~' "></span>
 											<br>
 											<p class="bottom-area d-flex">
 												<span class="ml-auto"><a href="#">예약</a></span>
@@ -310,101 +311,44 @@
 						<h4 class="mb-4">관련 항목</h4>
 						<div class="row">
 							<div class="col-md-4">
-								<div class="destination">
+
+
+								<div class="destination" th:each="place : ${place}" th:if="${place.boardNo != 1}" >
 									<a href="#" class="img img-3"
 									   style="background-image: url(images/room-4.jpg);"></a>
 									<div class="text-tour p-3">
 										<div class="d-flex">
 											<div class="one">
-												<h3><a href="#">숙박 명</a></h3>
+												<h3><a href="#" th:text="${place.boardName}"></a></h3>
 												<p class="rate">
-													<i class="icon-star"></i>
-													<i class="icon-star"></i>
-													<i class="icon-star"></i>
-													<i class="icon-star"></i>
-													<i class="icon-star-o"></i>
-													<span>8 Rating</span>
+													<i class="icon-star" th:if="${rate >= 1}"></i>
+													<i class="icon-star" th:if="${rate >= 2}"></i>
+													<i class="icon-star" th:if="${rate >= 3}"></i>
+													<i class="icon-star" th:if="${rate >= 4}"></i>
+													<i class="icon-star" th:if="${rate >= 5}"></i>
+													<i class="icon-star-o" th:if="${rate < 1}"></i>
+													<i class="icon-star-o" th:if="${rate < 2}"></i>
+													<i class="icon-star-o" th:if="${rate < 3}"></i>
+													<i class="icon-star-o" th:if="${rate < 4}"></i>
+													<i class="icon-star-o" th:if="${rate < 5}"></i>
+													<span th:text="${rate}">0.0</span>
 												</p>
 											</div>
-											<div class="two">
-												<p>숙박유형</p>
-											</div>
 										</div>
-										<span><i class="icon-map-o"></i> 장소 명</span>
-										<p class="days"><span>체크인 : 15:00</span></p>
+										<span><i class="icon-map-o"></i> &nbsp <span th:text="${place.boardAddress}" /></span>
+										<p class="days">
+												<span>체크인 : <span th:text="${place.boardCheckIn}"/>
+										</p>
 										<hr>
-										<span class="price" style="text-decoration: line-through;">200,000원</span>
+										<span class="price" style="font-weight: bold; font-size: 17px;"  th:text="${place.boardCount} + '원 &nbsp; ~' "></span>
 										<br>
-										<p class="price">쿠폰적용가 : 170,000원</p>
 										<p class="bottom-area d-flex">
-											<span class="ml-auto"><a href="#">예약</a></span>
+											<span class="ml-auto"><a href="#">바로가기</a></span>
 										</p>
 									</div>
 								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="destination">
-									<a href="hotel-single.html" class="img img-3"
-									   style="background-image: url(images/hotel-2.jpg);"></a>
-									<div class="text-tour p-3">
-										<div class="d-flex">
-											<div class="one">
-												<h3><a href="hotel-single.html">Hotel, Italy</a></h3>
-												<p class="rate">
-													<i class="icon-star"></i>
-													<i class="icon-star"></i>
-													<i class="icon-star"></i>
-													<i class="icon-star"></i>
-													<i class="icon-star-o"></i>
-													<span>8 Rating</span>
-												</p>
-											</div>
-											<div class="two">
-												<span class="price per-price">$40<br><small>/night</small></span>
-											</div>
-										</div>
-										<p>Far far away, behind the word mountains, far from the countries</p>
-										<hr>
-										<p class="bottom-area d-flex">
-											<span><i class="icon-map-o"></i> Miami, Fl</span>
-											<span class="ml-auto"><a href="#">Book Now</a></span>
-										</p>
-									</div>
 								</div>
 							</div>
-							<div class="col-md-4">
-								<div class="destination">
-									<a href="hotel-single.html" class="img img-3"
-									   style="background-image: url(images/hotel-3.jpg);"></a>
-									<div class="text-tour p-3">
-										<div class="d-flex">
-											<div class="one">
-												<h3><a href="hotel-single.html">Hotel, Italy</a></h3>
-												<p class="rate">
-													<i class="icon-star"></i>
-													<i class="icon-star"></i>
-													<i class="icon-star"></i>
-													<i class="icon-star"></i>
-													<i class="icon-star-o"></i>
-													<span>8 Rating</span>
-												</p>
-											</div>
-											<div class="two">
-												<span class="price per-price">$40<br><small>/night</small></span>
-											</div>
-										</div>
-										<p>Far far away, behind the word mountains, far from the countries</p>
-										<hr>
-										<p class="bottom-area d-flex">
-											<span><i class="icon-map-o"></i> Miami, Fl</span>
-											<span class="ml-auto"><a href="#">Book Now</a></span>
-										</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
 						</div>
 					</div>
 					<!-- .col-md-8 -->

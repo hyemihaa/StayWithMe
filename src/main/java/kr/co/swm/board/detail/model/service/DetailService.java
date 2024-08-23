@@ -12,9 +12,10 @@ public interface DetailService {
     DetailDTO getPost(int boardNo);
 //  평균 별점
     double getAvgRate(int boardNo);
-//  금액
-//    List<DetailDTO> getCost();
-//  방 평균 별점
 
-//    double getRoomRate(int boardNo);
+//  방 평균 별점
+    double getRate(int boardNo);
+    
+//  하단 관련 항목
+//    List<DetailDTO> getSubPlace();
 }
