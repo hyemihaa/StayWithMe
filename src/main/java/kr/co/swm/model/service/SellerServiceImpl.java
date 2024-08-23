@@ -35,6 +35,10 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public List<SellerDto> mainList(Long accommodationNo) {
 
+        System.out.println("------------------------------------------");
+        System.out.println("Accommodation No: " + accommodationNo);
+        System.out.println("------------------------------------------");
+
         List<SellerDto> resultList = mapper.reserveData(accommodationNo);
 
         // 디버깅용 출력

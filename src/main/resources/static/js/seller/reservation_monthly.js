@@ -81,28 +81,37 @@ document.addEventListener('DOMContentLoaded', function () {
                         roomInfo.appendChild(roomNameDiv);
 
                         roomsByName[roomName].forEach(roomNo => {
+                            // 방 번호에 대한 버튼을 생성
                             const roomBtn = document.createElement('button');
-                            roomBtn.classList.add('room-btn');
+                            roomBtn.classList.add('room-btn'); // 버튼에 기본 클래스 추가
 
-                            // 해당 날짜에 예약된 상태 확인
+                            // 해당 날짜에 방이 예약된 상태인지 확인
                             const reservationForDate = roomData.find(reservation =>
                                 new Date(reservation.reserveCheckIn) <= currentProcessingDate &&
                                 new Date(reservation.reserveCheckOut) >= currentProcessingDate &&
                                 reservation.roomNo === roomNo
                             );
 
-                            // 예약 상태에 따라 색상 적용
+                            // 예약 상태에 따라 버튼 스타일을 적용
                             if (reservationForDate) {
-                                roomBtn.textContent = roomNo;
-                                roomBtn.classList.add('unavailable');
-                                roomBtn.style.backgroundColor = reservationForDate.reservationStatus === 'Confirmed' ? 'red' : 'green';
+                                roomBtn.textContent = roomNo; // 버튼 텍스트에 방 번호 설정
+                                roomBtn.classList.add('unavailable'); // 예약된 방에 'unavailable' 클래스 추가
+
+                                // 예약 상태가 CONFIRMED일 경우 status-complete 클래스 적용
+                                if (reservationForDate.reservationStatus === 'CONFIRMED') {
+                                    roomBtn.classList.add('status-complete');
+                                } else {
+                                    // 예약 상태가 NULL 또는 CANCELLED일 경우 status-cancel 클래스 적용
+                                    roomBtn.classList.add('status-cancel');
+                                }
                             } else {
-                                roomBtn.textContent = roomNo;
-                                roomBtn.classList.add('available');
-                                roomBtn.style.backgroundColor = 'green';
+                                roomBtn.textContent = roomNo; // 버튼 텍스트에 방 번호 설정
+                                roomBtn.classList.add('available'); // 예약되지 않은 방에 'available' 클래스 추가
+                                roomBtn.classList.add('status-complete'); // 예약되지 않은 방은 예약완료 스타일로 설정
                             }
 
-                            roomInfo.appendChild(roomBtn); // 버튼을 추가
+                            // 방 정보 영역에 버튼을 추가
+                            roomInfo.appendChild(roomBtn);
                         });
 
                         cell.appendChild(roomInfo); // 셀에 정보 추가
