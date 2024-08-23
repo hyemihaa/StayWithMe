@@ -2,10 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.swm.board.mapper.ListMapper">
     <resultMap id="placeResultMap" type="kr.co.swm.board.list.model.DTO.ListDTO">
-        <result column="ACCOMMODATION_NO" property="boardNo"></result>
+        <result column="ACCOMMODATION_ADMIN_NO" property="boardNo"></result>
         <result column="NAME" property="boardName"></result>
         <result column="ACCOMMODATION_TYPE" property="boardType"></result>
-        <result column="POST_NO" property="boardAddress"></result>
+        <result column="POST_NO" property="boardPost"></result>
+        <result column="ADDRESS" property="boardAddress"></result>
         <result column="CHECK_IN_TIME" property="boardCheckIn"></result>
         <result column="BASIC_RATE" property="boardCount"></result>
     </resultMap>
@@ -13,34 +14,36 @@
 
     <!-- 장소 -->
     <select id="getPlace" resultMap="placeResultMap">
-            SELECT ab.ACCOMMODATION_NO,
-                ab.NAME,
-                ab.ACCOMMODATION_TYPE,
-                ab.POST_NO,
-                r.CHECK_IN_TIME,
-                MIN(br.BASIC_RATE) as BASIC_RATE
-        FROM (SELECT a.ACCOMMODATION_NO,
-                    a.NAME,
-                    a.ACCOMMODATION_TYPE,
-                    a.POST_NO
-                FROM facilities f
-                JOIN accommodation a ON a.ACCOMMODATION_NO = f.ACCOMMODATION_NO
-                <if test="searchDTO.options != null and searchDTO.options.size() > 0">
-                    WHERE f.FACILITY_NAME IN
-                    <foreach item="option" collection="searchDTO.options" open="(" separator="," close=")">
-                        #{option}
-                    </foreach>
-                </if>
-            ) ab
-        JOIN room r ON ab.ACCOMMODATION_NO = r.ACCOMMODATION_NO
+        SELECT ab.ACCOMMODATION_ADMIN_NO,
+        ab.NAME,
+        ab.ACCOMMODATION_TYPE,
+        ab.ADDRESS,
+        r.CHECK_IN_TIME,
+        MIN(br.BASIC_RATE) AS BASIC_RATE
+        FROM (SELECT a.ACCOMMODATION_ADMIN_NO,
+        a.NAME,
+        a.ACCOMMODATION_TYPE,
+        a.POST_NO,
+        a.ADDRESS
+        FROM facilities f
+        JOIN accommodation a ON a.ACCOMMODATION_ADMIN_NO = f.ACCOMMODATION_ADMIN_NO
+        <if test="searchDTO.options != null and searchDTO.options.size() > 0">
+            WHERE f.FACILITY_NAME IN
+            <foreach item="option" collection="searchDTO.options" open="(" separator="," close=")">
+                #{option}
+            </foreach>
+        </if>
+        ) ab
+        JOIN room r ON ab.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
         JOIN basic_rate br ON r.ROOM_NO = br.ROOM_NO
         <if test='!searchDTO.type.equals("전체")'>
             WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.type}
         </if>
-        GROUP BY ab.name, ab.accommodation_Type, ab.post_no, r.CHECK_IN_TIME, r.ACCOMMODATION_NO
-        HAVING MIN(basic_rate) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
-        ORDER BY ab.ACCOMMODATION_NO
+        GROUP BY ab.ACCOMMODATION_ADMIN_NO, ab.NAME, ab.ACCOMMODATION_TYPE, ab.POST_NO, ab.ADDRESS, r.CHECK_IN_TIME
+        HAVING MIN(br.BASIC_RATE) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
+        ORDER BY ab.ACCOMMODATION_ADMIN_NO
         LIMIT #{pi.boardLimit} OFFSET #{pi.offset}
+
 
     </select>
 
@@ -49,7 +52,7 @@
         SELECT COALESCE(ROUND(AVG(r2.rating), 1), 0) AS avgRate
         FROM room r
         JOIN review r2 ON r.ROOM_NO = r2.ROOM_NO
-        where r.ACCOMMODATION_NO = #{boardNo}
+        where r.ACCOMMODATION_ADMIN_NO = #{boardNo}
     </select>
 
     <!-- 게시글의 총 개수 -->
@@ -60,24 +63,24 @@
                     ab.POST_NO,
                     r.CHECK_IN_TIME,
                     MIN(br.BASIC_RATE)
-            FROM (SELECT a.ACCOMMODATION_NO,
+            FROM (SELECT a.ACCOMMODATION_ADMIN_NO,
                         a.NAME,
                         a.ACCOMMODATION_TYPE,
                         a.POST_NO
                     FROM facilities f
-                    JOIN accommodation a ON a.ACCOMMODATION_NO = f.FACILITY_NO
+                    JOIN accommodation a ON a.ACCOMMODATION_ADMIN_NO = f.FACILITY_NO
                     <if test="searchDTO.options != null and searchDTO.options.size() > 0">
                         WHERE f.FACILITY_NAME IN
                         <foreach item="option" collection="searchDTO.options" open="(" separator="," close=")">
                             #{option}
                         </foreach>
                     </if>) ab
-            JOIN room r ON ab.ACCOMMODATION_NO = r.ACCOMMODATION_NO
+            JOIN room r ON ab.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
             JOIN basic_rate br ON r.ROOM_NO = br.ROOM_NO
             <if test='!searchDTO.type.equals("전체")'>
                 WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.type}
             </if>
-            group by ab.name, ab.accommodation_Type, ab.post_no, r.CHECK_IN_TIME, r.ACCOMMODATION_NO
+            group by ab.name, ab.accommodation_Type, ab.post_no, r.CHECK_IN_TIME, r.ACCOMMODATION_ADMIN_NO
             HAVING (MIN(basic_rate) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate})
     ) a
 

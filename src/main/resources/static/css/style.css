@@ -9430,33 +9430,7 @@ textarea.form-control {
     stroke-dashoffset: -136px; } }
 
 
-/* 추가 영역 */
 
-/* 토글 버튼 */
-.toggle {
-}
-
-.toggle-input {
-    display: none; /* 기본 체크박스 숨기기 */
-}
-
-.toggle-label {
-    cursor: pointer;
-    text-align:center;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-    margin-right: 10px;
-    height: 30px;
-    width: 70px;
-    line-height: 10px;
-    float: left;
-}
-
-.toggle-input:checked + .toggle-label {
-    background-color: #17a2b8; /* 체크된 상태의 배경색 */
-    color: white; /* 체크된 상태의 텍스트 색상 */
-}
 
 
 /* 상품 상세 영역[tour(리스트)&hotel-single(상세페이지)] */
@@ -9516,4 +9490,30 @@ textarea.form-control {
               color: #fff; }
 
 
+/* 추가 영역 */
 
+/* 토글 버튼 */
+.toggle {
+}
+
+.toggle-input {
+    display: none; /* 기본 체크박스 숨기기 */
+}
+
+.toggle-label {
+    cursor: pointer;
+    text-align:center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    margin-right: 10px;
+    height: 30px;
+    width: 70px;
+    line-height: 10px;
+    float: left;
+}
+
+.toggle-input:checked + .toggle-label {
+    background-color: #17a2b8; /* 체크된 상태의 배경색 */
+    color: white; /* 체크된 상태의 텍스트 색상 */
+}
