@@ -37,6 +37,10 @@ public class SellerController {
         // 관리자 번호(업소키)
         Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
 
+        System.out.println("------------------------------------------");
+        System.out.println("Accommodation No: " + accommodationNo);
+        System.out.println("------------------------------------------");
+
         // 업소 조회수 가져오기
         int roomViews = seller.roomViews(accommodationNo);
         model.addAttribute("roomViews", roomViews);
@@ -151,7 +155,12 @@ public class SellerController {
         // 예약 및 결제 정보 가져오기
         List<SellerDto> reservation = seller.mainList(accommodationNo);
 
-        for (SellerDto item : reservation) {
+        // 예약 리스트를 입실일 기준으로 정렬
+        List<SellerDto> sortedReservation = reservation.stream()
+                .sorted(Comparator.comparing(SellerDto::getReserveCheckIn))
+                .collect(Collectors.toList());
+
+        for (SellerDto item : sortedReservation) {
             System.out.println();
             System.out.println("= = = = = = reservation controller = = = = = =");
             System.out.println("예약 정보 : " + item.getReserveRoomName());
@@ -161,12 +170,13 @@ public class SellerController {
             System.out.println("예약연락처 : " + item.getUserPhone());
             System.out.println("결제금액 : " + item.getReserveAmount());
             System.out.println("예약상태 : " + item.getReservationStatus());
+            System.out.println("예약일 : " + item.getReservationDate());
             System.out.println("예약취소일 : " + item.getReservationCancellationDate());
             System.out.println("= = = = = = = = = = = = = = = = = = = = = = =");
             System.out.println();
         }
 
-        model.addAttribute("reservation", reservation);
+        model.addAttribute("reservation", sortedReservation);
 
         // 사용자 이름
         String userId = jwtUtil.getUserIdFromToken(token);
@@ -199,7 +209,12 @@ public class SellerController {
         // 예약 및 결제 정보 가져오기
         List<SellerDto> reservationSearch = seller.reservationSearch(accommodationNo, dateType, startDate, endDate, searchKeyword, reservationStatus);
 
-        for (SellerDto item : reservationSearch) {
+        // 검색 결과를 입실일 기준으로 정렬
+        List<SellerDto> sortedReservationSearch = reservationSearch.stream()
+                .sorted(Comparator.comparing(SellerDto::getReserveCheckIn))
+                .collect(Collectors.toList());
+
+        for (SellerDto item : sortedReservationSearch) {
             System.out.println();
             System.out.println("= = = = reservationSearch controller = = = = =");
             System.out.println("예약 정보 : " + item.getReserveRoomName());
@@ -214,7 +229,7 @@ public class SellerController {
             System.out.println();
         }
 
-        model.addAttribute("reservationSearch", reservationSearch);
+        model.addAttribute("reservationSearch", sortedReservationSearch);
 
         // 검색 조건들을 모델에 담아 다시 전달
         model.addAttribute("dateType", dateType);
@@ -268,9 +283,9 @@ public class SellerController {
             String reservationStatus = room.getReservationStatus();
 
             // 예약 상태에 따라 텍스트를 업데이트
-            if (reservationStatus == null || reservationStatus.equals("Cancelled")) {
+            if (reservationStatus == null || reservationStatus.equals("CANCELLED")) {
                 room.setReservationStatus("예약 가능");
-            } else if (reservationStatus.equals("Confirmed")) {
+            } else if (reservationStatus.equals("CONFIRMED")) {
                 room.setReservationStatus("예약중");
             }
         }
