@@ -3,6 +3,7 @@ package kr.co.swm.member.controller;
 import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.member.model.service.MemberServiceImpl;
+import kr.co.swm.member.util.ClientIpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class mypageController {
         }
         model.addAttribute("user", userDTO);
 
-        return "/member/mypage";
+        return "member/mypage";
     }
 
     // 마이페이지 비밀번호 변경
@@ -81,12 +83,11 @@ public class mypageController {
 
         // 새로운 휴대전화 번호 업데이트
         try {
-            memberServiceImpl.updatePhoneNumber(newPhone,userId);
+            memberServiceImpl.updatePhoneNumber(newPhone, userId);
             // 성공 응답
             response.put("success", true);
             response.put("message", "휴대전화 번호가 성공적으로 변경되었습니다.");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // 오류 발생 시
             response.put("success", false);
             response.put("error", "휴대전화 번호 변경 중 오류가 발생했습니다.");
@@ -94,4 +95,31 @@ public class mypageController {
         return response;
     }
 
+    // 마이페이지 로그 기록 조회
+    @GetMapping("/login-log")
+    @ResponseBody
+    public Map<String, Object> viewLoginLog(@CookieValue(value = "Authorization", required = false) String token) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // 사용자 식별
+            Long userNo = jwtUtil.getUserNoFromToken(token);
+            System.out.println("mypageController 토큰에서 추출한 사용자 번호: " + userNo);  // **로그 추가**
+
+            // 로그인 로그 조회
+            List<UserDTO> logs = memberServiceImpl.loginLog(userNo);
+
+            // 조회된 로그를 응답에 추가
+            response.put("logs", logs);
+            response.put("success", true);
+        }
+        catch (Exception e) {
+            response.put("success", false);
+            response.put("error", "로그인 기록을 불러오는 중 오류가 발생했습니다.");
+        }
+        return response;
+    }
 }
+
+
+
+

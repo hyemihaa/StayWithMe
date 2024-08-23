@@ -9,6 +9,11 @@ function showSection(sectionId) {
     const selectedSection = document.getElementById(sectionId);
     if (selectedSection) {
         selectedSection.style.display = 'block';
+
+        // 로그인 관리 섹션이 선택된 경우 로그 데이터를 불러옴
+        if (sectionId === 'activity-log') {
+            loadLoginLogs();
+        }
     }
 }
 
@@ -58,6 +63,7 @@ function savePasswordButton() {
     });
 }
 
+/*-------탈퇴 기타 사유 입력란 길이제한-------*/
 const textarea = document.getElementById('otherReason');
 const charCount = document.getElementById('charCount');
 const errorMessage = document.getElementById('errorMessage');
@@ -80,6 +86,93 @@ textarea.addEventListener('input', function () {
         errorMessage.style.display = 'none';
     }
 });
+
+/*-------이력관리(로그인기록)-------*/
+let logsData = []; // 모든 로그 데이터를 저장
+let filteredLogs = []; // 필터링된 로그 데이터를 저장
+let currentPage = 0; // 현재 페이지 번호
+const logsPerPage = 3; // 한 번에 보여줄 로그 수
+
+function loadLoginLogs() {
+    $.ajax({
+        type: 'GET',
+        url: '/login-log',
+        contentType: 'application/json',
+        success: function(data) {
+            if (data.logs && data.logs.length > 0) {
+                logsData = data.logs; // 데이터를 저장
+                filterLogsByDate(); // 초기 로딩 시 날짜 필터 적용
+            }
+        },
+        error: function(error) {
+            console.error('로그인 로그 데이터를 불러오는 중 오류가 발생했습니다:', error);
+        }
+    });
+}
+
+// 날짜 필터링 함수
+function filterLogsByDate() {
+    const startDate = new Date(document.getElementById('startDate').value);
+    const endDate = new Date(document.getElementById('endDate').value);
+    endDate.setHours(23, 59, 59, 999); // 날짜 범위를 끝까지 포함
+
+    filteredLogs = logsData.filter(log => {
+        const logDate = new Date(log.lastLoginDate);
+        return logDate >= startDate && logDate <= endDate;
+    });
+
+    currentPage = 0; // 페이지 초기화
+    renderLogs(true); // 필터링된 데이터를 렌더링 (기존 로그 초기화)
+}
+
+// 로그 데이터를 현재 페이지에 맞게 렌더링하는 함수
+function renderLogs(reset = false) {
+    const logTableBody = document.getElementById('log-table-body');
+    if (reset) {
+        logTableBody.innerHTML = ''; // 기존 데이터를 초기화
+    }
+
+    const start = currentPage * logsPerPage;
+    const end = start + logsPerPage;
+    const logsToRender = filteredLogs.slice(start, end);
+
+    logsToRender.forEach(log => {
+        const row = document.createElement('tr');
+
+        // 최근 접속일자와 IP 주소를 새로운 행(row)에 추가
+        const dateCell = document.createElement('td');
+        dateCell.textContent = formatDate(log.lastLoginDate);
+        row.appendChild(dateCell);
+
+        const ipCell = document.createElement('td');
+        ipCell.textContent = log.userIp;
+        row.appendChild(ipCell);
+
+        // 완성된 행을 테이블 본체에 추가
+        logTableBody.appendChild(row);
+    });
+
+    // "더보기" 버튼 표시 여부 결정
+    const loadMoreButton = document.getElementById('load-more-button');
+    if (end >= filteredLogs.length) {
+        loadMoreButton.style.display = 'none';
+    } else {
+        loadMoreButton.style.display = 'block';
+    }
+}
+
+// "더보기" 버튼 클릭 시 호출되는 함수
+function loadMoreLogs() {
+    currentPage++;
+    renderLogs(); // 기존 로그를 유지하면서 새로운 로그를 추가로 렌더링
+}
+
+// 날짜 포맷팅 함수
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ko-KR', options);
+}
 
 // DOMContentLoaded 이벤트 리스너 내부의 코드
 document.addEventListener('DOMContentLoaded', function() {

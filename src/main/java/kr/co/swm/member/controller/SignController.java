@@ -1,11 +1,13 @@
 package kr.co.swm.member.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.member.model.dto.AdminDTO;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.member.model.service.MemberServiceImpl;
+import kr.co.swm.member.util.ClientIpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -112,7 +115,8 @@ public class SignController {
     // 첫 로그인 요청
     @PostMapping("/signin")
     public String signIn(@RequestParam(value = "userId") String userId, @RequestParam(value = "userPwd") String userPwd,@RequestParam(value = "role") String signRole,
-                         RedirectAttributes redirectAttributes, HttpServletResponse response) {
+                         HttpServletResponse response, HttpServletRequest request,
+                         RedirectAttributes redirectAttributes) {
         System.out.println("로그인 요청");
         System.out.println("로그인 요청" + signRole);
 
@@ -122,6 +126,20 @@ public class SignController {
         if (token != null) {
             String role = jwtUtil.getRoleFromToken(token);
             System.out.println("로그인 시도: " + role);  // 권한이 제대로 추출되는지 확인
+
+            // IP 주소 가져오기
+            Long userNo = jwtUtil.getUserNoFromToken(token);
+            String userIp = ClientIpUtil.getClientIp();
+
+            // 로그인 기록 저장
+            UserDTO userDTO = new UserDTO();
+            userDTO.setNo(userNo);
+            userDTO.setUserIp(userIp);
+            userDTO.setLastLoginDate(LocalDateTime.now()); // 현재시간
+
+            System.out.println("로그인 시도 IP: " + userIp); // **로그 추가** (IP 출력)
+            memberServiceImpl.saveLoginLog(userDTO); // 로그기록 저장
+
             // 권한에 따라 리다이렉트할 페이지 결정
             if ("ROLE_SITE_ADMIN".equals(role)) {
                 return "redirect:/"; // 사이트 관리자 페이지로 리다이렉트

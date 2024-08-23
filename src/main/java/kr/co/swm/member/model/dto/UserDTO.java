@@ -27,4 +27,10 @@ public class UserDTO extends MemberDTO{
     private LocalDateTime deletedDate; // 탈퇴일
 
 
+    /*회원로그 DTO*/
+    private Long logId; // 로그 식별키
+    private LocalDateTime lastLoginDate; // 마지막 로그인 일자
+    private String userIp; // 접속한 IP주소
+
+
 }
