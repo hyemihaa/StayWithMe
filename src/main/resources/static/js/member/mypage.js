@@ -12,6 +12,7 @@ function showSection(sectionId) {
     }
 }
 
+/*------내정보수정--------*/
 // 비밀번호 저장 -> 비밀번호 변경 요청 (전역 스코프에 정의)
 function savePasswordButton() {
     const currentPassword = document.getElementById('currentPassword').value.trim();
@@ -42,7 +43,11 @@ function savePasswordButton() {
             if (response.success) {
                 alert('비밀번호가 성공적으로 변경되었습니다.');
                 document.getElementById('passwordChangeFields').style.display = 'none';
-            } else {
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmNewPassword').value = '';
+            }
+            else {
                 alert('비밀번호 변경에 실패했습니다: ' + response.error);
             }
         },
@@ -52,6 +57,29 @@ function savePasswordButton() {
         }
     });
 }
+
+const textarea = document.getElementById('otherReason');
+const charCount = document.getElementById('charCount');
+const errorMessage = document.getElementById('errorMessage');
+const maxChars = 250;
+
+// 입력 이벤트 리스너 추가
+textarea.addEventListener('input', function () {
+    // 현재 입력된 문자 수를 가져옴
+    const currentLength = textarea.value.length;
+
+    // 문자 수 업데이트
+    charCount.textContent = `${currentLength} / ${maxChars}`;
+
+    // 250자를 초과하는지 확인
+    if (currentLength > maxChars) {
+        // 초과 시 에러 메시지 표시
+        errorMessage.style.display = 'inline';
+    } else {
+        // 초과하지 않으면 에러 메시지 숨김
+        errorMessage.style.display = 'none';
+    }
+});
 
 // DOMContentLoaded 이벤트 리스너 내부의 코드
 document.addEventListener('DOMContentLoaded', function() {
@@ -64,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
         passwordChangeFields.style.display = passwordChangeFields.style.display === 'block' ? 'none' : 'block';
     });
 
-    // 비밀번호 변경 취소 버튼 클릭 시 비밀번호 변경 필드 숨기기 및 입력 필드 초기화
+    // 비밀번호 취소 버튼 클릭 시 비밀번호 변경 필드 숨기기 및 입력 필드 초기화
     document.getElementById('cancelPasswordChange').addEventListener('click', function() {
         document.getElementById('passwordChangeFields').style.display = 'none';
         document.getElementById('currentPassword').value = '';
@@ -81,6 +109,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // 휴대폰 번호 변경 취소 버튼 클릭 시 휴대폰 변경 필드 숨기기
     document.getElementById('cancelPhoneChange').addEventListener('click', function() {
         document.getElementById('phoneChangeFields').style.display = 'none';
+        document.getElementById("newPhone").value = '';
+        document.getElementById("verificationCode").value = '';
+        document.getElementById("phoneMsg").innerText = '';
+        document.getElementById("codeMsg").innerText = '';
+        document.getElementById("timerMsg").innerHTML = '';
     });
 
     // 새로운 비밀번호 유효성 검사 함수
@@ -114,6 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // 비밀번호 유효성 검사 이벤트 리스너 추가
     document.getElementById("newPassword").addEventListener('input', validatePassword);
     document.getElementById("confirmNewPassword").addEventListener('input', validatePassword);
 
@@ -160,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     }
 
-    // 인증번호 유효성 검사
+    // 인증번호 유효성 검사 함수
     function validateVerificationCode() {
         const verificationCode = document.getElementById("verificationCode").value;
         const verificationCodeMsg = document.getElementById("codeMsg");
@@ -257,6 +291,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // 인증번호 입력 필드 변경 시 유효성 검사 및 인증 상태 초기화
+    document.getElementById("verificationCode").addEventListener('input', function() {
+        validateVerificationCode();
+
+        // 사용자가 인증번호를 수정할 경우, 다시 인증 필요
+        if (window.isVerified) {
+            window.isVerified = false;
+            alert('인증번호가 수정되었습니다. 다시 요청해 주세요.');
+
+            // 인증번호 요청 버튼을 다시 활성화
+            document.getElementById('sendVerificationCode').disabled = false;
+        }
+    });
+
     // 인증번호 입력 필드 변경 시 유효성 검사
     document.getElementById("verificationCode").addEventListener('input', validateVerificationCode);
 
@@ -288,6 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         document.getElementById("verificationCode").value = '';
                         document.getElementById("phoneMsg").innerText = '';
                         document.getElementById("codeMsg").innerText = '';
+                        document.getElementById("timerMsg").innerHTML = '';
 
                         // 현재 표시된 사용자 휴대폰 번호 업데이트
                         document.getElementById("phone").value = newPhone;
@@ -309,4 +358,55 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('전화번호 입력이 유효하지 않거나 인증번호가 잘못되었습니다.');
         }
     });
+
+
+    /*-------회원 탈퇴 섹션------*/
+    document.getElementById("withdrawalForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // 기본 제출 막음
+
+        // 동의 체크 박스 체크 여부 확인
+        const confirmationChecked = document.getElementById("confirmation").checked;
+
+        if (!confirmationChecked) {
+            alert("회원 탈퇴를 진행하시려면 동의란에 체크해 주세요.");
+            return;
+        }
+
+        // 탈퇴 사유 가져오기
+        const selectedReason = document.querySelector('input[name="reason"]:checked');
+        let reason = "";
+
+        if (selectedReason) {
+            reason = selectedReason.value;
+            console.log("탈퇴사유 : ", reason);
+        }
+
+        // 기타 선택한 경우, 기타사유 입력값
+        if (reason === "기타") {
+            reason = document.getElementById("otherReason").value;
+            console.log("기타탈퇴사유 : ", reason);
+        }
+
+        // 회원 탈퇴 요청 보내기
+        $.ajax({
+            type: "POST",
+            url: "/withdraw-account",
+            contentType: "application/json",
+            data: JSON.stringify({
+                withdrawalReason: reason // 서버에 전달될 값
+            }),
+            success: function(response) {
+                alert('회원 탈퇴가 정상적으로 처리되었습니다.');
+
+                 // 페이지 이동
+                 window.location.href = '/';
+            },
+            error: function(xhr, status, error) {
+                console.error('회원 탈퇴 중 오류 발생: ', error);
+                alert('회원 탈퇴 중 오류가 발생했습니다.');
+            }
+        });
+    });
+
+
 });
