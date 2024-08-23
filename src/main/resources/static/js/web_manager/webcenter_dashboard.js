@@ -7,12 +7,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 밝고 명확한 색상 팔레트
     const colorPalette = [
-        '#FF6384', // 밝은 빨간색
-        '#36A2EB', // 밝은 파란색
-        '#FFCE56', // 밝은 노란색
-        '#4BC0C0', // 밝은 청록색
-        '#9966FF', // 밝은 보라색
-        '#FF9F40', // 밝은 주황색
+        '#B0EACD', // 파스텔 민트
+        '#A0DAD7', // 파스텔 틸
+        '#90CBEA', // 파스텔 블루 그린
+        '#80BDF6', // 파스텔 라이트 블루
+        '#70AEFF', // 파스텔 블루
+        '#5F9BF2'  // 진한 파스텔 블루
     ];
 
     // 숙박 형태별 매출 현황 데이터를 파싱하여 차트에 사용할 데이터로 변환
@@ -60,15 +60,23 @@ document.addEventListener('DOMContentLoaded', function () {
     // 월별 매출 현황 데이터를 파싱하여 차트에 사용할 데이터로 변환
     const monthlySalesDataParsed = JSON.parse(monthlySalesData);
 
+    // 날짜 형식을 올바르게 정렬하기 위해 새로운 Date 객체로 변환
+    monthlySalesDataParsed.forEach(item => {
+        item.revenueMonth = new Date(item.revenueMonth);
+    });
+
+    // 날짜를 오름차순으로 정렬
+    monthlySalesDataParsed.sort((a, b) => a.revenueMonth - b.revenueMonth);
+
     // 숙소 타입별로 데이터를 분리하여 저장
     const accommodationTypes = [...new Set(monthlySalesDataParsed.map(item => item.accommodationType))];
 
     // 각 타입별로 월별 데이터를 계산
-    const months = [...new Set(monthlySalesDataParsed.map(item => item.revenueMonth))];
+    const months = [...new Set(monthlySalesDataParsed.map(item => item.revenueMonth.toISOString().slice(0, 7)))];
 
     const calculateMonthlySales = (type, data, months) => {
         return months.map(month => {
-            const found = data.find(item => item.revenueMonth === month && item.accommodationType === type);
+            const found = data.find(item => item.revenueMonth.toISOString().slice(0, 7) === month && item.accommodationType === type);
             return found ? found.monthlyRevenue : 0;
         });
     };
