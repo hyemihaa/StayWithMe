@@ -22,19 +22,21 @@
     width: 300px; /* 검색 버튼의 너비 설정 */
 }
 
-/* Table Styles */
-/* 테이블의 일반 스타일링 */
+/* 테이블 스타일 */
 .table td, .table th {
-    border: 1px solid #dee2e6 !important; /* 테두리 스타일을 명확하게 설정 */
-    padding: 0.75rem !important; /* 셀 내부 여백 설정 */
-    vertical-align: middle !important; /* 텍스트를 셀의 중간에 정렬 */
-    text-align: center !important; /* 모든 셀 텍스트를 중앙 정렬 */
+    border: 1px solid #dee2e6 !important;
+    padding: 0.75rem !important;
+    vertical-align: middle !important;
+    text-align: center !important;
+    word-wrap: break-word; /* 긴 텍스트를 잘라서 줄 바꿈 */
 }
 
-/* 마지막 열의 테두리 스타일링 */
-/* 요청사항 칼럼을 포함한 마지막 td 요소의 테두리 설정 */
+/* 요청사항 칼럼 텍스트 길이 조정 */
 .table td:last-child {
-    border-right: 1px solid #dee2e6 !important; /* 마지막 칼럼의 오른쪽 테두리 추가 */
+    max-width: 200px; /* 요청사항 칼럼의 최대 너비 설정 */
+    white-space: nowrap; /* 텍스트를 한 줄로 표시 */
+    overflow: hidden; /* 넘치는 텍스트를 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트를 '...'로 표시 */
 }
 
 /* 테이블 헤더 스타일링 */
