@@ -7,7 +7,7 @@ import java.util.List;
 public interface DetailService {
 
 //   장소
-    List<DetailDTO> getPlace();
+    List<DetailDTO> getPlace(int boardNo);
 //  게시글 상세조회
     DetailDTO getPost(int boardNo);
 //  평균 별점
