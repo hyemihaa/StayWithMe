@@ -11,6 +11,8 @@ public interface MemberMapper {
     // 회원가입
     public int setSignUp(@Param("userDTO") UserDTO userDTO);
 
+    MemberDTO findByUserId(@Param("userId") String userId);
+
     // 중복 아이디 체크
     public int idCheck(@Param("userId") String userId);
 
