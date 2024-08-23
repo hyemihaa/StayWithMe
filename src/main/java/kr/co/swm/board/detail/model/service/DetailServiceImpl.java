@@ -36,16 +36,16 @@ public class DetailServiceImpl implements DetailService{
         return detailMapper.getAvgRate(boardNo);
     }
 
-    //  금액
-//    @Override
-//    public List<DetailDTO> getCost() {
-//        return detailMapper.getCost();
-//    }
-
     // 방 평균 별점
+    @Override
+    public double getRate(int boardNo) {
+      return detailMapper.getRate(boardNo);
+    }
+
+    // 하단 관련 항목
 //    @Override
-//    public double getRoomRate(int boardNo) {
-//        return detailMapper.getRoomRate(boardNo);
+//    public List<DetailDTO> getSubPlace() {
+//        return detailMapper.getSubPlace();
 //    }
 
 

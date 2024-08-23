@@ -18,7 +18,7 @@
 
 <!-- 장소 -->
     <select id="getPlace" resultMap="placeResultMap">
-        select DISTINCT
+        SELECT DISTINCT
         a.name,
         a.ACCOMMODATION_NO,
         a.ACCOMMODATION_TYPE,
@@ -28,10 +28,28 @@
         r.CHECK_IN_TIME,
         r.ROOM_NAME,
         r.STANDARD_OCCUPANCY,
-        r.MAX_OCCUPANCY
-        from ACCOMMODATION a
-        inner JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO
-
+        r.MAX_OCCUPANCY,
+        r.ROOM_TYPE_NO,
+        br.BASIC_RATE
+        FROM ACCOMMODATION a
+        INNER JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO
+        INNER JOIN (
+        SELECT
+        br1.ROOM_NO,
+        br1.BASIC_RATE,
+        r1.ROOM_TYPE_NO
+        FROM basic_rate br1
+        INNER JOIN ROOM r1 ON r1.ROOM_NO = br1.ROOM_NO
+        WHERE (r1.ROOM_TYPE_NO, br1.BASIC_RATE) IN (
+        SELECT
+        r2.ROOM_TYPE_NO,
+        MIN(br2.BASIC_RATE)
+        FROM basic_rate br2
+        INNER JOIN ROOM r2 ON r2.ROOM_NO = br2.ROOM_NO
+        GROUP BY r2.ROOM_TYPE_NO
+        )
+        ) br ON br.ROOM_NO = r.ROOM_NO
+        ORDER BY a.ACCOMMODATION_NO, r.ROOM_TYPE_NO
     </select>
 
     <select id="getAvgRate" resultType="double">
@@ -49,12 +67,31 @@
         LIMIT 1
     </select>
 
-    <select id="getCost" resultMap="placeResultMap">
-        SELECT a.ACCOMMODATION_NO, r.ROOM_NO ,br.BASIC_RATE  FROM ACCOMMODATION a
-        JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO
-        join basic_rate br on br.ROOM_NO = r.ROOM_NO
-        where r.ACCOMMODATION_NO = #{boardNo}
-        and r.ROOM_TYPE_NO = #{board}
+    <select id="getRate" resultType="double">
+        SELECT COALESCE(ROUND(AVG(r2.rating), 1), 0) AS avgRate
+        FROM room r
+        JOIN review r2 ON r.ROOM_NO = r2.ROOM_NO
+        where r.ROOM_NO = #{RoomNo}
     </select>
+
+<!--    <select id="getSubPlace" resultMap="placeResultMap">-->
+<!--        SELECT DISTINCT-->
+<!--        a.name,-->
+<!--        a.ACCOMMODATION_NO,-->
+<!--        a.ACCOMMODATION_TYPE,-->
+<!--        a.POST_NO,-->
+<!--        r.CHECK_IN_TIME,-->
+<!--        br.BASIC_RATE-->
+<!--        FROM ACCOMMODATION a-->
+<!--        INNER JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO-->
+<!--        INNER JOIN BASIC_RATE br ON r.ROOM_TYPE_NO = br.ROOM_NO-->
+<!--        WHERE a.ACCOMMODATION_TYPE = #{boardType}-->
+<!--        AND br.BASIC_RATE = (-->
+<!--        SELECT MIN(br2.BASIC_RATE)-->
+<!--        FROM BASIC_RATE br2-->
+<!--        INNER JOIN ROOM r2 ON r2.ROOM_TYPE_NO = br2.ROOM_NO-->
+<!--        WHERE r2.ACCOMMODATION_NO = a.ACCOMMODATION_NO-->
+<!--        )-->
+<!--    </select>-->
 
 </mapper>

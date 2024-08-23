@@ -15,9 +15,8 @@ public interface DetailMapper {
     // 게시글 상세 정보 불러오기
     DetailDTO getPost(@Param("boardNo") int boardNo);
 
-    // 금액 불러오기
-//    List<DetailDTO> getCost();
 
+    double getRate(int boardNo);
 
-//    double getRoomRate(int boardNo);
+    List<DetailDTO> getSubPlace();
 }
