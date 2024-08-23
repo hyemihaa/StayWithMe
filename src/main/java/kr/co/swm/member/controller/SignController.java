@@ -128,9 +128,9 @@ public class SignController {
             System.out.println("로그인 시도: " + role);  // 권한이 제대로 추출되는지 확인
             // 권한에 따라 리다이렉트할 페이지 결정
             if ("ROLE_SITE_ADMIN".equals(role)) {
-                return "redirect:/"; // 사이트 관리자 페이지로 리다이렉트
+                return "redirect:/web-center"; // 사이트 관리자 페이지로 리다이렉트
             } else if ("ROLE_ACCOMMODATION_ADMIN".equals(role)) {
-                return "redirect:/"; // 업소 관리자 페이지로 리다이렉트 ( 추후수정 )
+                return "redirect:/seller-main.do"; // 업소 관리자 페이지로 리다이렉트 ( 추후수정 )
             } else {
                 return "redirect:/"; // 일반 사용자 -> 메인
             }

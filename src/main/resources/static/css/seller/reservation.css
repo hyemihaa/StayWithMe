@@ -1,58 +1,117 @@
-/* 사이드바와 컨텐츠 사이의 마진 조정 */
 .content {
-    margin-left: 300px !important; /* 사이드바의 너비와 일치하도록 설정 */
-    min-height: 100vh !important; /* 화면 높이에 맞게 최소 높이를 설정하여 footer가 화면 하단에 고정되도록 함 */
-    padding: 20px !important; /* 컨텐츠와 경계 사이에 여백을 추가 */
-    width: 83%;
+    margin-left: 300px !important; /* 사이드바의 너비와 일치 */
+    min-height: 100vh !important; /* 화면 높이에 맞게 최소 높이 설정 */
+    padding: 20px !important; /* 경계와 컨텐츠 사이 여백 */
+    width: 83%; /* 컨텐츠 영역의 너비 설정 */
     background: #FFFFFF !important; /* 배경색을 흰색으로 설정 */
-    transition: margin-left 0.5s ease !important; /* 사이드바가 토글될 때의 부드러운 전환 효과를 위해 transition 속성 추가 */
-    z-index: 1 !important; /* 사이드바보다 위에 오도록 설정 */
+    transition: margin-left 0.5s ease !important; /* 사이드바 토글 시 부드러운 전환 효과 */
+    z-index: 1 !important; /* 사이드바보다 위에 위치 */
 }
 
+/* Search Area Styles */
+/* 검색 필드 스타일링 */
 .searchText {
-    width: 70%;
+    width: 70%; /* 검색 필드 너비 설정 */
 }
 
 .text-end {
-    text-align: center;
+    text-align: center; /* 텍스트를 중앙 정렬 */
 }
 
 .search-button {
-    width: 300px;
+    width: 300px; /* 검색 버튼의 너비 설정 */
 }
 
-/* 테이블 스타일 조정: 모든 페이지에서 일관된 테이블 스타일을 보장 */
-.table td {
-    font-size: 16px !important;  /* 텍스트 크기를 16px로 설정하여 사이드바 텍스트와 일치 */
-    font-weight: 400 !important; /* 기본 글꼴 두께로 설정 */
-    color: var(--dark) !important; /* 텍스트 색상을 다크 모드 변수에 맞게 설정 */
-    vertical-align: middle !important; /* 테이블 셀 내의 텍스트가 가운데에 정렬되도록 설정 */
+/* 테이블 스타일 */
+.table td, .table th {
+    border: 1px solid #dee2e6 !important;
+    padding: 0.75rem !important;
+    vertical-align: middle !important;
+    text-align: center !important;
+    word-wrap: break-word; /* 긴 텍스트를 잘라서 줄 바꿈 */
 }
 
+/* 요청사항 칼럼 텍스트 길이 조정 */
+.table td:last-child {
+    max-width: 200px; /* 요청사항 칼럼의 최대 너비 설정 */
+    white-space: nowrap; /* 텍스트를 한 줄로 표시 */
+    overflow: hidden; /* 넘치는 텍스트를 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트를 '...'로 표시 */
+}
+
+/* 테이블 헤더 스타일링 */
 .table th {
-    font-size: 16px !important;  /* 테이블 헤더의 텍스트 크기를 16px로 설정 */
-    font-weight: 700 !important; /* 텍스트를 굵게 설정하여 헤더를 강조 */
-    color: var(--dark) !important; /* 헤더 텍스트 색상을 다크 모드 변수에 맞게 설정 */
-    background-color: var(--light) !important; /* 헤더 배경색을 사이드바와 일치시키기 위해 설정 */
+    background-color: var(--light) !important; /* 헤더의 배경색 설정 */
+    color: var(--dark) !important; /* 헤더 텍스트 색상 설정 */
+    font-weight: 700 !important; /* 헤더 텍스트 굵게 설정 */
     text-align: center !important; /* 헤더 텍스트를 중앙 정렬 */
 }
 
 /* 테이블 행 hover 시 배경색 조정 */
+/* 테이블 행에 마우스 올릴 때의 배경색 변경 */
 .table-hover tbody tr:hover {
-    background-color: rgba(0, 156, 255, 0.1) !important; /* 호버 시 배경색을 주 색상의 반투명한 파란색으로 설정하여 가시성 향상 */
+    background-color: rgba(0, 156, 255, 0.1) !important; /* 호버 시 배경색 설정 */
 }
 
+/* Badge Styles */
+/* 예약 상태 배지 스타일링 */
+.badge {
+    padding: 0.5em 1em; /* 배지 안쪽 여백 설정 */
+    font-size: 14px; /* 배지 텍스트 크기 설정 */
+    font-weight: 700; /* 배지 텍스트 굵게 설정 */
+    border-radius: 12px; /* 배지 모서리를 둥글게 설정 */
+    display: inline-block; /* 배지를 인라인 블록 요소로 설정 */
+    text-align: center; /* 배지 텍스트를 중앙 정렬 */
+}
+
+/* 예약 완료 상태 배지 스타일 */
+.status-complete {
+    background-color: #d4edda; /* 녹색 배경색 설정 */
+    color: #155724; /* 녹색 텍스트 색상 설정 */
+}
+
+/* 예약 취소 상태 배지 스타일 */
+.status-cancel {
+    background-color: #f8d7da; /* 붉은색 배경색 설정 */
+    color: #721c24; /* 붉은색 텍스트 색상 설정 */
+}
+
+/* Flexbox for Footer Positioning */
 /* 추가: 컨텐츠 영역의 flexbox 사용으로 footer를 하단에 고정 */
 .container-xxl {
-    display: flex;
-    flex-direction: column;
+    display: flex; /* 플렉스 박스 사용 */
+    flex-direction: column; /* 플렉스 방향을 세로로 설정 */
     min-height: 100vh; /* 화면 높이를 기준으로 최소 높이 설정 */
 }
 
+/* Footer Styles */
+/* footer 스타일링 */
 .footer {
     margin-top: auto; /* footer가 항상 페이지 하단에 위치하도록 설정 */
     background-color: var(--light); /* footer 배경색을 light로 설정 */
-    padding: 20px;
-    text-align: center;
+    padding: 20px; /* footer 패딩 설정 */
+    text-align: center; /* 텍스트를 중앙 정렬 */
 }
 
+/* Card Component Styles */
+/* 검색 영역 스타일 조정 */
+.card {
+    margin-bottom: 20px; /* 카드 컴포넌트 하단 여백 추가 */
+}
+
+.card-body {
+    padding: 15px; /* 검색 영역 내부 여백 설정 */
+}
+
+/* Row Margin Adjustments */
+/* row 요소 간격 설정 */
+.row {
+    margin-bottom: 15px; /* 행 간격 추가 */
+}
+
+/* Date and Text Input Adjustments */
+/* 날짜 및 텍스트 필드의 자동 너비 조정 */
+input[type="date"],
+input[type="text"] {
+    width: auto; /* 날짜 및 텍스트 필드의 너비를 자동으로 설정 */
+}

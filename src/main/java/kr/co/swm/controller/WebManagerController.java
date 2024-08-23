@@ -1,12 +1,21 @@
 package kr.co.swm.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.model.dto.WebDto;
 import kr.co.swm.model.service.WebServiceImpl;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,10 +23,13 @@ import java.util.stream.Collectors;
 public class WebManagerController {
 
     private final WebServiceImpl web;
+    private final JWTUtil jwtUtil;
 
     @Autowired
-    public WebManagerController(WebServiceImpl web) {
+    public WebManagerController(WebServiceImpl web, JWTUtil jwtUtil) {
+
         this.web = web;
+        this.jwtUtil = jwtUtil;
     }
 
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
@@ -33,96 +45,180 @@ public class WebManagerController {
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
     @GetMapping("/web-center")
-    public String webCenterDashboard(Model model) {
+    public String webCenterDashboard(Model model, @CookieValue(value = "Authorization", required = false) String token) {
 
-        // 서비스에서 가공된 대시보드 데이터를 가져옵니다.
-        List<WebDto> dashboardData = web.dashboardData();
+        // 오늘 날짜와 현재 연도를 구합니다.
+        String today = LocalDate.now().toString();
+        String currentYear = LocalDate.now().getYear() + "-";
 
-        // 대시보드 데이터를 디버깅하기 위해 출력합니다.
-        for (WebDto item : dashboardData) {
-            System.out.println("=============== Controller DashBoard Data ===============");
-            System.out.println("Accommodation Type : " + item.getAccommodationType());
-            System.out.println("Reservation Date : " + item.getReservationDate());
-            System.out.println("Reservation Count : " + item.getReservationCount());
-            System.out.println("Cancellation Count : " + item.getCancellationCount());
-            System.out.println("Reservation Amount : " + item.getReservationAmount());
-            System.out.println("Views Date : " + item.getViewsDate());
-            System.out.println("Views Count : " + item.getViewsCount());
-            System.out.println("========================================================");
-        }
+        // 1. 서비스에서 조회수, 예약수, 취소수, 결제금액 데이터를 가져옵니다.
+        WebDto summaryData = web.dashboardData(today);
 
-        // 대시보드 데이터의 첫 번째 요소는 요약 데이터를 포함하고 있습니다.
-        WebDto summary = dashboardData.get(0);
+            System.out.println();
+            System.out.println("Confirmed Amount : " + summaryData.getReservationAmount());
+            System.out.println();
 
-        // 요약 데이터가 올바르게 설정되었는지 디버깅하기 위해 출력합니다.
-        System.out.println("=============== Controller Summary Data ===============");
-        System.out.println(summary.getViewsCount());
-        System.out.println(summary.getReservationCount());
-        System.out.println(summary.getCancellationCount());
-        System.out.println(summary.getReservationAmount());
-        System.out.println("========================================================");
+        model.addAttribute("viewsCount", summaryData.getViewsCount());
+        model.addAttribute("reservationCount", summaryData.getReservationCount());
+        model.addAttribute("cancellationCount", summaryData.getCancellationCount());
+        model.addAttribute("confirmedAmount", summaryData.getReservationAmount());
 
-        // 요약 데이터를 모델에 추가하여 뷰로 전달합니다.
-        int viewsCount = summary.getViewsCount();
-        int reservationCount = summary.getReservationCount();
-        int cancellationCount = summary.getCancellationCount();
-        int confirmedAmount = summary.getReservationAmount();
+        // 2. 숙박 형태별 매출 현황 데이터를 가져옵니다.
+        List<WebDto> accommodationData = web.getAccommodationRevenueData(today);
+        String accommodationDataJson = convertToJson(accommodationData);
 
-        model.addAttribute("viewsCount", viewsCount);
-        model.addAttribute("reservationCount", reservationCount);
-        model.addAttribute("cancellationCount", cancellationCount);
-        model.addAttribute("confirmedAmount", confirmedAmount);
+        // 3. 월별 매출 현황 데이터를 가져옵니다.
+        List<WebDto> monthlySalesData = web.getMonthlySalesData(currentYear);
+        String monthlySalesDataJson = convertToJson(monthlySalesData);
 
-        // 숙박 형태별 매출 현황 데이터를 필터링하여 모델에 추가합니다.
-        List<WebDto> accommodationData = dashboardData.stream()
-                .filter(dto -> dto.getAccommodationType() != null) // 숙박 유형이 존재하는 데이터만 필터링
-                .collect(Collectors.toList());
-        model.addAttribute("accommodationData", accommodationData);
+        // 4. 최근 매출 현황 데이터를 가져옵니다.
+        List<WebDto> recentSalesData = web.getRecentSalesData(today);
+        String recentSalesDataJson = convertToJson(recentSalesData);
 
-        // 월별 매출 현황 데이터를 필터링하여 모델에 추가합니다.
-        List<WebDto> monthlySalesData = dashboardData.stream()
-                .filter(dto -> dto.getReservationDate() != null && dto.getAccommodationType() == null) // 예약 날짜가 있고 숙박 유형이 없는 데이터만 필터링
-                .collect(Collectors.toList());
-        model.addAttribute("monthlySalesData", monthlySalesData);
+        model.addAttribute("accommodationDataJson", accommodationDataJson);
+        model.addAttribute("monthlySalesDataJson", monthlySalesDataJson);
+        model.addAttribute("recentSalesDataJson", recentSalesDataJson);
 
-        // 최근 매출 현황 데이터를 필터링하여 모델에 추가합니다.
-        List<WebDto> recentSalesData = dashboardData.stream()
-                .filter(dto -> dto.getReservationDate() != null && dto.getAccommodationType() != null) // 예약 날짜와 숙박 유형이 모두 존재하는 데이터만 필터링
-                .collect(Collectors.toList());
-        model.addAttribute("recentSalesData", recentSalesData);
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
 
-        // 뷰 페이지를 반환합니다.
         return "web_manager/webcenter_dashboard";
     }
+
+    private String convertToJson(List<WebDto> data) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(data);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "[]";
+        }
+    }
+
 
 
 
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
     @GetMapping("/web-coupon")
-    public String webCenterCoupon(Model model) {
-
-
+    public String webCenterCoupon(WebDto webDto, Model model, @CookieValue(value = "Authorization", required = false) String token) {
+        prepareCouponPage(model, token);
         return "web_manager/webcenter_coupon";
     }
 
+    @PostMapping("/web-coupon-save")
+    public String saveCoupon(WebDto webDto, Model model, @CookieValue(value = "Authorization", required = false) String token) {
 
+        System.out.println("COUPON NAME : " + webDto.getCouponName());
+        System.out.println("COUPON TYPE : " + webDto.getCouponType());
+        System.out.println("COUPON DISCOUNT : " + webDto.getCouponDiscount());
+        System.out.println("COUPON QUANTITY : " + webDto.getCouponQuantity());
+        System.out.println("COUPON START DATE : " + webDto.getCouponStartDate());
+        System.out.println("COUPON END DATE : " + webDto.getCouponEndDate());
+        System.out.println("COUPON MINIMUM AMOUNT : " + webDto.getCouponMinimumAmount());
+
+
+        // 쿠폰 등록
+        web.couponInsert(webDto);
+        prepareCouponPage(model, token);
+        return "web_manager/webcenter_coupon";
+    }
+
+    private void prepareCouponPage(Model model, String token) {
+        // 모든 쿠폰 리스트를 조회
+        List<WebDto> couponList = web.couponList();
+        model.addAttribute("couponList", couponList);
+
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
+    }
 
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
     @GetMapping("/web-member")
-    public String webCenterMember(Model model) {
+    public String webCenterMember(Model model, @CookieValue(value = "Authorization", required = false) String token) {
 
+        List<WebDto> userSearch = new ArrayList<>();
+
+        // 판매자 리스트와 관리자 리스트를 통합해서 하나의 리스트로 처리
+        List<WebDto> userList = web.userSearch();
+        List<WebDto> sellerList = web.sellerSearch();
+
+        // 모든 사용자 데이터를 하나의 리스트에 통합
+        userSearch.addAll(userList);
+        userSearch.addAll(sellerList);
+
+        model.addAttribute("userSearch", userSearch);
+
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
 
         return "web_manager/webcenter_member_search";
     }
+
+    @PostMapping("/user-search")
+    public String userSearch(
+            @RequestParam("userType") String userType,  // 폼에서 전달된 사용자 타입 (일반 사용자 또는 판매자)
+            @RequestParam("searchKeyword") String searchKeyword,  // 폼에서 전달된 검색어
+            @CookieValue(value = "Authorization", required = false) String token,
+            Model model) {
+
+        List<WebDto> userSearch = new ArrayList<>();  // 결과를 저장할 리스트를 초기화
+
+        // 사용자 타입이 '일반 사용자'일 경우
+        if ("general".equals(userType)) {
+            if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
+                // 검색어가 없으면 모든 일반 사용자를 조회
+                userSearch = web.userSearch();
+            } else {
+                // 검색어가 있으면 해당 검색어를 포함하는 일반 사용자 조회
+                userSearch = web.searchUsersByKeyword(searchKeyword);
+            }
+        }
+        // 사용자 타입이 '판매자'일 경우
+        else if ("seller".equals(userType)) {
+            if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
+                // 검색어가 없으면 모든 판매자를 조회
+                userSearch = web.sellerSearch();
+            } else {
+                // 검색어가 있으면 해당 검색어를 포함하는 판매자 조회
+                userSearch = web.searchSellersByKeyword(searchKeyword);
+            }
+        }
+
+        // 검색 결과 리스트를 모델에 추가하여 뷰로 전달
+        model.addAttribute("userSearch", userSearch);
+        // 검색어를 모델에 추가하여 뷰에서 검색어를 유지할 수 있도록 설정
+        model.addAttribute("searchKeyword", searchKeyword);
+        // 사용자 타입을 모델에 추가하여 뷰에서 선택된 사용자 타입을 유지할 수 있도록 설정
+        model.addAttribute("userType", userType);
+
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
+
+        return "web_manager/webcenter_member_search";  // 검색 결과를 보여줄 뷰 이름 반환
+    }
+
 
 
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
     @GetMapping("/web-seller")
-    public String webCenterSeller(Model model) {
+    public String webCenterSeller(Model model, @CookieValue(value = "Authorization", required = false) String token) {
 
+        // 판매자 리스트를 조회하는 서비스 호출
+        List<WebDto> sellerList = web.sellerSearch();
+
+        // 조회된 판매자 리스트를 모델에 추가
+        model.addAttribute("sellerList", sellerList);
+
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
 
         return "web_manager/webcenter_seller";
     }
@@ -131,8 +227,17 @@ public class WebManagerController {
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
     @GetMapping("/web-manager")
-    public String webCenterManager(Model model) {
+    public String webCenterManager(Model model, @CookieValue(value = "Authorization", required = false) String token) {
 
+        // 판매자 리스트를 조회하는 서비스 호출
+        List<WebDto> managerList = web.managerSearch();
+
+        // 조회된 관리자 리스트를 모델에 추가
+        model.addAttribute("managerList", managerList);
+
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
 
         return "web_manager/webcenter_manager";
     }
