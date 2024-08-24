@@ -405,6 +405,11 @@ document.getElementById('accommodationForm').addEventListener('submit', function
     const editorContent = document.getElementById('editor').innerHTML;
     formData.append('accommodationInfo', editorContent);
 
+    // 숙소 유형 추가
+    const selectedType = document.querySelector('input[class="accommodationType"]:checked');
+    if (selectedType) {
+        formData.append('accommodationType', selectedType.value);
+    }
 
     // 대표사진 파일이 있으면 FormData에 추가
     if (mainPhotoFile) {
