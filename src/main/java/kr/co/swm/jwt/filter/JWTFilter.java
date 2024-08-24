@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import kr.co.swm.config.auth.CustomUserDetails;
 import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.member.model.dto.AdminDTO;
-import kr.co.swm.member.model.dto.MemberDTO;
 import kr.co.swm.member.model.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
