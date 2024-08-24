@@ -6,6 +6,7 @@
     <title>Coupon Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link th:href="@{/css/web_manager/webcenter_coupon.css}" rel="stylesheet">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
 <div class="container">
@@ -25,9 +26,8 @@
     <main class="main-content">
         <header class="header">
             <div class="header-right">
-                <span>John Doe</span>
-                <a href="#">Profile</a>
-                <a href="#">Logout</a>
+                <span th:text="${userId}">Username</span>
+                <a th:href="@{/logout}">Logout</a>
             </div>
         </header>
         <section class="coupon-section">
@@ -39,7 +39,7 @@
             </div>
             <div class="coupon-form">
                 <h3>Coupon Management</h3>
-                <form>
+                <form th:action="@{/web-coupon-save}" method="POST">
                     <table>
                         <tr>
                             <td><label for="couponName">쿠폰 이름</label></td>
@@ -49,14 +49,14 @@
                             <td><label for="couponType">쿠폰 타입</label></td>
                             <td>
                                 <select id="couponType" name="couponType">
-                                    <option value="pay">금액 할인</option>
-                                    <option value="percent">퍼센트 할인</option>
+                                    <option value="DISCOUNT_AMOUNT">금액 할인</option>
+                                    <option value="DISCOUNT_RATE">퍼센트 할인</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
                             <td><label for="discountValue">할인 값</label></td>
-                            <td><input type="text" id="discountValue" name="discountValue"></td>
+                            <td><input type="text" id="discountValue" name="couponDiscount"></td>
                         </tr>
                         <tr>
                             <td><label for="couponQuantity">쿠폰 수량</label></td>
@@ -72,7 +72,7 @@
                         </tr>
                         <tr>
                             <td><label for="minimumAmount">사용 최소금액</label></td>
-                            <td><input type="text" id="minimumAmount" name="minimumAmount"></td>
+                            <td><input type="text" id="minimumAmount" name="couponMinimumAmount"></td>
                         </tr>
                     </table>
                     <div class="form-actions">
@@ -86,27 +86,31 @@
             <table>
                 <thead>
                 <tr>
+                    <th>쿠폰 코드</th>
                     <th>쿠폰 이름</th>
                     <th>쿠폰 타입</th>
                     <th>할인 값</th>
                     <th>쿠폰 수량</th>
+                    <th>쿠폰 사용량</th>
+                    <th>쿠폰 잔여량</th>
                     <th>쿠폰 시작일</th>
                     <th>쿠폰 종료일</th>
                     <th>사용 최소금액</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- 예시 데이터 -->
-                <tr>
-                    <td>Example Coupon</td>
-                    <td>금액 할인</td>
-                    <td>5000</td>
-                    <td>100</td>
-                    <td>2024-08-20</td>
-                    <td>2024-12-31</td>
-                    <td>20000</td>
+                <tr th:each="coupon : ${couponList}">
+                    <td th:text="${coupon.couponCode}"></td>
+                    <td th:text="${coupon.couponName}"></td>
+                    <td th:text="${coupon.couponType}"></td>
+                    <td th:text="${coupon.couponDiscount}"></td>
+                    <td th:text="${coupon.couponQuantity}"></td>
+                    <td th:text="${coupon.couponUseQuantity}"></td>
+                    <td th:text="${coupon.couponLeftOver}"></td>
+                    <td th:text="${coupon.couponStartDate}"></td>
+                    <td th:text="${coupon.couponEndDate}"></td>
+                    <td th:text="${coupon.couponMinimumAmount}"></td>
                 </tr>
-                <!-- 더 많은 데이터는 여기에 추가 -->
                 </tbody>
             </table>
         </section>
