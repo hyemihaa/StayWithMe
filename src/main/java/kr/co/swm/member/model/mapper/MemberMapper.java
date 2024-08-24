@@ -48,4 +48,7 @@ public interface MemberMapper {
 
     // 로그 조회
     List<UserDTO> getUserLogsByUserNo(@Param("no") Long no);
+
+    // 마이페이지 회원탈퇴
+    void updateUserStatus(@Param("userDTO") UserDTO userDTO);
 }

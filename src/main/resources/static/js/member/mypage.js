@@ -110,10 +110,21 @@ function loadLoginLogs() {
     });
 }
 
+// 페이지 로드 시 현재 날짜와 일주일 전 날짜로 startDate와 currentDate 설정
+window.onload = function() {
+    const currentDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(currentDate.getDate() - 7); // 일주일 전 날짜로 설정
+
+    // 날짜 형식을 YYYY-MM-DD로 맞춤
+    document.getElementById('currentDate').value = currentDate.toISOString().substring(0, 10);
+    document.getElementById('startDate').value = startDate.toISOString().substring(0, 10);
+};
+
 // 날짜 필터링 함수
 function filterLogsByDate() {
     const startDate = new Date(document.getElementById('startDate').value);
-    const endDate = new Date(document.getElementById('endDate').value);
+    const endDate = new Date(document.getElementById('currentDate').value);
     endDate.setHours(23, 59, 59, 999); // 날짜 범위를 끝까지 포함
 
     filteredLogs = logsData.filter(log => {
@@ -207,6 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById("phoneMsg").innerText = '';
         document.getElementById("codeMsg").innerText = '';
         document.getElementById("timerMsg").innerHTML = '';
+        clearInterval(timer);
     });
 
     // 새로운 비밀번호 유효성 검사 함수
@@ -350,9 +362,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // SMS 인증번호 요청 함수 호출
             requestSMS();
-
-            // 인증번호 전송 버튼 비활성화
-            this.disabled = true;
 
             // 타이머 시작
             startTimer();
@@ -500,6 +509,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
-
 });

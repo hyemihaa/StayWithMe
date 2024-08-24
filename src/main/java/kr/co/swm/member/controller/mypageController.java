@@ -1,5 +1,7 @@
 package kr.co.swm.member.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.member.model.service.MemberServiceImpl;
@@ -69,7 +71,7 @@ public class mypageController {
         return response;
     }
 
-    // 마이페이지 휴대전화 번호 업데이트
+    // 마이페이지 휴대전화 번호 변경
     @PostMapping("/update-phone")
     @ResponseBody
     public Map<String, Object> updatePhone(@RequestBody Map<java.lang.String, java.lang.String> param, @CookieValue(value = "Authorization", required = false) String token) {
@@ -93,6 +95,33 @@ public class mypageController {
             response.put("error", "휴대전화 번호 변경 중 오류가 발생했습니다.");
         }
         return response;
+    }
+
+    // 마이페이지 회원 탈퇴
+    @PostMapping("/withdraw-account")
+    public String withdrawAccount(@RequestBody Map<String, String> param,
+                                  @CookieValue(value = "Authorization", required = false) String token,
+                                  HttpServletResponse response) {
+        String withdrawalReason = param.get("withdrawalReason");
+        String userId = jwtUtil.getUserIdFromToken(token);
+
+        try {
+            // 회원 상태를 DELETED로 업데이트하고, 탈퇴 사유를 저장
+            memberServiceImpl.updateUserStatus(userId, "DELETED", withdrawalReason);
+
+            // 쿠키 삭제 (JWT 토큰 삭제)
+            Cookie cookie = new Cookie("Authorization", null);
+            cookie.setMaxAge(0);  // 쿠키 만료
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");  // 쿠키의 경로 설정, 해당 경로의 모든 요청에 대해 쿠키가 전송됨
+            response.addCookie(cookie); // 클라이언트에 쿠키 추가/삭제 명령 전송
+
+            // 성공적으로 처리되었으면 메인 페이지로 리다이렉트
+            return "redirect:/";
+        } catch (Exception e) {
+            // 오류 발생 시 오류 페이지로 리다이렉트
+            return "redirect:/error";
+        }
     }
 
     // 마이페이지 로그 기록 조회
