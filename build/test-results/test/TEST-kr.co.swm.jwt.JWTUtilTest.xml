@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="kr.co.swm.jwt.JWTUtilTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2024-08-24T08:18:34" hostname="abcui-MacBookPro.local" time="0.14">
+  <properties/>
+  <testcase name="isExpired()" classname="kr.co.swm.jwt.JWTUtilTest" time="0.109"/>
+  <testcase name="validate()" classname="kr.co.swm.jwt.JWTUtilTest" time="0.007"/>
+  <testcase name="create()" classname="kr.co.swm.jwt.JWTUtilTest" time="0.005"/>
+  <testcase name="getRoleFromToken()" classname="kr.co.swm.jwt.JWTUtilTest" time="0.005"/>
+  <testcase name="getUserIdFromToken()" classname="kr.co.swm.jwt.JWTUtilTest" time="0.003"/>
+  <testcase name="getAccommAdminKeyFromToken()" classname="kr.co.swm.jwt.JWTUtilTest" time="0.005"/>
+  <system-out><![CDATA[2024-08-24 17:18:34 INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [kr.co.swm.jwt.JWTUtilTest]: JWTUtilTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2024-08-24 17:18:34 INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration kr.co.swm.SwmApplication for test class kr.co.swm.jwt.JWTUtilTest
+2024-08-24 17:18:34 INFO  kr.co.swm.jwt.util.JWTUtil - 토큰생성 : eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInVzZXJObyI6MSwidXNlcklkIjoidGVzdFVzZXIiLCJhY2NvbW1BZG1pbktleSI6MSwiZXhwIjoxNzI0NDg2OTE0fQ.Vy3RzATePq2HTWJAsACqEu5XL4KpXD6Ed4IuL0HBiiw
+2024-08-24 17:18:34 INFO  kr.co.swm.jwt.util.JWTUtil - 토큰생성 : eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInVzZXJObyI6MSwidXNlcklkIjoidGVzdFVzZXIiLCJhY2NvbW1BZG1pbktleSI6MSwiZXhwIjoxNzI0NDg4MTE0fQ.VwG-0WTcRIwQXUtwzX1ZpwYRhlI6q7OcEqAR8mHXpHY
+2024-08-24 17:18:34 INFO  kr.co.swm.jwt.util.JWTUtil - key : role, value : USER
+2024-08-24 17:18:34 INFO  kr.co.swm.jwt.util.JWTUtil - key : userNo, value : 1
+2024-08-24 17:18:34 INFO  kr.co.swm.jwt.util.JWTUtil - key : userId, value : testUser
+2024-08-24 17:18:34 INFO  kr.co.swm.jwt.util.JWTUtil - key : accommAdminKey, value : 1
+2024-08-24 17:18:34 INFO  kr.co.swm.jwt.util.JWTUtil - key : exp, value : 1724488114
+2024-08-24 17:18:34 INFO  kr.co.swm.jwt.util.JWTUtil - 토큰생성 : eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInVzZXJObyI6MSwidXNlcklkIjoidGVzdFVzZXIiLCJhY2NvbW1BZG1pbktleSI6MSwiZXhwIjoxNzI0NDg4MTE0fQ.VwG-0WTcRIwQXUtwzX1ZpwYRhlI6q7OcEqAR8mHXpHY
+2024-08-24 17:18:34 INFO  kr.co.swm.jwt.util.JWTUtil - 토큰생성 : eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInVzZXJObyI6MSwidXNlcklkIjoidGVzdFVzZXIiLCJhY2NvbW1BZG1pbktleSI6MSwiZXhwIjoxNzI0NDg4MTE0fQ.VwG-0WTcRIwQXUtwzX1ZpwYRhlI6q7OcEqAR8mHXpHY
+2024-08-24 17:18:34 INFO  kr.co.swm.jwt.util.JWTUtil - 토큰생성 : eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInVzZXJObyI6MSwidXNlcklkIjoidGVzdFVzZXIiLCJhY2NvbW1BZG1pbktleSI6MSwiZXhwIjoxNzI0NDg4MTE0fQ.VwG-0WTcRIwQXUtwzX1ZpwYRhlI6q7OcEqAR8mHXpHY
+2024-08-24 17:18:34 INFO  kr.co.swm.jwt.util.JWTUtil - 토큰생성 : eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInVzZXJObyI6MSwidXNlcklkIjoidGVzdFVzZXIiLCJhY2NvbW1BZG1pbktleSI6MSwiZXhwIjoxNzI0NDg4MTE0fQ.VwG-0WTcRIwQXUtwzX1ZpwYRhlI6q7OcEqAR8mHXpHY
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

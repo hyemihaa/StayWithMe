@@ -18,15 +18,6 @@
         <result column="WITHDRAWAL_REASON" property="withdrawalReason"></result>
     </resultMap>
 
-    <resultMap id="adminResultMap" type="kr.co.swm.member.model.dto.AdminDTO">
-        <result column="ACCOMMODATION_ADMIN_NO" property="no"></result>
-        <result column="USER_ID" property="userId"></result>
-        <result column="USER_PWD" property="userPwd"></result>
-        <result column="ROLES" property="role"></result>
-        <result column="ADMIN_ID" property="userId"></result>
-        <result column="ADMIN_PWD" property="userPwd"></result>
-        <result column="ADMIN_TYPE" property="role"></result>
-    </resultMap>
 
 
     <!--회원가입 insert-->
@@ -78,30 +69,6 @@
         SELECT * FROM USER
         WHERE USER_ID = #{userId}
     </select>
-
-    <!--로그인한 숙소관리자의 전체 정보-->
-    <select id="findByAccommAdminInfo" resultMap="adminResultMap">
-        SELECT * FROM ACCOMMODATIONADMINS
-        WHERE ADMIN_ID = #{userId}
-    </select>
-
-    <!--로그인한 사이트관리자의 전체 정보-->
-    <select id="findBySiteAdminInfo" resultMap="adminResultMap">
-        SELECT * FROM SITEADMINS
-        WHERE ADMIN_ID = #{userId}
-    </select>
-
-    <!--업소관리자 가입-->
-    <insert id="setSellerSignup">
-        INSERT INTO ACCOMMODATIONADMINS
-        VALUES (NULL, #{adminDTO.userId}, #{adminDTO.userPwd}, #{adminDTO.role})
-    </insert>
-
-    <!--사이트 관리자 가입-->
-    <insert id="setManagerSignup">
-        INSERT INTO SITEADMINS
-        VALUES (NULL, #{adminDTO.userId}, #{adminDTO.userPwd}, #{adminDTO.role})
-    </insert>
 
     <!--마이페이지 내정보수정 비밀번호 변경-->
     <update id="updatePassword">
