@@ -3,7 +3,6 @@ package kr.co.swm.board.detail.controller;
 
 import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import kr.co.swm.board.detail.model.service.DetailService;
-import kr.co.swm.board.list.model.DTO.ListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,13 +59,15 @@ public class DetailController {
         //  방 평균 점수
         double rate = detailService.getRate(boardNo);
 
-
+        //  부대시설 불러오기
+        List<DetailDTO> facilities = detailService.getFacilities(boardNo);
 
         //  데이터 바인딩
         model.addAttribute("place",place);
         model.addAttribute("post",post);
         model.addAttribute("avgRate",avgRate);
         model.addAttribute("rate",rate);
+        model.addAttribute("facilities",facilities);
 //        model.addAttribute("subPlace",subPlace);
 
         //  각 페이지마다 boardNo에 대한 다른 값 불러오기

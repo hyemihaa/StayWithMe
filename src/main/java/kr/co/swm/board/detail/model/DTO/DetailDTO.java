@@ -22,6 +22,8 @@ public class DetailDTO {
     private int boardCount; //  기본 가격
     private int boardMinPerson;  // 기본인원
     private int boardMaxPerson;  // 최대인원
+    private String facilityName;  // 부대시설
+    private String boardInfo;   // 정보
 
     private String filePath;    // 파일경로
     private String fileName;    // 파일 명
