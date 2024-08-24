@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequiredArgsConstructor //final로 선언된 필드가 있다면, 이 필드들을 초기화하는 생성자를 자동으로 생성
 @Controller
+@RequiredArgsConstructor //final로 선언된 필드가 있다면, 이 필드들을 초기화하는 생성자를 자동으로 생성
 public class SignController {
 
     private final MemberServiceImpl memberServiceImpl;
@@ -43,7 +43,7 @@ public class SignController {
         Map<String, Object> response = new HashMap<>();
         try {
             // param에서 userPhone 키의 값 추출, 휴대전화 번호 저장
-            String phoneNumber = param.get("phoneNumber");
+             String phoneNumber = param.get("phoneNumber");
 
             // 인증번호 생성 요청
             String certificationCode = memberServiceImpl.generateCertificationCode();
@@ -151,9 +151,9 @@ public class SignController {
 
             // 권한에 따라 리다이렉트할 페이지 결정
             if ("ROLE_SITE_ADMIN".equals(role)) {
-                return "redirect:/"; // 사이트 관리자 페이지로 리다이렉트
+                return "redirect:/web-center"; // 사이트 관리자 페이지로 리다이렉트
             } else if ("ROLE_ACCOMMODATION_ADMIN".equals(role)) {
-                return "redirect:/"; // 업소 관리자 페이지로 리다이렉트 ( 추후수정 )
+                return "redirect:/seller-main.do"; // 업소 관리자 페이지로 리다이렉트 ( 추후수정 )
             } else {
                 return "redirect:/"; // 일반 사용자 -> 메인
             }

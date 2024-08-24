@@ -1,6 +1,7 @@
 package kr.co.swm.controller;
 
 
+import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.service.SellerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,12 @@ import java.util.stream.Collectors;
 public class SellerController {
 
     private final SellerServiceImpl seller;
+    private final JWTUtil jwtUtil;
 
     @Autowired
-    public SellerController(SellerServiceImpl seller) {
+    public SellerController(SellerServiceImpl seller, JWTUtil jwtUtil) {
         this.seller = seller;
+        this.jwtUtil = jwtUtil;
     }
 
 
@@ -29,10 +32,14 @@ public class SellerController {
 
 
     @GetMapping("/seller-main.do")
-    public String mainDashBoard(Model model) {
+    public String mainDashBoard(Model model, @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        int accommodationNo = 1;
+        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
+
+        System.out.println("------------------------------------------");
+        System.out.println("Accommodation No: " + accommodationNo);
+        System.out.println("------------------------------------------");
 
         // 업소 조회수 가져오기
         int roomViews = seller.roomViews(accommodationNo);
@@ -58,23 +65,23 @@ public class SellerController {
 
         // 오늘 날짜에 대한 결제 건수 계산
         long todayPaymentCount = todayList.stream()
-                .filter(item -> "Confirmed".equals(item.getReservationStatus()) || "Completed".equals(item.getReservationStatus()))
+                .filter(item -> "Confirmed".equalsIgnoreCase(item.getReservationStatus()) || "Completed".equalsIgnoreCase(item.getReservationStatus()))
                 .count();
         model.addAttribute("paymentCount", todayPaymentCount);
 
         // 오늘 날짜에 대한 취소 건수 계산
         long todayCancelCount = todayList.stream()
-                .filter(item -> "Cancelled".equals(item.getReservationStatus()))
+                .filter(item -> "Cancelled".equalsIgnoreCase(item.getReservationStatus()))
                 .count();
         model.addAttribute("cancelCount", todayCancelCount);
 
         // 오늘 날짜에 대한 매출액 계산
         int todayTotalAmount = todayList.stream()
-                .filter(item -> "Confirmed".equals(item.getReservationStatus()) || "Completed".equals(item.getReservationStatus()))
+                .filter(item -> "Confirmed".equalsIgnoreCase(item.getReservationStatus()) || "Completed".equalsIgnoreCase(item.getReservationStatus()))
                 .mapToInt(SellerDto::getReserveAmount)
                 .sum();
         int todayCancelledAmount = todayList.stream()
-                .filter(item -> "Cancelled".equals(item.getReservationStatus()))
+                .filter(item -> "Cancelled".equalsIgnoreCase(item.getReservationStatus()))
                 .mapToInt(SellerDto::getReserveAmount)
                 .sum();
         int netAmount = todayTotalAmount - todayCancelledAmount;
@@ -111,10 +118,10 @@ public class SellerController {
             if (monthlyReservationCounts.containsKey(reservationMonth)) {
                 monthlyReservationCounts.put(reservationMonth, monthlyReservationCounts.get(reservationMonth) + 1);
             }
-            if ("Cancelled".equals(item.getReservationStatus()) && monthlyCancelCounts.containsKey(reservationMonth)) {
+            if ("Cancelled".equalsIgnoreCase(item.getReservationStatus()) && monthlyCancelCounts.containsKey(reservationMonth)) {
                 monthlyCancelCounts.put(reservationMonth, monthlyCancelCounts.get(reservationMonth) + 1);
             }
-            if (("Confirmed".equals(item.getReservationStatus()) || "Completed".equals(item.getReservationStatus())) &&
+            if (("Confirmed".equalsIgnoreCase(item.getReservationStatus()) || "Completed".equalsIgnoreCase(item.getReservationStatus())) &&
                     monthlyPaymentCounts.containsKey(reservationMonth)) {
                 monthlyPaymentCounts.put(reservationMonth, monthlyPaymentCounts.get(reservationMonth) + 1);
             }
@@ -126,14 +133,13 @@ public class SellerController {
         model.addAttribute("monthlyCancelCounts", new ArrayList<>(monthlyCancelCounts.values()));
         model.addAttribute("monthlyPaymentCounts", new ArrayList<>(monthlyPaymentCounts.values()));
 
-        // 디버깅 로그 출력
-        System.out.println("monthlyLabels: " + monthlyLabels);
-        System.out.println("monthlyReservationCounts: " + monthlyReservationCounts.values());
-        System.out.println("monthlyCancelCounts: " + monthlyCancelCounts.values());
-        System.out.println("monthlyPaymentCounts: " + monthlyPaymentCounts.values());
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
 
         return "seller/seller"; // 뷰 이름 반환
     }
+
 
 
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
@@ -141,15 +147,20 @@ public class SellerController {
 
     // 예약 리스트 페이지 로드
     @GetMapping("/reservation.do")
-    public String reservation(Model model) {
+    public String reservation(Model model, @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        int accommodationNo = 1;
+        Long accommodationNo = jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 예약 및 결제 정보 가져오기
         List<SellerDto> reservation = seller.mainList(accommodationNo);
 
-        for (SellerDto item : reservation) {
+        // 예약 리스트를 입실일 기준으로 정렬
+        List<SellerDto> sortedReservation = reservation.stream()
+                .sorted(Comparator.comparing(SellerDto::getReserveCheckIn))
+                .collect(Collectors.toList());
+
+        for (SellerDto item : sortedReservation) {
             System.out.println();
             System.out.println("= = = = = = reservation controller = = = = = =");
             System.out.println("예약 정보 : " + item.getReserveRoomName());
@@ -159,12 +170,17 @@ public class SellerController {
             System.out.println("예약연락처 : " + item.getUserPhone());
             System.out.println("결제금액 : " + item.getReserveAmount());
             System.out.println("예약상태 : " + item.getReservationStatus());
+            System.out.println("예약일 : " + item.getReservationDate());
             System.out.println("예약취소일 : " + item.getReservationCancellationDate());
             System.out.println("= = = = = = = = = = = = = = = = = = = = = = =");
             System.out.println();
         }
 
-        model.addAttribute("reservation", reservation);
+        model.addAttribute("reservation", sortedReservation);
+
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
 
         return "seller/reservation";
     }
@@ -176,6 +192,7 @@ public class SellerController {
                                     @RequestParam(value = "endDate", required = false) String endDate,
                                     @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
                                     @RequestParam(value = "reservationStatus", required = false) String reservationStatus,
+                                    @CookieValue(value = "Authorization", required = false) String token,
                                     Model model) {
 
         System.out.println("<<<<<<<<<<<< 입력값 확인 디버깅 >>>>>>>>>>>>>>");
@@ -187,12 +204,17 @@ public class SellerController {
         System.out.println("============================================");
 
         // 관리자 번호(업소키)
-        int accommodationNo = 1;
+        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 예약 및 결제 정보 가져오기
         List<SellerDto> reservationSearch = seller.reservationSearch(accommodationNo, dateType, startDate, endDate, searchKeyword, reservationStatus);
 
-        for (SellerDto item : reservationSearch) {
+        // 검색 결과를 입실일 기준으로 정렬
+        List<SellerDto> sortedReservationSearch = reservationSearch.stream()
+                .sorted(Comparator.comparing(SellerDto::getReserveCheckIn))
+                .collect(Collectors.toList());
+
+        for (SellerDto item : sortedReservationSearch) {
             System.out.println();
             System.out.println("= = = = reservationSearch controller = = = = =");
             System.out.println("예약 정보 : " + item.getReserveRoomName());
@@ -207,7 +229,7 @@ public class SellerController {
             System.out.println();
         }
 
-        model.addAttribute("reservationSearch", reservationSearch);
+        model.addAttribute("reservationSearch", sortedReservationSearch);
 
         // 검색 조건들을 모델에 담아 다시 전달
         model.addAttribute("dateType", dateType);
@@ -215,6 +237,10 @@ public class SellerController {
         model.addAttribute("endDate", endDate);
         model.addAttribute("searchKeyword", searchKeyword);
         model.addAttribute("reservationStatus", reservationStatus);
+
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
 
         return "seller/reservation";
     }
@@ -225,10 +251,10 @@ public class SellerController {
 
     // 일별 현황 조회
     @GetMapping("/reservation-daily.do")
-    public String reservationDaily(@RequestParam(value = "date", required = false) String date, Model model) {
+    public String reservationDaily(@RequestParam(value = "date", required = false) String date, Model model, @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        int accommodationNo = 1;
+        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 선택된 날짜가 없으면 오늘 날짜로 설정
         LocalDate selectedDate = (date == null) ? LocalDate.now() : LocalDate.parse(date);
@@ -257,15 +283,19 @@ public class SellerController {
             String reservationStatus = room.getReservationStatus();
 
             // 예약 상태에 따라 텍스트를 업데이트
-            if (reservationStatus == null || reservationStatus.equals("Cancelled")) {
+            if (reservationStatus == null || reservationStatus.equals("CANCELLED")) {
                 room.setReservationStatus("예약 가능");
-            } else if (reservationStatus.equals("Confirmed")) {
+            } else if (reservationStatus.equals("CONFIRMED")) {
                 room.setReservationStatus("예약중");
             }
         }
 
         // 업데이트된 객실 정보를 모델에 추가하여 뷰에 전달
         model.addAttribute("roomData", roomData);
+
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
 
         // 예약 상태가 반영된 뷰 페이지를 반환
         return "seller/reservation_daily";
@@ -278,8 +308,10 @@ public class SellerController {
 
     // 월별 현황 조회
     @GetMapping("/reservation-monthly.do")
-    public String reservationMonthly(Model model) {
-        int accommodationNo = 1;
+    public String reservationMonthly(Model model, @CookieValue(value = "Authorization", required = false) String token) {
+
+        // 관리자 번호(업소키)
+        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 관리자 보유 객실 조회
         List<SellerDto> accommodationRoomData = seller.accommodationRoomData(accommodationNo);
@@ -287,13 +319,21 @@ public class SellerController {
         // 해당 데이터를 페이지 로드시에 Thymeleaf 템플릿으로 전달
         model.addAttribute("accommodationRoomData", accommodationRoomData);
 
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
+
         return "seller/reservation_monthly";  // 뷰 이름 반환
     }
 
     // 비동기 요청 처리
     @GetMapping("/reservation-monthly-data")
     @ResponseBody
-    public Map<String, Object> getReservationMonthlyData(@RequestParam("accommodationNo") int accommodationNo) {
+    public Map<String, Object> getReservationMonthlyData(Model model, @CookieValue(value = "Authorization", required = false) String token) {
+
+        // 관리자 번호(업소키)
+        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
+        
         // 관리자 보유 객실 조회
         List<SellerDto> accommodationRoomData = seller.accommodationRoomData(accommodationNo);
 
@@ -309,6 +349,10 @@ public class SellerController {
         System.out.println("Accommodation Room Data: " + accommodationRoomData);
         System.out.println("Monthly Data: " + monthlyData);
 
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
+
         return result;  // JSON으로 반환
     }
 
@@ -322,10 +366,10 @@ public class SellerController {
 
     // 요금 페이지 로드(객실 이름 리스트 조회)
     @GetMapping("/basic-rate-list.do")
-    public String basicList(Model model) {
+    public String basicList(Model model, @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        int accommodationNo = 1;
+        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 객실 이름 조회 호출(Service)
         List<String> roomName = seller.roomNameSearch(accommodationNo);
@@ -333,16 +377,20 @@ public class SellerController {
         // 조회 데이터 전달
         model.addAttribute("roomNameList", roomName);
 
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
+
         return "seller/basic_rate";
     }
 
     // 선택 된 ROOM NAME 요금 조회
     @GetMapping("/getRoomRates")
     @ResponseBody
-    public Map<String, Object> rateSearch(@RequestParam("roomName") String roomName) {
+    public Map<String, Object> rateSearch(Model model, @RequestParam("roomName") String roomName, @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        int accommodationNo = 1;
+        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 기본 요금 조회
         List<SellerDto> basicRateList = seller.basicRateList(roomName, accommodationNo);
@@ -370,12 +418,16 @@ public class SellerController {
         response.put("basicRates", basicRateList.isEmpty() ? null : basicRateList.get(0));
         response.put("extraRates", extraRateList.isEmpty() ? null : extraRateList);
 
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
+
         return response;
     }
 
     // 기본 요금 및 추가 요금 수정/삽입
     @PostMapping("/basic-rate-write.do")
-    public String setRate(@ModelAttribute SellerDto sellerDto, RedirectAttributes redirectAttributes) {
+    public String setRate(@ModelAttribute SellerDto sellerDto, RedirectAttributes redirectAttributes, @CookieValue(value = "Authorization", required = false) String token) {
         // 필터링된 유효한 추가 요금 정보 출력 (디버깅용)
         System.out.println("========== 입력된 기본 요금 정보 ==========");
         System.out.println("Room Name: " + sellerDto.getRoomName());
@@ -406,7 +458,8 @@ public class SellerController {
         // 필터링된 유효한 추가 요금 리스트로 업데이트
         sellerDto.setExtraRates(validExtraRates);
 
-        int accommodationNo = 1; // 임시로 설정된 숙박업소 번호
+        // 관리자 번호(업소키)
+        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 기본 요금 업데이트 메서드 호출
         int basicRateUpdated = seller.basicRateUpdate(sellerDto, accommodationNo);
@@ -456,10 +509,10 @@ public class SellerController {
 
     // 기간 수정 페이지 로드(추가 요금 정보 조회)
     @GetMapping("/season-period.do")
-    public String seasonList(Model model) {
+    public String seasonList(Model model, @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        int accommodationNo = 1;  // 실제 accommodationNo에 맞게 설정
+        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 추가 요금 조회
         List<SellerDto.ExtraDto> extraSeasonList = seller.extraSeasonList(accommodationNo);
@@ -467,16 +520,20 @@ public class SellerController {
         // extraRateList를 모델에 추가
         model.addAttribute("extraSeasonList", extraSeasonList);
 
+        // 사용자 이름
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
+
         return "seller/season_period";
     }
 
     // 요금타입 삭제 요청을 처리하는 메소드
     @DeleteMapping("/extra-delete")
     @ResponseBody
-    public Map<String, Object> extraRateDelete(@RequestParam("extraName") String extraName) {
+    public Map<String, Object> extraRateDelete(@RequestParam("extraName") String extraName, @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        int accommodationNo = 1;  // 실제 accommodationNo에 맞게 설정
+        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
         Map<String, Object> response = new HashMap<>();
 
         // 해당 요금타입 삭제
@@ -491,10 +548,10 @@ public class SellerController {
     // 기간 수정 요청을 처리하는 메소드
     @PostMapping("/periods-update")
     @ResponseBody
-    public Map<String, Object> updatePeriods(@ModelAttribute SellerDto sellerDto) {
+    public Map<String, Object> updatePeriods(@ModelAttribute SellerDto sellerDto, @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        int accommodationNo = 1; // 실제 accommodationNo에 맞게 설정
+        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
 
         // DTO의 내용을 출력하여 확인
         System.out.println("Received Periods: " + sellerDto.getExtraRates());
