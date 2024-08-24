@@ -120,6 +120,15 @@ public class SignController {
         System.out.println("로그인 요청");
         System.out.println("로그인 요청" + signRole);
 
+        // 사용자 정보 조회
+        UserDTO user = memberServiceImpl.userInfo(userId);
+
+        // 사용자 탈퇴 여부 확인
+        if (user == null || "DELETED".equals(user.getUserStatus())) {
+            redirectAttributes.addFlashAttribute("error", "탈퇴한 계정이거나 존재하지 않는 사용자 입니다.");
+            return "redirect:/signform";
+        }
+
         // 사용자 로그인 호출
         String token = memberServiceImpl.authenticate(userId, userPwd, response, signRole);
 

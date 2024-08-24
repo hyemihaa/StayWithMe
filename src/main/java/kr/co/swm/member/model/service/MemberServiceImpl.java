@@ -251,9 +251,28 @@ public class MemberServiceImpl implements MemberService {
         memberMapper.insertLoginLog(userDTO);
     }
 
+    // 사용자 로그기록 조회
     @Override
     public List<UserDTO> loginLog(Long userNo) {
         // 모든 로그인 기록을 조회하여 반환
         return memberMapper.getUserLogsByUserNo(userNo);
+    }
+
+    //마이페이지 회원 탈퇴 (회원상태, 탈퇴사유 업데이트)
+    @Override
+    public void updateUserStatus(String userId, String status, String reason) {
+        UserDTO userDTO = memberMapper.findByUserInfo(userId);
+
+        userDTO.setUserId(userId);
+        userDTO.setUserStatus(status);
+        userDTO.setWithdrawalReason(reason);
+        userDTO.setDeletedDate(LocalDateTime.now()); //탈퇴일 현재 시간으로 설정
+
+        System.out.println("service : " + userDTO.getUserId());
+        System.out.println("service : " + userDTO.getUserStatus());
+        System.out.println("service : " + userDTO.getWithdrawalReason());
+        System.out.println("service : " + userDTO.getDeletedDate());
+
+        memberMapper.updateUserStatus(userDTO);
     }
 }

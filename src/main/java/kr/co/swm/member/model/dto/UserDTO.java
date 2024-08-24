@@ -26,6 +26,8 @@ public class UserDTO extends MemberDTO{
     private LocalDateTime createdDate; // 생성일
     private LocalDateTime deletedDate; // 탈퇴일
 
+    private String userStatus; // 회원 상태
+    private String withdrawalReason; // 탈퇴 사유
 
     /*회원로그 DTO*/
     private Long logId; // 로그 식별키

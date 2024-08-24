@@ -52,5 +52,7 @@ public interface MemberService {
     // 로그 기록 조회
     List<UserDTO> loginLog(Long userNo);
 
+    // 회원 탈퇴
+    void updateUserStatus(String userId, String status, String withdrawalReason);
 
 }
