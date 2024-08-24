@@ -56,6 +56,11 @@ public class DetailServiceImpl implements DetailService{
       return detailMapper.getRate(boardNo);
     }
 
+    @Override
+    public List<DetailDTO> getFacilities(int boardNo) {
+        return detailMapper.getFacilities(boardNo);
+    }
+
     // 하단 관련 항목
 //    @Override
 //    public List<DetailDTO> getSubPlace() {

@@ -19,4 +19,6 @@ public interface DetailMapper {
     double getRate(int boardNo);
 
     List<DetailDTO> getSubPlace();
+
+    List<DetailDTO> getFacilities(int boardNo);
 }

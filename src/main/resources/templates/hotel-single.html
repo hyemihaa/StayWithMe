@@ -60,19 +60,16 @@
 									<i class="icon-star-o" th:if="${avgRate < 4}"></i>
 									<i class="icon-star-o" th:if="${avgRate < 5}"></i>
 									<span th:text="${avgRate}"/></span>
-							</p>
+									</p>
+
 							<div class="d-md-flex mt-5 mb-5">
-
 								<!-- 호텔 정보 -->
-								<ul class="facilities" style="width: 500px;">
-									<li>
-										<h5>객실내 부대시설</h5>
-									</li>
-									<li>주차가능</li>
-									<li>조식운영</li>
-									<li>와이파이</li>
-								</ul>
-
+								<div class="facilities-container" style="width: 500px;">
+								<h5>객실내 부대시설</h5>
+									<div class="facilities" th:each="facilities : ${facilities}">
+									<p th:text="${facilities.facilityName} + '&nbsp;' + '&nbsp;' " style="float: left;"></p>
+									</div>
+								</div>
 								<!-- 지도 영역 -->
 								<div class="map-container" style="margin-left: 70px;">
 									<h5>위치</h5>
@@ -114,43 +111,16 @@
 									</script>
 								</div>
 
+							</div>
+
 
 
 								<!-- 예약공지 -->
-							</div>
 							<div class="infomation">
-							<h5>예약공지</h5>
-							<br>
-							체크인 15:00 이후, 체크아웃 12:00 이전
-							<br>
-							▶ 조식정보
-							<br>
-							조식 금액 : 성인 22,000원(정상가)
-							<br>
-							조식 장소: 3층 그랑뉴브
-							<br>
-							조식 시간: 07:30 ~ 09:30
-							<br>
-							▶ 부대시설
-							<br>
-							피트니스 센터, 브런치 카페, 연회장
-							<br>
-							▶ 기타정보
-							<br>
-							인원 추가 시 1인 33,000원 (Deluxe Family Only)
-							<br>
-							엑스트라 베드 추가 불가
-							<br>
-							무료 주차
-							<br>
-							무료 Wi-Fi
-							<br>
-							모든 추가비용 현장결제
+							<h5>INFO</h5>
+							<p th:text="${post.boardInfo}"></p>
 							</div>
 						</div>
-
-
-
 
 <!--						&lt;!&ndash; 예약하기 &ndash;&gt;-->
 

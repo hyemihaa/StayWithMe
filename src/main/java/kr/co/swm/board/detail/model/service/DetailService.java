@@ -15,7 +15,9 @@ public interface DetailService {
 
 //  방 평균 별점
     double getRate(int boardNo);
-    
+//  부대시설 불러오기
+    List<DetailDTO> getFacilities(int boardNo);
+
 //  하단 관련 항목
 //    List<DetailDTO> getSubPlace();
 }
