@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="kr.co.swm.controller.SellerControllerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-08-07T06:07:13" hostname="DESKTOP-MGPT7NO" time="0.954">
-  <properties/>
-  <testcase name="basicWrite_success()" classname="kr.co.swm.controller.SellerControllerTest" time="0.954"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
