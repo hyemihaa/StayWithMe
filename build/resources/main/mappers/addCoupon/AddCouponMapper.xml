@@ -23,12 +23,33 @@
     <select id="couponList" resultMap="couponInfo">
         SELECT coupon_name, coupon_type, discount, coupon_start, coupon_end, min_purchase_price, id, coupon_type
         from coupon
+        WHERE id NOT IN (
+                SELECT coupon_code
+                FROM coupon_list
+                WHERE user_no = #{userId}
+            )
     </select>
 
     <insert id="addCoupon">
         INSERT INTO coupon_list values (null,
                                         #{userNo},
                                         #{couponId},
+                                        default)
+    </insert>
+
+    <update id="updateCouponQuantity">
+        UPDATE COUPON
+        SET
+            USE_QUANTITY = USE_QUANTITY + 1,  -- 쿠폰 사용량 1 증가
+            LEFTOVER = LEFTOVER - 1           -- 쿠폰 재고 1 감소
+        WHERE
+            ID = #{couponId};
+    </update>
+
+    <insert id="addAllCoupons" >
+        INSERT INTO coupon_list values (null,
+                                        #{userNo},
+                                        #{couponIds},
                                         default)
     </insert>
 

@@ -188,6 +188,7 @@
         COUPON_TYPE,
         DISCOUNT,
         COUPON_QUANTITY,
+        LEFTOVER,
         COUPON_START,
         COUPON_END,
         MIN_PURCHASE_PRICE
@@ -196,6 +197,7 @@
             #{couponName},
             #{couponType},
             #{couponDiscount},
+            #{couponQuantity},
             #{couponQuantity},
             #{couponStartDate},
             #{couponEndDate},
