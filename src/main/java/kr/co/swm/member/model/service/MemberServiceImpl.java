@@ -10,6 +10,7 @@ import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.member.model.mapper.MemberMapper;
 import kr.co.swm.member.util.PasswordUtils;
 import kr.co.swm.member.util.SmsCertificationUtil;
+import kr.co.swm.model.dto.WebDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -272,5 +273,11 @@ public class MemberServiceImpl implements MemberService {
         System.out.println("service : " + userDTO.getDeletedDate());
 
         memberMapper.updateUserStatus(userDTO);
+    }
+
+    // 사용자가 받은 쿠폰조회
+    @Override
+    public List<WebDto> getUserCoupons(Long userNo) {
+        return memberMapper.getUserCoupons(userNo);
     }
 }

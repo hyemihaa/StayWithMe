@@ -6,6 +6,7 @@ import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.member.model.service.MemberServiceImpl;
 import kr.co.swm.member.util.ClientIpUtil;
+import kr.co.swm.model.dto.WebDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -140,12 +141,31 @@ public class mypageController {
             // 조회된 로그를 응답에 추가
             response.put("logs", logs);
             response.put("success", true);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             response.put("success", false);
             response.put("error", "로그인 기록을 불러오는 중 오류가 발생했습니다.");
         }
         return response;
+    }
+
+    // 마이페이지 쿠폰 조회
+    @GetMapping("/coupons")
+    @ResponseBody
+    public Map<String, Object>  getCoupons(@CookieValue(value = "Authorization", required = false) String token) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Long userNo = jwtUtil.getUserNoFromToken(token);
+            // 쿠폰 조회
+            List<WebDto> coupons = memberServiceImpl.getUserCoupons(userNo);
+            System.out.println("쿠폰 : " + coupons);
+            response.put("coupons", coupons);
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", "쿠폰 정보를 불러오는 중 오류가 발생했습니다.");
+        }
+        return response;
+
     }
 }
 

@@ -2,6 +2,7 @@ package kr.co.swm.member.model.mapper;
 
 import kr.co.swm.member.model.dto.AdminDTO;
 import kr.co.swm.member.model.dto.UserDTO;
+import kr.co.swm.model.dto.WebDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -46,9 +47,12 @@ public interface MemberMapper {
     // 로그인 로그 기록 저장
     void insertLoginLog(@Param("userDTO") UserDTO userDTO);
 
-    // 로그 조회
+    // 마이페이지 로그 조회
     List<UserDTO> getUserLogsByUserNo(@Param("no") Long no);
 
     // 마이페이지 회원탈퇴
     void updateUserStatus(@Param("userDTO") UserDTO userDTO);
+
+    // 마이페이지 쿠폰 조회
+    List<WebDto> getUserCoupons(@Param("userNo") Long userNo);
 }

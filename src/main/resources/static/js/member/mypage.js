@@ -14,10 +14,13 @@ function showSection(sectionId) {
         if (sectionId === 'activity-log') {
             loadLoginLogs();
         }
+        if (sectionId === 'coupons') {
+            loadCoupons();
+        }
     }
 }
 
-/*------내정보수정--------*/
+/*---------------내정보수정--------------*/
 // 비밀번호 저장 -> 비밀번호 변경 요청 (전역 스코프에 정의)
 function savePasswordButton() {
     const currentPassword = document.getElementById('currentPassword').value.trim();
@@ -63,7 +66,7 @@ function savePasswordButton() {
     });
 }
 
-/*-------탈퇴 기타 사유 입력란 길이제한-------*/
+/*-----------탈퇴 기타 사유 입력란 길이제한-----------*/
 const textarea = document.getElementById('otherReason');
 const charCount = document.getElementById('charCount');
 const errorMessage = document.getElementById('errorMessage');
@@ -87,7 +90,7 @@ textarea.addEventListener('input', function () {
     }
 });
 
-/*-------이력관리(로그인기록)-------*/
+/*------------이력관리(로그인기록)-------------*/
 let logsData = []; // 모든 로그 데이터를 저장
 let filteredLogs = []; // 필터링된 로그 데이터를 저장
 let currentPage = 0; // 현재 페이지 번호
@@ -136,7 +139,7 @@ function filterLogsByDate() {
     renderLogs(true); // 필터링된 데이터를 렌더링 (기존 로그 초기화)
 }
 
-// 로그 데이터를 현재 페이지에 맞게 렌더링하는 함수
+// 로그 데이터를 현재 페이지에 맞게 렌더링
 function renderLogs(reset = false) {
     const logTableBody = document.getElementById('log-table-body');
     if (reset) {
@@ -184,6 +187,60 @@ function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('ko-KR', options);
 }
+
+/*------------ 쿠폰 조회 -------------*/
+function loadCoupons() {
+    $.ajax({
+        type: 'GET',
+        url: '/coupons',
+        success: function(response) {
+            if (response.success) {
+                const coupons = response.coupons || []; // 쿠폰 데이터 배열
+                renderCoupons(coupons); // 데이터를 화면에 렌더링하는 함수 호출
+            } else {
+                console.error('쿠폰 정보를 가져오는 데 실패했습니다.', response.error);
+                alert('쿠폰 정보를 가져오는 데 실패했습니다.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('쿠폰 정보를 가져오는 데 실패했습니다.', status, error);
+            alert('쿠폰 정보를 가져오는 데 실패했습니다.');
+        }
+    });
+}
+
+// 쿠폰 데이터 렌더링
+function renderCoupons(coupons) {
+    var couponSection = document.querySelector('#coupons .coupon-list');
+    var noCouponsMessage = document.querySelector('#coupons .no-coupons');
+
+    couponSection.innerHTML = ''; // 기존 내용 비우기
+
+    if (coupons.length === 0) {
+        noCouponsMessage.style.display = 'block'; // 쿠폰이 없을 때 메시지 보이기
+    } else {
+        noCouponsMessage.style.display = 'none'; // 쿠폰이 있을 때 메시지 숨기기
+        coupons.forEach(function(coupon) {
+            // 쿠폰 타입에 따라 할인 텍스트
+            var discountText = coupon.couponType === 'DISCOUNT_AMOUNT'
+                ? '원 할인'
+                : (coupon.couponType === 'DISCOUNT_RATE'
+                    ? '% 할인'
+                    : '할인');
+            var couponItem = `
+                <div class="coupon-item">
+                    <p>쿠폰 이름: ${coupon.couponName}</p>
+                    <p>쿠폰코드: ${coupon.couponCode}</p>
+                    <p>유효기간: ${coupon.couponStartDate} - ${coupon.couponEndDate}</p>
+                    <p>할인 값: ${coupon.couponDiscount}${discountText}</p>
+                    <p>사용 최소 금액: ${coupon.couponMinimumAmount}원</p>
+                </div>
+            `;
+            couponSection.innerHTML += couponItem; // 쿠폰 항목 추가
+        });
+    }
+}
+
 
 // DOMContentLoaded 이벤트 리스너 내부의 코드
 document.addEventListener('DOMContentLoaded', function() {
