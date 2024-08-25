@@ -169,8 +169,6 @@ public class MemberServiceImpl implements MemberService {
             accessCookie.setSecure(false);
             response.addCookie(accessCookie);
 
-            // 로그인 기록 저장
-
             return token;
         }
 

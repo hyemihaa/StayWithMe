@@ -21,14 +21,14 @@
                     <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
 
                     <!--로그인 되어 있을때 로그아웃, 마이페이지-->
-                    <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <li sec:authorize="isAuthenticated() and hasAuthority('ROLE_USER')" class="nav-item">
                         <a href="/mypage" class="nav-link"><span>Mypage</span></a>
                     </li>
-                    <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <li sec:authorize="isAuthenticated() and hasAuthority('ROLE_USER')" class="nav-item">
                         <a href="/logout" class="nav-link"><span>Logout</span></a>
                     </li>
                     <!--로그인 안 되어 있을때-->
-                    <li sec:authorize="!isAuthenticated()" class="nav-item cta">
+                    <li sec:authorize="!isAuthenticated() or (isAuthenticated() and !hasAuthority('ROLE_USER'))"  class="nav-item cta">
                         <a href="/signform" class="nav-link"><span>Sign</span></a>
                     </li>
                 </ul>
