@@ -6,6 +6,5 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@PasswordMatches
 public class AdminDTO extends MemberDTO{
 }
