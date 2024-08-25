@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.swm.board.mapper.DetailMapper">
     <resultMap id="placeResultMap" type="kr.co.swm.board.detail.model.DTO.DetailDTO">
-        <result column="ACCOMMODATION_NO" property="boardNo"></result>
+        <result column="ACCOMMODATION_ADMIN_NO" property="boardNo"></result>
         <result column="NAME" property="boardName"></result>
         <result column="ACCOMMODATION_TYPE" property="boardType"></result>
         <result column="POST_NO" property="boardAddress"></result>
