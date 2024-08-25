@@ -17,10 +17,17 @@ public class AddCouponServiceImpl implements AddCouponService {
         this.addCouponMapper = addCouponMapper;
     }
 
-    @Autowired
+
+    @Override
     public List<WebDto> couponList() {
         List<WebDto> list = addCouponMapper.couponList();
         return list;
+    }
+
+    @Override
+    public int addCoupon(int couponId, Long userId) {
+
+        return addCouponMapper.addCoupon(couponId, userId);
     }
 
 

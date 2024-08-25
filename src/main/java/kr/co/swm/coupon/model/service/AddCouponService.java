@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface AddCouponService {
     List<WebDto> couponList();
+
+    int addCoupon(int couponId, Long userNo);
 }
