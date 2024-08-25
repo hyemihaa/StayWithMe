@@ -5,6 +5,8 @@ import kr.co.swm.adminPage.accommodation.mapper.AccommodationMapper;
 import kr.co.swm.adminPage.accommodation.model.dto.AccommodationDto;
 import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.adminPage.accommodation.util.UploadFile;
+import kr.co.swm.model.dto.SellerDto;
+import kr.co.swm.model.dto.WebDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -81,6 +83,11 @@ public class AccommodationServiceImpl implements AccommodationService {
             }
         }
         return result;
+    }
+
+    @Override
+    public SellerDto accommodationList(Long sellerId) {
+        return mapper.accommodationList(sellerId);
     }
 }
 

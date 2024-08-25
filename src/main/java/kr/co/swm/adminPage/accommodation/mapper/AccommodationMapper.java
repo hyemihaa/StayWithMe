@@ -2,6 +2,8 @@ package kr.co.swm.adminPage.accommodation.mapper;
 
 import kr.co.swm.adminPage.accommodation.model.dto.AccommodationDto;
 import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
+import kr.co.swm.model.dto.SellerDto;
+import kr.co.swm.model.dto.WebDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,5 +24,7 @@ public interface AccommodationMapper {
     void enrollFridayRate(@Param("roomRate") AccommodationDto roomRate, @Param("roomNo") int roomNo, @Param("no") int no);
     void enrollSaturdayRate(@Param("roomRate") AccommodationDto roomRate, @Param("roomNo") int roomNo, @Param("no") int no);
     int enrollSundayRate(@Param("roomRate") AccommodationDto roomRate, @Param("roomNo") int roomNo, @Param("no") int no);
+
+    SellerDto accommodationList(@Param("sellerKey")Long sellerId);
 
 }

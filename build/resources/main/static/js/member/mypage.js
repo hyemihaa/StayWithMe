@@ -1,5 +1,4 @@
-// 전체 mypage 적용 js
-// 특정 섹션만 보이도록 설정하는 함수
+// 특정 섹션만 보이도록 설정하는 함수 (전역 스코프에 정의)
 function showSection(sectionId) {
     // 모든 섹션 숨기기
     document.querySelectorAll('.section').forEach(function(section) {
@@ -7,68 +6,230 @@ function showSection(sectionId) {
     });
 
     // 선택된 섹션만 보이기
-    document.getElementById(sectionId).style.display = 'block';
+    const selectedSection = document.getElementById(sectionId);
+    if (selectedSection) {
+        selectedSection.style.display = 'block';
+
+        // 로그인 관리 섹션이 선택된 경우 로그 데이터를 불러옴
+        if (sectionId === 'activity-log') {
+            loadLoginLogs();
+        }
+    }
 }
 
-// 페이지 로드 시 기본으로 예약 내역 섹션을 보이게 설정
+/*------내정보수정--------*/
+// 비밀번호 저장 -> 비밀번호 변경 요청 (전역 스코프에 정의)
+function savePasswordButton() {
+    const currentPassword = document.getElementById('currentPassword').value.trim();
+    const newPassword = document.getElementById('newPassword').value.trim();
+    const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
+
+    // 비밀번호 유효성 검사
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+        alert('모든 필드를 입력해 주세요.');
+        return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+        alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
+        return;
+    }
+
+    // 비밀번호 변경 요청
+    $.ajax({
+        type: "POST",
+        url: "/update-password",
+        contentType: "application/json",
+        data: JSON.stringify({
+            currentPassword: currentPassword,
+            newPassword: newPassword
+        }),
+        success: function(response) {
+            if (response.success) {
+                alert('비밀번호가 성공적으로 변경되었습니다.');
+                document.getElementById('passwordChangeFields').style.display = 'none';
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmNewPassword').value = '';
+            }
+            else {
+                alert('비밀번호 변경에 실패했습니다: ' + response.error);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('비밀번호 변경 중 오류 발생:', error);
+            alert('비밀번호 변경 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+/*-------탈퇴 기타 사유 입력란 길이제한-------*/
+const textarea = document.getElementById('otherReason');
+const charCount = document.getElementById('charCount');
+const errorMessage = document.getElementById('errorMessage');
+const maxChars = 250;
+
+// 입력 이벤트 리스너 추가
+textarea.addEventListener('input', function () {
+    // 현재 입력된 문자 수를 가져옴
+    const currentLength = textarea.value.length;
+
+    // 문자 수 업데이트
+    charCount.textContent = `${currentLength} / ${maxChars}`;
+
+    // 250자를 초과하는지 확인
+    if (currentLength > maxChars) {
+        // 초과 시 에러 메시지 표시
+        errorMessage.style.display = 'inline';
+    } else {
+        // 초과하지 않으면 에러 메시지 숨김
+        errorMessage.style.display = 'none';
+    }
+});
+
+/*-------이력관리(로그인기록)-------*/
+let logsData = []; // 모든 로그 데이터를 저장
+let filteredLogs = []; // 필터링된 로그 데이터를 저장
+let currentPage = 0; // 현재 페이지 번호
+const logsPerPage = 3; // 한 번에 보여줄 로그 수
+
+function loadLoginLogs() {
+    $.ajax({
+        type: 'GET',
+        url: '/login-log',
+        contentType: 'application/json',
+        success: function(data) {
+            if (data.logs && data.logs.length > 0) {
+                logsData = data.logs; // 데이터를 저장
+                filterLogsByDate(); // 초기 로딩 시 날짜 필터 적용
+            }
+        },
+        error: function(error) {
+            console.error('로그인 로그 데이터를 불러오는 중 오류가 발생했습니다:', error);
+        }
+    });
+}
+
+// 페이지 로드 시 현재 날짜와 일주일 전 날짜로 startDate와 currentDate 설정
 window.onload = function() {
-    showSection('reservation');
+    const currentDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(currentDate.getDate() - 7); // 일주일 전 날짜로 설정
+
+    // 날짜 형식을 YYYY-MM-DD로 맞춤
+    document.getElementById('currentDate').value = currentDate.toISOString().substring(0, 10);
+    document.getElementById('startDate').value = startDate.toISOString().substring(0, 10);
+};
+
+// 날짜 필터링 함수
+function filterLogsByDate() {
+    const startDate = new Date(document.getElementById('startDate').value);
+    const endDate = new Date(document.getElementById('currentDate').value);
+    endDate.setHours(23, 59, 59, 999); // 날짜 범위를 끝까지 포함
+
+    filteredLogs = logsData.filter(log => {
+        const logDate = new Date(log.lastLoginDate);
+        return logDate >= startDate && logDate <= endDate;
+    });
+
+    currentPage = 0; // 페이지 초기화
+    renderLogs(true); // 필터링된 데이터를 렌더링 (기존 로그 초기화)
 }
 
-// 내정보수정--------------------------------------------------------------
+// 로그 데이터를 현재 페이지에 맞게 렌더링하는 함수
+function renderLogs(reset = false) {
+    const logTableBody = document.getElementById('log-table-body');
+    if (reset) {
+        logTableBody.innerHTML = ''; // 기존 데이터를 초기화
+    }
+
+    const start = currentPage * logsPerPage;
+    const end = start + logsPerPage;
+    const logsToRender = filteredLogs.slice(start, end);
+
+    logsToRender.forEach(log => {
+        const row = document.createElement('tr');
+
+        // 최근 접속일자와 IP 주소를 새로운 행(row)에 추가
+        const dateCell = document.createElement('td');
+        dateCell.textContent = formatDate(log.lastLoginDate);
+        row.appendChild(dateCell);
+
+        const ipCell = document.createElement('td');
+        ipCell.textContent = log.userIp;
+        row.appendChild(ipCell);
+
+        // 완성된 행을 테이블 본체에 추가
+        logTableBody.appendChild(row);
+    });
+
+    // "더보기" 버튼 표시 여부 결정
+    const loadMoreButton = document.getElementById('load-more-button');
+    if (end >= filteredLogs.length) {
+        loadMoreButton.style.display = 'none';
+    } else {
+        loadMoreButton.style.display = 'block';
+    }
+}
+
+// "더보기" 버튼 클릭 시 호출되는 함수
+function loadMoreLogs() {
+    currentPage++;
+    renderLogs(); // 기존 로그를 유지하면서 새로운 로그를 추가로 렌더링
+}
+
+// 날짜 포맷팅 함수
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ko-KR', options);
+}
+
+// DOMContentLoaded 이벤트 리스너 내부의 코드
 document.addEventListener('DOMContentLoaded', function() {
-    let timer; // 타이머 변수
-    let timerStart; // 타이머 시작 시간
+    // 페이지 로드 시 기본으로 예약 내역 섹션을 보이게 설정
+    showSection('reservation');
 
     // 비밀번호 변경 필드 보이기/숨기기
     document.getElementById('changePasswordButton').addEventListener('click', function() {
-        var passwordChangeFields = document.getElementById('passwordChangeFields');
-        if (passwordChangeFields.style.display === 'none' || passwordChangeFields.style.display === '') {
-            passwordChangeFields.style.display = 'block';
-        } else {
-            passwordChangeFields.style.display = 'none';
-        }
+        const passwordChangeFields = document.getElementById('passwordChangeFields');
+        passwordChangeFields.style.display = passwordChangeFields.style.display === 'block' ? 'none' : 'block';
     });
 
-    // 비밀번호 변경 취소 버튼 클릭 시 비밀번호 변경 필드 숨기기
+    // 비밀번호 취소 버튼 클릭 시 비밀번호 변경 필드 숨기기 및 입력 필드 초기화
     document.getElementById('cancelPasswordChange').addEventListener('click', function() {
         document.getElementById('passwordChangeFields').style.display = 'none';
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmNewPassword').value = '';
     });
 
     // 휴대폰 번호 수정 필드 보이기/숨기기
     document.getElementById('changePhoneButton').addEventListener('click', function() {
-        var phoneChangeFields = document.getElementById('phoneChangeFields');
-        if (phoneChangeFields.style.display === 'none' || phoneChangeFields.style.display === '') {
-            phoneChangeFields.style.display = 'block';
-        } else {
-            phoneChangeFields.style.display = 'none';
-        }
+        const phoneChangeFields = document.getElementById('phoneChangeFields');
+        phoneChangeFields.style.display = phoneChangeFields.style.display === 'block' ? 'none' : 'block';
     });
 
     // 휴대폰 번호 변경 취소 버튼 클릭 시 휴대폰 변경 필드 숨기기
     document.getElementById('cancelPhoneChange').addEventListener('click', function() {
         document.getElementById('phoneChangeFields').style.display = 'none';
+        document.getElementById("newPhone").value = '';
+        document.getElementById("verificationCode").value = '';
+        document.getElementById("phoneMsg").innerText = '';
+        document.getElementById("codeMsg").innerText = '';
+        document.getElementById("timerMsg").innerHTML = '';
+        clearInterval(timer);
     });
 
-    // 비밀번호 유효성 검사 함수
+    // 새로운 비밀번호 유효성 검사 함수
     function validatePassword() {
-        const password = document.getElementById("password").value;
-        const currentPassword = document.getElementById("currentPassword").value;
         const newPassword = document.getElementById("newPassword").value;
         const confirmNewPassword = document.getElementById("confirmNewPassword").value;
-        const currentPwdMsg = document.getElementById("currentPwdMsg");
+
         const pwdMsg = document.getElementById("pwdMsg");
         const pwdConfirmMsg = document.getElementById("pwdConfirmMsg");
 
         const pwdPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
-
-        if (currentPassword === password) {
-            currentPwdMsg.innerHTML = "현재 비밀번호가 일치합니다.";
-            currentPwdMsg.style.color = "#aaa";
-        } else {
-            currentPwdMsg.innerHTML = "현재 비밀번호가 일치하지 않습니다.";
-            currentPwdMsg.style.color = "red";
-        }
 
         if (newPassword !== "" && pwdPattern.test(newPassword)) {
             pwdMsg.innerHTML = "유효한 비밀번호입니다.";
@@ -91,9 +252,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // 비밀번호 유효성 검사 이벤트 리스너 추가
     document.getElementById("newPassword").addEventListener('input', validatePassword);
     document.getElementById("confirmNewPassword").addEventListener('input', validatePassword);
-    document.getElementById("currentPassword").addEventListener('input', validatePassword);
 
     // 휴대폰 번호 유효성 검사 함수
     function validatePhone() {
@@ -111,18 +272,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // 타이머 함수 추가
+    let timer;
+    let timeLeft = 1200; // 1200초 (20분)
+
     function startTimer() {
         const timerDisplay = document.getElementById("timerMsg");
-        let timeLeft = 60;
 
-        timerDisplay.innerHTML = "60초 남음";
+        // 기존 타이머가 있다면 제거
+        if (timer) {
+            clearInterval(timer);
+        }
+
+        timerDisplay.innerHTML = "1200초 남음";
 
         timer = setInterval(function() {
             timeLeft--;
             if (timeLeft <= 0) {
                 clearInterval(timer);
                 timerDisplay.innerHTML = "";
-                alert("60초가 초과되었습니다.");
+                alert("인증 시간이 초과되었습니다. 다시 시도해주세요.");
                 document.getElementById('sendVerificationCode').disabled = false;
             } else {
                 timerDisplay.innerHTML = `${timeLeft}초 남음`;
@@ -130,9 +299,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     }
 
+    // 인증번호 유효성 검사 함수
     function validateVerificationCode() {
         const verificationCode = document.getElementById("verificationCode").value;
-        const verificationCodeMsg = document.getElementById("codeMsg"); // 같은 ID를 사용해 메시지 표시
+        const verificationCodeMsg = document.getElementById("codeMsg");
 
         const codePattern = /^\d{6}$/;
 
@@ -145,57 +315,198 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // 휴대전화 인증번호 요청 함수
+    function requestSMS() {
+        const phone = document.getElementById("newPhone").value; // 사용자 입력 휴대전화 번호
+        const phoneMsg = document.getElementById("phoneMsg"); // 휴대전화 번호 유효성 메시지
+        const phonePattern = /^010\d{8}$/; // 휴대전화 번호 정규식: 010으로 시작하며, 뒤에 8자리 숫자가 나옴
+
+        if (!phone) {
+            alert('휴대전화 번호를 입력해 주세요.');
+            return;
+        }
+
+        // 휴대전화 번호 유효성 검사
+        if (!phonePattern.test(phone)) {
+            phoneMsg.innerHTML = "유효한 휴대전화 번호를 입력해 주세요.";
+            phoneMsg.style.color = "red";
+            return;
+        } else {
+            phoneMsg.innerHTML = ""; // 유효한 번호라면 메시지를 제거
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/sms/send",
+            contentType: "application/json",
+            data: JSON.stringify({ phoneNumber: phone }), // controller로 보낼 데이터 JSON 형태로 변환
+            success: function(response) {
+                console.log("SMS response:", response); // 응답 로그 추가
+                alert("인증번호가 발송되었습니다.");
+                document.getElementById("randomNum").value = response.certificationCode; // 인증번호를 hidden input에 저장
+                startTimer(); // 인증번호 제한시간 시작
+            },
+            error: function(xhr, status, error) {
+                alert("인증번호 발송에 실패했습니다. 다시 시도해주세요.");
+            }
+        });
+    }
+
+    // 인증번호 전송 버튼
     document.getElementById("sendVerificationCode").addEventListener('click', function() {
+        // 새로운 휴대폰 번호의 유효성을 검증하는 함수 호출
         validatePhone();
+
+        // 유효할 경우에만 sms 전송 요청
         if (document.getElementById("phoneMsg").style.color === "rgb(170, 170, 170)") {
-            this.disabled = true; // 인증번호 전송 버튼 비활성화
-            startTimer(); // 타이머 시작
+
+            // SMS 인증번호 요청 함수 호출
+            requestSMS();
+
+            // 타이머 시작
+            startTimer();
         }
     });
 
-    // 인증번호 입력 필드에 이벤트 리스너 추가
+    // 인증번호 확인
+    document.getElementById("verifyCodeButton").addEventListener('click', function() {
+        const userCode = document.getElementById("verificationCode").value; // 사용자가 입력한 인증번호
+        const serverCode = document.getElementById("randomNum").value;
+
+        console.log("사용자 입력 인증번호:", userCode);
+        console.log("서버에서 받은 인증번호:", serverCode);
+
+        if (!userCode) {
+            alert('인증번호를 입력해 주세요.');
+            return;
+        }
+
+        if (userCode === serverCode) {
+            clearInterval(timer); // 타이머 중지
+            alert("인증이 정상적으로 완료되었습니다.");
+            // 인증 성공 플래그 설정
+            window.isVerified = true;
+        } else {
+            alert("인증번호가 올바르지 않습니다.");
+            // 인증 성공 플래그 설정
+            window.isVerified = false;
+        }
+    });
+
+    // 인증번호 입력 필드 변경 시 유효성 검사 및 인증 상태 초기화
+    document.getElementById("verificationCode").addEventListener('input', function() {
+        validateVerificationCode();
+
+        // 사용자가 인증번호를 수정할 경우, 다시 인증 필요
+        if (window.isVerified) {
+            window.isVerified = false;
+            alert('인증번호가 수정되었습니다. 다시 요청해 주세요.');
+
+            // 인증번호 요청 버튼을 다시 활성화
+            document.getElementById('sendVerificationCode').disabled = false;
+        }
+    });
+
+    // 인증번호 입력 필드 변경 시 유효성 검사
     document.getElementById("verificationCode").addEventListener('input', validateVerificationCode);
 
-    document.getElementById('newPhone').addEventListener('input', validatePhone);
-});
+    // 휴대전화 번호 변경 저장 버튼
+    document.getElementById("savePhoneButton").addEventListener('click', function() {
+        // 새로운 휴대폰 번호의 유효성을 검증하는 함수 호출
+        validatePhone();
 
+        // 유효할 경우에만 sms 전송 요청
+        validatePhoneCheck = document.getElementById("phoneMsg").style.color === "rgb(170, 170, 170)";
 
+        const newPhone = document.getElementById("newPhone").value;
 
-// 회원탈퇴-----------------------------------------------------------------
-// 탈퇴시 기타 사유 텍스트 박스 유효성 검사
-document.addEventListener('DOMContentLoaded', function() {
-    // 'otherReason' 텍스트 영역, 'charCount' 카운터 문구, 'errorMessage' 에러 메시지 요소 가져오기
-    var otherReason = document.getElementById('otherReason');
-    var charCount = document.getElementById('charCount');
-    var errorMessage = document.getElementById('errorMessage');
+        if (window.isVerified && validatePhoneCheck) {
+            $.ajax({
+                type: "POST",
+                url: "/update-phone",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    newPhone: newPhone,
+                }),
+                success: function(response) {
+                    if (response.success) {
+                        alert('휴대폰 번호가 성공적으로 변경되었습니다.');
+                        document.getElementById('phoneChangeFields').style.display = 'none';
 
-    otherReason.addEventListener('input', function () {
-        // 입력된 텍스트의 길이 계산
-        var textLength = this.value.length;
-        // 현재 문자 수와 최대 문자 수를 표시
-        charCount.textContent = textLength + " / 250";
+                        // 성공적으로 변경되었을 경우 필드값 비우기
+                        document.getElementById("newPhone").value = '';
+                        document.getElementById("verificationCode").value = '';
+                        document.getElementById("phoneMsg").innerText = '';
+                        document.getElementById("codeMsg").innerText = '';
+                        document.getElementById("timerMsg").innerHTML = '';
 
-        // 문자 수가 250자를 초과하면 에러 메시지를 표시하고 추가 입력 방지
-        if (textLength > 250) {
-            errorMessage.style.display = 'block';
-            // 초과된 문자 삭제
-            this.value = this.value.substring(0, 250);
-            // 문자 수를 다시 계산하고 표시
-            charCount.textContent = "250 / 250";
-        } else {
-            // 문자 수가 250자 이내면 에러 메시지를 숨김
-            errorMessage.style.display = 'none';
+                        // 현재 표시된 사용자 휴대폰 번호 업데이트
+                        document.getElementById("phone").value = newPhone;
+
+                        // window.isVerified 초기화
+                        window.isVerified = false;
+                    }
+                    else {
+                        alert('휴대폰 번호 변경에 실패했습니다: ' + response.error);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('휴대폰 번호 변경 중 오류 발생:', error);
+                    alert('휴대폰 번호 변경 중 오류가 발생했습니다.');
+                }
+            });
+        }
+        else {
+            alert('전화번호 입력이 유효하지 않거나 인증번호가 잘못되었습니다.');
         }
     });
 
-    // 폼 제출 이벤트 리스너 추가
-    document.getElementById('withdrawalForm').addEventListener('submit', function(event) {
-        // 'otherReason' 텍스트 영역의 값 가져오기
-        var otherReasonText = otherReason.value;
-        // 텍스트의 길이가 250자를 초과하면 폼 제출 방지 및 경고 메시지 표시
-        if (otherReasonText.length > 250) {
-            event.preventDefault(); // 폼 제출 방지
-            alert("기타 사유는 250자 이내로 입력해 주세요.");
+
+    /*-------회원 탈퇴 섹션------*/
+    document.getElementById("withdrawalForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // 기본 제출 막음
+
+        // 동의 체크 박스 체크 여부 확인
+        const confirmationChecked = document.getElementById("confirmation").checked;
+
+        if (!confirmationChecked) {
+            alert("회원 탈퇴를 진행하시려면 동의란에 체크해 주세요.");
+            return;
         }
+
+        // 탈퇴 사유 가져오기
+        const selectedReason = document.querySelector('input[name="reason"]:checked');
+        let reason = "";
+
+        if (selectedReason) {
+            reason = selectedReason.value;
+            console.log("탈퇴사유 : ", reason);
+        }
+
+        // 기타 선택한 경우, 기타사유 입력값
+        if (reason === "기타") {
+            reason = document.getElementById("otherReason").value;
+            console.log("기타탈퇴사유 : ", reason);
+        }
+
+        // 회원 탈퇴 요청 보내기
+        $.ajax({
+            type: "POST",
+            url: "/withdraw-account",
+            contentType: "application/json",
+            data: JSON.stringify({
+                withdrawalReason: reason // 서버에 전달될 값
+            }),
+            success: function(response) {
+                alert('회원 탈퇴가 정상적으로 처리되었습니다.');
+
+                 // 페이지 이동
+                 window.location.href = '/';
+            },
+            error: function(xhr, status, error) {
+                console.error('회원 탈퇴 중 오류 발생: ', error);
+                alert('회원 탈퇴 중 오류가 발생했습니다.');
+            }
+        });
     });
 });
