@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="kr.co.swm.SwmApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-08-24T08:18:33" hostname="abcui-MacBookPro.local" time="0.418">
+<testsuite name="kr.co.swm.SwmApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-08-24T18:51:05" hostname="abcui-MacBookPro.local" time="0.41">
   <properties/>
-  <testcase name="contextLoads()" classname="kr.co.swm.SwmApplicationTests" time="0.418"/>
-  <system-out><![CDATA[17:18:31.271 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [kr.co.swm.SwmApplicationTests]: SwmApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-17:18:31.362 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration kr.co.swm.SwmApplication for test class kr.co.swm.SwmApplicationTests
-17:18:31,187 |-INFO in ch.qos.logback.classic.LoggerContext[default] - This is logback-classic version 1.5.6
-17:18:31,188 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Here is a list of configurators discovered as a service, by rank: 
-17:18:31,188 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 -   org.springframework.boot.logging.logback.RootLogLevelConfigurator
-17:18:31,188 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - They will be invoked in order until ExecutionStatus.DO_NOT_INVOKE_NEXT_IF_ANY is returned.
-17:18:31,188 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Constructed configurator of type class org.springframework.boot.logging.logback.RootLogLevelConfigurator
-17:18:31,194 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - org.springframework.boot.logging.logback.RootLogLevelConfigurator.configure() call lasted 0 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
-17:18:31,194 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Trying to configure with ch.qos.logback.classic.joran.SerializedModelConfigurator
-17:18:31,195 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Constructed configurator of type class ch.qos.logback.classic.joran.SerializedModelConfigurator
-17:18:31,197 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.scmo]
-17:18:31,197 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.scmo]
-17:18:31,197 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - ch.qos.logback.classic.joran.SerializedModelConfigurator.configure() call lasted 2 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
-17:18:31,197 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Trying to configure with ch.qos.logback.classic.util.DefaultJoranConfigurator
-17:18:31,197 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Constructed configurator of type class ch.qos.logback.classic.util.DefaultJoranConfigurator
-17:18:31,197 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
-17:18:31,197 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.xml]
-17:18:31,198 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - ch.qos.logback.classic.util.DefaultJoranConfigurator.configure() call lasted 0 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
-17:18:31,198 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Trying to configure with ch.qos.logback.classic.BasicConfigurator
-17:18:31,198 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Constructed configurator of type class ch.qos.logback.classic.BasicConfigurator
-17:18:31,198 |-INFO in ch.qos.logback.classic.BasicConfigurator@63ec445c - Setting up default configuration.
-17:18:31,207 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - ch.qos.logback.classic.BasicConfigurator.configure() call lasted 9 milliseconds. ExecutionStatus=NEUTRAL
-17:18:31,659 |-INFO in ch.qos.logback.classic.model.processor.ConfigurationModelHandlerFull - Registering a new ReconfigureOnChangeTask ReconfigureOnChangeTask(born:1724487511658)
-17:18:31,660 |-INFO in ch.qos.logback.classic.model.processor.ConfigurationModelHandlerFull - Will scan for changes in [file:/Users/abc/Desktop/StayWithMe/build/resources/main/logback-spring.xml] 
-17:18:31,660 |-INFO in ch.qos.logback.classic.model.processor.ConfigurationModelHandlerFull - Setting ReconfigureOnChangeTask scanning period to 1 minutes
-17:18:31,664 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [settings] in [ch.qos.logback.classic.LoggerContext]
-17:18:31,665 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [STDOUT]
-17:18:31,665 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
-17:18:31,667 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
-17:18:31,677 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.mybatis] to DEBUG
-17:18:31,678 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[org.mybatis] onto the JUL framework
-17:18:31,678 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.ibatis] to DEBUG
-17:18:31,678 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[org.apache.ibatis] onto the JUL framework
-17:18:31,678 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [jdbc.sqlonly] to DEBUG
-17:18:31,678 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[jdbc.sqlonly] onto the JUL framework
-17:18:31,678 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [jdbc.sqltiming] to DEBUG
-17:18:31,678 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[jdbc.sqltiming] onto the JUL framework
-17:18:31,678 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [jdbc.resultsettable] to TRACE
-17:18:31,678 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating TRACE level on Logger[jdbc.resultsettable] onto the JUL framework
-17:18:31,678 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [jdbc.audit] to DEBUG
-17:18:31,678 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[jdbc.audit] onto the JUL framework
-17:18:31,678 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.mybatis.spring] to DEBUG
-17:18:31,678 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[org.mybatis.spring] onto the JUL framework
-17:18:31,678 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.springframework.jdbc] to DEBUG
-17:18:31,678 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[org.springframework.jdbc] onto the JUL framework
-17:18:31,678 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.springframework.transaction] to DEBUG
-17:18:31,678 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[org.springframework.transaction] onto the JUL framework
-17:18:31,678 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.ibatis.logging.stdout.StdOutImpl] to TRACE
-17:18:31,678 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating TRACE level on Logger[org.apache.ibatis.logging.stdout.StdOutImpl] onto the JUL framework
-17:18:31,680 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting additivity of logger [org.apache.ibatis.logging.stdout.StdOutImpl] to false
-17:18:31,680 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [STDOUT] to Logger[org.apache.ibatis.logging.stdout.StdOutImpl]
-17:18:31,680 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to INFO
-17:18:31,680 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating INFO level on Logger[ROOT] onto the JUL framework
-17:18:31,680 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [STDOUT] to Logger[ROOT]
-17:18:31,680 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@77d18d0b - End of configuration.
-17:18:31,680 |-INFO in org.springframework.boot.logging.logback.SpringBootJoranConfigurator@7a344b65 - Registering current configuration as safe fallback point
+  <testcase name="contextLoads()" classname="kr.co.swm.SwmApplicationTests" time="0.41"/>
+  <system-out><![CDATA[03:51:02.193 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [kr.co.swm.SwmApplicationTests]: SwmApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+03:51:02.289 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration kr.co.swm.SwmApplication for test class kr.co.swm.SwmApplicationTests
+03:51:02,097 |-INFO in ch.qos.logback.classic.LoggerContext[default] - This is logback-classic version 1.5.6
+03:51:02,099 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Here is a list of configurators discovered as a service, by rank: 
+03:51:02,099 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 -   org.springframework.boot.logging.logback.RootLogLevelConfigurator
+03:51:02,099 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - They will be invoked in order until ExecutionStatus.DO_NOT_INVOKE_NEXT_IF_ANY is returned.
+03:51:02,099 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Constructed configurator of type class org.springframework.boot.logging.logback.RootLogLevelConfigurator
+03:51:02,105 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - org.springframework.boot.logging.logback.RootLogLevelConfigurator.configure() call lasted 0 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
+03:51:02,105 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Trying to configure with ch.qos.logback.classic.joran.SerializedModelConfigurator
+03:51:02,106 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Constructed configurator of type class ch.qos.logback.classic.joran.SerializedModelConfigurator
+03:51:02,107 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.scmo]
+03:51:02,107 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.scmo]
+03:51:02,108 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - ch.qos.logback.classic.joran.SerializedModelConfigurator.configure() call lasted 1 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
+03:51:02,108 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Trying to configure with ch.qos.logback.classic.util.DefaultJoranConfigurator
+03:51:02,108 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Constructed configurator of type class ch.qos.logback.classic.util.DefaultJoranConfigurator
+03:51:02,108 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+03:51:02,109 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.xml]
+03:51:02,109 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - ch.qos.logback.classic.util.DefaultJoranConfigurator.configure() call lasted 1 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
+03:51:02,109 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Trying to configure with ch.qos.logback.classic.BasicConfigurator
+03:51:02,109 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - Constructed configurator of type class ch.qos.logback.classic.BasicConfigurator
+03:51:02,109 |-INFO in ch.qos.logback.classic.BasicConfigurator@63ec445c - Setting up default configuration.
+03:51:02,119 |-INFO in ch.qos.logback.classic.util.ContextInitializer@656d10a4 - ch.qos.logback.classic.BasicConfigurator.configure() call lasted 10 milliseconds. ExecutionStatus=NEUTRAL
+03:51:02,603 |-INFO in ch.qos.logback.classic.model.processor.ConfigurationModelHandlerFull - Registering a new ReconfigureOnChangeTask ReconfigureOnChangeTask(born:1724525462602)
+03:51:02,603 |-INFO in ch.qos.logback.classic.model.processor.ConfigurationModelHandlerFull - Will scan for changes in [file:/Users/abc/Desktop/StayWithMe/build/resources/main/logback-spring.xml] 
+03:51:02,603 |-INFO in ch.qos.logback.classic.model.processor.ConfigurationModelHandlerFull - Setting ReconfigureOnChangeTask scanning period to 1 minutes
+03:51:02,609 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [settings] in [ch.qos.logback.classic.LoggerContext]
+03:51:02,610 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [STDOUT]
+03:51:02,610 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+03:51:02,611 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+03:51:02,622 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.mybatis] to DEBUG
+03:51:02,622 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[org.mybatis] onto the JUL framework
+03:51:02,622 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.ibatis] to DEBUG
+03:51:02,622 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[org.apache.ibatis] onto the JUL framework
+03:51:02,622 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [jdbc.sqlonly] to DEBUG
+03:51:02,622 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[jdbc.sqlonly] onto the JUL framework
+03:51:02,622 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [jdbc.sqltiming] to DEBUG
+03:51:02,622 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[jdbc.sqltiming] onto the JUL framework
+03:51:02,622 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [jdbc.resultsettable] to TRACE
+03:51:02,622 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating TRACE level on Logger[jdbc.resultsettable] onto the JUL framework
+03:51:02,622 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [jdbc.audit] to DEBUG
+03:51:02,622 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[jdbc.audit] onto the JUL framework
+03:51:02,622 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.mybatis.spring] to DEBUG
+03:51:02,622 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[org.mybatis.spring] onto the JUL framework
+03:51:02,622 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.springframework.jdbc] to DEBUG
+03:51:02,622 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[org.springframework.jdbc] onto the JUL framework
+03:51:02,622 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.springframework.transaction] to DEBUG
+03:51:02,622 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating DEBUG level on Logger[org.springframework.transaction] onto the JUL framework
+03:51:02,623 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.ibatis.logging.stdout.StdOutImpl] to TRACE
+03:51:02,623 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating TRACE level on Logger[org.apache.ibatis.logging.stdout.StdOutImpl] onto the JUL framework
+03:51:02,624 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting additivity of logger [org.apache.ibatis.logging.stdout.StdOutImpl] to false
+03:51:02,624 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [STDOUT] to Logger[org.apache.ibatis.logging.stdout.StdOutImpl]
+03:51:02,624 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to INFO
+03:51:02,624 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@3104351d - Propagating INFO level on Logger[ROOT] onto the JUL framework
+03:51:02,624 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [STDOUT] to Logger[ROOT]
+03:51:02,625 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@77d18d0b - End of configuration.
+03:51:02,625 |-INFO in org.springframework.boot.logging.logback.SpringBootJoranConfigurator@7a344b65 - Registering current configuration as safe fallback point
 
 
   .   ____          _            __ _ _
@@ -69,36 +69,48 @@
 
 ?[32m :: Spring Boot :: ?[39m              ?[2m (v3.3.2)?[0;39m
 
-2024-08-24 17:18:31 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
-2024-08-24 17:18:31 INFO  kr.co.swm.SwmApplicationTests - Starting SwmApplicationTests using Java 17.0.7 with PID 29501 (started by abc in /Users/abc/Desktop/StayWithMe)
-2024-08-24 17:18:31 INFO  kr.co.swm.SwmApplicationTests - No active profile set, falling back to 1 default profile: "default"
-2024-08-24 17:18:32 DEBUG o.m.s.b.a.MybatisAutoConfiguration - Searching for mappers annotated with @Mapper
-2024-08-24 17:18:32 DEBUG o.m.s.b.a.MybatisAutoConfiguration - Using auto-configuration base package 'kr.co.swm'
-2024-08-24 17:18:32 DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
-2024-08-24 17:18:32 DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [/Users/abc/Desktop/StayWithMe/build/classes/java/main/kr/co/swm/adminPage/accommodation/mapper/AccommodationMapper.class]
-2024-08-24 17:18:32 DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [/Users/abc/Desktop/StayWithMe/build/classes/java/main/kr/co/swm/board/mapper/DetailMapper.class]
-2024-08-24 17:18:32 DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [/Users/abc/Desktop/StayWithMe/build/classes/java/main/kr/co/swm/board/mapper/ListMapper.class]
-2024-08-24 17:18:32 DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [/Users/abc/Desktop/StayWithMe/build/classes/java/main/kr/co/swm/mappers/SellerMapper.class]
-2024-08-24 17:18:32 DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [/Users/abc/Desktop/StayWithMe/build/classes/java/main/kr/co/swm/mappers/WebMapper.class]
-2024-08-24 17:18:32 DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [/Users/abc/Desktop/StayWithMe/build/classes/java/main/kr/co/swm/member/model/mapper/MemberMapper.class]
-2024-08-24 17:18:32 DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'accommodationMapper' and 'kr.co.swm.adminPage.accommodation.mapper.AccommodationMapper' mapperInterface
-2024-08-24 17:18:32 DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'detailMapper' and 'kr.co.swm.board.mapper.DetailMapper' mapperInterface
-2024-08-24 17:18:32 DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'listMapper' and 'kr.co.swm.board.mapper.ListMapper' mapperInterface
-2024-08-24 17:18:32 DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'sellerMapper' and 'kr.co.swm.mappers.SellerMapper' mapperInterface
-2024-08-24 17:18:32 DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'webMapper' and 'kr.co.swm.mappers.WebMapper' mapperInterface
-2024-08-24 17:18:32 DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'memberMapper' and 'kr.co.swm.member.model.mapper.MemberMapper' mapperInterface
-2024-08-24 17:18:32 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/DetailMapper.xml]'
-2024-08-24 17:18:32 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/ListMapper.xml]'
-2024-08-24 17:18:32 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/SellerMapper.xml]'
-2024-08-24 17:18:32 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/WebMapper.xml]'
-2024-08-24 17:18:32 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/accommodation/enrollMapper.xml]'
-2024-08-24 17:18:32 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/member/AdminMemberMapper.xml]'
-2024-08-24 17:18:32 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/member/memberMapper.xml]'
-2024-08-24 17:18:33 INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
-2024-08-24 17:18:33 INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
+2024-08-25 03:51:02 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-08-25 03:51:02 INFO  kr.co.swm.SwmApplicationTests - Starting SwmApplicationTests using Java 17.0.7 with PID 39804 (started by abc in /Users/abc/Desktop/StayWithMe)
+2024-08-25 03:51:02 INFO  kr.co.swm.SwmApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2024-08-25 03:51:03 DEBUG o.m.s.b.a.MybatisAutoConfiguration - Searching for mappers annotated with @Mapper
+2024-08-25 03:51:03 DEBUG o.m.s.b.a.MybatisAutoConfiguration - Using auto-configuration base package 'kr.co.swm'
+2024-08-25 03:51:03 DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2024-08-25 03:51:03 DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [/Users/abc/Desktop/StayWithMe/build/classes/java/main/kr/co/swm/adminPage/accommodation/mapper/AccommodationMapper.class]
+2024-08-25 03:51:03 DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [/Users/abc/Desktop/StayWithMe/build/classes/java/main/kr/co/swm/board/mapper/DetailMapper.class]
+2024-08-25 03:51:03 DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [/Users/abc/Desktop/StayWithMe/build/classes/java/main/kr/co/swm/board/mapper/ListMapper.class]
+2024-08-25 03:51:03 DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [/Users/abc/Desktop/StayWithMe/build/classes/java/main/kr/co/swm/coupon/mapper/AddCouponMapper.class]
+2024-08-25 03:51:03 DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [/Users/abc/Desktop/StayWithMe/build/classes/java/main/kr/co/swm/mappers/SellerMapper.class]
+2024-08-25 03:51:03 DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [/Users/abc/Desktop/StayWithMe/build/classes/java/main/kr/co/swm/mappers/WebMapper.class]
+2024-08-25 03:51:03 DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [/Users/abc/Desktop/StayWithMe/build/classes/java/main/kr/co/swm/member/model/mapper/MemberMapper.class]
+2024-08-25 03:51:03 DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'accommodationMapper' and 'kr.co.swm.adminPage.accommodation.mapper.AccommodationMapper' mapperInterface
+2024-08-25 03:51:03 DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'detailMapper' and 'kr.co.swm.board.mapper.DetailMapper' mapperInterface
+2024-08-25 03:51:03 DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'listMapper' and 'kr.co.swm.board.mapper.ListMapper' mapperInterface
+2024-08-25 03:51:03 DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'addCouponMapper' and 'kr.co.swm.coupon.mapper.AddCouponMapper' mapperInterface
+2024-08-25 03:51:03 DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'sellerMapper' and 'kr.co.swm.mappers.SellerMapper' mapperInterface
+2024-08-25 03:51:03 DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'webMapper' and 'kr.co.swm.mappers.WebMapper' mapperInterface
+2024-08-25 03:51:03 DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'memberMapper' and 'kr.co.swm.member.model.mapper.MemberMapper' mapperInterface
+2024-08-25 03:51:03 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/DetailMapper.xml]'
+2024-08-25 03:51:03 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/ListMapper.xml]'
+2024-08-25 03:51:03 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/SellerMapper.xml]'
+2024-08-25 03:51:03 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/WebMapper.xml]'
+2024-08-25 03:51:03 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/accommodation/enrollMapper.xml]'
+2024-08-25 03:51:03 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/addCoupon/AddCouponMapper.xml]'
+2024-08-25 03:51:03 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/member/AdminMemberMapper.xml]'
+2024-08-25 03:51:03 DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [/Users/abc/Desktop/StayWithMe/build/resources/main/mappers/member/memberMapper.xml]'
+2024-08-25 03:51:03 INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor - Autowired annotation should only be used on methods with parameters: public java.util.List kr.co.swm.coupon.model.service.AddCouponServiceImpl.couponList()
+2024-08-25 03:51:03 DEBUG org.mybatis.spring.SqlSessionUtils - Creating a new SqlSession
+2024-08-25 03:51:03 DEBUG org.mybatis.spring.SqlSessionUtils - SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@62f9c790] was not registered for synchronization because synchronization is not active
+2024-08-25 03:51:03 DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2024-08-25 03:51:03 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-08-25 03:51:04 INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1570cad0
+2024-08-25 03:51:04 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-08-25 03:51:04 DEBUG o.m.s.t.SpringManagedTransaction - JDBC Connection [HikariProxyConnection@1847825207 wrapping com.mysql.cj.jdbc.ConnectionImpl@1570cad0] will not be managed by Spring
+2024-08-25 03:51:04 DEBUG org.mybatis.spring.SqlSessionUtils - Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@62f9c790]
+2024-08-25 03:51:04 INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2024-08-25 03:51:04 INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
 스프링 시큐리티 필터 부분 완료
-2024-08-24 17:18:33 DEBUG o.m.s.b.a.MybatisAutoConfiguration - Not found configuration for registering mapper bean using @MapperScan, MapperFactoryBean and MapperScannerConfigurer.
-2024-08-24 17:18:33 INFO  kr.co.swm.SwmApplicationTests - Started SwmApplicationTests in 2.26 seconds (process running for 3.19)
+2024-08-25 03:51:05 DEBUG o.m.s.b.a.MybatisAutoConfiguration - Not found configuration for registering mapper bean using @MapperScan, MapperFactoryBean and MapperScannerConfigurer.
+2024-08-25 03:51:05 INFO  kr.co.swm.SwmApplicationTests - Started SwmApplicationTests in 2.924 seconds (process running for 3.825)
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -21,9 +21,16 @@
     </resultMap>
 
     <select id="couponList" resultMap="couponInfo">
-        SELECT coupon_name, coupon_type, discount, coupon_start, coupon_end, min_purchase_price, id coupon_type
+        SELECT coupon_name, coupon_type, discount, coupon_start, coupon_end, min_purchase_price, id, coupon_type
         from coupon
     </select>
+
+    <insert id="addCoupon">
+        INSERT INTO coupon_list values (null,
+                                        #{userNo},
+                                        #{couponId},
+                                        default)
+    </insert>
 
 </mapper>
 
