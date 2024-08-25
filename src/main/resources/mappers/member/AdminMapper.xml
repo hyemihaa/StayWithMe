@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.swm.member.model.mapper.MemberMapper">
+
+    <resultMap id="adminResultMap" type="kr.co.swm.member.model.dto.AdminDTO">
+        <result column="ACCOMMODATION_ADMIN_NO" property="no"></result>
+        <result column="USER_ID" property="userId"></result>
+        <result column="USER_PWD" property="userPwd"></result>
+        <result column="ROLES" property="role"></result>
+        <result column="ADMIN_ID" property="userId"></result>
+        <result column="ADMIN_PWD" property="userPwd"></result>
+        <result column="ADMIN_TYPE" property="role"></result>
+    </resultMap>
+
+    <!--로그인한 숙소관리자의 전체 정보-->
+    <select id="findByAccommAdminInfo" resultMap="adminResultMap">
+        SELECT * FROM ACCOMMODATIONADMINS
+        WHERE ADMIN_ID = #{userId}
+    </select>
+
+    <!--로그인한 사이트관리자의 전체 정보-->
+    <select id="findBySiteAdminInfo" resultMap="adminResultMap">
+        SELECT * FROM SITEADMINS
+        WHERE ADMIN_ID = #{userId}
+    </select>
+
+    <!--업소관리자 가입-->
+    <insert id="setSellerSignup">
+        INSERT INTO ACCOMMODATIONADMINS
+        VALUES (NULL, #{adminDTO.userId}, #{adminDTO.userPwd}, #{adminDTO.role})
+    </insert>
+
+    <!--사이트 관리자 가입-->
+    <insert id="setManagerSignup">
+        INSERT INTO SITEADMINS
+        VALUES (NULL, #{adminDTO.userId}, #{adminDTO.userPwd}, #{adminDTO.role})
+    </insert>
+
+</mapper>
+
