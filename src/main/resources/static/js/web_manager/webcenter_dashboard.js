@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 밝고 명확한 색상 팔레트
     const colorPalette = [
-        '#B0EACD', // 파스텔 민트
-        '#A0DAD7', // 파스텔 틸
-        '#90CBEA', // 파스텔 블루 그린
+        '#8ef1cf', // 파스텔 민트
+        '#c1a0f8', // 파스텔 틸
+        '#acd1fb', // 파스텔 블루 그린
         '#80BDF6', // 파스텔 라이트 블루
         '#70AEFF', // 파스텔 블루
         '#5F9BF2'  // 진한 파스텔 블루

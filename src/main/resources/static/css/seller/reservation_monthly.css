@@ -77,3 +77,33 @@ td.today {
 .unavailable {
     background-color: lightred;
 }
+
+/* 공통 배지 스타일 */
+.badge {
+    display: inline-block;
+    padding: 0.5em 1em;
+    font-size: 14px;
+    font-weight: 700; /* 폰트를 굵게 설정 */
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-radius: 0.375rem; /* 버튼의 둥근 모서리 설정 */
+}
+
+/* 예약 완료 상태 배지 스타일 */
+.status-complete {
+    background-color: #96eeab; /* 녹색 배경 */
+    color: #155724; /* 녹색 텍스트 */
+    border: 1px solid #83dd98; /* 배경과 비슷한 색상의 테두리 추가 */
+    font-weight: 700; /* 폰트를 굵게 설정 */
+}
+
+/* 예약 취소 상태 배지 스타일 */
+.status-cancel {
+    background-color: #f1b7bd; /* 붉은색 배경 */
+    color: #721c24; /* 붉은색 텍스트 */
+    border: 1px solid #f5c6cb; /* 배경과 비슷한 색상의 테두리 추가 */
+    font-weight: 700; /* 폰트를 굵게 설정 */
+}
+
