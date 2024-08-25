@@ -32,12 +32,13 @@
     <ul class="event-tabs">
         <li class="active">ALL</li>
     </ul>
-    <a class="download-button" href="#">모두 내려받기</a>
+    <form action="/add-all" method="POST">
+    <button class="download-button" type="submit">모두 내려받기</button>
 
-        <input type="hidden" class="userNo" id="userNo" th:value="${userNo}">
+        <input type="hidden" class="userNo" name="userNo" id="userNo" th:value="${userNo}">
     <div id="all" class="event-list" th:each="coupon : ${list}">
 
-        <input type="hidden" class="couponId" id="couponNo" th:value="${coupon.couponId}">
+        <input type="hidden" class="couponId" name="couponNo" id="couponNo" th:value="${coupon.couponId}">
         <div class="event-item">
             <div class="event-content">
                 <p class="event-title" th:text="${coupon.couponName}"></p>
@@ -59,10 +60,9 @@
             </div>
             <div>
                 <button class="coupon-button" type="button" th:attr="onclick='registerCoupon(' + ${coupon.couponId} + ')'">등록하기</button> </div>
-
+            </div>
         </div>
-
-    </div>
+    </form>
 </div>
 <div th:replace="~{fragments/footer.html :: footer}"></div>
 <!-- loader -->
@@ -70,37 +70,6 @@
 
 </body>
 <script>
-    //
-    // function addCoupon() {
-    //
-    //     const userNo = parseInt(document.getElementById("userNo").value, 10);
-    //
-    //     console.log(userNo);
-    //     console.log(couponId);
-    //
-    //     console.log("ppppppppppp")
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "/addCoupon",
-    //         data: {
-    //             userNo: userNo,
-    //             couponId : couponId
-    //         },
-    //         success: function(response) {
-    //             // 성공적으로 쿠폰이 추가된 후의 로직
-    //             alert("쿠폰이 성공적으로 추가되었습니다.");
-    //             console.log(response);
-    //         },
-    //         error: function(xhr, status, error) {
-    //             // 에러 발생 시 로직
-    //             console.error("쿠폰 추가 중 오류 발생: " + error);
-    //             alert("쿠폰 추가 중 오류가 발생했습니다. 다시 시도해주세요.");
-    //         }
-    //     })
-    //
-    // }
-
-
     function registerCoupon(couponId) {
         // var couponNo = document.getElementById(couponId).value;
         const userNo = parseInt(document.getElementById("userNo").value, 10);

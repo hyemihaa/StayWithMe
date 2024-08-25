@@ -7,6 +7,7 @@ import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.model.dto.WebDto;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +33,7 @@ public class AddCouponController {
                              Model model) {
 
         Long id = jwtUtil.getUserNoFromToken(userNo);
-        System.out.println("dasdaskldnlas " + id);
-        List<WebDto> list = addCouponService.couponList();
+        List<WebDto> list = addCouponService.couponList(id);
 
         model.addAttribute("list", list);
         model.addAttribute("userNo", id);
@@ -54,7 +54,19 @@ public class AddCouponController {
         }
         else {
            int result = addCouponService.addCoupon(couponId, userNo);
+           if (result == 1) {
+               addCouponService.updateCouponQuantity(couponId);
+           }
         }
         return "redirect:/couponList";
+    }
+    @PostMapping("add-all")
+    public ResponseEntity<String> addAllCoupon(@RequestParam("couponNo")List<Integer> couponIds,
+                                               @RequestParam("userNo")Long userNo) {
+
+        for (int couponId : couponIds) {
+            addCouponService.addAllCoupons(couponId, userNo);
+        }
+        return ResponseEntity.ok("모든 쿠폰이 성공적으로 추가되었습니다.");
     }
 }
