@@ -27,6 +27,8 @@ public class SellerDto {
     private String accommodationPost;
     private String accommodationAddress;
     private int accommodationViews;
+    private double lat;
+    private double lng;
 
     private String viewsDate;
     private int viewsCount;

@@ -6,16 +6,16 @@ import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.adminPage.accommodation.model.dto.RoomForm;
 import kr.co.swm.adminPage.accommodation.model.service.AccommodationServiceImpl;
 import kr.co.swm.adminPage.accommodation.util.UploadFile;
+import kr.co.swm.jwt.util.JWTUtil;
+import kr.co.swm.model.dto.SellerDto;
+import kr.co.swm.model.dto.WebDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
@@ -27,11 +27,13 @@ public class AccommodationController {
 
     private final UploadFile uploadFile;
     private final AccommodationServiceImpl accommodationService;
+    private final JWTUtil jwtUtil;
 
     @Autowired
-    public AccommodationController(UploadFile uploadFile, AccommodationServiceImpl accommodationService) {
+    public AccommodationController(UploadFile uploadFile, AccommodationServiceImpl accommodationService, JWTUtil jwtUtil) {
         this.uploadFile = uploadFile;
         this.accommodationService = accommodationService;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("/")
@@ -88,5 +90,14 @@ public class AccommodationController {
             response.put("message", "Error occurred");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+    }
+
+    @GetMapping("/acUpdate")
+    public String update(@CookieValue(name = "Authorization", required = false)String sellerKey, Model model) {
+        Long sellerId = jwtUtil.getAccommAdminKeyFromToken(sellerKey);
+        SellerDto list = accommodationService.accommodationList(sellerId);
+
+        model.addAttribute("list", list);
+        return "accommodation/update";
     }
 }

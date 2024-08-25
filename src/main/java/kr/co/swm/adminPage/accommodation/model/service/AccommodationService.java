@@ -2,6 +2,8 @@ package kr.co.swm.adminPage.accommodation.model.service;
 
 import kr.co.swm.adminPage.accommodation.model.dto.AccommodationDto;
 import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
+import kr.co.swm.model.dto.SellerDto;
+import kr.co.swm.model.dto.WebDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -29,6 +31,9 @@ public interface AccommodationService {
                     AccommodationDto room,
                     int roomsSize,
                     List<MultipartFile> subFile,
-                    int startIndex);
+                    int startIndex
+    );
+
+    SellerDto accommodationList(Long sellerId);
 
 }

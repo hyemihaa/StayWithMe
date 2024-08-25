@@ -11,10 +11,15 @@
         <result column="USER_PHONE" property="userPhone"></result>
         <result column="CREATED_DATE" property="createdDate"></result>
         <result column="DELETED_DATE" property="deletedDate"></result>
+        <result column="LAST_LOGIN_DATE" property="lastLoginDate"></result>
+        <result column="LOG_ID" property="logId"></result>
+        <result column="USER_IP" property="userIp"></result>
+        <result column="STATUS" property="userStatus"></result>
+        <result column="WITHDRAWAL_REASON" property="withdrawalReason"></result>
     </resultMap>
 
     <resultMap id="adminResultMap" type="kr.co.swm.member.model.dto.AdminDTO">
-        <result column="ACCOMODATION_ADMIN_NO" property="no"></result>
+        <result column="ACCOMMODATION_ADMIN_NO" property="no"></result>
         <result column="USER_ID" property="userId"></result>
         <result column="USER_PWD" property="userPwd"></result>
         <result column="ROLES" property="role"></result>
@@ -27,20 +32,7 @@
     <!--회원가입 insert-->
     <insert id="setSignUp" >
         INSERT INTO USER (USER_ID, USER_PWD, USER_NAME, USER_PHONE, CREATED_DATE, DELETED_DATE)
-<<<<<<< HEAD:src/main/resources/mappers/member/memberMapper.xml
-        VALUES (#{memberDTO.userId}, #{memberDTO.userPwd}, #{memberDTO.userName}, #{memberDTO.userPhone}, #{memberDTO.createdDate}, #{memberDTO.deletedDate})
-
-        <!--        &lt;!&ndash;사이트 관리자 계정 임시&ndash;&gt;-->
-        <!--        INSERT INTO USER (USER_ID, USER_PWD, USER_NAME, USER_PHONE, CREATED_DATE, DELETED_DATE, ROLES)-->
-        <!--        VALUES (#{memberDTO.userId}, #{memberDTO.userPwd}, #{memberDTO.userName}, #{memberDTO.userPhone}, #{memberDTO.createdDate}, #{memberDTO.deletedDate}, 'ROLE_SITE_ADMIN')-->
-
-        <!--        &lt;!&ndash;숙소 관리자 계정 임시&ndash;&gt;-->
-        <!--        INSERT INTO ACCOMMODATIONADMINS (ADMIN_ID, ADMIN_PWD, ADMIN_TYPE)-->
-        <!--        VALUES-->
-        <!--        (#{memberDTO.userId}, #{memberDTO.userPwd}, 'ROLE_ACCOMMODATION_ADMIN')-->
-=======
         VALUES (#{userDTO.userId}, #{userDTO.userPwd}, #{userDTO.userName}, #{userDTO.userPhone}, #{userDTO.createdDate}, #{userDTO.deletedDate})
->>>>>>> e3ac838e524ea3f095eea02bd841b2f2cab4becb:src/main/resources/mappers/member/member-mapper.xml
     </insert>
 
     <!--중복아이디-->
@@ -61,12 +53,25 @@
         WHERE USER_ID = #{userId} AND USER_PHONE = #{userPhone}
     </select>
 
-    <!--임시비밀번호 인코딩-->
+    <!--임시비밀번호 인코딩 업데이트-->
     <update id="updateResetPassword">
         UPDATE USER
         SET USER_PWD = #{encodedPassword}
         WHERE user_id = #{userId} AND user_phone = #{userPhone}
     </update>
+
+    <!--로그가 없다면 새로운 로그 삽입-->
+    <insert id="insertLoginLog">
+        INSERT INTO USER_LOG (USER_NO, LAST_LOGIN_DATE, USER_IP)
+        VALUES (#{userDTO.no}, #{userDTO.lastLoginDate}, #{userDTO.userIp})
+    </insert>
+
+    <!--로그 조회-->
+    <select id="getUserLogsByUserNo" resultMap="userResultMap">
+        SELECT * FROM USER_LOG
+        WHERE USER_NO = #{no}
+        ORDER BY LAST_LOGIN_DATE DESC
+    </select>
 
     <!--로그인한 유저의 전체 정보-->
     <select id="findByUserInfo" resultMap="userResultMap">
@@ -86,15 +91,39 @@
         WHERE ADMIN_ID = #{userId}
     </select>
 
+    <!--업소관리자 가입-->
     <insert id="setSellerSignup">
         INSERT INTO ACCOMMODATIONADMINS
         VALUES (NULL, #{adminDTO.userId}, #{adminDTO.userPwd}, #{adminDTO.role})
     </insert>
 
+    <!--사이트 관리자 가입-->
     <insert id="setManagerSignup">
         INSERT INTO SITEADMINS
         VALUES (NULL, #{adminDTO.userId}, #{adminDTO.userPwd}, #{adminDTO.role})
     </insert>
+
+    <!--마이페이지 내정보수정 비밀번호 변경-->
+    <update id="updatePassword">
+        UPDATE USER
+        SET USER_PWD = #{userDTO.userPwd}
+        WHERE user_id = #{userDTO.userId}
+    </update>
+
+    <!--마이페이지 내정보수정 휴대전화 번호 변경-->
+    <update id="updatePhoneNumber">
+        UPDATE USER
+        SET USER_PHONE = #{newPhone}
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <!--마이페이지 회원 탈퇴, 회원상태, 탈퇴사유 업데이트-->
+    <update id="updateUserStatus">
+        UPDATE USER
+        SET STATUS = #{userDTO.userStatus}, WITHDRAWAL_REASON = #{userDTO.withdrawalReason}, DELETED_DATE = #{userDTO.deletedDate}
+        WHERE USER_ID = #{userDTO.userId}
+    </update>
+
 
 </mapper>
 
