@@ -123,8 +123,11 @@ public class SignController {
         // 사용자 정보 조회
         UserDTO user = memberServiceImpl.userInfo(userId);
 
-        // 사용자 탈퇴 여부 확인
-        if (user == null || "DELETED".equals(user.getUserStatus())) {
+        // 관리자 계정 여부 확인
+        boolean isAdmin = "ROLE_SITE_ADMIN".equals(signRole) || "ROLE_ACCOMMODATION_ADMIN".equals(signRole);
+
+        // 사용자 탈퇴 여부 확인 (관리자는 무시)
+        if (!isAdmin && (user == null || "DELETED".equals(user.getUserStatus()))) {
             redirectAttributes.addFlashAttribute("error", "탈퇴한 계정이거나 존재하지 않는 사용자 입니다.");
             return "redirect:/signform";
         }
@@ -136,18 +139,20 @@ public class SignController {
             String role = jwtUtil.getRoleFromToken(token);
             System.out.println("로그인 시도: " + role);  // 권한이 제대로 추출되는지 확인
 
-            // IP 주소 가져오기
-            Long userNo = jwtUtil.getUserNoFromToken(token);
-            String userIp = ClientIpUtil.getClientIp();
+            if (!isAdmin) { // 일반 사용자일 경우에만 로그인 기록을 저장
+                // IP 주소 가져오기
+                Long userNo = jwtUtil.getUserNoFromToken(token);
+                String userIp = ClientIpUtil.getClientIp();
 
-            // 로그인 기록 저장
-            UserDTO userDTO = new UserDTO();
-            userDTO.setNo(userNo);
-            userDTO.setUserIp(userIp);
-            userDTO.setLastLoginDate(LocalDateTime.now()); // 현재시간
+                // 로그인 기록 저장
+                UserDTO userDTO = new UserDTO();
+                userDTO.setNo(userNo);
+                userDTO.setUserIp(userIp);
+                userDTO.setLastLoginDate(LocalDateTime.now()); // 현재시간
 
-            System.out.println("로그인 시도 IP: " + userIp); // **로그 추가** (IP 출력)
-            memberServiceImpl.saveLoginLog(userDTO); // 로그기록 저장
+                System.out.println("로그인 시도 IP: " + userIp); // **로그 추가** (IP 출력)
+                memberServiceImpl.saveLoginLog(userDTO); // 로그기록 저장
+            }
 
             // 권한에 따라 리다이렉트할 페이지 결정
             if ("ROLE_SITE_ADMIN".equals(role)) {
