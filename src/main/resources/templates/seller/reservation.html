@@ -29,49 +29,23 @@
 <body>
 <div class="container-xxl position-relative bg-white d-flex p-0">
     <!-- Sidebar Start -->
-    <div class="sidebar pe-4 pb-3">
-        <nav class="navbar bg-light navbar-light">
-            <a th:href="@{/seller-main.do}" class="navbar-brand mx-4 mb-3">
-                <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Stay With Me</h3>
-            </a>
-            <div class="navbar-nav w-100">
-                <a th:href="@{/seller-main.do}" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>대시보드</a>
-                <div class="nav-item dropdown show">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>숙소관리</a>
-                    <div class="dropdown-menu show bg-transparent border-0">
-                        <a href="" class="dropdown-item">숙소등록</a>
-                        <a href="" class="dropdown-item">숙소수정</a>
-                    </div>
-                </div>
-                <div class="nav-item dropdown show">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-book me-2"></i>예약관리</a>
-                    <div class="dropdown-menu show bg-transparent border-0">
-                        <a th:href="@{/reservation.do}" class="dropdown-item active">예약리스트</a>
-                        <a th:href="@{/reservation-daily.do}" class="dropdown-item">일별 현황보기</a>
-                        <a th:href="@{/reservation-monthly.do}" class="dropdown-item">월별 현황보기</a>
-                    </div>
-                </div>
-                <div class="nav-item dropdown show">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-cog me-2"></i>판매 환경설정</a>
-                    <div class="dropdown-menu show bg-transparent border-0">
-                        <a th:href="@{/basic-rate-list.do}" class="dropdown-item">기본요금 수정</a>
-                        <a th:href="@{/season-period.do}" class="dropdown-item">성수기/기간 관리</a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </div>
+    <div th:replace="~{fragments/admin/sideBar.html :: side}"></div>
     <!-- Sidebar End -->
 
     <!-- Content Start -->
     <div class="content">
-        <!-- Navbar Start -->
+        <!-- 상단 내비게이션 바 Start -->
         <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-            <a href="./seller.html" class="navbar-brand d-flex d-lg-none me-4">
+            <a th:href="@{/seller-main.do}" class="navbar-brand d-flex d-lg-none me-4">
                 <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
             </a>
+
+            <div class="navbar-nav ms-auto d-flex align-items-center">
+                <span class="navbar-text me-3" th:text="${userId}">관리자</span>
+                <a th:href="@{/logout}" class="btn btn-outline-primary">로그아웃</a>
+            </div>
         </nav>
-        <!-- Navbar End -->
+        <!-- 상단 내비게이션 바 End -->
 
         <!-- Reservation List Start -->
         <div class="container-fluid mt-4">

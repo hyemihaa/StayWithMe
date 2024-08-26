@@ -1,6 +1,7 @@
 package kr.co.swm.adminPage.accommodation.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import kr.co.swm.adminPage.accommodation.model.dto.AccommodationDto;
 import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.adminPage.accommodation.model.dto.RoomForm;
@@ -9,6 +10,7 @@ import kr.co.swm.adminPage.accommodation.util.UploadFile;
 import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.dto.WebDto;
+import kr.co.swm.jwt.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +28,8 @@ import java.util.Map;
 public class AccommodationController {
 
     private final UploadFile uploadFile;
-    private final AccommodationServiceImpl accommodationService;
     private final JWTUtil jwtUtil;
+    private final AccommodationServiceImpl accommodationService;
 
     @Autowired
     public AccommodationController(UploadFile uploadFile, AccommodationServiceImpl accommodationService, JWTUtil jwtUtil) {
@@ -42,10 +44,18 @@ public class AccommodationController {
     }
 
     @GetMapping("/enroll")
-    public String enroll(Model model) {
+    public String enroll(HttpServletRequest request, Model model, @CookieValue(value = "Authorization", required = false) String token) {
         System.out.println("in");
 
         model.addAttribute("location", new AccommodationDto());
+
+        // 사용자 이름 설정
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
+
+        String currentUrl = request.getRequestURI();
+        model.addAttribute("currentUrl", currentUrl);
+
         return "accommodation/enroll";
     }
 
