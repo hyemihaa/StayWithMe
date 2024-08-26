@@ -1,15 +1,24 @@
+let lat = document.getElementById("lat").value;
+let lng = document.getElementById("lng").value;
+
 var mapContainer = document.getElementById('map'),
     mapOption = {
-        center: new kakao.maps.LatLng(${list.lat}, 127.005476),
+        center: new kakao.maps.LatLng(lat, lng),
         level: 5
     };
 
 var map = new kakao.maps.Map(mapContainer, mapOption);
 var geocoder = new kakao.maps.services.Geocoder();
 var marker = new kakao.maps.Marker({
-    position: new kakao.maps.LatLng(37.537187, 127.005476),
+    position: new kakao.maps.LatLng(lat, lng),
     map: map
 });
+// 마커를 생성하고 지도에 표시
+var markerPosition  = new kakao.maps.LatLng(lat, lng);
+var marker = new kakao.maps.Marker({
+    position: markerPosition
+});
+marker.setMap(map);
 
 function sample5_execDaumPostcode() {
     new daum.Postcode({

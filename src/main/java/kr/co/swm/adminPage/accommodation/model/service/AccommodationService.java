@@ -36,4 +36,9 @@ public interface AccommodationService {
 
     SellerDto accommodationList(Long sellerId);
 
+    List<SellerDto> roomsList(Long sellerId, SellerDto sellerDto);
+
+    List<String> facilitiesList(Long sellerKey);
+
+
 }

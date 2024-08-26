@@ -93,11 +93,17 @@ public class AccommodationController {
     }
 
     @GetMapping("/acUpdate")
-    public String update(@CookieValue(name = "Authorization", required = false)String sellerKey, Model model) {
+    public String update(@CookieValue(name = "Authorization", required = false)String sellerKey, Model model, SellerDto sellerDto) {
+
         Long sellerId = jwtUtil.getAccommAdminKeyFromToken(sellerKey);
+
         SellerDto list = accommodationService.accommodationList(sellerId);
+        List<SellerDto> rooms = accommodationService.roomsList(sellerId, sellerDto);
+        List<String> facilities = accommodationService.facilitiesList(sellerId);
 
         model.addAttribute("list", list);
+        model.addAttribute("rooms", rooms);
+        model.addAttribute("facilities", facilities);
         return "accommodation/update";
     }
 }

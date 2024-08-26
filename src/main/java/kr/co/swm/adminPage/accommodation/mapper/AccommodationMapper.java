@@ -7,6 +7,9 @@ import kr.co.swm.model.dto.WebDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface AccommodationMapper {
 
@@ -26,5 +29,11 @@ public interface AccommodationMapper {
     int enrollSundayRate(@Param("roomRate") AccommodationDto roomRate, @Param("roomNo") int roomNo, @Param("no") int no);
 
     SellerDto accommodationList(@Param("sellerKey")Long sellerId);
+
+    List<SellerDto> roomsList(@Param("sellerKey")Long sellerId);
+
+    List<SellerDto> getRates(@Param("roomNo")int roomNo);
+
+    List<String> getFacilities(@Param("sellerKey")Long sellerKey);
 
 }
