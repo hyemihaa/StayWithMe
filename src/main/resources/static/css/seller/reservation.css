@@ -1,12 +1,12 @@
-.content {
-    margin-left: 300px !important; /* 사이드바의 너비와 일치 */
-    min-height: 100vh !important; /* 화면 높이에 맞게 최소 높이 설정 */
-    padding: 20px !important; /* 경계와 컨텐츠 사이 여백 */
-    width: 83%; /* 컨텐츠 영역의 너비 설정 */
-    background: #FFFFFF !important; /* 배경색을 흰색으로 설정 */
-    transition: margin-left 0.5s ease !important; /* 사이드바 토글 시 부드러운 전환 효과 */
-    z-index: 1 !important; /* 사이드바보다 위에 위치 */
-}
+/*.content {
+    margin-left: 300px !important; *//* 사이드바의 너비와 일치 *//*
+    min-height: 100vh !important; *//* 화면 높이에 맞게 최소 높이 설정 *//*
+    padding: 20px !important; *//* 경계와 컨텐츠 사이 여백 *//*
+    width: 83%; *//* 컨텐츠 영역의 너비 설정 *//*
+    background: #FFFFFF !important; *//* 배경색을 흰색으로 설정 *//*
+    transition: margin-left 0.5s ease !important; *//* 사이드바 토글 시 부드러운 전환 효과 *//*
+    z-index: 1 !important; *//* 사이드바보다 위에 위치 *//*
+}*/
 
 /* Search Area Styles */
 /* 검색 필드 스타일링 */

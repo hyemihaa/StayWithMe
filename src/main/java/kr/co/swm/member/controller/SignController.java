@@ -125,7 +125,6 @@ public class SignController {
 
         // 관리자 계정 여부 확인
         boolean isAdmin = "ROLE_SITE_ADMIN".equals(signRole) || "ROLE_ACCOMMODATION_ADMIN".equals(signRole);
-        System.out.println("as" + isAdmin);
 
         // 사용자 탈퇴 여부 확인 (관리자는 무시)
         if (!isAdmin && (user == null || "DELETED".equals(user.getUserStatus()))) {
@@ -170,6 +169,7 @@ public class SignController {
             return "redirect:/signform";
         }
     }
+
 
     // 로그아웃 메세지
     @GetMapping("/logout-success")
