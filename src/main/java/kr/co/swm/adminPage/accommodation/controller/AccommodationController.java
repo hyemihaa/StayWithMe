@@ -8,6 +8,9 @@ import kr.co.swm.adminPage.accommodation.model.dto.RoomForm;
 import kr.co.swm.adminPage.accommodation.model.service.AccommodationServiceImpl;
 import kr.co.swm.adminPage.accommodation.util.UploadFile;
 import kr.co.swm.jwt.util.JWTUtil;
+import kr.co.swm.model.dto.SellerDto;
+import kr.co.swm.model.dto.WebDto;
+import kr.co.swm.jwt.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,5 +100,20 @@ public class AccommodationController {
             response.put("message", "Error occurred");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+    }
+
+    @GetMapping("/acUpdate")
+    public String update(@CookieValue(name = "Authorization", required = false)String sellerKey, Model model, SellerDto sellerDto) {
+
+        Long sellerId = jwtUtil.getAccommAdminKeyFromToken(sellerKey);
+
+        SellerDto list = accommodationService.accommodationList(sellerId);
+        List<SellerDto> rooms = accommodationService.roomsList(sellerId, sellerDto);
+        List<String> facilities = accommodationService.facilitiesList(sellerId);
+
+        model.addAttribute("list", list);
+        model.addAttribute("rooms", rooms);
+        model.addAttribute("facilities", facilities);
+        return "accommodation/update";
     }
 }
