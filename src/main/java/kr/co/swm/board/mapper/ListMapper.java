@@ -20,4 +20,10 @@ public interface ListMapper {
   // 기본 가격
   List<ListDTO> getCost();
 
+  int getListCount(SearchDTO searchDTO);
+
+  List<ListDTO> getList(SearchDTO searchDTO);
+
+  List<String> getFacilities(SearchDTO searchDTO);
+
 }

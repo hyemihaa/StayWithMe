@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,6 +23,4 @@ public class ListDTO {
 
     private String filePath;    // 파일경로
     private String fileName;    // 파일 명
-
-
 }
