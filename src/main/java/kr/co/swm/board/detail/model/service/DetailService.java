@@ -19,5 +19,5 @@ public interface DetailService {
     List<DetailDTO> getFacilities(int boardNo);
 
 //  하단 관련 항목
-//    List<DetailDTO> getSubPlace();
+    List<DetailDTO> getSubPlace(int boardNo);
 }

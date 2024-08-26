@@ -44,8 +44,7 @@
 							<span th:text="${post.boardType}">숙박유형</span>
 							<h2 th:text="${post.boardName}">숙박명</h2>
 							<p class="rate mb-5">
-								<span class="loc"><a href="#" th:text="${post.boardAddress}">
-									<i class="icon-map" th:text="${post.boardAddress}"></i></a></span>
+									<i class="icon-map-o"></i>&nbsp;<span th:text="${post.boardAddress}" /></span>
 								<br>
 								<span class="star" th:each="avgRate : ${avgRate}">
 									<i class="icon-star" th:if="${avgRate >= 1}"></i>
@@ -284,13 +283,13 @@
 							<div class="col-md-4">
 
 
-								<div class="destination" th:each="place : ${place}" th:if="${place.boardNo != 1}" >
+								<div class="destination" th:each="subPlace : ${subPlace}" >
 									<a href="#" class="img img-3"
 									   style="background-image: url(images/room-4.jpg);"></a>
 									<div class="text-tour p-3">
 										<div class="d-flex">
 											<div class="one">
-												<h3><a href="#" th:text="${place.boardName}"></a></h3>
+												<h3><a href="#" th:text="${subPlace.boardName}"></a></h3>
 												<p class="rate">
 													<i class="icon-star" th:if="${rate >= 1}"></i>
 													<i class="icon-star" th:if="${rate >= 2}"></i>
@@ -305,16 +304,19 @@
 													<span th:text="${rate}">0.0</span>
 												</p>
 											</div>
+										<div class="two">
+											<p th:text="${subPlace.boardType}"></p>
 										</div>
-										<span><i class="icon-map-o"></i> &nbsp <span th:text="${place.boardAddress}" /></span>
+										</div>
+										<span><i class="icon-map-o"></i> &nbsp <span th:text="${subPlace.boardAddress}" /></span>
 										<p class="days">
-												<span>체크인 : <span th:text="${place.boardCheckIn}"/>
+												<span>체크인 : <span th:text="${subPlace.boardCheckIn}"/>
 										</p>
 										<hr>
-										<span class="price" style="font-weight: bold; font-size: 17px;"  th:text="${place.boardCount} + '원 &nbsp; ~' "></span>
+										<span class="price" style="font-weight: bold; font-size: 17px;"  th:text="${subPlace.boardCount} + '원 &nbsp; ~' "></span>
 										<br>
 										<p class="bottom-area d-flex">
-											<span class="ml-auto"><a href="#">바로가기</a></span>
+											<span class="ml-auto"><a th:href="@{/hotel-single(boardNo=${subPlace.boardNo})}">바로가기</a></span>
 										</p>
 									</div>
 								</div>

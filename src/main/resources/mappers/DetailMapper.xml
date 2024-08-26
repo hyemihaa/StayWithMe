@@ -62,25 +62,26 @@
         where r.ROOM_NO = #{RoomNo}
     </select>
 
-<!--    <select id="getSubPlace" resultMap="placeResultMap">-->
-<!--        SELECT DISTINCT-->
-<!--        a.name,-->
-<!--        a.ACCOMMODATION_NO,-->
-<!--        a.ACCOMMODATION_TYPE,-->
-<!--        a.POST_NO,-->
-<!--        r.CHECK_IN_TIME,-->
-<!--        br.BASIC_RATE-->
-<!--        FROM ACCOMMODATION a-->
-<!--        INNER JOIN ROOM r ON r.ACCOMMODATION_NO = a.ACCOMMODATION_NO-->
-<!--        INNER JOIN BASIC_RATE br ON r.ROOM_TYPE_NO = br.ROOM_NO-->
-<!--        WHERE a.ACCOMMODATION_TYPE = #{boardType}-->
-<!--        AND br.BASIC_RATE = (-->
-<!--        SELECT MIN(br2.BASIC_RATE)-->
-<!--        FROM BASIC_RATE br2-->
-<!--        INNER JOIN ROOM r2 ON r2.ROOM_TYPE_NO = br2.ROOM_NO-->
-<!--        WHERE r2.ACCOMMODATION_NO = a.ACCOMMODATION_NO-->
-<!--        )-->
-<!--    </select>-->
+    <select id="getSubPlace" resultMap="placeResultMap">
+        SELECT
+        a.ACCOMMODATION_ADMIN_NO,
+        a.NAME,
+        a.ACCOMMODATION_TYPE,
+        a.ADDRESS,
+        r.CHECK_IN_TIME,
+        MIN(br.BASIC_RATE) AS BASIC_RATE
+        FROM
+        accommodation a
+        join room r on r.ACCOMMODATION_ADMIN_NO = a.ACCOMMODATION_ADMIN_NO
+        join basic_rate br  on br.ROOM_NO = r.ROOM_NO
+        where a.ACCOMMODATION_ADMIN_NO != #{boardNo}
+        GROUP BY
+        a.ACCOMMODATION_ADMIN_NO, a.NAME, a.ACCOMMODATION_TYPE, a.ADDRESS, r.CHECK_IN_TIME
+        ORDER BY
+        RAND()
+        LIMIT 3;
+    </select>
+
     <select id="getFacilities" resultMap="placeResultMap">
         select ACCOMMODATION_ADMIN_NO , FACILITY_NAME  from facilities f
         where ACCOMMODATION_ADMIN_NO = #{boardNo}
