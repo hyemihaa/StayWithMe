@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>DirEngine - Free Bootstrap 4 Template by Colorlib</title>
+
+    <link rel="stylesheet" th:href="@{css/coupon/mainCouponList.css}">
+    <link th:replace="~{fragments/css.html :: css}" rel="stylesheet">
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<body style="background-color: #0c5460">
+
+<nav th:replace="~{fragments/navbar.html :: navbar}"></nav>
+<!-- END nav -->
+
+<div class="hero-wrap js-fullheight" style="background-image: url('../static/images/bg_4.jpg');">
+    <div class=""></div>
+    <div class="">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
+            <div class="col-md-9 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
+                <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a href="index.html">Home</a></span> <span>Blog</span></p>
+                <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">쿠폰 리스트</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="padding-bottom: 600px">
+    <input type="hidden" class="userNo" th:value="${userNo}">
+    <div class="event-header">
+        <h1>쿠폰 리스트</h1>
+    </div>
+    <ul class="event-tabs">
+        <li class="active">ALL</li>
+    </ul>
+    <form action="/add-all" method="POST">
+        <button class="download-button" type="submit">모두 내려받기</button>
+
+        <input type="hidden" class="userNo" name="userNo" id="userNo" th:value="${userNo}">
+        <div id="all" class="event-list" th:each="coupon : ${list}">
+
+            <input type="hidden" class="couponId" name="couponNo" id="couponNo" th:value="${coupon.couponId}">
+            <div class="event-item">
+                <div class="event-content">
+                    <p class="event-title" th:text="${coupon.couponName}"></p>
+                </div>
+                <div class="event-price">
+                    <span th:text="${coupon.couponDiscount}"></span>
+                    <span th:switch="${coupon.couponType}">
+                <span th:case="'DISCOUNT_AMOUNT'">원 할인</span>
+                <span th:case="'DISCOUNT_RATE'">% 할인</span>
+             </span>
+                    <div style="font-size: 0.5em">
+                        <span th:text="${coupon.couponMinimumAmount}"></span>
+                        <span>원 이상 결제시</span>
+                    </div>
+                </div>
+                <div style="margin-bottom: 30px">
+                    <span class="event-start-dates" th:text="${coupon.couponStartDate}"></span> -
+                    <span class="event-end-dates" th:text="${coupon.couponEndDate}"></span>
+                </div>
+                <div>
+                    <button class="coupon-button" type="button" th:attr="onclick='registerCoupon(' + ${coupon.couponId} + ')'">등록하기</button> </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:replace="~{fragments/footer.html :: footer}"></div>
+<!-- loader -->
+<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+</body>
+<script>
+    function registerCoupon(couponId) {
+        // var couponNo = document.getElementById(couponId).value;
+        const userNo = parseInt(document.getElementById("userNo").value, 10);
+        // var couponNo = document.getElementById(couponId).value;
+
+
+        console.log("-0-0-0-0-0-0")
+        // Ajax 요청을 통해 서버로 쿠폰 번호를 전송
+        $.ajax({
+                    type: "POST",
+                    url: "/addCoupon",
+                    data: {
+                        userNo: userNo,
+                        couponId : couponId
+                    },
+                    success: function(response) {
+                        // 성공적으로 쿠폰이 추가된 후의 로직
+                        alert("쿠폰이 성공적으로 추가되었습니다.");
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                        // 에러 발생 시 로직
+                        console.error("쿠폰 추가 중 오류 발생: " + error);
+                        alert("쿠폰 추가 중 오류가 발생했습니다. 다시 시도해주세요.");
+                    }
+                })
+    }
+</script>
+<script th:src="@{js/coupon/couponList.js}" defer></script>
+<div th:replace="~{fragments/js.html :: js}"></div>
+</html>
