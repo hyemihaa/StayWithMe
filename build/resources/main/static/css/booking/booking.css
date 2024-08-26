@@ -1,0 +1,123 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}.container1 {
+     width: 60%;
+     margin: 20px auto;
+     background-color: #fff;
+     padding: 20px;
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+     border-radius: 10px;
+ }
+.section {
+    margin-bottom: 20px;
+}
+.section h2, .section h3 {
+    margin: 10px 0;
+}
+.section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.section input, .section select, .section textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.form-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.form-inline input {
+    flex: 1;
+}
+.form-group {
+    margin-bottom: 10px;
+}
+.button-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.terms {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+.terms h3 {
+    margin-top: 0;
+}
+.terms label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.terms input {
+    margin-right: 10px;
+}
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.submit-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+.hidden {
+    display: none;
+}
+.verification-section {
+    margin-top: 20px;
+}
+
+.price-info {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.price {
+    font-size: 2.0em;
+    font-weight: bold;
+}
+.final-price {
+    font-size: 3.5em;
+    font-weight: bold;
+
+}
+
+.pay-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1.5em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pay-button:hover {
+    background-color: #45a049;
+}
+
+.button-group {
+    display: flex;
+    align-items: center;
+}
+
+.button-group select {
+    margin-right: 10px;
+}
