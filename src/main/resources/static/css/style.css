@@ -9140,7 +9140,7 @@ textarea.form-control {
   border: 1px solid #e6e6e6;
   margin-bottom: 30px;
     position: sticky;
-    top: 150px;
+    top: 120px;
     }
   .sidebar-wrap .heading {
     font-size: 30px;
@@ -9516,7 +9516,7 @@ textarea.form-control {
     float: left;
 }
 
-.toggle-input:checked + .toggle-label {
+.toggle-input:checked ~ .toggle-label {
     background-color: #17a2b8; /* 체크된 상태의 배경색 */
     color: white; /* 체크된 상태의 텍스트 색상 */
 }

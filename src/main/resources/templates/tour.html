@@ -39,7 +39,7 @@
 
 					<!-- 폼 태그  -->
 
-					<form action="/tour" method="get" th:object="${searchDTO}">
+					<form th:action="@{/tour}" method="get" th:object="${searchDTO}">
 						<div class="fields">
 
 							<!-- 숙소 유형 라디오버튼 -->
@@ -194,12 +194,12 @@
 										<p th:text="${place.boardType}"></p>
 									</div>
 								</div>
-								<span><i class="icon-map-o"></i> &nbsp <span th:text="${place.boardAddress}" /></span>
-								<p class="days"><span>체크인: &nbsp <span th:text="${place.boardCheckIn}" /></span></p>
+								<span><i class="icon-map-o"></i> &nbsp; <span th:text="${place.boardAddress}" /></span>
+								<p class="days"><span>체크인: &nbsp; <span th:text="${place.boardCheckIn}" /></span></p>
 								<hr>
 								<!-- 최저 기본값 영역 -->
 								<span class="price" style="font-weight:bold; font-size: 17px;" th:each="cost: ${cost}">
-										<span th:text="${cost.boardCount}"/>원 &nbsp ~
+										<span th:text="${cost.boardCount}"/>원~ <span style="font-size: 10px;"> &nbsp;/&nbsp;1박</span>
 									</span>
 								<!--									<br>-->
 								<!--									<p class="price" style="font-weight:bold">-->

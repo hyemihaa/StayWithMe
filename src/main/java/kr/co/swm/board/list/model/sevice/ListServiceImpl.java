@@ -27,12 +27,6 @@ public class ListServiceImpl implements ListService {
         return listMapper.getPlace(pi, searchDTO);
     }
 
-    //별점 불러오기
-    @Override
-    public double getAvgRate(int boardNo) {
-        return listMapper.getAvgRate(boardNo);
-    }
-
     //게시글의 수
     @Override
     public int getTotalCount(SearchDTO searchDTO){
@@ -44,4 +38,12 @@ public class ListServiceImpl implements ListService {
     public List<ListDTO> getCost() {
         return listMapper.getCost();
     }
+
+    //  체크인 & 체크아웃 지정할 때 나오는 리스트
+    @Override
+    public List<ListDTO> getCheck(String checkinDate, String checkoutDate) {
+        return listMapper.getCheck(checkinDate, checkoutDate);
+    }
+
+
 }

@@ -11,14 +11,12 @@ public class ListDTO {
     private int boardNo;    //  리스트 번호(게시글 고유번호)
     private String boardName;   //  숙박 명
     private String boardType;    //  객실 유형(호텔/모텔/펜션 etc..)
-    private int boardRating;    //  숙박 별점
     private String boardAddress;    //  숙박 주소
     private String boardCheckIn;   //  체크인 시간
     private int boardCount; //  최저 기본 가격
 
     private String checkInDate;  // 체크인 날짜
     private String checkOutDate; // 체크아웃 날짜
-
 
     private String filePath;    // 파일경로
     private String fileName;    // 파일 명
