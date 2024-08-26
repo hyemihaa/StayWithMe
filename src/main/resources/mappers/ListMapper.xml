@@ -8,6 +8,7 @@
         <result column="ADDRESS" property="boardAddress"></result>
         <result column="CHECK_IN_TIME" property="boardCheckIn"></result>
         <result column="BASIC_RATE" property="boardCount"></result>
+        <result column="FACILITY_NAME" property="options"></result>
     </resultMap>
 
 
@@ -154,6 +155,66 @@
     <select id="getCost" resultMap="placeResultMap">
         select distinct basic_rate_no,basic_rate from BASIC_RATE
         where basic_rate_no = 1
+    </select>
+
+    <!-- getListCount 쿼리 -->
+    <select id="getListCount" resultType="int">
+        SELECT COUNT(DISTINCT ac.ACCOMMODATION_ADMIN_NO)
+        FROM ACCOMMODATION ac
+        JOIN ROOM r ON ac.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
+        JOIN BASIC_RATE br ON r.ROOM_NO = br.ROOM_NO
+        <where>
+            <if test="mainSearch != null and !mainSearch.isEmpty()">
+                (ac.NAME LIKE CONCAT('%', #{mainSearch}, '%')
+                OR ac.ADDRESS LIKE CONCAT('%', #{mainSearch}, '%')
+                OR ac.ACCOMMODATION_TYPE LIKE CONCAT('%', #{mainSearch}, '%')
+                OR br.BASIC_RATE LIKE CONCAT('%', #{mainSearch}, '%'))
+            </if>
+            <if test="boardType != null and !boardType.isEmpty()">
+                AND ac.ACCOMMODATION_TYPE = #{boardType}
+            </if>
+        </where>
+    </select>
+
+
+    <!-- getList 쿼리 -->
+    <select id="getList" resultMap="placeResultMap">
+        SELECT ac.ACCOMMODATION_ADMIN_NO,
+        ac.NAME,
+        ac.ACCOMMODATION_TYPE,
+        ac.ADDRESS,
+        MIN(br.BASIC_RATE) AS BASIC_RATE
+        FROM ACCOMMODATION ac
+        JOIN ROOM r ON ac.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
+        JOIN BASIC_RATE br ON r.ROOM_NO = br.ROOM_NO
+        <where>
+            <if test="mainSearch != null and !mainSearch.isEmpty()">
+                (ac.NAME LIKE CONCAT('%', #{mainSearch}, '%')
+                OR ac.ADDRESS LIKE CONCAT('%', #{mainSearch}, '%')
+                OR ac.ACCOMMODATION_TYPE LIKE CONCAT('%', #{mainSearch}, '%')
+                OR br.BASIC_RATE LIKE CONCAT('%', #{mainSearch}, '%'))
+            </if>
+            <if test="boardType != null and !boardType.isEmpty()">
+                AND ac.ACCOMMODATION_TYPE = #{boardType}
+            </if>
+        </where>
+        GROUP BY ac.ACCOMMODATION_ADMIN_NO, ac.NAME, ac.ACCOMMODATION_TYPE, ac.ADDRESS
+    </select>
+
+    <select id="getFacilities" resultType="string">
+        SELECT f.FACILITY_NAME
+        FROM FACILITIES f
+        JOIN ACCOMMODATION ac ON f.ACCOMMODATION_ADMIN_NO = ac.ACCOMMODATION_ADMIN_NO
+        <where>
+            <if test="mainSearch != null and !mainSearch.isEmpty()">
+                (ac.NAME LIKE CONCAT('%', #{mainSearch}, '%')
+                OR ac.ADDRESS LIKE CONCAT('%', #{mainSearch}, '%')
+                OR ac.ACCOMMODATION_TYPE LIKE CONCAT('%', #{mainSearch}, '%'))
+            </if>
+            <if test="boardType != null and !boardType.isEmpty()">
+                AND ac.ACCOMMODATION_TYPE = #{boardType}
+            </if>
+        </where>
     </select>
 
 </mapper>
