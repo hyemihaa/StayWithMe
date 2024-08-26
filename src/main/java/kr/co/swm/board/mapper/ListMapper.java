@@ -25,5 +25,4 @@ public interface ListMapper {
   List<ListDTO> getList(SearchDTO searchDTO);
 
   List<String> getFacilities(SearchDTO searchDTO);
-
 }
