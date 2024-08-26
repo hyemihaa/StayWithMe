@@ -8,19 +8,19 @@ import lombok.Setter;
 public class WebDto {
 
 //  ==================  계정  ==================
+
     // 사용자 계정 정보
     private int userNo;
     private String userId;
     private String userName;
     private String userPhone;
-    private String userCreatDate;
-    private String userDeleteDate;
     private String userRoles;
 
     // 숙소 관리자 계정 정보
     private int sellerNo;
     private String sellerId;
-    private String sellerPwd;
+    private String sellerName;
+    private String sellerPhone;
     private String sellerRoles;
 
     // 웹서버 관리자 계정 정보
@@ -46,4 +46,21 @@ public class WebDto {
     private int cancellationCount;
     private int reservationCount;
 
+    private int monthlyRevenue;
+    private int dailyRevenue;
+
+    private String revenueMonth;
+
+//  ==================  쿠폰 정보  ==================
+    private int couponId;
+    private String couponCode;
+    private String couponName;
+    private String couponType;
+    private int couponDiscount;
+    private int couponQuantity;
+    private int couponUseQuantity;
+    private int couponLeftOver;
+    private String couponStartDate;
+    private String couponEndDate;
+    private int couponMinimumAmount;
 }

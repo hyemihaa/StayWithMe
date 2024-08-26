@@ -3,12 +3,11 @@ package kr.co.swm.member.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import kr.co.swm.config.auth.CustomUserDetailsService;
 import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.member.model.dto.AdminDTO;
-import kr.co.swm.member.model.dto.MemberDTO;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.member.model.service.MemberServiceImpl;
+import kr.co.swm.member.util.ClientIpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +15,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequiredArgsConstructor //final로 선언된 필드가 있다면, 이 필드들을 초기화하는 생성자를 자동으로 생성
 @Controller
+@RequiredArgsConstructor //final로 선언된 필드가 있다면, 이 필드들을 초기화하는 생성자를 자동으로 생성
 public class SignController {
 
     private final MemberServiceImpl memberServiceImpl;
@@ -43,7 +43,7 @@ public class SignController {
         Map<String, Object> response = new HashMap<>();
         try {
             // param에서 userPhone 키의 값 추출, 휴대전화 번호 저장
-            String phoneNumber = param.get("phoneNumber");
+             String phoneNumber = param.get("phoneNumber");
 
             // 인증번호 생성 요청
             String certificationCode = memberServiceImpl.generateCertificationCode();
@@ -115,9 +115,23 @@ public class SignController {
     // 첫 로그인 요청
     @PostMapping("/signin")
     public String signIn(@RequestParam(value = "userId") String userId, @RequestParam(value = "userPwd") String userPwd,@RequestParam(value = "role") String signRole,
-                         RedirectAttributes redirectAttributes, HttpServletResponse response) {
+                         HttpServletResponse response, HttpServletRequest request,
+                         RedirectAttributes redirectAttributes) {
         System.out.println("로그인 요청");
         System.out.println("로그인 요청" + signRole);
+
+        // 사용자 정보 조회
+        UserDTO user = memberServiceImpl.userInfo(userId);
+
+        // 관리자 계정 여부 확인
+        boolean isAdmin = "ROLE_SITE_ADMIN".equals(signRole) || "ROLE_ACCOMMODATION_ADMIN".equals(signRole);
+        System.out.println("as" + isAdmin);
+
+        // 사용자 탈퇴 여부 확인 (관리자는 무시)
+        if (!isAdmin && (user == null || "DELETED".equals(user.getUserStatus()))) {
+            redirectAttributes.addFlashAttribute("error", "탈퇴한 계정이거나 존재하지 않는 사용자 입니다.");
+            return "redirect:/signform";
+        }
 
         // 사용자 로그인 호출
         String token = memberServiceImpl.authenticate(userId, userPwd, response, signRole);
@@ -125,11 +139,28 @@ public class SignController {
         if (token != null) {
             String role = jwtUtil.getRoleFromToken(token);
             System.out.println("로그인 시도: " + role);  // 권한이 제대로 추출되는지 확인
+
+            if (!isAdmin) { // 일반 사용자일 경우에만 로그인 기록을 저장
+                // IP 주소 가져오기
+                Long userNo = jwtUtil.getUserNoFromToken(token);
+                String userIp = ClientIpUtil.getClientIp();
+
+                // 로그인 기록 저장
+                UserDTO userDTO = new UserDTO();
+                userDTO.setNo(userNo);
+                userDTO.setUserIp(userIp);
+                userDTO.setLastLoginDate(LocalDateTime.now()); // 현재시간
+
+                System.out.println("로그인 시도 IP: " + userIp); // **로그 추가** (IP 출력)
+                memberServiceImpl.saveLoginLog(userDTO); // 로그기록 저장
+            }
+
+            System.out.println("role : " + role);
             // 권한에 따라 리다이렉트할 페이지 결정
             if ("ROLE_SITE_ADMIN".equals(role)) {
-                return "redirect:/"; // 사이트 관리자 페이지로 리다이렉트
+                return "redirect:/web-center"; // 사이트 관리자 페이지로 리다이렉트
             } else if ("ROLE_ACCOMMODATION_ADMIN".equals(role)) {
-                return "redirect:/"; // 업소 관리자 페이지로 리다이렉트 ( 추후수정 )
+                return "redirect:/seller-main.do"; // 업소 관리자 페이지로 리다이렉트 ( 추후수정 )
             } else {
                 return "redirect:/"; // 일반 사용자 -> 메인
             }

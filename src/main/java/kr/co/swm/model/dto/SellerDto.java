@@ -28,6 +28,9 @@ public class SellerDto {
     private String accommodationAddress;
     private int accommodationViews;
 
+    private String viewsDate;
+    private int viewsCount;
+
     // 객실 정보
     private int roomNo;
     private int roomTypeNo;
@@ -58,6 +61,10 @@ public class SellerDto {
     private String reservationCancellationDate;
     private String reservationStatus;
     private String reservationType;
+
+    // 설정 파일
+    private String requestDetails;
+
 
     // 생성자
     public SellerDto() {

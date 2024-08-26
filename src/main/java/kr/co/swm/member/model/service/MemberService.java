@@ -2,8 +2,9 @@ package kr.co.swm.member.model.service;
 
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.swm.member.model.dto.AdminDTO;
-import kr.co.swm.member.model.dto.MemberDTO;
 import kr.co.swm.member.model.dto.UserDTO;
+
+import java.util.List;
 
 public interface MemberService {
     // 회원가입
@@ -32,4 +33,26 @@ public interface MemberService {
 
     // 비밀번호 찾기(임시 비밀번호 발급)
     String passwordReset(String userId, String userPhone);
+
+    // 마이페이지 정보 불러오기
+    UserDTO userInfo(String userId);
+
+    // 마이페이지 현재 비밀번호 일치 체크
+    boolean checkCurrentPassword(String userId, String currentPassword);
+
+    // 마이페이지 새비밀번호 설정
+    void updatePassword(String userId, String newPassword);
+
+    // 마이페이지 휴대전화 번호 변경
+    void updatePhoneNumber(String newPhone, String userId);
+
+    // 로그기록 저장
+    void saveLoginLog(UserDTO userDTO);
+
+    // 로그 기록 조회
+    List<UserDTO> loginLog(Long userNo);
+
+    // 회원 탈퇴
+    void updateUserStatus(String userId, String status, String withdrawalReason);
+
 }

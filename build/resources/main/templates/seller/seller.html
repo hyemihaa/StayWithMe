@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="utf-8">
     <title>Stay With Me</title>
@@ -22,27 +21,21 @@
 
     <!-- Template Stylesheet -->
     <link th:href="@{/css/seller/seller.css}" rel="stylesheet">
+    <link th:href="@{/css/seller/seller_table.css}" rel="stylesheet">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
-
 <body>
 <div class="container-xxl position-relative bg-white d-flex p-0">
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <!-- Spinner End -->
-
-
-    <!-- Sidebar Start -->
+    <!-- 사이드바 Start -->
     <div class="sidebar pe-4 pb-3">
         <nav class="navbar bg-light navbar-light">
             <a th:href="@{/seller-main.do}" class="navbar-brand mx-4 mb-3">
                 <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Stay With Me</h3>
             </a>
             <div class="navbar-nav w-100">
+                <!-- 대시보드 메뉴 -->
                 <a th:href="@{/seller-main.do}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>대시보드</a>
+                <!-- 숙소관리 드롭다운 -->
                 <div class="nav-item dropdown show">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>숙소관리</a>
                     <div class="dropdown-menu show bg-transparent border-0">
@@ -50,6 +43,7 @@
                         <a href="" class="dropdown-item">숙소수정</a>
                     </div>
                 </div>
+                <!-- 예약관리 드롭다운 -->
                 <div class="nav-item dropdown show">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-book me-2"></i>예약관리</a>
                     <div class="dropdown-menu show bg-transparent border-0">
@@ -58,13 +52,7 @@
                         <a th:href="@{/reservation-monthly.do}" class="dropdown-item">월별 현황보기</a>
                     </div>
                 </div>
-                <div class="nav-item dropdown show">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-calculator me-2"></i>정산관리</a>
-                    <div class="dropdown-menu show bg-transparent border-0">
-                        <a th:href="@{/settlement_status.do}" class="dropdown-item">정산현황</a>
-                        <a th:href="@{/sales_data.do}" class="dropdown-item">기간 별 매출자료</a>
-                    </div>
-                </div>
+                <!-- 판매 환경설정 드롭다운 -->
                 <div class="nav-item dropdown show">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-cog me-2"></i>판매 환경설정</a>
                     <div class="dropdown-menu show bg-transparent border-0">
@@ -72,31 +60,25 @@
                         <a th:href="@{/season-period.do}" class="dropdown-item">성수기/기간 관리</a>
                     </div>
                 </div>
-                <div class="nav-item dropdown show">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-sliders-h me-2"></i>기본 환경설정</a>
-                    <div class="dropdown-menu show bg-transparent border-0">
-                        <a th:href="@{/admin_settings.do}" class="dropdown-item">사업자/관리자/휴대폰</a>
-                    </div>
-                </div>
             </div>
         </nav>
     </div>
-    <!-- Sidebar End -->
+    <!-- 사이드바 End -->
 
-
-    <!-- Content Start -->
+    <!-- 메인 콘텐츠 Start -->
     <div class="content">
-        <!-- Navbar Start -->
+        <!-- 상단 내비게이션 바 Start -->
         <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-            <a href="./seller.html" class="navbar-brand d-flex d-lg-none me-4">
+            <a th:href="@{/seller-main.do}" class="navbar-brand d-flex d-lg-none me-4">
                 <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
             </a>
         </nav>
-        <!-- Navbar End -->
+        <!-- 상단 내비게이션 바 End -->
 
-        <!-- Sale & Revenue Start -->
+        <!-- 매출 및 수익 정보 Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="row g-4">
+                <!-- 사용자 조회수 카드 -->
                 <div class="col-sm-6 col-xl-3">
                     <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                         <i class="fa fa-chart-line fa-3x text-primary"></i>
@@ -106,6 +88,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- 예약 신청 카드 -->
                 <div class="col-sm-6 col-xl-3">
                     <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                         <i class="fa fa-chart-bar fa-3x text-primary"></i>
@@ -115,6 +98,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- 예약 취소 카드 -->
                 <div class="col-sm-6 col-xl-3">
                     <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                         <i class="fa fa-chart-area fa-3x text-primary"></i>
@@ -124,6 +108,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- 결제 금액 카드 -->
                 <div class="col-sm-6 col-xl-3">
                     <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                         <i class="fa fa-chart-pie fa-3x text-primary"></i>
@@ -135,9 +120,9 @@
                 </div>
             </div>
         </div>
-        <!-- Sale & Revenue End -->
+        <!-- 매출 및 수익 정보 End -->
 
-        <!-- Sales Chart Start -->
+        <!-- 월별 현황 차트 Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="row g-4">
                 <div class="col-sm-12 col-xl-12">
@@ -145,14 +130,15 @@
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <h6 class="mb-0">월별 현황</h6>
                         </div>
+                        <!-- 월별 현황 차트를 그릴 캔버스 -->
                         <canvas id="salse-revenue" style="max-height: 350px;"></canvas>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Sales Chart End -->
+        <!-- 월별 현황 차트 End -->
 
-        <!-- Recent Sales Start -->
+        <!-- 숙소 매출 현황 테이블 Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="bg-light text-center rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-4">
@@ -183,11 +169,9 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
-        <!-- Recent Sales End -->
-
+        <!-- 숙소 매출 현황 테이블 End -->
 
         <!-- Footer Start -->
         <div class="container-fluid pt-4 px-4">
@@ -197,7 +181,7 @@
                         &copy; <a href="#">Your Site Name</a>, All Right Reserved.
                     </div>
                     <div class="col-12 col-sm-6 text-center text-sm-end">
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        <!--/*** 템플릿 제작자 크레딧 유지 필요 ***/-->
                         Designed By <a href="https://htmlcodex.com">HTML Codex</a>
                         </br>
                         Distributed By <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
@@ -207,11 +191,7 @@
         </div>
         <!-- Footer End -->
     </div>
-    <!-- Content End -->
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <!-- 메인 콘텐츠 End -->
 </div>
 
 <!-- JavaScript Libraries -->
@@ -234,8 +214,8 @@
     var monthlyPaymentCounts = [[${monthlyPaymentCounts}]];
     /*]]>*/
 </script>
+
 <!-- Template Javascript -->
 <script th:src="@{js/seller/main.js}"></script>
 </body>
-
 </html>
