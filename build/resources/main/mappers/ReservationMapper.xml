@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.swm.reservation.mapper.ReservationMapper">
+
+    <resultMap id="couponInfo" type="kr.co.swm.model.dto.WebDto">
+        <result column="ID" property="couponId"></result>
+        <result column="COUPON_CODE" property="couponCode"></result>
+        <result column="COUPON_NAME" property="couponName"></result>
+        <result column="COUPON_TYPE" property="couponType"></result>
+        <result column="DISCOUNT" property="couponDiscount"></result>
+        <result column="COUPON_QUANTITY" property="couponQuantity"></result>
+        <result column="USE_QUANTITY" property="couponUseQuantity"></result>
+        <result column="LEFTOVER" property="couponLeftOver"></result>
+        <result column="COUPON_START" property="couponStartDate"></result>
+        <result column="COUPON_END" property="couponEndDate"></result>
+        <result column="MIN_PURCHASE_PRICE" property="couponMinimumAmount"></result>
+        <result column="COUPON_NO" property="couponNo"></result>
+        <result column="USE_YN" property="useYN"></result>
+    </resultMap>
+
+    <select id="couponList" resultMap="couponInfo">
+        SELECT coupon_name, c.id from coupon_list cl
+        join coupon c ON cl.coupon_code = c.id
+    </select>
+
+    <select id="getDiscount" resultMap="couponInfo">
+        select DISCOUNT,COUPON_TYPE from coupon
+        where id = #{couponId}
+    </select>
+
+</mapper>
+
