@@ -1,21 +1,20 @@
 package kr.co.swm.adminPage.accommodation.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import kr.co.swm.adminPage.accommodation.model.dto.AccommodationDto;
 import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.adminPage.accommodation.model.dto.RoomForm;
 import kr.co.swm.adminPage.accommodation.model.service.AccommodationServiceImpl;
 import kr.co.swm.adminPage.accommodation.util.UploadFile;
+import kr.co.swm.jwt.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
@@ -26,12 +25,14 @@ import java.util.Map;
 public class AccommodationController {
 
     private final UploadFile uploadFile;
+    private final JWTUtil jwtUtil;
     private final AccommodationServiceImpl accommodationService;
 
     @Autowired
-    public AccommodationController(UploadFile uploadFile, AccommodationServiceImpl accommodationService) {
+    public AccommodationController(UploadFile uploadFile, AccommodationServiceImpl accommodationService, JWTUtil jwtUtil) {
         this.uploadFile = uploadFile;
         this.accommodationService = accommodationService;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("/")
@@ -40,10 +41,18 @@ public class AccommodationController {
     }
 
     @GetMapping("/enroll")
-    public String enroll(Model model) {
+    public String enroll(HttpServletRequest request, Model model, @CookieValue(value = "Authorization", required = false) String token) {
         System.out.println("in");
 
         model.addAttribute("location", new AccommodationDto());
+
+        // 사용자 이름 설정
+        String userId = jwtUtil.getUserIdFromToken(token);
+        model.addAttribute("userId", userId);
+
+        String currentUrl = request.getRequestURI();
+        model.addAttribute("currentUrl", currentUrl);
+
         return "accommodation/enroll";
     }
 

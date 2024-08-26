@@ -9434,6 +9434,37 @@ textarea.form-control {
 
 
 
+/* 토글 버튼 */
+.toggle {
+}
+
+/* 옵션 버튼들을 감싸는 부모 div */
+.option_box {
+    display: flex;
+    flex-wrap: wrap;  /* 버튼들이 영역 내에서 자동으로 줄바꿈되게 설정 */
+    gap: 10px;  /* 버튼 간의 간격 설정 */
+}
+
+/* 개별 버튼의 스타일 */
+.option_box .toggle-label {
+    padding: 5px 5px;  /* 버튼 내 여백 설정 */
+    background-color: #f0f0f0;  /* 버튼 배경색 */
+    border-radius: 5px;  /* 모서리 둥글게 설정 */
+    white-space: nowrap;  /* 텍스트 줄바꿈 방지 */
+    text-align: center;  /* 텍스트 가운데 정렬 */
+    cursor: pointer;  /* 마우스 포인터 변경 */
+}
+
+.option_box .toggle-input {
+    display: none;  /* 기본 체크박스 숨김 */
+}
+
+.option_box .toggle-input:checked ~ .toggle-label {
+    background-color: #3498db;  /* 체크된 상태에서의 배경색 */
+    color: #fff;  /* 체크된 상태에서의 텍스트 색 */
+}
+
+
 
 
 /* 상품 상세 영역[tour(리스트)&hotel-single(상세페이지)] */
