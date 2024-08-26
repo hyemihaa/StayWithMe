@@ -16,10 +16,6 @@
         <result column="MIN_PURCHASE_PRICE" property="couponMinimumAmount"></result>
     </resultMap>
 
-    <resultMap id="userCoupon" type="kr.co.swm.coupon.model.dto.CouponListDto">
-        <result column="USE_YN" property="useYN"></result>
-    </resultMap>
-
     <select id="couponList" resultMap="couponInfo">
         SELECT coupon_name, coupon_type, discount, coupon_start, coupon_end, min_purchase_price, id, coupon_type
         from coupon
