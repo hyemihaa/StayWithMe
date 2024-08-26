@@ -62,10 +62,10 @@ public class DetailServiceImpl implements DetailService{
     }
 
     // 하단 관련 항목
-//    @Override
-//    public List<DetailDTO> getSubPlace() {
-//        return detailMapper.getSubPlace();
-//    }
+    @Override
+    public List<DetailDTO> getSubPlace(int boardNo) {
+        return detailMapper.getSubPlace(boardNo);
+    }
 
 
 }

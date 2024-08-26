@@ -13,7 +13,6 @@ public class ListDTO {
     private String boardType;    //  객실 유형(호텔/모텔/펜션 etc..)
     private int boardRating;    //  숙박 별점
     private String boardAddress;    //  숙박 주소
-    private String boardPost; //  우편번호
     private String boardCheckIn;   //  체크인 시간
     private int boardCount; //  최저 기본 가격
 

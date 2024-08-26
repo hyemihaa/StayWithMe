@@ -9138,7 +9138,10 @@ textarea.form-control {
 .sidebar-wrap {
   padding: 20px;
   border: 1px solid #e6e6e6;
-  margin-bottom: 30px; }
+  margin-bottom: 30px;
+    position: sticky;
+    top: 150px;
+    }
   .sidebar-wrap .heading {
     font-size: 30px;
     text-transform: uppercase; }
@@ -9506,9 +9509,9 @@ textarea.form-control {
     padding: 10px;
     background-color: #f0f0f0;
     border-radius: 5px;
-    margin-right: 10px;
+    margin: 5px;
     height: 30px;
-    width: 70px;
+    width: 95px;
     line-height: 10px;
     float: left;
 }

@@ -72,9 +72,4 @@ public class ListController {
 
     }
 }
-//        for(ListDTO item : place) {
-//            System.out.println("========== Controller Detail List ==========");
-//            System.out.println("Board Name : " + item.getBoardName());
-//            System.out.println("Board Room Type : " + item.getBoardNo());
-//            System.out.println("=============================================");
-//        }
+
