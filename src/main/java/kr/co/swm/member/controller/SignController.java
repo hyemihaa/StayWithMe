@@ -174,7 +174,7 @@ public class SignController {
     @GetMapping("/logout-success")
     public String logoutSuccess(Model model) {
         model.addAttribute("logoutMessage", "로그아웃 되었습니다.");
-        return "/index";
+        return "index";
     }
 
     // 아이디 찾기 & 비밀번호 찾기 페이지 이동

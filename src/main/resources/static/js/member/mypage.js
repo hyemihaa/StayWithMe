@@ -281,6 +281,7 @@ function renderReservation(reservation) {
 
     if (reservation.length === 0) {
         noReservation.style.display = 'block'; // 예약이 없을 때 메시지 보이기
+        reservationList.style.display = 'none';
     } else {
         noReservation.style.display = 'none'; // 예약이 있을 때 메시지 숨기기
         reservation.forEach(function(reservation) {
