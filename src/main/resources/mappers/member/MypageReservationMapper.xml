@@ -33,6 +33,8 @@
     <select id="getUserReservation" resultMap="UserReservation">
         SELECT
         re.BOOKING_NO,
+        re.ROOM_NO,
+        r.ACCOMMODATION_ADMIN_NO,
         a.NAME,
         r.ROOM_NAME AS room_name,
         re.CHECK_IN_DATE,

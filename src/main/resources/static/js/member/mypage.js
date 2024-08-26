@@ -268,7 +268,7 @@ function loadReservations() {
     });
 }
 
-// 쿠폰 데이터 렌더링
+// 예약 데이터 렌더링
 function renderReservation(reservation) {
     var reservationList = document.querySelector('#reservation .reservation-list');
     var noReservation = document.querySelector('#reservation .no-reservation');
@@ -303,7 +303,7 @@ function renderReservation(reservation) {
                            </p>
                            <div class="button-group" style="float: right;">
                                 <button class="btn-danger" onclick="cancelReservation(${reservation.reserveRoomNo})">예약 취소</button>
-                                <button class="btn-primary" onclick="viewReservationDetails(${reservation.reserveRoomNo})">예약 상세</button>
+                                <button class="btn-primary" onclick="viewReservationDetails(${reservation.accommodationNo})">예약 상세</button>
                            </div>
                        </div>
                   </div>
@@ -312,7 +312,14 @@ function renderReservation(reservation) {
         });
     }
 }
+  // 예약 상세 페이지로 이동
+    function viewReservationDetails(accommodationNo) {
+    // 상세 페이지 URL 생성
+    const url = `/hotel-single?boardNo=${accommodationNo}`;
 
+    // 해당 URL로 이동
+    window.location.href = url;
+    }
 
 
 // DOMContentLoaded 이벤트 리스너 내부의 코드
