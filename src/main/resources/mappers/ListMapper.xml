@@ -153,6 +153,7 @@
         FROM ACCOMMODATION ac
         JOIN ROOM r ON ac.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
         JOIN BASIC_RATE br ON r.ROOM_NO = br.ROOM_NO
+        LEFT JOIN RESERVE rs ON rs.ROOM_NO = r.ROOM_NO
         <where>
             <if test="mainSearch != null and !mainSearch.isEmpty()">
                 (ac.NAME LIKE CONCAT('%', #{mainSearch}, '%')
@@ -163,9 +164,13 @@
             <if test="boardType != null and !boardType.isEmpty()">
                 AND ac.ACCOMMODATION_TYPE = #{boardType}
             </if>
+            <if test="checkInDate != null and !checkInDate.isEmpty() and checkOutDate != null and !checkOutDate.isEmpty()">
+                AND (rs.CHECK_IN_DATE IS NULL OR rs.CHECK_IN_DATE &gt; #{checkOutDate} OR rs.CHECK_OUT_DATE &lt; #{checkInDate})
+            </if>
         </where>
         GROUP BY ac.ACCOMMODATION_ADMIN_NO, ac.NAME, ac.ACCOMMODATION_TYPE, ac.ADDRESS
     </select>
+
 
     <select id="getFacilities" resultType="string">
         SELECT f.FACILITY_NAME

@@ -84,7 +84,4 @@ public class ListServiceImpl implements ListService {
         List<String> facilities = listMapper.getFacilities(searchDTO);
         return facilities.stream().distinct().collect(Collectors.toList());
     }
-
-
-
 }

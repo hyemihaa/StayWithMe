@@ -84,7 +84,7 @@ public class ListController {
 
         PageInfoDTO pi = pagenation.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 
-        // 업소 리스트 조회
+        // 날짜 기준 필터링 된 업소 리스트 조회
         List<ListDTO> place = listService.getList(searchDTO);
 
         // 최소 기본 가격
@@ -104,7 +104,5 @@ public class ListController {
 
         return "tour";  // 리스트 페이지로 이동
     }
-
-
 
 }

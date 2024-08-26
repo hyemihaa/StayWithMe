@@ -19,4 +19,6 @@ public class SearchDTO {
      private List<String> options;
 
      private String mainSearch;
+     private String checkInDate;
+     private String checkOutDate;
 }
