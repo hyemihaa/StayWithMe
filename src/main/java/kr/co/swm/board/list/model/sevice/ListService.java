@@ -18,4 +18,10 @@ public interface ListService {
     //  최저 기본 가격
     List<ListDTO> getCost();
 
+    // 게시물 수 조회
+    int getListCount(SearchDTO searchDTO);
+    // 게시물 데이터 조회
+    List<ListDTO> getList(SearchDTO searchDTO);
+    // 부가시설 조회
+    List<String> getFacilities(SearchDTO searchDTO);
 }
