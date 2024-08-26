@@ -10,6 +10,9 @@
         <result column="PHONE" property="accommodationPhone"/>
         <result column="POST_NO" property="accommodationPost"/>
         <result column="ADDRESS" property="accommodationAddress"/>
+        <result column="LAT" property="lat"/>
+        <result column="LNG" property="lng"/>
+        <result column="INFO" property="accommodationInfo"/>
 
         <result column="VIEWS_DATE" property="viewsDate"/>
         <result column="VIEWS_COUNT" property="viewsCount"/>
@@ -24,13 +27,18 @@
         <result column="STANDARD_OCCUPANCY" property="roomPersonnel"/>
         <result column="MAX_OCCUPANCY" property="roomMaxPersonnel"/>
 
+        <result column="BASIC_RATE_NO" property="roomRateNo"/>
+        <result column="DAY_NO" property="basicDayNo"/>
+        <result column="RATE" property="basicRate"/>
+
+
     </resultMap>
     <insert id="enrollAccommodation">
         INSERT INTO accommodation VALUES (
                      #{no},
                      #{accommodation.accommodationName},
-                     #{accommodation.accommodationPhone},
                      #{accommodation.accommodationType},
+                     #{accommodation.accommodationPhone},
                      #{accommodation.roadName},
                      #{accommodation.region},
                      #{accommodation.lat},
@@ -119,6 +127,21 @@
     <select id="accommodationList" resultMap="accommodation">
         select * from accommodation a
         where a.ACCOMMODATION_ADMIN_NO = #{sellerKey}
+    </select>
+
+    <select id="roomsList" resultMap="accommodation">
+        select * from room r
+        where ACCOMMODATION_ADMIN_NO = #{sellerKey}
+    </select>
+
+    <select id="getRates" resultMap="accommodation">
+        select * from basic_rate
+        where room_no = #{roomNo}
+    </select>
+
+    <select id="getFacilities" parameterType="Long" resultType="string">
+        SELECT facility_name from facilities
+        where accommodation_admin_no = #{sellerKey}
     </select>
 </mapper>
 

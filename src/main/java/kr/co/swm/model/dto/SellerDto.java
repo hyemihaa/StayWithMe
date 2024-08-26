@@ -1,5 +1,6 @@
 package kr.co.swm.model.dto;
 
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,9 +27,14 @@ public class SellerDto {
     private String accommodationPhone;
     private String accommodationPost;
     private String accommodationAddress;
-    private int accommodationViews;
-    private double lat;
-    private double lng;
+    private String accommodationInfo;
+
+    private String roadName;
+    private String region;
+    private double lat;     // 위도
+    private double lng;     // 경도
+
+    private List<String> accommodationFacilities;
 
     private String viewsDate;
     private int viewsCount;
@@ -42,6 +48,10 @@ public class SellerDto {
     private String roomCheckOut;
     private int roomPersonnel;
     private int roomMaxPersonnel;
+    private String roomCategory;
+    private int roomValues;                  // 동일 객실 개수
+    private List<Integer> roomCount;         // 객실 개수
+    private int endIndex;                    // 객실별 이미지 개수
 
     // 객실 요금 정보
     private int roomRateNo;
@@ -74,6 +84,45 @@ public class SellerDto {
         this.roomName = "";
         this.extraRates = new ArrayList<>();
     }
+
+
+    public SellerDto changeRate(int weekdayRate, int fridayRate, int saturdayRate, int sundayRate) {
+        this.weekdayRate = weekdayRate;
+        this.fridayRate = fridayRate;
+        this.saturdayRate = saturdayRate;
+        this.sundayRate = sundayRate;
+        return this;
+    }
+
+    public int getCategoryNo(SellerDto room, int categoryNo) {
+        if ("오션뷰".equals(room.getRoomCategory())) {
+            categoryNo = 1;
+        } else if ("리버뷰".equals(room.getRoomCategory())) {
+            categoryNo = 2;
+        } else if ("시티뷰".equals(room.getRoomCategory())) {
+            categoryNo = 3;
+        } else if ("마운틴뷰".equals(room.getRoomCategory())) {
+            categoryNo = 4;
+        }
+
+        return categoryNo;
+    }
+
+    public String changeCategoryNo(SellerDto room, int categoryNo) {
+        System.out.println("nopp : " + categoryNo);
+        if (categoryNo == 1) {
+            room.setRoomTypeName("오션뷰");
+        } else if (categoryNo == 2) {
+            room.setRoomTypeName("리버뷰");
+        } else if (categoryNo == 3) {
+            room.setRoomTypeName("시티뷰");
+        } else if (categoryNo == 4) {
+            room.setRoomTypeName("마운틴뷰");
+        }
+        System.out.println("kkk : " + room.getRoomTypeName());
+        return room.getRoomTypeName();
+    }
+
 
 // □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 // □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
@@ -111,6 +160,10 @@ public class SellerDto {
         }
 
     }
+
+// □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+// □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
 }
 
 
