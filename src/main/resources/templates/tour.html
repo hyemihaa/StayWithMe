@@ -47,13 +47,13 @@
 							<br>
 							<div class="form-group">
 								<div class="select-wrap one-third">
-									<input type="radio" th:field="*{type}" name="accommodation" value="전체" id="전체" ><label
+									<input type="radio" th:field="*{boardType}" name="accommodation" value="전체" id="전체" ><label
 										for="전체">전체</label><br>
-									<input type="radio" th:field="*{type}" name="accommodation" value="호텔" id="호텔"  ><label
+									<input type="radio" th:field="*{boardType}" name="accommodation" value="호텔" id="호텔"  ><label
 										for="호텔">호텔</label><br>
-									<input type="radio" th:field="*{type}" name="accommodation" value="리조트" id="리조트"  ><label
+									<input type="radio" th:field="*{boardType}" name="accommodation" value="리조트" id="리조트"  ><label
 										for="호텔">리조트</label><br>
-									<input type="radio" th:field="*{type}" name="accommodation" value="펜션" id="펜션" ><label
+									<input type="radio" th:field="*{boardType}" name="accommodation" value="펜션" id="펜션" ><label
 										for="펜션">펜션</label><br>
 								</div>
 							</div>
@@ -63,74 +63,27 @@
 								<h5>가격</h5>
 								<br>
 								<div class="range-slider">
-										<span>
-											<input type="number" style="width:80px;" th:field="*{minRate}" value="0" min="0" max="1000000" />원&nbsp-
-											<input type="number" style="width:80px;" th:field="*{maxRate}" value="1000000" min="0" max="1000000" />원
-										</span>
+									<span>
+										<input type="number" style="width:80px;" th:field="*{minRate}" value="0" min="0" max="1000000" />원&nbsp-
+										<input type="number" style="width:80px;" th:field="*{maxRate}" value="1000000" min="0" max="1000000" />원
+									</span>
 									<input value="0" min="0" max="1000000" step="1000" type="range" />
 									<input value="1000000" min="0" max="1000000" step="1000" type="range" />
 								</div>
 							</div>
+
 							<!-- 옵션 선택영역  -->
 							<h5>옵션</h5>
-							<br>
-								<div class="form-group" style="height:300px;">
-                                    <div class="toggle">
-                                        <input type="checkbox" name="options" th:field="*{options}" value="wifi" id="wifi" class="toggle-input" >
-                                        <label for="wifi" class="toggle-label">Wi-Fi</label>
-                                    </div>
+							<div class="form-group option_box">
+								<div th:each="facility : ${uniqueFacilities}">
 									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="주차장" id="parking" class="toggle-input" >
-										<label for="parking" class="toggle-label">주차장</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="수영장" id="pool" class="toggle-input" >
-										<label for="pool" class="toggle-label">수영장</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="헬스장" id="gym" class="toggle-input" >
-										<label for="gym" class="toggle-label">헬스장</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="레스토랑" id="restaurant" class="toggle-input" >
-										<label for="restaurant" class="toggle-label">레스토랑</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="취사 가능" id="bar" class="toggle-input" >
-										<label for="bar" class="toggle-label">취사 가능</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="세탁실" id="laundry" class="toggle-input" >
-										<label for="laundry" class="toggle-label">세탁실</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="스파" id="spa" class="toggle-input">
-										<label for="spa" class="toggle-label">스파</label>
-									</div>
-									<div class="toggle">
-									<input type="checkbox" name="options" th:field="*{options}" value="룸 서비스" id="room_service" class="toggle-input">
-									<label for="room_service" class="toggle-label">룸 서비스</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="카페" id="concierge" class="toggle-input">
-										<label for="concierge" class="toggle-label">카페</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="반려동물" id="pet_friendly" class="toggle-input">
-										<label for="pet_friendly" class="toggle-label">반려동물</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="바베큐" id="BBQ" class="toggle-input">
-										<label for="BBQ" class="toggle-label">바베큐</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="라운지" id="lounge" class="toggle-input">
-										<label for="lounge" class="toggle-label">라운지</label>
+										<input type="checkbox" name="options" th:field="*{options}" th:value="${facility}" th:id="${facility}" class="toggle-input">
+										<label th:for="${facility}" th:text="${facility}" class="toggle-label"></label>
 									</div>
 								</div>
-									<script th:src="@{js/toggle.js}"></script>
 								<!-- 서치 버튼 -->
-							<div class="form-group">
+							</div>
+								<div class="form-group option_box">
 								<input type="submit" value="Search" class="btn btn-primary py-3 px-5">
 							</div>
 						</div>
@@ -141,7 +94,6 @@
 
 
 			<!-- 숙박 상품 리스트 -->
-
 			<div class="col-lg-9">
 				<div class="col-md-4 ftco-animate">
 					<div class="col-md-6">
