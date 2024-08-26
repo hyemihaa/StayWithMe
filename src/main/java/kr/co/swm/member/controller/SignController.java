@@ -154,6 +154,7 @@ public class SignController {
                 memberServiceImpl.saveLoginLog(userDTO); // 로그기록 저장
             }
 
+            System.out.println("role : " + role);
             // 권한에 따라 리다이렉트할 페이지 결정
             if ("ROLE_SITE_ADMIN".equals(role)) {
                 return "redirect:/web-center"; // 사이트 관리자 페이지로 리다이렉트

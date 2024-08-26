@@ -52,7 +52,7 @@ public class WebDto {
     private String revenueMonth;
 
 //  ==================  쿠폰 정보  ==================
-    private String couponId;
+    private int couponId;
     private String couponCode;
     private String couponName;
     private String couponType;
@@ -63,5 +63,4 @@ public class WebDto {
     private String couponStartDate;
     private String couponEndDate;
     private int couponMinimumAmount;
-
 }
