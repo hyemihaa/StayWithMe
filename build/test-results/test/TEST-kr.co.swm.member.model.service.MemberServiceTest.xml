@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="kr.co.swm.member.model.service.MemberServiceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-08-24T18:51:05" hostname="abcui-MacBookPro.local" time="0.125">
+  <properties/>
+  <testcase name="testSendSMSViaCoolSMS()" classname="kr.co.swm.member.model.service.MemberServiceTest" time="0.125"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
