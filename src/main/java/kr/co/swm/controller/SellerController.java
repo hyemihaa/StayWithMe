@@ -1,6 +1,7 @@
 package kr.co.swm.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.service.SellerServiceImpl;
@@ -30,13 +31,20 @@ public class SellerController {
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
-
+    /**
+     * 대시보드 메인 화면을 로드하여 사용자에게 보여줌
+     *
+     * @param model   View에 데이터를 전달하기 위한 모델 객체
+     * @param token   사용자 인증을 위한 JWT 토큰
+     * @return 대시보드 뷰 이름
+     */
     @GetMapping("/seller-main.do")
-    public String mainDashBoard(Model model, @CookieValue(value = "Authorization", required = false) String token) {
+    public String mainDashBoard(HttpServletRequest request, Model model, @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
+        Long accommodationNo = jwtUtil.getAccommAdminKeyFromToken(token);
 
+        // 디버깅 용으로 관리자 번호 출력
         System.out.println("------------------------------------------");
         System.out.println("Accommodation No: " + accommodationNo);
         System.out.println("------------------------------------------");
@@ -87,7 +95,7 @@ public class SellerController {
         int netAmount = todayTotalAmount - todayCancelledAmount;
         model.addAttribute("netAmount", netAmount);
 
-        // 예약 타입 결정 (오늘 예약이 없으면 N/A)
+        // 예약 타입 결정 (오늘 예약이 없으면 "N/A")
         String reservationType = todayList.isEmpty() ? "N/A" : todayList.get(0).getReservationType();
         model.addAttribute("reservationType", reservationType);
 
@@ -133,21 +141,27 @@ public class SellerController {
         model.addAttribute("monthlyCancelCounts", new ArrayList<>(monthlyCancelCounts.values()));
         model.addAttribute("monthlyPaymentCounts", new ArrayList<>(monthlyPaymentCounts.values()));
 
-        // 사용자 이름
+        // 사용자 이름 설정
         String userId = jwtUtil.getUserIdFromToken(token);
         model.addAttribute("userId", userId);
+
+        addCurrentUrlToModel(request, model);
 
         return "seller/seller"; // 뷰 이름 반환
     }
 
-
-
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
-    // 예약 리스트 페이지 로드
+    /**
+     * 예약 리스트 페이지 로드
+     *
+     * @param model   View에 데이터를 전달하기 위한 모델 객체
+     * @param token   사용자 인증을 위한 JWT 토큰
+     * @return 예약 리스트 뷰 이름
+     */
     @GetMapping("/reservation.do")
-    public String reservation(Model model, @CookieValue(value = "Authorization", required = false) String token) {
+    public String reservation(HttpServletRequest request, Model model, @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
         Long accommodationNo = jwtUtil.getAccommAdminKeyFromToken(token);
@@ -160,6 +174,7 @@ public class SellerController {
                 .sorted(Comparator.comparing(SellerDto::getReserveCheckIn))
                 .collect(Collectors.toList());
 
+        // 디버깅 용으로 예약 정보를 출력
         for (SellerDto item : sortedReservation) {
             System.out.println();
             System.out.println("= = = = = = reservation controller = = = = = =");
@@ -178,16 +193,30 @@ public class SellerController {
 
         model.addAttribute("reservation", sortedReservation);
 
-        // 사용자 이름
+        // 사용자 이름 설정
         String userId = jwtUtil.getUserIdFromToken(token);
         model.addAttribute("userId", userId);
 
-        return "seller/reservation";
+        addCurrentUrlToModel(request, model);
+
+        return "seller/reservation"; // 뷰 이름 반환
     }
 
-    // 특정 검색 조건으로 예약 리스트 조회
+    /**
+     * 특정 검색 조건으로 예약 리스트 조회
+     *
+     * @param dateType           검색 기준이 되는 날짜 유형 (예약일, 입실일 등)
+     * @param startDate          검색 시작 날짜
+     * @param endDate            검색 종료 날짜
+     * @param searchKeyword      검색어
+     * @param reservationStatus  예약 상태
+     * @param token              사용자 인증을 위한 JWT 토큰
+     * @param model              View에 데이터를 전달하기 위한 모델 객체
+     * @return 검색된 예약 리스트 뷰 이름
+     */
     @PostMapping("/reservation-search.do")
-    public String reservationSearch(@RequestParam(value = "dateType", required = false) String dateType,
+    public String reservationSearch(HttpServletRequest request,
+                                    @RequestParam(value = "dateType", required = false) String dateType,
                                     @RequestParam(value = "startDate", required = false) String startDate,
                                     @RequestParam(value = "endDate", required = false) String endDate,
                                     @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
@@ -195,6 +224,7 @@ public class SellerController {
                                     @CookieValue(value = "Authorization", required = false) String token,
                                     Model model) {
 
+        // 검색 조건 디버깅 출력
         System.out.println("<<<<<<<<<<<< 입력값 확인 디버깅 >>>>>>>>>>>>>>");
         System.out.println("dateType: " + dateType);
         System.out.println("startDate: " + startDate);
@@ -204,7 +234,7 @@ public class SellerController {
         System.out.println("============================================");
 
         // 관리자 번호(업소키)
-        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
+        Long accommodationNo = jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 예약 및 결제 정보 가져오기
         List<SellerDto> reservationSearch = seller.reservationSearch(accommodationNo, dateType, startDate, endDate, searchKeyword, reservationStatus);
@@ -214,6 +244,7 @@ public class SellerController {
                 .sorted(Comparator.comparing(SellerDto::getReserveCheckIn))
                 .collect(Collectors.toList());
 
+        // 디버깅 용으로 예약 검색 결과 출력
         for (SellerDto item : sortedReservationSearch) {
             System.out.println();
             System.out.println("= = = = reservationSearch controller = = = = =");
@@ -238,23 +269,34 @@ public class SellerController {
         model.addAttribute("searchKeyword", searchKeyword);
         model.addAttribute("reservationStatus", reservationStatus);
 
-        // 사용자 이름
+        // 사용자 이름 설정
         String userId = jwtUtil.getUserIdFromToken(token);
         model.addAttribute("userId", userId);
 
-        return "seller/reservation";
+        addCurrentUrlToModel(request, model);
+
+        return "seller/reservation"; // 뷰 이름 반환
     }
 
-
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
-    // 일별 현황 조회
+    /**
+     * 일별 현황 조회 페이지 로드
+     *
+     * @param date    선택된 날짜
+     * @param model   View에 데이터를 전달하기 위한 모델 객체
+     * @param token   사용자 인증을 위한 JWT 토큰
+     * @return 일별 현황 뷰 이름
+     */
     @GetMapping("/reservation-daily.do")
-    public String reservationDaily(@RequestParam(value = "date", required = false) String date, Model model, @CookieValue(value = "Authorization", required = false) String token) {
+    public String reservationDaily(HttpServletRequest request,
+                                   @RequestParam(value = "date", required = false) String date,
+                                   @CookieValue(value = "Authorization", required = false) String token,
+                                   Model model) {
 
         // 관리자 번호(업소키)
-        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
+        Long accommodationNo = jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 선택된 날짜가 없으면 오늘 날짜로 설정
         LocalDate selectedDate = (date == null) ? LocalDate.now() : LocalDate.parse(date);
@@ -293,25 +335,33 @@ public class SellerController {
         // 업데이트된 객실 정보를 모델에 추가하여 뷰에 전달
         model.addAttribute("roomData", roomData);
 
-        // 사용자 이름
+        // 사용자 이름 설정
         String userId = jwtUtil.getUserIdFromToken(token);
         model.addAttribute("userId", userId);
 
+        addCurrentUrlToModel(request, model);
+
         // 예약 상태가 반영된 뷰 페이지를 반환
-        return "seller/reservation_daily";
+        return "seller/reservation_daily"; // 뷰 이름 반환
     }
 
-
-
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
-    // 월별 현황 조회
+    /**
+     * 월별 현황 조회 페이지 로드
+     *
+     * @param model   View에 데이터를 전달하기 위한 모델 객체
+     * @param token   사용자 인증을 위한 JWT 토큰
+     * @return 월별 현황 뷰 이름
+     */
     @GetMapping("/reservation-monthly.do")
-    public String reservationMonthly(Model model, @CookieValue(value = "Authorization", required = false) String token) {
+    public String reservationMonthly(HttpServletRequest request,
+                                     Model model,
+                                     @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
+        Long accommodationNo = jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 관리자 보유 객실 조회
         List<SellerDto> accommodationRoomData = seller.accommodationRoomData(accommodationNo);
@@ -319,21 +369,31 @@ public class SellerController {
         // 해당 데이터를 페이지 로드시에 Thymeleaf 템플릿으로 전달
         model.addAttribute("accommodationRoomData", accommodationRoomData);
 
-        // 사용자 이름
+        // 사용자 이름 설정
         String userId = jwtUtil.getUserIdFromToken(token);
         model.addAttribute("userId", userId);
+
+        addCurrentUrlToModel(request, model);
 
         return "seller/reservation_monthly";  // 뷰 이름 반환
     }
 
-    // 비동기 요청 처리
+    /**
+     * 비동기 요청으로 월별 데이터 조회
+     *
+     * @param model   View에 데이터를 전달하기 위한 모델 객체
+     * @param token   사용자 인증을 위한 JWT 토큰
+     * @return 월별 데이터 (JSON)
+     */
     @GetMapping("/reservation-monthly-data")
     @ResponseBody
-    public Map<String, Object> getReservationMonthlyData(Model model, @CookieValue(value = "Authorization", required = false) String token) {
+    public Map<String, Object> getReservationMonthlyData(HttpServletRequest request,
+                                                         Model model,
+                                                         @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
-        
+        Long accommodationNo = jwtUtil.getAccommAdminKeyFromToken(token);
+
         // 관리자 보유 객실 조회
         List<SellerDto> accommodationRoomData = seller.accommodationRoomData(accommodationNo);
 
@@ -349,27 +409,32 @@ public class SellerController {
         System.out.println("Accommodation Room Data: " + accommodationRoomData);
         System.out.println("Monthly Data: " + monthlyData);
 
-        // 사용자 이름
+        // 사용자 이름 설정
         String userId = jwtUtil.getUserIdFromToken(token);
         model.addAttribute("userId", userId);
+
+        addCurrentUrlToModel(request, model);
 
         return result;  // JSON으로 반환
     }
 
-
-
-
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
-
-
-    // 요금 페이지 로드(객실 이름 리스트 조회)
+    /**
+     * 요금 페이지 로드 (객실 이름 리스트 조회)
+     *
+     * @param model   View에 데이터를 전달하기 위한 모델 객체
+     * @param token   사용자 인증을 위한 JWT 토큰
+     * @return 요금 페이지 뷰 이름
+     */
     @GetMapping("/basic-rate-list.do")
-    public String basicList(Model model, @CookieValue(value = "Authorization", required = false) String token) {
+    public String basicList(HttpServletRequest request,
+                            Model model,
+                            @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
+        Long accommodationNo = jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 객실 이름 조회 호출(Service)
         List<String> roomName = seller.roomNameSearch(accommodationNo);
@@ -377,20 +442,32 @@ public class SellerController {
         // 조회 데이터 전달
         model.addAttribute("roomNameList", roomName);
 
-        // 사용자 이름
+        // 사용자 이름 설정
         String userId = jwtUtil.getUserIdFromToken(token);
         model.addAttribute("userId", userId);
 
-        return "seller/basic_rate";
+        addCurrentUrlToModel(request, model);
+
+        return "seller/basic_rate"; // 뷰 이름 반환
     }
 
-    // 선택 된 ROOM NAME 요금 조회
+    /**
+     * 선택된 ROOM NAME 요금 조회 (비동기 처리)
+     *
+     * @param model    View에 데이터를 전달하기 위한 모델 객체
+     * @param roomName 선택된 객실 이름
+     * @param token    사용자 인증을 위한 JWT 토큰
+     * @return 선택된 객실의 요금 정보 (JSON)
+     */
     @GetMapping("/getRoomRates")
     @ResponseBody
-    public Map<String, Object> rateSearch(Model model, @RequestParam("roomName") String roomName, @CookieValue(value = "Authorization", required = false) String token) {
+    public Map<String, Object> rateSearch(HttpServletRequest request,
+                                          Model model,
+                                          @RequestParam("roomName") String roomName,
+                                          @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
+        Long accommodationNo = jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 기본 요금 조회
         List<SellerDto> basicRateList = seller.basicRateList(roomName, accommodationNo);
@@ -398,8 +475,8 @@ public class SellerController {
         // 추가 요금 조회
         List<SellerDto> extraRateList = seller.extraRateList(roomName, accommodationNo);
 
+        // 추가 요금 디버깅 출력
         for (SellerDto extraRate : extraRateList) {
-
             List<SellerDto.ExtraDto> extraRates = extraRate.getExtraRates();
             for (SellerDto.ExtraDto extraDto : extraRates) {
                 System.out.println("====================================================");
@@ -418,16 +495,26 @@ public class SellerController {
         response.put("basicRates", basicRateList.isEmpty() ? null : basicRateList.get(0));
         response.put("extraRates", extraRateList.isEmpty() ? null : extraRateList);
 
-        // 사용자 이름
+        // 사용자 이름 설정
         String userId = jwtUtil.getUserIdFromToken(token);
         model.addAttribute("userId", userId);
 
-        return response;
+        addCurrentUrlToModel(request, model);
+
+        return response; // JSON 반환
     }
 
-    // 기본 요금 및 추가 요금 수정/삽입
+    /**
+     * 기본 요금 및 추가 요금 수정/삽입
+     *
+     * @param sellerDto           입력된 요금 정보
+     * @param redirectAttributes  리다이렉션 시 전달할 속성
+     * @param token               사용자 인증을 위한 JWT 토큰
+     * @return 수정 결과에 따라 리다이렉트 또는 에러 페이지
+     */
     @PostMapping("/basic-rate-write.do")
     public String setRate(@ModelAttribute SellerDto sellerDto, RedirectAttributes redirectAttributes, @CookieValue(value = "Authorization", required = false) String token) {
+
         // 필터링된 유효한 추가 요금 정보 출력 (디버깅용)
         System.out.println("========== 입력된 기본 요금 정보 ==========");
         System.out.println("Room Name: " + sellerDto.getRoomName());
@@ -442,9 +529,9 @@ public class SellerController {
                 .map(this::setDefaultDatesIfNecessary) // 날짜 설정
                 .collect(Collectors.toList());
 
+        // 디버깅 용도로 추가 요금 정보 출력
         System.out.println("========== 입력된 추가 요금 정보 ==========");
         for (SellerDto.ExtraDto extraRate : validExtraRates) {
-            // 필터링된 유효한 추가 요금 정보 출력 (디버깅용)
             System.out.println("Extra Name: " + extraRate.getExtraName());
             System.out.println("Extra Weekday Rate: " + extraRate.getExtraWeekdayRate());
             System.out.println("Extra Friday Rate: " + extraRate.getExtraFridayRate());
@@ -459,7 +546,7 @@ public class SellerController {
         sellerDto.setExtraRates(validExtraRates);
 
         // 관리자 번호(업소키)
-        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
+        Long accommodationNo = jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 기본 요금 업데이트 메서드 호출
         int basicRateUpdated = seller.basicRateUpdate(sellerDto, accommodationNo);
@@ -481,7 +568,12 @@ public class SellerController {
         }
     }
 
-    // 추가 요금의 유효성을 검사하는 메서드
+    /**
+     * 추가 요금의 유효성을 검사하는 메서드
+     *
+     * @param extraRate  검사할 추가 요금 정보
+     * @return 유효한지 여부를 반환
+     */
     private boolean isValidExtraRate(SellerDto.ExtraDto extraRate) {
         return extraRate.getExtraName() != null && !extraRate.getExtraName().trim().isEmpty() // 이름이 비어있지 않은지 확인
                 && extraRate.getExtraWeekdayRate() > 0 // 평일 요금이 0보다 큰지 확인
@@ -490,7 +582,12 @@ public class SellerController {
                 && extraRate.getExtraSundayRate() > 0; // 일요일 요금이 0보다 큰지 확인
     }
 
-    // EXTRA_DATE_START와 EXTRA_DATE_END 값을 기본값으로 설정하는 메서드
+    /**
+     * EXTRA_DATE_START와 EXTRA_DATE_END 값을 기본값으로 설정하는 메서드
+     *
+     * @param extraRate  설정할 추가 요금 정보
+     * @return 날짜가 설정된 추가 요금 정보
+     */
     private SellerDto.ExtraDto setDefaultDatesIfNecessary(SellerDto.ExtraDto extraRate) {
         if (extraRate.getExtraDateStart() == null || extraRate.getExtraDateStart().trim().isEmpty()) {
             // 시작일이 없으면 현재 날짜를 시작일로 설정
@@ -507,12 +604,20 @@ public class SellerController {
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
-    // 기간 수정 페이지 로드(추가 요금 정보 조회)
+    /**
+     * 기간 수정 페이지 로드 (추가 요금 정보 조회)
+     *
+     * @param model   View에 데이터를 전달하기 위한 모델 객체
+     * @param token   사용자 인증을 위한 JWT 토큰
+     * @return 기간 수정 뷰 이름
+     */
     @GetMapping("/season-period.do")
-    public String seasonList(Model model, @CookieValue(value = "Authorization", required = false) String token) {
+    public String seasonList(HttpServletRequest request,
+                             Model model,
+                             @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
+        Long accommodationNo = jwtUtil.getAccommAdminKeyFromToken(token);
 
         // 추가 요금 조회
         List<SellerDto.ExtraDto> extraSeasonList = seller.extraSeasonList(accommodationNo);
@@ -520,20 +625,28 @@ public class SellerController {
         // extraRateList를 모델에 추가
         model.addAttribute("extraSeasonList", extraSeasonList);
 
-        // 사용자 이름
+        // 사용자 이름 설정
         String userId = jwtUtil.getUserIdFromToken(token);
         model.addAttribute("userId", userId);
 
-        return "seller/season_period";
+        addCurrentUrlToModel(request, model);
+
+        return "seller/season_period"; // 뷰 이름 반환
     }
 
-    // 요금타입 삭제 요청을 처리하는 메소드
+    /**
+     * 요금 타입 삭제 요청을 처리하는 메소드 (비동기 처리)
+     *
+     * @param extraName  삭제할 추가 요금 타입 이름
+     * @param token      사용자 인증을 위한 JWT 토큰
+     * @return 삭제 성공 여부 (JSON)
+     */
     @DeleteMapping("/extra-delete")
     @ResponseBody
     public Map<String, Object> extraRateDelete(@RequestParam("extraName") String extraName, @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
+        Long accommodationNo = jwtUtil.getAccommAdminKeyFromToken(token);
         Map<String, Object> response = new HashMap<>();
 
         // 해당 요금타입 삭제
@@ -545,15 +658,21 @@ public class SellerController {
         return response; // 삭제 성공 여부 반환
     }
 
-    // 기간 수정 요청을 처리하는 메소드
+    /**
+     * 기간 수정 요청을 처리하는 메소드 (비동기 처리)
+     *
+     * @param sellerDto  수정할 추가 요금 정보
+     * @param token      사용자 인증을 위한 JWT 토큰
+     * @return 수정 성공 여부 (JSON)
+     */
     @PostMapping("/periods-update")
     @ResponseBody
     public Map<String, Object> updatePeriods(@ModelAttribute SellerDto sellerDto, @CookieValue(value = "Authorization", required = false) String token) {
 
         // 관리자 번호(업소키)
-        Long accommodationNo= jwtUtil.getAccommAdminKeyFromToken(token);
+        Long accommodationNo = jwtUtil.getAccommAdminKeyFromToken(token);
 
-        // DTO의 내용을 출력하여 확인
+        // DTO의 내용을 출력하여 확인 (디버깅 용)
         System.out.println("Received Periods: " + sellerDto.getExtraRates());
 
         for (SellerDto.ExtraDto period : sellerDto.getExtraRates()) {
@@ -565,9 +684,13 @@ public class SellerController {
         Map<String, Object> response = new HashMap<>();
         response.put("success", updateSuccess);
 
-        return response;
+        return response; // 수정 성공 여부 반환
     }
 
-
+    // 헬퍼 메서드: 현재 URL을 모델에 추가
+    private void addCurrentUrlToModel(HttpServletRequest request, Model model) {
+        String currentUrl = request.getRequestURI();
+        model.addAttribute("currentUrl", currentUrl);
+    }
 }
 
