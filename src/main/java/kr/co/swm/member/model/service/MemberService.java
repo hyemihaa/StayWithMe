@@ -1,8 +1,10 @@
 package kr.co.swm.member.model.service;
 
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.member.model.dto.AdminDTO;
 import kr.co.swm.member.model.dto.UserDTO;
+import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.dto.WebDto;
 
 import java.util.List;
@@ -58,4 +60,7 @@ public interface MemberService {
 
     // 사용자가 받은 쿠폰
     List<WebDto> getUserCoupons(Long userNo);
+
+    // 사용자가 예약한 내역
+    List<SellerDto> getUserReservation(Long userNo);
 }

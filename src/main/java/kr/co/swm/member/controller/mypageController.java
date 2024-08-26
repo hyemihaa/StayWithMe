@@ -2,10 +2,12 @@ package kr.co.swm.member.controller;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.member.model.service.MemberServiceImpl;
 import kr.co.swm.member.util.ClientIpUtil;
+import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.dto.WebDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -151,7 +153,7 @@ public class mypageController {
     // 마이페이지 쿠폰 조회
     @GetMapping("/coupons")
     @ResponseBody
-    public Map<String, Object>  getCoupons(@CookieValue(value = "Authorization", required = false) String token) {
+    public Map<String, Object> getCoupons(@CookieValue(value = "Authorization", required = false) String token) {
         Map<String, Object> response = new HashMap<>();
         try {
             Long userNo = jwtUtil.getUserNoFromToken(token);
@@ -163,6 +165,28 @@ public class mypageController {
         } catch (Exception e) {
             response.put("success", false);
             response.put("error", "쿠폰 정보를 불러오는 중 오류가 발생했습니다.");
+        }
+        return response;
+
+    }
+
+    // 마이페이지 예약 내역 조회
+    @GetMapping("/reservation")
+    @ResponseBody
+    public Map<String, Object> getReservation(@CookieValue(value = "Authorization", required = false) String token) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Long userNo = jwtUtil.getUserNoFromToken(token);
+            // 예약 조회
+            List<SellerDto> reservation = memberServiceImpl.getUserReservation(userNo);
+
+            System.out.println("예약 : " + reservation);
+
+            response.put("reservation", reservation);
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", "예약 정보를 불러오는 중 오류가 발생했습니다.");
         }
         return response;
 

@@ -2,6 +2,7 @@ package kr.co.swm.member.model.service;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.config.auth.CustomUserDetails;
 import kr.co.swm.config.auth.CustomUserDetailsService;
 import kr.co.swm.jwt.util.JWTUtil;
@@ -10,6 +11,7 @@ import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.member.model.mapper.MemberMapper;
 import kr.co.swm.member.util.PasswordUtils;
 import kr.co.swm.member.util.SmsCertificationUtil;
+import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.dto.WebDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -164,7 +166,7 @@ public class MemberServiceImpl implements MemberService {
 
             // 토큰 쿠키에 저장
             Cookie accessCookie = new Cookie("Authorization", token);
-            accessCookie.setMaxAge(60*60); // 1시간 동안 유효
+            accessCookie.setMaxAge(24 * 60 * 60); // 1일 동안 유효
             accessCookie.setPath("/"); // 모든 경로에 대해 쿠키 전송
             accessCookie.setDomain("localhost"); // 도메인 설정
             accessCookie.setSecure(false);
@@ -267,11 +269,6 @@ public class MemberServiceImpl implements MemberService {
         userDTO.setWithdrawalReason(reason);
         userDTO.setDeletedDate(LocalDateTime.now()); //탈퇴일 현재 시간으로 설정
 
-        System.out.println("service : " + userDTO.getUserId());
-        System.out.println("service : " + userDTO.getUserStatus());
-        System.out.println("service : " + userDTO.getWithdrawalReason());
-        System.out.println("service : " + userDTO.getDeletedDate());
-
         memberMapper.updateUserStatus(userDTO);
     }
 
@@ -280,4 +277,15 @@ public class MemberServiceImpl implements MemberService {
     public List<WebDto> getUserCoupons(Long userNo) {
         return memberMapper.getUserCoupons(userNo);
     }
+
+    // 예약 내역 조회
+    @Override
+    public List<SellerDto> getUserReservation(Long userNo) {
+        // 사용자의 예약 내역을 숙소 이미지와 함께 가져옴
+        return memberMapper.getUserReservation(userNo);
+    }
+
+
+
+
 }
