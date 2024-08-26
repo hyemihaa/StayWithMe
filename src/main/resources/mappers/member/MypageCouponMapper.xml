@@ -16,7 +16,7 @@
         <result column="MIN_PURCHASE_PRICE" property="couponMinimumAmount"/>
     </resultMap>
 
-    <!--로그인한 숙소관리자의 전체 정보-->
+    <!--사용자의 쿠폰 조회-->
     <select id="getUserCoupons" resultMap="CouponResultMap">
         SELECT
         c.COUPON_NAME,
@@ -28,7 +28,7 @@
         c.COUPON_TYPE
         FROM coupon_list cl
         JOIN COUPON c ON cl.COUPON_CODE = c.ID
-        WHERE cl.USER_NO = #{userNo};
+        WHERE cl.USER_NO = #{userNo}
     </select>
 
 </mapper>

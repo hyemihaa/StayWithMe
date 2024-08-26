@@ -1,7 +1,9 @@
 package kr.co.swm.member.model.mapper;
 
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.member.model.dto.AdminDTO;
 import kr.co.swm.member.model.dto.UserDTO;
+import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.dto.WebDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -55,4 +57,8 @@ public interface MemberMapper {
 
     // 마이페이지 쿠폰 조회
     List<WebDto> getUserCoupons(@Param("userNo") Long userNo);
+
+    // 마이페이지 예약내역 조회
+    List<SellerDto> getUserReservation(Long userNo);
+
 }

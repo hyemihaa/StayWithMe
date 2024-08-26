@@ -139,18 +139,20 @@ public class SignController {
             String role = jwtUtil.getRoleFromToken(token);
             System.out.println("로그인 시도: " + role);  // 권한이 제대로 추출되는지 확인
 
-            // IP 주소 가져오기
-            Long userNo = jwtUtil.getUserNoFromToken(token);
-            String userIp = ClientIpUtil.getClientIp();
+            if (!isAdmin) { // 일반 사용자일 경우에만 로그인 기록을 저장
+                // IP 주소 가져오기
+                Long userNo = jwtUtil.getUserNoFromToken(token);
+                String userIp = ClientIpUtil.getClientIp();
 
-            // 로그인 기록 저장
-            UserDTO userDTO = new UserDTO();
-            userDTO.setNo(userNo);
-            userDTO.setUserIp(userIp);
-            userDTO.setLastLoginDate(LocalDateTime.now()); // 현재시간
+                // 로그인 기록 저장
+                UserDTO userDTO = new UserDTO();
+                userDTO.setNo(userNo);
+                userDTO.setUserIp(userIp);
+                userDTO.setLastLoginDate(LocalDateTime.now()); // 현재시간
 
-            System.out.println("로그인 시도 IP: " + userIp); // **로그 추가** (IP 출력)
-            memberServiceImpl.saveLoginLog(userDTO); // 로그기록 저장
+                System.out.println("로그인 시도 IP: " + userIp); // **로그 추가** (IP 출력)
+                memberServiceImpl.saveLoginLog(userDTO); // 로그기록 저장
+            }
 
             // 권한에 따라 리다이렉트할 페이지 결정
             if ("ROLE_SITE_ADMIN".equals(role)) {

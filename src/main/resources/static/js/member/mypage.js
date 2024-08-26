@@ -17,6 +17,12 @@ function showSection(sectionId) {
         if (sectionId === 'coupons') {
             loadCoupons();
         }
+        if (sectionId === 'reservation') {
+            loadReservations();
+        }
+    }
+    else {
+        console.error(`Section with ID ${sectionId} not found.`);
     }
 }
 
@@ -240,6 +246,73 @@ function renderCoupons(coupons) {
         });
     }
 }
+
+/*-------------예약내역 조회-----------------*/
+function loadReservations() {
+    $.ajax({
+        type: 'GET',
+        url: '/reservation',
+        success: function(response) {
+            if (response.success) {
+                const reservation = response.reservation || []; // 예약 내역 배열
+                renderReservation(reservation); // 데이터를 화면에 렌더링하는 함수 호출
+            } else {
+                console.error('예약 정보를 가져오는 데 실패했습니다.', response.error);
+                alert('예약 정보를 가져오는 데 실패했습니다.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('예약 정보를 가져오는 데 실패했습니다.', status, error);
+            alert('예약 정보를 가져오는 데 실패했습니다.');
+        }
+    });
+}
+
+// 쿠폰 데이터 렌더링
+function renderReservation(reservation) {
+    var reservationList = document.querySelector('#reservation .reservation-list');
+    var noReservation = document.querySelector('#reservation .no-reservation');
+
+    if (!noReservation) {
+        return;
+    }
+
+    reservationList.innerHTML = ''; // 기존 내용 비우기
+
+    if (reservation.length === 0) {
+        noReservation.style.display = 'block'; // 예약이 없을 때 메시지 보이기
+    } else {
+        noReservation.style.display = 'none'; // 예약이 있을 때 메시지 숨기기
+        reservation.forEach(function(reservation) {
+            const imageUrl = `${reservation.accommodationImageDto.uploadImagePath}${reservation.accommodationImageDto.uploadUniqueName}`;
+            const reservationItem = `
+                  <div class="reservation-item">
+                       <div class="details">
+                           <h4 class="hotel-name">${reservation.accommodationName}</h4>
+                           <div class="image-info">
+                                <img src="${imageUrl}" alt="Hotel Image">
+                                <div class="room-info">
+                                    <p>객실 이름: ${reservation.roomName}</p>
+                                    <p>${reservation.reserveCheckIn} - ${reservation.reserveCheckOut}</p>
+                                    <p>체크인: ${reservation.roomCheckIn} 체크아웃: ${reservation.roomCheckOut}</p>
+                                    <p>기준 인원: ${reservation.roomPersonnel}명 / 최대 인원: ${reservation.roomMaxPersonnel}명</p>
+                                </div>
+                           </div>
+                           <p class="price" style="text-align: right;">
+                                금액: <strong><span style="font-size: 1.2em;">${reservation.reserveAmount}원</span></strong>
+                           </p>
+                           <div class="button-group" style="float: right;">
+                                <button class="btn-danger" onclick="cancelReservation(${reservation.reserveRoomNo})">예약 취소</button>
+                                <button class="btn-primary" onclick="viewReservationDetails(${reservation.reserveRoomNo})">예약 상세</button>
+                           </div>
+                       </div>
+                  </div>
+                  `;
+                  reservationList.innerHTML += reservationItem; // 예약 리스트 항목 추가
+        });
+    }
+}
+
 
 
 // DOMContentLoaded 이벤트 리스너 내부의 코드

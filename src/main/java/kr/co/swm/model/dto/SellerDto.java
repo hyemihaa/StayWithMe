@@ -1,5 +1,6 @@
 package kr.co.swm.model.dto;
 
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -61,6 +62,9 @@ public class SellerDto {
     private String reservationCancellationDate;
     private String reservationStatus;
     private String reservationType;
+
+    // 숙소 이미지 DTO
+    private AccommodationImageDto accommodationImageDto;
 
     // 설정 파일
     private String requestDetails;
