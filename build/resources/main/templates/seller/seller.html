@@ -40,7 +40,7 @@
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>숙소관리</a>
                     <div class="dropdown-menu show bg-transparent border-0">
                         <a th:href="@{/enroll}" class="dropdown-item">숙소등록</a>
-                        <a href="" class="dropdown-item">숙소수정</a>
+                        <a th:href="@{/acUpdate}" class="dropdown-item">숙소수정</a>
                     </div>
                 </div>
                 <!-- 예약관리 드롭다운 -->
@@ -72,14 +72,8 @@
             <a th:href="@{/seller-main.do}" class="navbar-brand d-flex d-lg-none me-4">
                 <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
             </a>
-
-            <div class="navbar-nav ms-auto d-flex align-items-center">
-                <span class="navbar-text me-3" th:text="${userId}">관리자</span>
-                <a th:href="@{/logout}" class="btn btn-outline-primary">로그아웃</a>
-            </div>
         </nav>
         <!-- 상단 내비게이션 바 End -->
-
 
         <!-- 매출 및 수익 정보 Start -->
         <div class="container-fluid pt-4 px-4">
