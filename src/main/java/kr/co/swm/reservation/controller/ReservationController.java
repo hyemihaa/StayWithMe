@@ -121,9 +121,9 @@ public class ReservationController {
         // 결제 승인 테이블 인입
 //        reservationService.paymentDetailSave();
         // 예약상태 업데이트
-        reservationService.reserveUpdate();
-        // 쿠폰 사용 시 쿠폰 use 컬럼 업데이트
-        reservationService.couponUsedUpdate();
+//        reservationService.reserveUpdate();
+//        // 쿠폰 사용 시 쿠폰 use 컬럼 업데이트
+//        reservationService.couponUsedUpdate();
 
         return ResponseEntity.ok(true);
     }
