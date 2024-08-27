@@ -8,6 +8,7 @@ import kr.co.swm.model.dto.WebDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -55,10 +56,14 @@ public interface MemberMapper {
     // 마이페이지 회원탈퇴
     void updateUserStatus(@Param("userDTO") UserDTO userDTO);
 
+    // DELETED 상태의 회원 삭제
+    int deleteUser(@Param("oneWeekAgo") LocalDateTime oneWeekAgo);
+
     // 마이페이지 쿠폰 조회
     List<WebDto> getUserCoupons(@Param("userNo") Long userNo);
 
     // 마이페이지 예약내역 조회
     List<SellerDto> getUserReservation(Long userNo);
+
 
 }

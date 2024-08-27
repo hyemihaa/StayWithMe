@@ -2,7 +2,6 @@ package kr.co.swm.member.model.service;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.config.auth.CustomUserDetails;
 import kr.co.swm.config.auth.CustomUserDetailsService;
 import kr.co.swm.jwt.util.JWTUtil;
@@ -15,9 +14,9 @@ import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.dto.WebDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -265,6 +264,21 @@ public class MemberServiceImpl implements MemberService {
         userDTO.setDeletedDate(LocalDateTime.now()); //탈퇴일 현재 시간으로 설정
 
         memberMapper.updateUserStatus(userDTO);
+    }
+
+    // 탈퇴 상태인 회원 삭제( DELETED 업데이트된 날자 기준으로 일주일 뒤)
+    @Override
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행 (초 분 시 일 월 요일) "0 0/1  * * * ?" : 1분마다 실행
+    public void deleteUser() {
+        LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1); //현재 시간 기준 1주일 전
+                                // LocalDateTime.now()..minusDays(1) //현재 시간 기준 1일 전
+
+        try {
+            int deletedCount = memberMapper.deleteUser(oneWeekAgo);  // 1주일 이상 지난 DELETED 회원 삭제
+            System.out.println(deletedCount + "개의 계정이 삭제되었습니다.");
+        } catch (Exception e) {
+            System.err.println("탈퇴 대기 중인 회원 삭제 중 오류 발생: " + e.getMessage());
+        }
     }
 
     // 사용자가 받은 쿠폰조회
