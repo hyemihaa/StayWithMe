@@ -105,6 +105,7 @@ public class mypageController {
     public String withdrawAccount(@RequestBody Map<String, String> param,
                                   @CookieValue(value = "Authorization", required = false) String token,
                                   HttpServletResponse response) {
+
         String withdrawalReason = param.get("withdrawalReason");
         String userId = jwtUtil.getUserIdFromToken(token);
 

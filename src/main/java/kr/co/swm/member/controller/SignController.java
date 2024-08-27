@@ -118,7 +118,6 @@ public class SignController {
                          HttpServletResponse response, HttpServletRequest request,
                          RedirectAttributes redirectAttributes) {
         System.out.println("로그인 요청");
-        System.out.println("로그인 요청" + signRole);
 
         // 사용자 정보 조회
         UserDTO user = memberServiceImpl.userInfo(userId);
@@ -158,7 +157,7 @@ public class SignController {
             if ("ROLE_SITE_ADMIN".equals(role)) {
                 return "redirect:/web-center"; // 사이트 관리자 페이지로 리다이렉트
             } else if ("ROLE_ACCOMMODATION_ADMIN".equals(role)) {
-                return "redirect:/seller-main.do"; // 업소 관리자 페이지로 리다이렉트 ( 추후수정 )
+                return "redirect:/seller-main.do"; // 업소 관리자 페이지로 리다이렉트
             } else {
                 return "redirect:/"; // 일반 사용자 -> 메인
             }
