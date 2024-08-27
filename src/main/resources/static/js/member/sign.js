@@ -5,6 +5,7 @@ let isVerified = false;
 let isNameValid = false;
 let isPwdValid = false;
 let isIdValid = false;
+let isPwdMatch = false;
 
 
 // 아이디 중복체크
@@ -105,11 +106,14 @@ function validatePassword() {
     if (signUpPwd !== "" && signUpPwd === confirmPassword) {
         pwdConfirmMsg.innerHTML = "비밀번호가 일치합니다.";
         pwdConfirmMsg.style.color = "#aaa";
+        isPwdMatch = true;
     } else if (confirmPassword !== "") {
         pwdConfirmMsg.innerHTML = "비밀번호가 일치하지 않습니다.";
         pwdConfirmMsg.style.color = "red";
+        isPwdMatch = false;
     } else {
         pwdConfirmMsg.innerHTML = "";
+        isPwdMatch = false; // 아무 값도 없을 경우에도 false로 설정
     }
 }
 
@@ -204,7 +208,7 @@ function checkSMS() {
 
 // 폼 제출 시 호출되는 함수
 function validateForm(event) {
-    if (!isIdValid || !isPwdValid || !isNameValid || !isVerified) { // 하나라도 false가 있으면 폼 제출 막음
+    if (!isIdValid || !isPwdValid || !isNameValid || !isVerified || !isPwdMatch) { // 하나라도 false가 있으면 폼 제출 막음
         alert("올바르게 기입하였는지 확인해주세요.");
         event.preventDefault(); // 폼 제출을 막습니다
     }

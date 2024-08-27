@@ -14,6 +14,7 @@ import kr.co.swm.member.util.SmsCertificationUtil;
 import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.dto.WebDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,6 +29,7 @@ import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class MemberServiceImpl implements MemberService {
 
     private final PasswordEncoder passwordEncoder;
@@ -45,17 +47,14 @@ public class MemberServiceImpl implements MemberService {
         if(userPwd.equals(userConfirmPwd)) {
             // 비밀번호와 비밀번호 확인이 일치하는지 체크
             String encodedPassword = passwordEncoder.encode(userPwd);
-            System.out.println("encodedPassword : " + encodedPassword);
             // 암호화 비밀번호 DTO에 저장
             userDTO.setUserPwd(encodedPassword);
             // 현재 날짜와 시간 설정
             userDTO.setCreatedDate(LocalDateTime.now());
-            System.out.println("userDTO : " + userDTO.getUserPwd());
 
             return memberMapper.setSignUp(userDTO);
         }
         else {
-            System.out.println("else");
             return 0;
         }
     }
@@ -156,9 +155,7 @@ public class MemberServiceImpl implements MemberService {
             }
 
             // claims에 추가된 값을 로그로 출력하여 확인
-            System.out.println("Claims 내용: " + claims);
-
-            System.out.println("------------memberService : " + accommAdminKey +"------------------");
+            log.info("Claims 내용: {} ", claims);
 
             // 토큰생성
             LocalDateTime expireAt = LocalDateTime.now().plusHours(1);
@@ -240,8 +237,6 @@ public class MemberServiceImpl implements MemberService {
     // 마이페이지 새로운 휴대전화 번호 업데이트
     @Override
     public void updatePhoneNumber(String newPhone, String userId) {
-        UserDTO userDTO = memberMapper.findByUserInfo(userId);
-
         // 새 전화번호 업데이트
         memberMapper.updatePhoneNumber(newPhone, userId);
     }
