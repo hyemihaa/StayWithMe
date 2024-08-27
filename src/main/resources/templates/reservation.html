@@ -6,6 +6,7 @@
     <link rel="stylesheet" th:href="@{css/booking/booking.css}">
 
     <style>
+
         .terms-section {
             margin: 20px;
             font-size: 1.2em;
@@ -162,7 +163,108 @@
         .button-group button:hover {
             background-color: #4cae4c;
         }
+        /*ㅁㄴㅇㅁㄴㅇㅁㅇㅁㄴ*/
+        .section {
+            margin: 20px;
+            text-align: center;
+        }
 
+        .button-group button {
+            padding: 10px 20px;
+            background-color: #5cb85c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-group button:hover {
+            background-color: #4cae4c;
+        }
+
+        /* 쿠폰 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 70%;
+            max-width: 500px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 1em;
+            border-radius: 8px;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #coupon-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #coupon-list div {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #coupon-list div:hover {
+            background-color: #f0f0f0;
+        }
+
+        #coupon-list li {
+            display: inline-block;
+            margin-right: 10px;
+            color: #555;
+        }
+
+        #selected-coupon {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            color: #333;
+        }
     </style>
 
     <!-- jQuery -->
@@ -176,34 +278,7 @@
             src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 
     <script>
-        var IMP = window.IMP;
-        IMP.init("imp67844376");
 
-        function requestPay() {
-            IMP.request_pay(
-                {
-                    pg: "html5_inicis",		//KG이니시스 pg파라미터 값
-                    pay_method: "card",		//결제 방법
-                    merchant_uid: "1234578",//주문번호
-                    name: "당근 10kg",		//상품 명
-                    amount: 200,			//금액
-                    buyer_email: "gildong@gmail.com",
-                    buyer_name: "홍길동",
-                    buyer_tel: "010-4242-4242",
-                    buyer_addr: "서울특별시 강남구 신사동",
-                    buyer_postcode: "01181"
-
-                },
-                function (rsp) {
-                    if (rsp.success) {
-                        // 결제 성공 시 폼을 제출합니다.
-                        document.getElementById('terms-form').submit();
-                    } else {
-                        alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
-                    }
-                }
-            );
-        }
     </script>
 </head>
 
@@ -224,15 +299,16 @@
         </div>
     </div>
 </div>
-<form id="terms-form">
+<form id="terms-form" action="/payment" method="POST">
     <div class="container1">
         <div class="section">
+            <input type="hidden" id="roomNo" th:value="${list.roomNo}">
             <h1 th:text="${list.accommodationName}"></h1>
-            <h3 th:text="${list.roomName}"></h3>
+            <h3 id="product-name" th:text="${list.roomName}"></h3>
             <div class="form-group form-inline">
                 <label for="check-out"> 일정 </label>
-                <input type="text" id="check-out" th:value="${list.roomCheckIn}" style="border: none; display: block;" readonly /><br>
-                <input type="text" id="check" th:value="${list.roomCheckOut}" style="border: none;" readonly />
+                <span th:text="${checkIn}" id="checkInDate"></span><input type="text" id="check-out" th:value="${list.roomCheckIn}" style="border: none; display: block;" readonly /><br>
+                <span th:text="${checkOut}" id="checkOutDate"></span><input type="text" id="check" th:value="${list.roomCheckOut}" style="border: none;" readonly />
             </div>
             <div class="form-group">
                 <label>기준 인원</label>
@@ -253,19 +329,51 @@
             </div>
         </div>
 
+
+        <!-- 쿠폰 리스트를 위한 모달 -->
         <div class="section">
-            <label for="coupon">쿠폰</label>
+            <label for="selected-coupon">쿠폰</label>
             <div class="button-group">
-                <select id="coupon">
-                    <option value="" selected>선택안함</option>
-                    <option th:each="coupon : ${coupons}"
-                            th:value="${coupon.couponId}"
-                            th:text="${coupon.couponName}">
-                    </option>
-                </select>
+                <input type="text" id="selected-coupon" placeholder="쿠폰을 선택하세요" onclick="openCouponModal()" readonly/>
                 <button type="button" onclick="applyCoupon()">적용</button>
             </div>
         </div>
+
+        <!-- 쿠폰 리스트를 위한 모달 -->
+        <div id="coupon-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeCouponModal()">&times;</span>
+                <h2>쿠폰 선택</h2>
+                <ul id="coupon-list" th:each="coupon : ${coupons}">
+                    <!-- 쿠폰 리스트 항목들이 여기에 추가될 것입니다. -->
+                    <div onclick="selectCoupon(this)"
+                         th:data-coupon-id="${coupon.couponId}"
+                         th:data-coupon-name="${coupon.couponName}"
+                         th:data-coupon-type="${coupon.couponType}"
+                         th:data-coupon-discount="${coupon.couponDiscount}"
+                         th:data-coupon-start="${coupon.couponStartDate}"
+                         th:data-coupon-end="${coupon.couponEndDate}">
+                        <li th:text="${coupon.couponName}"></li>
+                        <li th:text="${coupon.couponType == 'DISCOUNT_RATE' ? coupon.couponDiscount + '%' : coupon.couponDiscount + '원'}"></li>
+                        <li th:text="${coupon.couponStartDate} + ' ~ ' + ${coupon.couponEndDate}"></li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+
+        <!--        <div class="section">-->
+<!--            <label for="coupon">쿠폰</label>-->
+<!--            <div class="button-group">-->
+<!--                <select id="coupon">-->
+<!--                    <option value="" selected>선택안함</option>-->
+<!--                    <option th:each="coupon : ${coupons}"-->
+<!--                            th:value="${coupon.couponId}"-->
+<!--                            th:text="${coupon.couponName}">-->
+<!--                    </option>-->
+<!--                </select>-->
+<!--                <button type="button" onclick="applyCoupon()">적용</button>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="terms-section">
             <div class="checkbox-container">
                 <input type="checkbox" id="agree-all" onclick="toggleAllCheckboxes(this)">
@@ -367,14 +475,21 @@
         </div>
         <div class="price-info">
             <div>
-                객실 가격 ( 1 박 기준 ): <span class="price" id="base-price">30000 원</span>
+                객실 가격 ( 1 박 기준 ): <span class="price" id="base-price-span" th:text="${price}">원</span> 원
             </div>
-            <div id="discount-amount"></div>
+            <div id="discount-amount">
+                할인 가격 : <span class="price" id="discount-price-span" th:text="0"></span>
+            </div>
             <hr style="color: black;background-color: black">
             <div>
-                총 결제 금액 : <span class="final-price" id="final-price">30000 원</span>
+                총 결제 금액 : <span class="final-price" id="final-price-span" th:text="${price}"></span> 원
             </div>
         </div>
+
+        <!-- Hidden input fields to send data to the server -->
+        <input type="hidden" id="basic-price" name="basic-price" />
+        <input type="hidden" id="discount-price" name="discount-price" />
+        <input type="hidden" id="final-price" name="final-price" />
 
         <button type="submit" class="pay-button">결제하기</button>
     </div>
@@ -382,58 +497,68 @@
 
 
 <script>
-    function applyCoupon() {
-        const couponSelect = document.getElementById('coupon');
-        const selectedCouponId = parseInt(couponSelect.options[couponSelect.selectedIndex].value); // couponId를 int로 변환
 
-        // const couponId = document.getElementById("couponId").value;
-        console.log("--------" + selectedCouponId)
-        if (isNaN(selectedCouponId)) {
-            alert("Please select a valid coupon.");
-            return;
+    // 쿠폰 가격 적용
+
+
+    let discountAmount = (document.getElementById('discount-price').value = document.getElementById("discount-price-span").textContent);
+    let basicPrice = (document.getElementById('basic-price').value = document.getElementById('base-price-span').textContent.trim());
+    let finalPrice = (document.getElementById('final-price').value = document.getElementById('final-price-span').textContent.trim());
+
+
+
+    let selectedCouponId = null;
+
+    function openCouponModal() {
+        document.getElementById('coupon-modal').style.display = "block";
+    }
+
+    function closeCouponModal() {
+        document.getElementById('coupon-modal').style.display = "none";
+    }
+
+    function selectCoupon(element) {
+        const couponName = element.getAttribute('data-coupon-name');
+        selectedCouponId = element.getAttribute('data-coupon-id');
+        const discountType = element.getAttribute('data-coupon-type');
+        const discountValue = parseInt(element.getAttribute('data-coupon-discount'));
+        console.log(discountValue + "dsadsadasds")
+
+        // 선택한 쿠폰 이름을 인풋 필드에 표시
+        document.getElementById('selected-coupon').value = couponName;
+
+        // 쿠폰을 적용
+        applyCoupon(discountType, discountValue);
+
+        // 모달 닫기
+        closeCouponModal();
+    }
+
+
+    function applyCoupon(discountType, discountValue) {
+
+        if (discountType === 'DISCOUNT_RATE') {
+            discountAmount = Math.floor(basicPrice * (discountValue / 100)); // 퍼센트 할인을 계산
+        } else if (discountType === 'DISCOUNT_AMOUNT') {
+            discountAmount = discountValue; // 금액 할인을 그대로 적용
         }
 
-        // AJAX 요청을 통해 서버로 쿠폰 ID 전송
-        $.ajax({
-            url: "/apply-coupon",
-            method: "POST",
-            data:JSON.stringify({ couponId: selectedCouponId }), // couponId를 JSON으로 전송
-            contentType: "application/json",
-            success: function(response) {
-                const discount = response.couponDiscount; // 서버에서 받은 할인 값 (int)
-                const discountType = response.couponType; // 서버에서 받은 할인 타입 (예: 'percentage' 또는 'amount')
-                const basePrice = parseInt(document.getElementById('base-price').textContent); // 기본 가격을 int로 변환
-                console.log("kkkkkk" + basePrice)
+        finalPrice = basicPrice - discountAmount;
 
-                const percent = Math.floor(basePrice * (discount / 100));
+        // 최종 가격을 업데이트
+        document.getElementById('final-price-span').textContent = finalPrice;
 
-                let finalPrice;
-                if (discountType === 'DISCOUNT_RATE') {
-                    finalPrice = basePrice - percent; // 퍼센트 할인을 정수로 계산
-                } else {
-                    finalPrice = basePrice - discount; // 금액 할인을 정수로 계산
-                }
-
-                document.getElementById('final-price').textContent = finalPrice; // 최종 가격을 정수로 표시
-
-                let discountElement = document.getElementById('discount-amount');
-                if (!discountElement) {
-                    discountElement = document.createElement('p');
-                    discountElement.id = 'discount-amount';
-                    document.getElementById('price-section').appendChild(discountElement);
-                }
-                if (discountType === 'DISCOUNT_RATE') {
-                    discountElement.textContent = `할인 가격: ${percent} 원`;
-                } else {
-                    discountElement.textContent = `할인 가격: ${discount} 원`;
-                }
-            },
-            error: function(error) {
-                console.error("Error applying coupon:", error);
-                alert("Failed to apply coupon. Please try again.");
-            }
-        });
+        // 할인 금액을 표시
+        let discountElement = document.getElementById('discount-amount');
+        if (!discountElement) {
+            discountElement = document.createElement('p');
+            discountElement.id = 'discount-amount';
+            document.getElementById('price-section').appendChild(discountElement);
+        }
+        discountElement.textContent = `할인 가격: ${discountAmount} 원`;
     }
+
+
 
     function toggleAllCheckboxes(source) {
         const checkboxes = document.querySelectorAll('.individual-term');
@@ -467,9 +592,97 @@
             event.preventDefault();
         } else {
             // 모든 필수 항목이 체크되었을 때 requestPay() 함수를 실행합니다.
-            requestPay();
+            reserveSave();
         }
     });
+
+    function generateMerchantUID() {
+        const prefix = "SWM";
+        const today = new Date();
+
+        // 오늘 날짜를 "YYMMDD" 형식으로 만듭니다.
+        const year = String(today.getFullYear()).slice(2); // '24'
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // '08'
+        const day = String(today.getDate()).padStart(2, '0'); // '27'
+
+        const datePart = year + month + day; // '240827'
+
+        // 순차적인 숫자를 만들기 위한 기본 값 (예: '00001')
+        const sequence = "00115";
+
+        // 완성된 주문번호를 반환합니다.
+        return prefix + datePart + sequence;
+    }
+
+
+    function reserveSave() {
+        const checkInDate = document.getElementById("checkInDate").textContent;
+        const checkOutDate = document.getElementById("checkOutDate").textContent;
+        const roomNo = document.getElementById("roomNo").value;
+
+        console.log(roomNo);
+        // 데이터 객체를 만듭니다.
+        const data = {
+            checkInDate: checkInDate,
+            checkOutDate: checkOutDate,
+            roomNo: roomNo,
+            finalPrice: finalPrice
+        };
+
+        $.ajax({
+            url: "/reserve-save",
+            method: "POST",
+            data: JSON.stringify(data),  // JSON 형식으로 데이터 전송
+            contentType: "application/json",
+            success: function(response) {
+                console.log("서버 응답:", response);
+
+                // 서버에서 긍정적인 응답을 받으면 결제 함수 호출
+                if (response.success) {
+                    requestPay();
+                } else {
+                    alert("예약 처리에 실패했습니다. 다시 시도해주세요.");
+                }
+            },
+            error: function(error) {
+                console.error("예약 처리 중 오류 발생:", error);
+                alert("예약 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
+            }
+        })
+
+    }
+
+    var productName = document.getElementById("product-name").textContent;
+    var IMP = window.IMP;
+    IMP.init("imp67844376");
+
+    function requestPay() {
+        const merchantUID = generateMerchantUID();
+        console.log("dadasdasd " + merchantUID); // 'SWM2024082700001'
+
+        IMP.request_pay(
+            {
+                pg: "html5_inicis",		//KG이니시스 pg파라미터 값
+                pay_method: "CARD",		//결제 방법
+                merchant_uid: merchantUID,//주문번호
+                name: productName,		//상품 명
+                amount: finalPrice,			//금액
+                buyer_email: "dkdk.com",
+                buyer_name: "이진우 ",
+                buyer_tel: "010-1111-2222",
+
+            },
+            function (rsp) {
+                if (rsp.success) {
+                    // 결제 성공 시 폼을 제출합니다.
+                    console.log("승인 : " + rsp.apply);
+                    document.getElementById('terms-form').submit();
+                } else {
+                    alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+                }
+            }
+        );
+    }
 
 </script>
 

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/coupon")
 public class AddCouponController {
 
     AddCouponServiceImpl addCouponService;
@@ -34,6 +33,8 @@ public class AddCouponController {
 
 
         Long id = jwtUtil.getUserNoFromToken(userNo);
+
+        System.out.println("id: " + id);
         List<WebDto> list = addCouponService.couponList(id);
 
         model.addAttribute("list", list);

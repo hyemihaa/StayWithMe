@@ -17,4 +17,7 @@ public interface ReservationService {
     UserDTO userInfo(Long userNo);
 
     SellerDto reserveList(Long userNo);
+
+    boolean reserveSave(String checkIn,String checkOut,  String userNo, int price);
+
 }

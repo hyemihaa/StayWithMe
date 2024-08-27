@@ -19,4 +19,6 @@ public interface ReservationMapper {
     UserDTO userInfo(@Param("userNo")Long userNo);
 
     WebDto getDiscount(@Param("couponId")int couponId);
+
+    boolean reserveSave(@Param("checkIn")String checkIn,@Param("checkOut")String checkOut,  @Param("userNo")String userNo, @Param("price")int price);
 }

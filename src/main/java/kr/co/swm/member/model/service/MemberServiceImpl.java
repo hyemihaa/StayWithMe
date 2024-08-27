@@ -163,7 +163,7 @@ public class MemberServiceImpl implements MemberService {
 
             // 토큰 쿠키에 저장
             Cookie accessCookie = new Cookie("Authorization", token);
-            accessCookie.setMaxAge(60*60); // 1시간 동안 유효
+            accessCookie.setMaxAge(24*60*60); // 1시간 동안 유효
             accessCookie.setPath("/"); // 모든 경로에 대해 쿠키 전송
             accessCookie.setDomain("localhost"); // 도메인 설정
             accessCookie.setSecure(false);

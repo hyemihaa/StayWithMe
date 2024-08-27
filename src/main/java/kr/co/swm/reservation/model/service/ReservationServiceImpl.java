@@ -36,4 +36,9 @@ public class ReservationServiceImpl implements ReservationService {
     public WebDto getDiscount(int couponId) {
         return reservationMapper.getDiscount(couponId);
     }
+
+    public boolean reserveSave(String checkIn, String checkOut, String userNo, int price){
+        return reservationMapper.reserveSave(checkIn,checkOut,userNo,price);
+    }
+
 }

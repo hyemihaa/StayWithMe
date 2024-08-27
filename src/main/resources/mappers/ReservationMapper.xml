@@ -56,8 +56,10 @@
 
 
     <select id="couponList" resultMap="coupon">
-        SELECT coupon_name, c.id from coupon_list cl
+        SELECT * from coupon_list cl
         join coupon c ON cl.coupon_code = c.id
+        where use_yn = "N"
+        AND user_no = ${userNo}
     </select>
 
     <select id="getDiscount" resultMap="coupon">
@@ -66,15 +68,19 @@
     </select>
 
     <select id="reserveList" resultMap="reservation">
-        select a.name, r.room_name, r.CHECK_IN_TIME, r.CHECK_OUT_TIME,  r.STANDARD_OCCUPANCY, r.MAX_OCCUPANCY from accommodation a
+        select a.name, r.room_name, r.CHECK_IN_TIME, r.CHECK_OUT_TIME,  r.STANDARD_OCCUPANCY, r.MAX_OCCUPANCY, r.room_no from accommodation a
         JOIN room r ON a.accommodation_admin_no = r.accommodation_admin_no
-        where room_no = 1
+        where room_no = 4
     </select>
 
     <select id="userInfo" resultMap="user">
         select user_name, user_phone from user
         where user_no = #{userNo}
     </select>
+
+    <insert id="reserveSave">
+        insert into reserve values (null, #{userNo}, #{roomNo}, #{checkIn}, #{checkOut},#{price},NOW() ,null, "예약완료")
+    </insert>
 
 </mapper>
 
