@@ -58,6 +58,9 @@ public interface MemberService {
     // 회원 탈퇴
     void updateUserStatus(String userId, String status, String withdrawalReason);
 
+    // DELETED 상태의 회원 삭제
+    void deleteUser();
+
     // 사용자가 받은 쿠폰
     List<WebDto> getUserCoupons(Long userNo);
 
