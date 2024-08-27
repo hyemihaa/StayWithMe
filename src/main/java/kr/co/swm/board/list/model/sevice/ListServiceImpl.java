@@ -40,6 +40,7 @@ public class ListServiceImpl implements ListService {
         return listMapper.getCost();
     }
 
+
     //  체크인 & 체크아웃 지정할 때 나오는 리스트
     @Override
     public List<ListDTO> getCheck(String checkinDate, String checkoutDate) {
@@ -53,7 +54,7 @@ public class ListServiceImpl implements ListService {
 
         System.out.println("<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>");
         System.out.println("Main Search : " + searchDTO.getMainSearch());
-        System.out.println("BoardType : " + searchDTO.getBoardType());
+//        System.out.println("BoardType : " + searchDTO.getBoardType());
         System.out.println("<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>");
 
         int listCount = listMapper.getListCount(searchDTO);

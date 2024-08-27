@@ -8,8 +8,8 @@
         <result column="ADDRESS" property="boardAddress"></result>
         <result column="CHECK_IN_TIME" property="boardCheckIn"></result>
         <result column="BASIC_RATE" property="boardCount"></result>
-        <result column="CHECK_IN_DATE" property="checkInDate"></result>
-        <result column="CHECK_OUT_DATE" property="checkOutDate"></result>
+        <result column="CHECK_IN_DATE" property="checkinDate"></result>
+        <result column="CHECK_OUT_DATE" property="checkoutDate"></result>
         <result column="FACILITY_NAME" property="options"></result>
     </resultMap>
 
@@ -37,8 +37,8 @@
 <!--        ) ab-->
 <!--        JOIN room r ON ab.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO-->
 <!--        JOIN basic_rate br ON r.ROOM_NO = br.ROOM_NO-->
-<!--        <if test='!searchDTO.type.equals("전체")'>-->
-<!--            WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.type}-->
+<!--        <if test='!searchDTO.boardType.equals("전체")'>-->
+<!--            WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.boardType}-->
 <!--        </if>-->
 <!--        GROUP BY ab.ACCOMMODATION_ADMIN_NO, ab.NAME, ab.ACCOMMODATION_TYPE, ab.ADDRESS, r.CHECK_IN_TIME-->
 <!--        HAVING MIN(br.BASIC_RATE) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}-->
@@ -67,8 +67,8 @@
         ) ab
         JOIN room r ON ab.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
         JOIN basic_rate br ON r.ROOM_NO = br.ROOM_NO
-        <if test='searchDTO.type != null and !searchDTO.type.equals("전체")'>
-            WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.type}
+        <if test='searchDTO.boardType != null and !searchDTO.boardType.equals("전체")'>
+            WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.boardType}
         </if>
         GROUP BY ab.ACCOMMODATION_ADMIN_NO, ab.NAME, ab.ACCOMMODATION_TYPE, ab.ADDRESS, r.CHECK_IN_TIME
         HAVING MIN(br.BASIC_RATE) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
@@ -102,8 +102,8 @@
 <!--                    </if>) ab-->
 <!--            JOIN room r ON ab.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO-->
 <!--            JOIN basic_rate br ON r.ROOM_NO = br.ROOM_NO-->
-<!--            <if test='!searchDTO.type.equals("전체")'>-->
-<!--                WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.type}-->
+<!--            <if test='!searchDTO.boardType.equals("전체")'>-->
+<!--                WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.boardType}-->
 <!--            </if>-->
 <!--            group by ab.name, ab.accommodation_Type, ab.ADDRESS, r.CHECK_IN_TIME, r.ACCOMMODATION_ADMIN_NO-->
 <!--            HAVING (MIN(basic_rate) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate})-->
@@ -132,8 +132,8 @@
         ) ab
         JOIN room r ON ab.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
         JOIN basic_rate br ON r.ROOM_NO = br.ROOM_NO
-        <if test="searchDTO.type != null and !searchDTO.type.equals('전체')">
-            WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.type}
+        <if test="searchDTO.boardType != null and !searchDTO.boardType.equals('전체')">
+            WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.boardType}
         </if>
         GROUP BY ab.NAME, ab.ACCOMMODATION_TYPE, ab.ADDRESS, r.CHECK_IN_TIME
         HAVING MIN(br.BASIC_RATE) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
@@ -214,30 +214,33 @@
     </select>
 
 
-    <!--    -->
+    <!--  체크인 체크아웃 클릭시 리스트 출력  -->
 
     <select id="getCheck" resultMap="placeResultMap">
         SELECT
         a.ACCOMMODATION_ADMIN_NO,
-        a.name AS accommodation_name,
-        a.accommodation_type,
-        a.address,
-        MIN(br.BASIC_RATE) AS minimum_basic_rate
+        a.NAME,
+        a.ACCOMMODATION_TYPE,
+        a.ADDRESS,
+        r.CHECK_IN_TIME,
+        MIN(br.BASIC_RATE) AS min_rate
         FROM
         accommodation a
         JOIN
-        room r ON a.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
+        room r ON r.ACCOMMODATION_ADMIN_NO = a.ACCOMMODATION_ADMIN_NO
         JOIN
-        BASIC_RATE br ON r.ROOM_NO = br.ROOM_NO
+        basic_rate br ON br.ROOM_NO = r.ROOM_NO
         LEFT JOIN
-        RESERVE re ON r.ROOM_NO = re.ROOM_NO
-        AND (
-        (re.CHECK_IN_DATE <![CDATA[#{checkOutDate} AND re.CHECK_OUT_DATE > #{checkInDate})
-        AND re.RESERVATION_STATUS != '예약완료'
-        )
+        reserve re ON re.ROOM_NO = r.ROOM_NO
         WHERE
-        re.ROOM_NO IS NULL  -- 예약이 없는 경우
+        (re.CHECK_IN_DATE IS NULL OR re.CHECK_IN_DATE &gt; #{checkoutDate})
+        AND (re.CHECK_OUT_DATE IS NULL OR re.CHECK_OUT_DATE &lt; #{checkinDate})
         GROUP BY
-        a.ACCOMMODATION_ADMIN_NO, a.name, a.accommodation_type, a.address;]]></select>
+        a.ACCOMMODATION_ADMIN_NO,
+        a.NAME,
+        a.ACCOMMODATION_TYPE,
+        a.ADDRESS,
+        r.CHECK_IN_TIME
+    </select>
 
 </mapper>

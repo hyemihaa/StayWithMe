@@ -31,6 +31,9 @@
 .idea/**/gradle.xml
 .idea/**/libraries
 
+.gradle/**
+build/**
+
 
 *.properties
 # Gradle and Maven with auto-import

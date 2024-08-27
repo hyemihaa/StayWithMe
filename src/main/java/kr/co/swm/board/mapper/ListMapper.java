@@ -11,7 +11,6 @@ import java.util.List;
 @Mapper
 public interface ListMapper {
   //  게시글 불러오기
-//  List<ListDTO> getPlace(@Param("pi") PageInfoDTO pi);
   List<ListDTO> getPlace(@Param("pi") PageInfoDTO pi, @Param("searchDTO") SearchDTO searchDTO);
   // 총 게시글 개수
   int getTotalCount(@Param("searchDTO") SearchDTO searchDTO);

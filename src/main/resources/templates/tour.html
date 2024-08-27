@@ -175,7 +175,7 @@
 
 								<!-- 현재페이지가 1페이지인 경우와 아닌경우-->
 								<li>
-									<a th:if="${pi.currentPage == 1}" href="#">&lt</a>
+									<a th:if="${pi.currentPage == 1}" href="#">&lt;</a>
 									<a th:if="${pi.currentPage > 1}"
 									   th:href="@{/tour(currentPage=${pi.currentPage-1})}">&lt;</a>
 								</li>
@@ -199,7 +199,7 @@
 
 								<!-- 현재페이지가 마지막인 경우와 아닌경우 -->
 								<li>
-									<a th:if="${pi.currentPage == pi.maxPage}" href="#">&gt</a>
+									<a th:if="${pi.currentPage == pi.maxPage}" href="#">&gt;</a>
 									<a th:if="${pi.currentPage < pi.maxPage}"
 									   th:href="@{/tour(currentPage=${pi.currentPage+1})}">&gt;</a>
 								</li>
