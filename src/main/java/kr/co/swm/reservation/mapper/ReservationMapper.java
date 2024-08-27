@@ -21,4 +21,6 @@ public interface ReservationMapper {
     WebDto getDiscount(@Param("couponId")int couponId);
 
     boolean reserveSave(@Param("checkIn")String checkIn,@Param("checkOut")String checkOut,  @Param("userNo")String userNo, @Param("price")int price);
+
+    int paymentSave(@Param("basicPrice")int basicPrice, @Param("discountPrice")int discountPrice, @Param("finalPrice")int finalPrice);
 }

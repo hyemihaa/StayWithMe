@@ -103,22 +103,27 @@ public class ReservationController {
 
     @PostMapping("/payment")
     @ResponseBody
-    public ResponseEntity<?> payment(@RequestParam("basic-price")String basicPrice,
-                        @RequestParam("discount-price")String discountPrice,
-                        @RequestParam("final-price")String finalPrice) {
+    public ResponseEntity<?> payment(@RequestParam("basic-price")String basicPriceStr,
+                        @RequestParam("discount-price")String discountPriceStr,
+                        @RequestParam("final-price")String finalPriceStr) {
+
+        int basicPrice = Integer.parseInt(basicPriceStr);
+        int discountPrice = Integer.parseInt(discountPriceStr);
+        int finalPrice = Integer.parseInt(finalPriceStr);
 
         System.out.println("BPrice : " + basicPrice);
         System.out.println("DPrice : " + discountPrice);
         System.out.println("FPrice : " + finalPrice);
 
+
         // 결제 테이블 인입
-//        int reservationSave = reservationServic.reservavtionSave();
-//        // 결제 승인 테이블 인입
-//        reservationService.reservationDetailSave();
-//        // 예약상태 업데이트
-//        reservationService.reserveUpdate();
-//        // 쿠폰 사용 시 쿠폰 use 컬럼 업데이트
-//        reservationService.couponUsedUpdate();
+        int reservationSave = reservationService.paymentSave(basicPrice, discountPrice, finalPrice);
+        // 결제 승인 테이블 인입
+//        reservationService.paymentDetailSave();
+        // 예약상태 업데이트
+        reservationService.reserveUpdate();
+        // 쿠폰 사용 시 쿠폰 use 컬럼 업데이트
+        reservationService.couponUsedUpdate();
 
         return ResponseEntity.ok(true);
     }

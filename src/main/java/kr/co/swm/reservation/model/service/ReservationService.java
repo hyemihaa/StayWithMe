@@ -20,4 +20,6 @@ public interface ReservationService {
 
     boolean reserveSave(String checkIn,String checkOut,  String userNo, int price);
 
+    int paymentSave(int basicPrice, int discountPrice, int finalPrice);
+
 }

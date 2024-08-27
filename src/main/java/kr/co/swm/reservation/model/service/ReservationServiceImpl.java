@@ -41,4 +41,8 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationMapper.reserveSave(checkIn,checkOut,userNo,price);
     }
 
+    public int paymentSave(int basicPrice, int discountPrice, int finalPrice) {
+        return paymentSave(basicPrice, discountPrice, finalPrice);
+    }
+
 }
