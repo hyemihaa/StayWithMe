@@ -18,8 +18,8 @@ public interface ReservationService {
 
     SellerDto reserveList(Long userNo);
 
-    boolean reserveSave(String checkIn,String checkOut,  String userNo, int price);
+    int reserveSave(SellerDto sellerDto, Integer couponId, Long userNo);
 
-    int paymentSave(int basicPrice, int discountPrice, int finalPrice);
+    int paymentSave(int basicPrice, int discountPrice, int finalPrice, int reservationNo);
 
 }

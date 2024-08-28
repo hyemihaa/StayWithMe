@@ -24,6 +24,14 @@
     <insert id="setSignUp" >
         INSERT INTO USER (USER_ID, USER_PWD, USER_NAME, USER_PHONE, CREATED_DATE, DELETED_DATE)
         VALUES (#{userDTO.userId}, #{userDTO.userPwd}, #{userDTO.userName}, #{userDTO.userPhone}, #{userDTO.createdDate}, #{userDTO.deletedDate})
+
+        <selectKey keyProperty="userDTO.userNo" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        <!-- 기본 쿠폰 정보를 coupon_list 테이블에 삽입 -->
+        INSERT INTO coupon_list
+        VALUES (#{userDTO.userNo}, 'DEFAULT_COUPON_CODE', 'N');
     </insert>
 
     <!--중복아이디-->

@@ -52,6 +52,7 @@ public class SellerDto {
     private int sundayRate;
 
     // 예약 정보
+    private int bookingNo;
     private int reserveRoomNo;
     private String reserveRoomName;
     private String reserveCheckIn;
@@ -61,6 +62,13 @@ public class SellerDto {
     private String reservationCancellationDate;
     private String reservationStatus;
     private String reservationType;
+
+    public SellerDto(String reserveCheckIn, String reserveCheckOut, int reserveRoomNo, int reserveAmount) {
+        this.reserveCheckIn = reserveCheckIn;
+        this.reserveCheckOut = reserveCheckOut;
+        this.reserveRoomNo = reserveRoomNo;
+        this.reserveAmount = reserveAmount;
+    }
 
     // 설정 파일
     private String requestDetails;

@@ -277,9 +277,7 @@
             type="text/javascript"
             src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 
-    <script>
 
-    </script>
 </head>
 
 
@@ -361,19 +359,6 @@
             </div>
         </div>
 
-        <!--        <div class="section">-->
-<!--            <label for="coupon">쿠폰</label>-->
-<!--            <div class="button-group">-->
-<!--                <select id="coupon">-->
-<!--                    <option value="" selected>선택안함</option>-->
-<!--                    <option th:each="coupon : ${coupons}"-->
-<!--                            th:value="${coupon.couponId}"-->
-<!--                            th:text="${coupon.couponName}">-->
-<!--                    </option>-->
-<!--                </select>-->
-<!--                <button type="button" onclick="applyCoupon()">적용</button>-->
-<!--            </div>-->
-<!--        </div>-->
         <div class="terms-section">
             <div class="checkbox-container">
                 <input type="checkbox" id="agree-all" onclick="toggleAllCheckboxes(this)">
@@ -474,6 +459,7 @@
             </div>
         </div>
         <div class="price-info">
+
             <div>
                 객실 가격 ( 1 박 기준 ): <span class="price" id="base-price-span" th:text="${price}">원</span> 원
             </div>
@@ -608,10 +594,14 @@
         const datePart = year + month + day; // '240827'
 
         // 순차적인 숫자를 만들기 위한 기본 값 (예: '00001')
-        const sequence = "00115";
+        let sequence = localStorage.getItem('sequence');
+        sequence = parseInt(sequence) + 1;
+        const sequenceString = String(sequence).padStart(5, '0');
+
+        const randomPart = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
 
         // 완성된 주문번호를 반환합니다.
-        return prefix + datePart + sequence;
+        return prefix + datePart + sequenceString + randomPart;
     }
 
 
@@ -620,11 +610,22 @@
         const checkOutDate = document.getElementById("checkOutDate").textContent;
         const roomNo = document.getElementById("roomNo").value;
 
-        console.log(roomNo);
+        console.log("id ; " + selectedCouponId )
+        console.log("room : " + roomNo);
+        console.log("checkInDate : " + checkInDate);
+        console.log("checkOutDate : " + checkOutDate);
+        console.log("final : " + finalPrice);
+console.log("-------------")
+        console.log("selectedCouponId: ", selectedCouponId, ", type:", typeof selectedCouponId);
+        console.log("roomNo: ", roomNo, ", type:", typeof roomNo);
+        console.log("checkInDate: ", checkInDate, ", type:", typeof checkInDate);
+        console.log("checkOutDate: ", checkOutDate, ", type:", typeof checkOutDate);
+        console.log("finalPrice: ", finalPrice, ", type:", typeof finalPrice);
         // 데이터 객체를 만듭니다.
         const data = {
             checkInDate: checkInDate,
             checkOutDate: checkOutDate,
+            selectedCouponId: selectedCouponId,
             roomNo: roomNo,
             finalPrice: finalPrice
         };
@@ -638,8 +639,12 @@
                 console.log("서버 응답:", response);
 
                 // 서버에서 긍정적인 응답을 받으면 결제 함수 호출
-                if (response.success) {
-                    requestPay();
+                if (response.status === "success") {
+                    var reNo = response.saveNo;
+                    let finalAmount = response.reserveAmount;
+                    console.log("type NO : " + typeof reNo)
+                    console.log("type NO : " + reNo)
+                    requestPay(reNo, finalAmount);
                 } else {
                     alert("예약 처리에 실패했습니다. 다시 시도해주세요.");
                 }
@@ -656,9 +661,24 @@
     var IMP = window.IMP;
     IMP.init("imp67844376");
 
-    function requestPay() {
+    function requestPay(reNo, finalAmount) {
+        console.log("----- > " + reNo)
         const merchantUID = generateMerchantUID();
         console.log("dadasdasd " + merchantUID); // 'SWM2024082700001'
+
+        // hidden input 생성
+        let form = document.getElementById('terms-form');
+        let reservationHiddenInput = document.createElement('input');
+        reservationHiddenInput.type = 'hidden';
+        reservationHiddenInput.name = 'reNo';
+        reservationHiddenInput.value = reNo;
+        form.appendChild(reservationHiddenInput);
+
+        let amountHiddenInput = document.createElement('input');
+        amountHiddenInput.type = 'hidden';
+        amountHiddenInput.name = 'reserveAmount';
+        amountHiddenInput.value = finalAmount;
+        form.appendChild(amountHiddenInput);
 
         IMP.request_pay(
             {
@@ -675,7 +695,28 @@
             function (rsp) {
                 if (rsp.success) {
                     // 결제 성공 시 폼을 제출합니다.
-                    console.log("승인 : " + rsp.apply);
+                    jQuery.ajax({
+                        url: "https://www.myservice.com/payments/complete", // 가맹점 서버
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        data: {
+                            imp_uid: rsp.imp_uid,
+                            merchant_uid: rsp.merchant_uid
+                            //기타 필요한 데이터가 있으면 추가 전달
+                        }
+                    }).done(function (data) {
+                        // 가맹점 서버 결제 API 성공시 로직
+                    })
+
+                    console.log("승인 : " + rsp.imp_uid);
+                    debugger;
+                    let form = document.getElementById('terms-form');
+                    let tidHiddenInput = document.createElement('input');
+                    tidHiddenInput.type = 'hidden';
+                    tidHiddenInput.name = 'tid';
+                    tidHiddenInput.value = rsp.apply.;
+                    form.appendChild(tidHiddenInput);
+
                     document.getElementById('terms-form').submit();
                 } else {
                     alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);

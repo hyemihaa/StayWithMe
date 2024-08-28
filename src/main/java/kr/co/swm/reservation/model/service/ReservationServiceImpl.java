@@ -21,28 +21,40 @@ public class ReservationServiceImpl implements ReservationService {
         this.reservationMapper = reservationMapper;
     }
 
+    @Override
     public List<WebDto> couponList(Long userNo) {
         return reservationMapper.couponList(userNo);
     }
 
+    @Override
     public SellerDto reserveList(Long userNo) {
         return reservationMapper.reserveList(userNo);
     }
 
+    @Override
     public UserDTO userInfo(Long userNo) {
         return reservationMapper.userInfo(userNo);
     }
 
+    @Override
     public WebDto getDiscount(int couponId) {
         return reservationMapper.getDiscount(couponId);
     }
 
-    public boolean reserveSave(String checkIn, String checkOut, String userNo, int price){
-        return reservationMapper.reserveSave(checkIn,checkOut,userNo,price);
+    @Override
+    public int reserveSave(SellerDto sellerDto, Integer couponId, Long userNo){
+        return reservationMapper.reserveSave(sellerDto, couponId, userNo);
     }
 
-    public int paymentSave(int basicPrice, int discountPrice, int finalPrice) {
-        return paymentSave(basicPrice, discountPrice, finalPrice);
+    @Override
+    public int paymentSave(int basicPrice, int discountPrice, int finalPrice, int reservationNo) {
+
+        int result = reservationMapper.paymentSave(basicPrice, discountPrice, finalPrice, reservationNo);
+        if(result == 1){
+            return reservationMapper.paymentDetail();
+        }
+        return result;
+
     }
 
 }

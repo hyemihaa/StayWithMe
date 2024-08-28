@@ -1,6 +1,5 @@
 package kr.co.swm.reservation.mapper;
 
-import kr.co.swm.coupon.model.dto.CouponListDto;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.dto.WebDto;
@@ -20,7 +19,8 @@ public interface ReservationMapper {
 
     WebDto getDiscount(@Param("couponId")int couponId);
 
-    boolean reserveSave(@Param("checkIn")String checkIn,@Param("checkOut")String checkOut,  @Param("userNo")String userNo, @Param("price")int price);
+    int reserveSave(@Param("sellerDto")SellerDto sellerDto, @Param("couponId")Integer couponId, @Param("userNo")Long userNo);
 
-    int paymentSave(@Param("basicPrice")int basicPrice, @Param("discountPrice")int discountPrice, @Param("finalPrice")int finalPrice);
+    int paymentSave(@Param("basicPrice")int basicPrice, @Param("discountPrice")int discountPrice, @Param("finalPrice")int finalPrice, @Param("reservationNo")int reservationNo);
+    int paymentDetail();
 }

@@ -45,9 +45,9 @@ public class ReservationController {
 
 
         // 하드코딩
-        int price = 100;
-        String checkIn = "2024 - 08 - 24";
-        String checkOut = "2024 - 08 - 26";
+        int price = 200;
+        String checkIn = "2024-08-24";
+        String checkOut = "2024-08-26";
 
 
         model.addAttribute("coupons", coupons);
@@ -74,28 +74,52 @@ public class ReservationController {
 
     @PostMapping("/reserve-save")
     @ResponseBody  // 이 메서드에서 반환된 객체를 JSON으로 변환하여 클라이언트에게 전달
-    public ResponseEntity<Map<String, Object>> processReservation(@RequestBody Map<String, Object> reservationData) {
-        // JSON으로 넘어온 데이터를 받아옵니다.
-        String checkInDate = (String) reservationData.get("checkInDate");
-        String checkOutDate = (String) reservationData.get("checkOutDate");
-        String finalPrice = (String) reservationData.get("final-price");
-        String roomNo = (String) reservationData.get("roomNo");
+    public ResponseEntity<Map<String, Object>> processReservation(@RequestBody Map<String, Object> reservationData,
+                                                                  @CookieValue(name = "Authorization", required = false)String userKey
+                             ) {
 
+        Long userNo = jwtUtil.getUserNoFromToken(userKey);
+
+        // JSON으로 넘어온 데이터를 받아옵니다.
+        String reserveCheckIn = (String) reservationData.get("checkInDate");
+        String reserveCheckOut = (String) reservationData.get("checkOutDate");
+
+
+        Integer reserveAmount = (Integer) reservationData.get("finalPrice");
+
+        Integer couponId = null;
+        if (reservationData.get("selectedCouponId") != null) {
+            couponId = Integer.parseInt((String) reservationData.get("selectedCouponId"));
+        }
+
+        Integer reserveRoomNo = null;
+        if (reservationData.get("roomNo") != null) {
+            reserveRoomNo = Integer.parseInt((String) reservationData.get("roomNo"));
+        }
 
 
         // 받아온 데이터를 로그로 출력하거나 다른 로직을 수행할 수 있습니다.
-        System.out.println("Check-in Date: " + checkInDate);
-        System.out.println("Check-out Date: " + checkOutDate);
-        System.out.println("Final Price: " + finalPrice);
-        System.out.println("room number: " + roomNo);
+        System.out.println("Check-in Date: " + reserveCheckIn);
+        System.out.println("Check-out Date: " + reserveCheckOut);
+        System.out.println("Final Price: " + reserveAmount);
+        System.out.println("room number: " + reserveRoomNo);
+        System.out.println("couponId: " + couponId);
 
-//        boolean save = reservationService.reserveSave(checkInDate, checkOutDate, roomNo,finalPrice);
+        SellerDto sellerDto = new SellerDto(reserveCheckIn, reserveCheckOut, reserveRoomNo, reserveAmount);
+
+
+        int save = reservationService.reserveSave(sellerDto, couponId, userNo);
+        System.out.println("assa : " + sellerDto.getBookingNo());
+        int reservationNo = sellerDto.getBookingNo();
+
         // 여기서 필요한 예약 처리 로직을 수행합니다.
         // 예: 데이터베이스에 저장, 추가 검증 등
 
         // 예약 처리 결과를 반환합니다.
         Map<String, Object> response = new HashMap<>();
-        response.put("success", true);  // 예약 처리 성공 여부를 반환
+        response.put("status", "success");  // 예약 처리 성공 여부를 반환
+        response.put("saveNo", reservationNo);
+        response.put("reserveAmount", sellerDto.getReserveAmount());
 
         return ResponseEntity.ok(response);  // 성공적으로 처리했음을 클라이언트에 응답
     }
@@ -104,28 +128,38 @@ public class ReservationController {
     @PostMapping("/payment")
     @ResponseBody
     public ResponseEntity<?> payment(@RequestParam("basic-price")String basicPriceStr,
-                        @RequestParam("discount-price")String discountPriceStr,
-                        @RequestParam("final-price")String finalPriceStr) {
+                                     @RequestParam("discount-price")String discountPriceStr,
+                                     @RequestParam("reserveAmount")String finalPriceStr,
+                                     @RequestParam("reNo") String reservationNoStr,
+                                     @RequestParam("tid")String tidStr
+    ) {
 
         int basicPrice = Integer.parseInt(basicPriceStr);
         int discountPrice = Integer.parseInt(discountPriceStr);
         int finalPrice = Integer.parseInt(finalPriceStr);
+        int reservationNo = Integer.parseInt(reservationNoStr);
+        int tid = Integer.parseInt(tidStr);
 
         System.out.println("BPrice : " + basicPrice);
         System.out.println("DPrice : " + discountPrice);
         System.out.println("FPrice : " + finalPrice);
+        System.out.println("bookingNo : " + reservationNo);
+        System.out.println("tid : " + tid);
 
 
         // 결제 테이블 인입
-        int reservationSave = reservationService.paymentSave(basicPrice, discountPrice, finalPrice);
+        int reservationSave = reservationService.paymentSave(basicPrice, discountPrice, finalPrice, reservationNo);
+
         // 결제 승인 테이블 인입
-//        reservationService.paymentDetailSave();
-        // 예약상태 업데이트
+
+
+        // 예약상태 업데이트 ( 예약안료/실패 )
 //        reservationService.reserveUpdate();
+
 //        // 쿠폰 사용 시 쿠폰 use 컬럼 업데이트
+          // 사용안함 쿠폰은 업데이트 안됌
 //        reservationService.couponUsedUpdate();
 
         return ResponseEntity.ok(true);
     }
-
 }

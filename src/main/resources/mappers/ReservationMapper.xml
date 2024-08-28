@@ -18,6 +18,7 @@
         <result column="USE_YN" property="useYN"></result>
 
     </resultMap>
+
     <resultMap id="reservation" type="kr.co.swm.model.dto.SellerDto">
 
         <!-- 숙소 정보 -->
@@ -37,6 +38,7 @@
         <result column="MAX_OCCUPANCY" property="roomMaxPersonnel"/>
 
         <!-- 예약 정보 -->
+        <result column="BOOKING_NO" property="bookingNo"/>
         <result column="RESERVE_ROOM_NO" property="reserveRoomNo"/>
         <result column="RESERVE_ROOM_NAME" property="reserveRoomName"/>
         <result column="CHECK_IN_DATE" property="reserveCheckIn"/>
@@ -46,13 +48,33 @@
         <result column="RESERVATION_CANCELLATION_DATE" property="reservationCancellationDate"/>
         <result column="RESERVATION_STATUS" property="reservationStatus"/>
         <result column="RESERVE_ACCOMMODATION_TYPE" property="reservationType"/>
-
     </resultMap>
+
     <resultMap id="user" type="kr.co.swm.member.model.dto.UserDTO">
         <result column="USER_NAME" property="userName"/>
         <result column="USER_phone" property="userPhone"/>
     </resultMap>
 
+
+
+    <insert id="reserveSave">
+        insert into reserve values (
+                                    null,
+                                    #{userNo},
+                                    #{sellerDto.reserveRoomNo},
+                                    #{couponId},
+                                    #{sellerDto.reserveCheckIn},
+                                    #{sellerDto.reserveCheckOut},
+                                    #{sellerDto.reserveAmount},
+                                    null,
+                                    null,
+                                    "예약완료",
+                                    null
+                                   )
+        <selectKey resultType="int" keyProperty="sellerDto.bookingNo" keyColumn="BOOKING_NO" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
 
 
     <select id="couponList" resultMap="coupon">
@@ -78,8 +100,13 @@
         where user_no = #{userNo}
     </select>
 
-    <insert id="reserveSave">
-        insert into reserve values (null, #{userNo}, #{roomNo}, #{checkIn}, #{checkOut},#{price},NOW() ,null, "예약완료")
+    <insert id="paymentSave" >
+        insert into payment values (null,
+                                    #{reservationNo},
+                                    #{basicPrice},
+                                    #{discountPrice},
+                                    #{finalPrice}
+                                   )
     </insert>
 
 </mapper>
