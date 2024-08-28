@@ -103,11 +103,25 @@
     <insert id="paymentSave" >
         insert into payment values (null,
                                     #{reservationNo},
-                                    #{basicPrice},
-                                    #{discountPrice},
-                                    #{finalPrice}
+                                    #{payment.basicPrice},
+                                    #{payment.discountPrice},
+                                    #{payment.finalPrice}
                                    )
+
+        <selectKey resultType="int" keyProperty="payment.paymentNo" keyColumn="PAYMENT_NO" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
     </insert>
 
+    <insert id="paymentDetail">
+        insert into payment_detail values (
+                                           null,
+                                           #{paymentNo},
+                                           #{payment.method},
+                                           #{payment.uid},
+                                           NOW(),
+                                           #{payment.finalPrice}
+                                          )
+    </insert>
 </mapper>
 

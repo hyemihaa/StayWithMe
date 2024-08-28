@@ -490,6 +490,7 @@
     let discountAmount = (document.getElementById('discount-price').value = document.getElementById("discount-price-span").textContent);
     let basicPrice = (document.getElementById('basic-price').value = document.getElementById('base-price-span').textContent.trim());
     let finalPrice = (document.getElementById('final-price').value = document.getElementById('final-price-span').textContent.trim());
+    console.log("========================================================  " + finalPrice);
 
 
 
@@ -508,7 +509,7 @@
         selectedCouponId = element.getAttribute('data-coupon-id');
         const discountType = element.getAttribute('data-coupon-type');
         const discountValue = parseInt(element.getAttribute('data-coupon-discount'));
-        console.log(discountValue + "dsadsadasds")
+        console.log(discountValue + " : dsadsadasds")
 
         // 선택한 쿠폰 이름을 인풋 필드에 표시
         document.getElementById('selected-coupon').value = couponName;
@@ -589,21 +590,30 @@
         // 오늘 날짜를 "YYMMDD" 형식으로 만듭니다.
         const year = String(today.getFullYear()).slice(2); // '24'
         const month = String(today.getMonth() + 1).padStart(2, '0'); // '08'
-        const day = String(today.getDate()).padStart(2, '0'); // '27'
+        const day = String(today.getDate()).padStart(2, '0'); // '29'
 
-        const datePart = year + month + day; // '240827'
+        const datePart = year + month + day; // '240829'
 
         // 순차적인 숫자를 만들기 위한 기본 값 (예: '00001')
         let sequence = localStorage.getItem('sequence');
-        sequence = parseInt(sequence) + 1;
-        const sequenceString = String(sequence).padStart(5, '0');
 
+        if (sequence === null) {
+            sequence = 1;
+        } else {
+            sequence = parseInt(sequence) + 1;
+        }
+
+        localStorage.setItem('sequence', sequence); // 현재 시퀀스를 로컬 스토리지에 저장
+
+        const sequenceString = String(sequence).padStart(5, '0'); // '00001'
+
+        // 무작위 4자리 숫자 생성
         const randomPart = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
 
         // 완성된 주문번호를 반환합니다.
         return prefix + datePart + sequenceString + randomPart;
-    }
 
+    }
 
     function reserveSave() {
         const checkInDate = document.getElementById("checkInDate").textContent;
@@ -662,9 +672,9 @@ console.log("-------------")
     IMP.init("imp67844376");
 
     function requestPay(reNo, finalAmount) {
-        console.log("----- > " + reNo)
+        console.log("----- > " + reNo);
         const merchantUID = generateMerchantUID();
-        console.log("dadasdasd " + merchantUID); // 'SWM2024082700001'
+        console.log("Merchant UID: " + merchantUID);
 
         // hidden input 생성
         let form = document.getElementById('terms-form');
@@ -682,48 +692,61 @@ console.log("-------------")
 
         IMP.request_pay(
             {
-                pg: "html5_inicis",		//KG이니시스 pg파라미터 값
-                pay_method: "CARD",		//결제 방법
-                merchant_uid: merchantUID,//주문번호
-                name: productName,		//상품 명
-                amount: finalPrice,			//금액
-                buyer_email: "dkdk.com",
-                buyer_name: "이진우 ",
-                buyer_tel: "010-1111-2222",
-
+                pg: "html5_inicis",		// KG이니시스 PG 파라미터 값
+                pay_method: "CARD",		// 결제 방법
+                merchant_uid: merchantUID, // 주문번호
+                name: productName,		// 상품명
+                amount: finalAmount,		// 금액
+                buyer_email: "example@example.com",
+                buyer_name: "홍길동",
+                buyer_tel: "010-1234-5678",
             },
             function (rsp) {
                 if (rsp.success) {
-                    // 결제 성공 시 폼을 제출합니다.
+                    // 결제 성공 시
                     jQuery.ajax({
-                        url: "https://www.myservice.com/payments/complete", // 가맹점 서버
+                        url: "http://localhost:8080/payments/complete", // 가맹점 서버
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        data: {
+                        data: JSON.stringify({
                             imp_uid: rsp.imp_uid,
                             merchant_uid: rsp.merchant_uid
-                            //기타 필요한 데이터가 있으면 추가 전달
-                        }
+                        })
                     }).done(function (data) {
-                        // 가맹점 서버 결제 API 성공시 로직
-                    })
+                        // 서버로부터 성공적으로 응답을 받은 경우
+                        console.log("서버 응답 성공:", data);
 
-                    console.log("승인 : " + rsp.imp_uid);
-                    debugger;
-                    let form = document.getElementById('terms-form');
-                    let tidHiddenInput = document.createElement('input');
-                    tidHiddenInput.type = 'hidden';
-                    tidHiddenInput.name = 'tid';
-                    tidHiddenInput.value = rsp.apply.;
-                    form.appendChild(tidHiddenInput);
+                        if (data) {
+                            // 결제 성공한 imp_uid와 기타 필요한 정보를 폼에 추가
+                            let form = document.getElementById('terms-form'); // form 요소 가져오기
+                            let uidHiddenInput = document.createElement('input');
+                            uidHiddenInput.type = 'hidden';
+                            uidHiddenInput.name = 'uid';
+                            uidHiddenInput.value = rsp.imp_uid; // 서버에서 받은 imp_uid 사용
+                            form.appendChild(uidHiddenInput);
 
-                    document.getElementById('terms-form').submit();
+                            let methodHiddenInput = document.createElement('input');
+                            methodHiddenInput.type = 'hidden';
+                            methodHiddenInput.name = 'method';
+                            methodHiddenInput.value = rsp.pay_method; // 서버에서 받은 imp_uid 사용
+                            form.appendChild(methodHiddenInput);
+
+                            // 폼 제출
+                            document.getElementById('terms-form').submit();
+                        } else {
+                            alert("서버에서 결제 완료 처리를 실패했습니다.");
+                        }
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        console.error("서버 요청 실패:", textStatus, errorThrown);
+                        alert("서버 요청 중 오류가 발생했습니다.");
+                    });
                 } else {
                     alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
                 }
             }
         );
     }
+
 
 </script>
 

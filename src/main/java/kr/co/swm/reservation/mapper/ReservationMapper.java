@@ -3,6 +3,7 @@ package kr.co.swm.reservation.mapper;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.dto.WebDto;
+import kr.co.swm.reservation.model.dto.PaymentDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,6 +22,6 @@ public interface ReservationMapper {
 
     int reserveSave(@Param("sellerDto")SellerDto sellerDto, @Param("couponId")Integer couponId, @Param("userNo")Long userNo);
 
-    int paymentSave(@Param("basicPrice")int basicPrice, @Param("discountPrice")int discountPrice, @Param("finalPrice")int finalPrice, @Param("reservationNo")int reservationNo);
-    int paymentDetail();
+    int paymentSave(@Param("payment")PaymentDto paymentDto, @Param("reservationNo")int reservationNo);
+    int paymentDetail(@Param("payment")PaymentDto paymentDto, @Param("paymentNo")int paymentNo);
 }

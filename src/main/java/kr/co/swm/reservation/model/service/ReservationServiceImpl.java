@@ -5,6 +5,7 @@ import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.dto.WebDto;
 import kr.co.swm.reservation.mapper.ReservationMapper;
+import kr.co.swm.reservation.model.dto.PaymentDto;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,14 +48,21 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public int paymentSave(int basicPrice, int discountPrice, int finalPrice, int reservationNo) {
+    public int paymentSave(PaymentDto paymentDto, int reservationNo) {
 
-        int result = reservationMapper.paymentSave(basicPrice, discountPrice, finalPrice, reservationNo);
-        if(result == 1){
-            return reservationMapper.paymentDetail();
-        }
+        int result = reservationMapper.paymentSave(paymentDto, reservationNo);
         return result;
 
     }
+
+    public int paymentDetail(PaymentDto paymentDto, int paymentNo) {
+        return reservationMapper.paymentDetail(paymentDto, paymentNo);
+    }
+
+    // 예약상태 업데이트 ( 예약안료/실패 )
+//        reservationService.reserveUpdate();
+
+//        // 쿠폰 사용 시 쿠폰 use 컬럼 업데이트
+//        reservationService.couponUsedUpdate();
 
 }

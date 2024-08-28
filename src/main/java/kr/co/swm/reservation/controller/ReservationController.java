@@ -5,8 +5,10 @@ import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.dto.WebDto;
+import kr.co.swm.reservation.model.dto.PaymentDto;
 import kr.co.swm.reservation.model.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -85,11 +87,22 @@ public class ReservationController {
         String reserveCheckOut = (String) reservationData.get("checkOutDate");
 
 
-        Integer reserveAmount = (Integer) reservationData.get("finalPrice");
+//        Integer reserveAmount = (Integer) reservationData.get("finalPrice");
 
         Integer couponId = null;
         if (reservationData.get("selectedCouponId") != null) {
             couponId = Integer.parseInt((String) reservationData.get("selectedCouponId"));
+        }
+
+        System.out.println(couponId);
+        Integer reserveAmount = null;
+
+        if (couponId != null) {
+            if (reservationData.get("finalPrice") != null) {
+                reserveAmount = (Integer) reservationData.get("finalPrice");
+            }
+        } else  {
+            reserveAmount = Integer.parseInt((String) reservationData.get("finalPrice"));
         }
 
         Integer reserveRoomNo = null;
@@ -112,6 +125,7 @@ public class ReservationController {
         System.out.println("assa : " + sellerDto.getBookingNo());
         int reservationNo = sellerDto.getBookingNo();
 
+
         // 여기서 필요한 예약 처리 로직을 수행합니다.
         // 예: 데이터베이스에 저장, 추가 검증 등
 
@@ -126,31 +140,38 @@ public class ReservationController {
 
 
     @PostMapping("/payment")
-    @ResponseBody
-    public ResponseEntity<?> payment(@RequestParam("basic-price")String basicPriceStr,
+    public String payment(@RequestParam("basic-price")String basicPriceStr,
                                      @RequestParam("discount-price")String discountPriceStr,
                                      @RequestParam("reserveAmount")String finalPriceStr,
                                      @RequestParam("reNo") String reservationNoStr,
-                                     @RequestParam("tid")String tidStr
+                                     @RequestParam("uid")String uid,
+                                     @RequestParam("method")String method
     ) {
 
         int basicPrice = Integer.parseInt(basicPriceStr);
         int discountPrice = Integer.parseInt(discountPriceStr);
         int finalPrice = Integer.parseInt(finalPriceStr);
         int reservationNo = Integer.parseInt(reservationNoStr);
-        int tid = Integer.parseInt(tidStr);
 
         System.out.println("BPrice : " + basicPrice);
         System.out.println("DPrice : " + discountPrice);
         System.out.println("FPrice : " + finalPrice);
         System.out.println("bookingNo : " + reservationNo);
-        System.out.println("tid : " + tid);
+        System.out.println("uid : " + uid);
+        System.out.println("method : " + method);
 
+
+        PaymentDto price = new PaymentDto(basicPrice, discountPrice, finalPrice);
 
         // 결제 테이블 인입
-        int reservationSave = reservationService.paymentSave(basicPrice, discountPrice, finalPrice, reservationNo);
+        int reservationSave = reservationService.paymentSave(price , reservationNo);
+        int paymentNo = price.getPaymentNo();
 
         // 결제 승인 테이블 인입
+        PaymentDto paymentDto = new PaymentDto(finalPrice, uid, method);
+        if (reservationSave > 0) {
+            reservationService.paymentDetail(paymentDto, paymentNo);
+        }
 
 
         // 예약상태 업데이트 ( 예약안료/실패 )
@@ -160,6 +181,11 @@ public class ReservationController {
           // 사용안함 쿠폰은 업데이트 안됌
 //        reservationService.couponUsedUpdate();
 
-        return ResponseEntity.ok(true);
+        return "redirect:/complete";
     }
+    @GetMapping("/complete")
+    public String complete() {
+        return "complete";
+    }
+
 }

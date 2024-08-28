@@ -4,6 +4,7 @@ import kr.co.swm.coupon.model.dto.CouponListDto;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.dto.WebDto;
+import kr.co.swm.reservation.model.dto.PaymentDto;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public interface ReservationService {
 
     int reserveSave(SellerDto sellerDto, Integer couponId, Long userNo);
 
-    int paymentSave(int basicPrice, int discountPrice, int finalPrice, int reservationNo);
+    int paymentSave(PaymentDto paymentDto, int reservationNo);
+
+    int paymentDetail(PaymentDto paymentDto, int paymentNo);
 
 }
