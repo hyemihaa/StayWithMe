@@ -136,7 +136,6 @@ public class SignController {
 
         if (token != null) {
             String role = jwtUtil.getRoleFromToken(token);
-            System.out.println("로그인 시도: " + role);  // 권한이 제대로 추출되는지 확인
 
             if (!isAdmin) { // 일반 사용자일 경우에만 로그인 기록을 저장
                 // IP 주소 가져오기
@@ -149,7 +148,6 @@ public class SignController {
                 userDTO.setUserIp(userIp);
                 userDTO.setLastLoginDate(LocalDateTime.now()); // 현재시간
 
-                System.out.println("로그인 시도 IP: " + userIp); // **로그 추가** (IP 출력)
                 memberServiceImpl.saveLoginLog(userDTO); // 로그기록 저장
             }
 
@@ -186,11 +184,9 @@ public class SignController {
     @PostMapping("/find-userId")
     @ResponseBody
     public String findUserId(@RequestParam("userName") String userName, @RequestParam("userPhone") String userPhone) {
-        System.out.println("아이디찾기 컨트롤러 : " + userName + " " + userPhone);
 
         // 사용자 아이디를 찾는 서비스 호출
         String userId = memberServiceImpl.findUserId(userName, userPhone);
-        System.out.println("========================" + userId);
 
         if (userId != null) {
             return userId;

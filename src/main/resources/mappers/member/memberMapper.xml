@@ -96,7 +96,7 @@
             AND DELETED_DATE &lt;= #{oneWeekAgo}
         <!--
         현재 시간에서 1주일을 뺀 날짜를 나타내며, 이 날짜보다 이전인 데이터만 삭제
-        DELETED_DATE가 oneWeekAgo보다 작은 데이터를 삭제
+        DELETED_DATE가 oneWeekAgo보다 작은 데이터를 삭제 <=
         -->
     </delete>
 

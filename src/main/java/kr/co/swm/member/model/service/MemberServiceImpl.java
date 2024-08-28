@@ -109,7 +109,7 @@ public class MemberServiceImpl implements MemberService {
     public String authenticate(String userId, String userPwd, HttpServletResponse response, String signRole) {
         // 사용자 정보 로드 및 권한 초기화
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId, signRole);
-        System.out.println(userDetails.getPassword());
+
         String role = "ROLE_USER"; // 기본 권한 (기본값은 일반 사용자)
         Long accommAdminKey = null; // 숙소 관리자 키 초기화
         Long userNo = null;
@@ -187,6 +187,7 @@ public class MemberServiceImpl implements MemberService {
         // 사용자검증
         String userExists =  memberMapper.verifyUser(userId, userPhone);
         if(userExists == null) {
+            log.warn("해당 정보를 가진 사용자를 찾을 수 없습니다.");
             return "error: 해당 정보를 가진 사용자를 찾을 수 없습니다.";
         }
 
@@ -275,9 +276,9 @@ public class MemberServiceImpl implements MemberService {
 
         try {
             int deletedCount = memberMapper.deleteUser(oneWeekAgo);  // 1주일 이상 지난 DELETED 회원 삭제
-            System.out.println(deletedCount + "개의 계정이 삭제되었습니다.");
+            log.info("{}개의 계정이 삭제되었습니다.",deletedCount);
         } catch (Exception e) {
-            System.err.println("탈퇴 대기 중인 회원 삭제 중 오류 발생: " + e.getMessage());
+            log.error("탈퇴 대기 중인 회원 삭제 중 오류 발생: {}", e.getMessage(), e);
         }
     }
 
