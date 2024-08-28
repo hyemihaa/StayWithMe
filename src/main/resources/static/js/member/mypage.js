@@ -10,7 +10,7 @@ function showSection(sectionId) {
     if (selectedSection) {
         selectedSection.style.display = 'block';
 
-        // 로그인 관리 섹션이 선택된 경우 로그 데이터를 불러옴
+        // 섹션에 맞는 데이터 로드
         if (sectionId === 'activity-log') {
             loadLoginLogs();
         }
@@ -27,9 +27,9 @@ function showSection(sectionId) {
 }
 
 /*---------------내정보수정--------------*/
-// 비밀번호 저장 -> 비밀번호 변경 요청 (전역 스코프에 정의)
+// 비밀번호 저장 -> 비밀번호 변경 요청
 function savePasswordButton() {
-    const currentPassword = document.getElementById('currentPassword').value.trim();
+    const currentPassword = document.getElementById('currentPassword').value.trim(); // trim() 문자열의 시작과 끝에 있는 공백을 제거
     const newPassword = document.getElementById('newPassword').value.trim();
     const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
 
@@ -81,17 +81,22 @@ const maxChars = 250;
 // 입력 이벤트 리스너 추가
 textarea.addEventListener('input', function () {
     // 현재 입력된 문자 수를 가져옴
-    const currentLength = textarea.value.length;
+    let currentLength = textarea.value.length;
+
+    // 250자를 초과하는지 확인
+    if (currentLength > maxChars) {
+        // 초과된 부분을 잘라내어 입력 제한
+        textarea.value = textarea.value.slice(0, maxChars);
+        currentLength = maxChars;
+    }
 
     // 문자 수 업데이트
     charCount.textContent = `${currentLength} / ${maxChars}`;
 
-    // 250자를 초과하는지 확인
-    if (currentLength > maxChars) {
-        // 초과 시 에러 메시지 표시
+    // 250자를 초과했는지 확인 후 에러 메시지 표시
+    if (currentLength === maxChars) {
         errorMessage.style.display = 'inline';
     } else {
-        // 초과하지 않으면 에러 메시지 숨김
         errorMessage.style.display = 'none';
     }
 });
@@ -104,7 +109,7 @@ const logsPerPage = 3; // 한 번에 보여줄 로그 수
 
 function loadLoginLogs() {
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         url: '/login-log',
         contentType: 'application/json',
         success: function(data) {
@@ -197,7 +202,7 @@ function formatDate(dateString) {
 /*------------ 쿠폰 조회 -------------*/
 function loadCoupons() {
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         url: '/coupons',
         success: function(response) {
             if (response.success) {
@@ -250,7 +255,7 @@ function renderCoupons(coupons) {
 /*-------------예약내역 조회-----------------*/
 function loadReservations() {
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         url: '/reservation',
         success: function(response) {
             if (response.success) {
@@ -553,7 +558,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 새로운 휴대폰 번호의 유효성을 검증하는 함수 호출
         validatePhone();
 
-        // 유효할 경우에만 sms 전송 요청
+        // 유효할 경우(유효할 때 나타나는 색상)에만 sms 전송 요청
         validatePhoneCheck = document.getElementById("phoneMsg").style.color === "rgb(170, 170, 170)";
 
         const newPhone = document.getElementById("newPhone").value;
