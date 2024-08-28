@@ -13,18 +13,7 @@
 
 <!-- header nav 여백 영역 -->
 <div class="under-nev" style="height: 100px">
-	<div class="hero-wrap js-fullheight">
-		<!-- <style="background-image: url('images/bg_3.jpg');"> -->
-		<!-- <div class="overlay"></div>
-            <div class="container">
-                <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
-                    <div class="col-md-9 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
-                        <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a href="index.html">Home</a></span> <span>Tour</span></p>
-                        <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Destination</h1>
-                    </div>
-                </div>
-            </div> -->
-	</div>
+	<div class="hero-wrap js-fullheight"></div>
 </div>
 
 <!-- 사이드 바(필터) 영역-->
@@ -47,13 +36,13 @@
 							<br>
 							<div class="form-group">
 								<div class="select-wrap one-third">
-									<input type="radio" th:field="*{boardType}" name="accommodation" value="전체" id="전체" ><label
+									<input type="radio" th:field="*{type}" name="accommodation" value="전체" id="전체" ><label
 										for="전체">전체</label><br>
-									<input type="radio" th:field="*{boardType}" name="accommodation" value="호텔" id="호텔"  ><label
+									<input type="radio" th:field="*{type}" name="accommodation" value="호텔" id="호텔"  ><label
 										for="호텔">호텔</label><br>
-									<input type="radio" th:field="*{boardType}" name="accommodation" value="리조트" id="리조트"  ><label
+									<input type="radio" th:field="*{type}" name="accommodation" value="리조트" id="리조트"  ><label
 										for="호텔">리조트</label><br>
-									<input type="radio" th:field="*{boardType}" name="accommodation" value="펜션" id="펜션" ><label
+									<input type="radio" th:field="*{type}" name="accommodation" value="펜션" id="펜션" ><label
 										for="펜션">펜션</label><br>
 								</div>
 							</div>
@@ -96,19 +85,7 @@
 			<!-- 숙박 상품 리스트 -->
 			<div class="col-lg-9">
 				<div class="col-md-4 ftco-animate">
-					<div class="col-md-6">
-<!--						<div class="form-group">-->
-<!--							<div class="select-wrap one-third">-->
-<!--&lt;!&ndash;								<select name="tour-option-select" class="form-control" style="width: 150px; border-radius: 10px; margin-left: 175%;">&ndash;&gt;-->
-<!--&lt;!&ndash;									<option value="0">추천순</option>&ndash;&gt;-->
-<!--&lt;!&ndash;									<option value="1">평점높은순</option>&ndash;&gt;-->
-<!--&lt;!&ndash;									<option value="2">리뷰많은순</option>&ndash;&gt;-->
-<!--&lt;!&ndash;									<option value="3">낮은가격순</option>&ndash;&gt;-->
-<!--&lt;!&ndash;									<option value="4">높은가격순</option>&ndash;&gt;-->
-<!--&lt;!&ndash;								</select>&ndash;&gt;-->
-<!--							</div>-->
-<!--						</div>-->
-					</div>
+					<div class="col-md-6"></div>
 				</div>
 				<div class="row">
 					<!-- 상품리스트 1칸 -->
@@ -126,21 +103,6 @@
 								<div class="d-flex">
 									<div class="one" >
 										<h3><a th:href="@{/hotel-single(boardNo=${place.boardNo})}" th:text="${place.boardName}"></a></h3>
-										<!-- 별점 평균 값에 따른 아이콘 변화 -->
-										<p class="rate" th:each="rate : ${rate}" th:if="${place.boardNo == 1}">
-											<i class="icon-star" th:if="${rate >= 1}"></i>
-											<i class="icon-star" th:if="${rate >= 2}"></i>
-											<i class="icon-star" th:if="${rate >= 3}"></i>
-											<i class="icon-star" th:if="${rate >= 4}"></i>
-											<i class="icon-star" th:if="${rate >= 5}"></i>
-											<!-- "icon-star" = 채워져있는 별 / "icon-star-o" = 비어있는 별 -->
-											<i class="icon-star-o" th:if="${rate < 1}"></i>
-											<i class="icon-star-o" th:if="${rate < 2}"></i>
-											<i class="icon-star-o" th:if="${rate < 3}"></i>
-											<i class="icon-star-o" th:if="${rate < 4}"></i>
-											<i class="icon-star-o" th:if="${rate < 5}"></i>
-											<span th:text="${rate}"></span>
-										</p>
 									</div>
 									<div class="two">
 										<p th:text="${place.boardType}"></p>
@@ -153,11 +115,6 @@
 								<span class="price" style="font-weight:bold; font-size: 17px;" th:each="cost: ${cost}">
 										<span th:text="${cost.boardCount}"/>원~ <span style="font-size: 10px;"> &nbsp;/&nbsp;1박</span>
 									</span>
-								<!--									<br>-->
-								<!--									<p class="price" style="font-weight:bold">-->
-								<!--										쿠폰적용가 : 170000-->
-								<!--										<span style="font-weight:bold" th:text="${place?.boardDiscount}" />-->
-								<!--										원</p>-->
 								<p class="bottom-area d-flex">
 									<span class="ml-auto"><a th:href="@{/hotel-single(boardNo=${place.boardNo})}">자세히보기</a></span>
 								</p>
@@ -183,11 +140,6 @@
 
 								<!-- 가운데 페이지 버튼 -->
 
-<!--								<li th:class="${page == pi.currentPage} ? 'active' : ''"-->
-<!--									th:each="page : ${#numbers.sequence(pi.startPage, pi.endPage)}">-->
-<!--									<a th:href="@{/tour(currentPage=${page})}"-->
-<!--									   th:text="${page}"></a>-->
-<!--								</li>-->
 
 								<li th:each="page : ${#numbers.sequence(pi.startPage, pi.endPage)}"
 									th:class="${page == pi.currentPage} ? 'active' : ''">
@@ -213,7 +165,6 @@
 </section> <!-- .section -->
 
 
-<!--	<script th:src="@{js/option.js}"></script>-->
 <script th:src="@{js/range.js}"></script>
 <div th:include="fragments/footer.html :: footer"></div>
 <!-- loader -->

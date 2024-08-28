@@ -14,6 +14,7 @@ public interface ListService {
     //  최저 기본 가격
     List<ListDTO> getCost();
 
+    List<String> getUniqueFacilities();
     //  체크인 & 체크아웃 지정할 때 나오는 리스트
     List<ListDTO> getCheck(String checkinDate, String checkoutDate);
 
@@ -26,4 +27,5 @@ public interface ListService {
     List<ListDTO> getList(SearchDTO searchDTO);
     // 부가시설 조회
     List<String> getFacilities(SearchDTO searchDTO);
+
 }

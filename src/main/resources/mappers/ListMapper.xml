@@ -16,46 +16,16 @@
 
     <!-- 장소 -->
     <select id="getPlace" resultMap="placeResultMap">
-<!--        SELECT ab.ACCOMMODATION_ADMIN_NO,-->
-<!--        ab.NAME,-->
-<!--        ab.ACCOMMODATION_TYPE,-->
-<!--        ab.ADDRESS,-->
-<!--        r.CHECK_IN_TIME,-->
-<!--        MIN(br.BASIC_RATE) AS BASIC_RATE-->
-<!--        FROM (SELECT a.ACCOMMODATION_ADMIN_NO,-->
-<!--        a.NAME,-->
-<!--        a.ACCOMMODATION_TYPE,-->
-<!--        a.ADDRESS-->
-<!--        FROM facilities f-->
-<!--        JOIN accommodation a ON a.ACCOMMODATION_ADMIN_NO = f.ACCOMMODATION_ADMIN_NO-->
-<!--        <if test="searchDTO.options != null and searchDTO.options.size() > 0">-->
-<!--            WHERE f.FACILITY_NAME IN-->
-<!--            <foreach item="option" collection="searchDTO.options" open="(" separator="," close=")">-->
-<!--                #{option}-->
-<!--            </foreach>-->
-<!--        </if>-->
-<!--        ) ab-->
-<!--        JOIN room r ON ab.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO-->
-<!--        JOIN basic_rate br ON r.ROOM_NO = br.ROOM_NO-->
-<!--        <if test='!searchDTO.boardType.equals("전체")'>-->
-<!--            WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.boardType}-->
-<!--        </if>-->
-<!--        GROUP BY ab.ACCOMMODATION_ADMIN_NO, ab.NAME, ab.ACCOMMODATION_TYPE, ab.ADDRESS, r.CHECK_IN_TIME-->
-<!--        HAVING MIN(br.BASIC_RATE) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}-->
-<!--        ORDER BY ab.ACCOMMODATION_ADMIN_NO-->
-<!--        LIMIT #{pi.boardLimit} OFFSET #{pi.offset}-->
-
 
         SELECT ab.ACCOMMODATION_ADMIN_NO,
         ab.NAME,
         ab.ACCOMMODATION_TYPE,
         ab.ADDRESS,
-        r.CHECK_IN_TIME,
+        GROUP_CONCAT(DISTINCT r.CHECK_IN_TIME) AS CHECK_IN_TIMES,
+        GROUP_CONCAT(DISTINCT f.FACILITY_NAME) AS FACILITY_NAMES,
         MIN(br.BASIC_RATE) AS BASIC_RATE
-        FROM (SELECT a.ACCOMMODATION_ADMIN_NO,
-        a.NAME,
-        a.ACCOMMODATION_TYPE,
-        a.ADDRESS
+        FROM
+        (SELECT a.ACCOMMODATION_ADMIN_NO, a.NAME, a.ACCOMMODATION_TYPE, a.ADDRESS
         FROM facilities f
         JOIN accommodation a ON a.ACCOMMODATION_ADMIN_NO = f.ACCOMMODATION_ADMIN_NO
         <if test="searchDTO.options != null and searchDTO.options.size() > 0">
@@ -67,10 +37,11 @@
         ) ab
         JOIN room r ON ab.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
         JOIN basic_rate br ON r.ROOM_NO = br.ROOM_NO
-        <if test='searchDTO.boardType != null and !searchDTO.boardType.equals("전체")'>
-            WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.boardType}
+        JOIN facilities f ON f.ACCOMMODATION_ADMIN_NO = ab.ACCOMMODATION_ADMIN_NO
+        <if test='searchDTO.type != null and !searchDTO.type.equals("전체")'>
+            WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.type}
         </if>
-        GROUP BY ab.ACCOMMODATION_ADMIN_NO, ab.NAME, ab.ACCOMMODATION_TYPE, ab.ADDRESS, r.CHECK_IN_TIME
+        GROUP BY ab.ACCOMMODATION_ADMIN_NO, ab.NAME, ab.ACCOMMODATION_TYPE, ab.ADDRESS
         HAVING MIN(br.BASIC_RATE) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
         ORDER BY ab.ACCOMMODATION_ADMIN_NO
         LIMIT #{pi.boardLimit} OFFSET #{pi.offset}
@@ -80,78 +51,57 @@
 
 
 
-    <!-- 게시글의 총 개수 -->
-    <select id="getTotalCount" resultType="int">
-<!--        SELECT COUNT(*) FROM (-->
-<!--            SELECT ab.NAME,-->
-<!--                    ab.ACCOMMODATION_TYPE,-->
-<!--                    ab.ADDRESS,-->
-<!--                    r.CHECK_IN_TIME,-->
-<!--                    MIN(br.BASIC_RATE)-->
-<!--            FROM (SELECT a.ACCOMMODATION_ADMIN_NO,-->
-<!--                        a.NAME,-->
-<!--                        a.ACCOMMODATION_TYPE,-->
-<!--                        a.ADDRESS-->
-<!--                    FROM facilities f-->
-<!--                    JOIN accommodation a ON a.ACCOMMODATION_ADMIN_NO = f.FACILITY_NO-->
-<!--                    <if test="searchDTO.options != null and searchDTO.options.size() > 0">-->
-<!--                        WHERE f.FACILITY_NAME IN-->
-<!--                        <foreach item="option" collection="searchDTO.options" open="(" separator="," close=")">-->
-<!--                            #{option}-->
-<!--                        </foreach>-->
-<!--                    </if>) ab-->
-<!--            JOIN room r ON ab.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO-->
-<!--            JOIN basic_rate br ON r.ROOM_NO = br.ROOM_NO-->
-<!--            <if test='!searchDTO.boardType.equals("전체")'>-->
-<!--                WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.boardType}-->
-<!--            </if>-->
-<!--            group by ab.name, ab.accommodation_Type, ab.ADDRESS, r.CHECK_IN_TIME, r.ACCOMMODATION_ADMIN_NO-->
-<!--            HAVING (MIN(basic_rate) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate})-->
-<!--    ) a-->
-
-        SELECT COUNT(*)
-        FROM (
-        SELECT ab.NAME,
-        ab.ACCOMMODATION_TYPE,
-        ab.ADDRESS,
-        r.CHECK_IN_TIME,
-        MIN(br.BASIC_RATE) AS BASIC_RATE
-        FROM (
-        SELECT a.ACCOMMODATION_ADMIN_NO,
-        a.NAME,
-        a.ACCOMMODATION_TYPE,
-        a.ADDRESS
-        FROM facilities f
-        JOIN accommodation a ON a.ACCOMMODATION_ADMIN_NO = f.ACCOMMODATION_ADMIN_NO
-        <if test="searchDTO.options != null and searchDTO.options.size() > 0">
-            WHERE f.FACILITY_NAME IN
-            <foreach item="option" collection="searchDTO.options" open="(" separator="," close=")">
-                #{option}
-            </foreach>
-        </if>
-        ) ab
-        JOIN room r ON ab.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
-        JOIN basic_rate br ON r.ROOM_NO = br.ROOM_NO
-        <if test="searchDTO.boardType != null and !searchDTO.boardType.equals('전체')">
-            WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.boardType}
-        </if>
-        GROUP BY ab.NAME, ab.ACCOMMODATION_TYPE, ab.ADDRESS, r.CHECK_IN_TIME
-        HAVING MIN(br.BASIC_RATE) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
-        ) a
-
+    <!-- 게시글의 총 개수 (옵션 조건부)-->
 <!--
     1. 유형만 검색했을 떄
     2. 가격만 검색했을 떄
     3. 옵션만 검색헀을 떄
     4. 전체 선택 후 검색했을 때
 -->
+    <select id="getTotalCount" resultType="int">
+
+        SELECT
+        COUNT(ac.ACCOMMODATION_ADMIN_NO),
+               MIN(br.BASIC_RATE)
+        FROM ACCOMMODATION ac
+        JOIN ROOM r ON ac.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
+        JOIN BASIC_RATE br ON r.ROOM_NO = br.ROOM_NO
+        <where>
+            <choose>
+                <when test="searchDTO.type != null and !searchDTO.type.isEmpty()">
+                    ac.ACCOMMODATION_TYPE = #{searchDTO.type}
+                </when>
+                <when test="searchDTO.minRate != null and searchDTO.maxRate != null">
+                    MIN(br.BASIC_RATE) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
+                </when>
+                <when test="searchDTO.facilityName != null and !searchDTO.facilityName.isEmpty()">
+                    ac.FACILITY_NAME IN (
+                        <foreach item="options" collection="searchDTO.options" separator="," open="" close="">
+                            #{options}
+                        </foreach>
+                    )
+                </when>
+            </choose>
+        </where>
     </select>
+
+
 
     <!-- 최저 기본 가격 -->
     <select id="getCost" resultMap="placeResultMap">
         select distinct basic_rate_no,basic_rate from BASIC_RATE
         where basic_rate_no = 1
     </select>
+
+    <!-- tour페이지에서 부대시설 항목 불러오기-->
+    <select id="getUniqueFacilities" resultType="String">
+        SELECT DISTINCT f.FACILITY_NAME
+        FROM FACILITIES f
+        JOIN ACCOMMODATION ac ON f.ACCOMMODATION_ADMIN_NO = ac.ACCOMMODATION_ADMIN_NO
+    </select>
+
+
+
 
     <!-- getListCount 쿼리 -->
     <select id="getListCount" resultType="int">
@@ -217,30 +167,16 @@
     <!--  체크인 체크아웃 클릭시 리스트 출력  -->
 
     <select id="getCheck" resultMap="placeResultMap">
-        SELECT
-        a.ACCOMMODATION_ADMIN_NO,
-        a.NAME,
-        a.ACCOMMODATION_TYPE,
-        a.ADDRESS,
-        r.CHECK_IN_TIME,
-        MIN(br.BASIC_RATE) AS min_rate
-        FROM
-        accommodation a
-        JOIN
-        room r ON r.ACCOMMODATION_ADMIN_NO = a.ACCOMMODATION_ADMIN_NO
-        JOIN
-        basic_rate br ON br.ROOM_NO = r.ROOM_NO
-        LEFT JOIN
-        reserve re ON re.ROOM_NO = r.ROOM_NO
+        SELECT a.ACCOMMODATION_ADMIN_NO, a.NAME, a.ACCOMMODATION_TYPE, a.ADDRESS, r.CHECK_IN_TIME, MIN(br.BASIC_RATE) AS min_rate
+        FROM accommodation a
+        JOIN room r ON r.ACCOMMODATION_ADMIN_NO = a.ACCOMMODATION_ADMIN_NO
+        JOIN basic_rate br ON br.ROOM_NO = r.ROOM_NO
+        LEFT JOIN reserve re ON re.ROOM_NO = r.ROOM_NO
         WHERE
         (re.CHECK_IN_DATE IS NULL OR re.CHECK_IN_DATE &gt; #{checkoutDate})
         AND (re.CHECK_OUT_DATE IS NULL OR re.CHECK_OUT_DATE &lt; #{checkinDate})
         GROUP BY
-        a.ACCOMMODATION_ADMIN_NO,
-        a.NAME,
-        a.ACCOMMODATION_TYPE,
-        a.ADDRESS,
-        r.CHECK_IN_TIME
+        a.ACCOMMODATION_ADMIN_NO, a.NAME, a.ACCOMMODATION_TYPE, a.ADDRESS, r.CHECK_IN_TIME
     </select>
 
 </mapper>

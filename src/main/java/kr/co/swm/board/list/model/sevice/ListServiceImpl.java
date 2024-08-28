@@ -40,6 +40,11 @@ public class ListServiceImpl implements ListService {
         return listMapper.getCost();
     }
 
+    // 부대시설 불러오기
+    @Override
+    public List<String> getUniqueFacilities() {
+        return listMapper.getUniqueFacilities();
+    }
 
     //  체크인 & 체크아웃 지정할 때 나오는 리스트
     @Override
@@ -52,10 +57,6 @@ public class ListServiceImpl implements ListService {
     @Override
     public int getListCount(SearchDTO searchDTO) {
 
-        System.out.println("<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>");
-        System.out.println("Main Search : " + searchDTO.getMainSearch());
-//        System.out.println("BoardType : " + searchDTO.getBoardType());
-        System.out.println("<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>");
 
         int listCount = listMapper.getListCount(searchDTO);
 
