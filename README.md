@@ -81,7 +81,9 @@
 
 ## 🎯 유스케이스 다이어그램 (Use Case Diagram)
 
-![Use Case Diagram](./Stay%20With%20Me_Usecase%20Diagram.png)
+
+![Use Case Diagram](./Stay%20With%20Me_Usecase%20Diagram-v2.png)
+
 
 
 
