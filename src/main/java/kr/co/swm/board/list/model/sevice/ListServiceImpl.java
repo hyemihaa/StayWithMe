@@ -47,10 +47,10 @@ public class ListServiceImpl implements ListService {
     }
 
     //  체크인 & 체크아웃 지정할 때 나오는 리스트
-    @Override
-    public List<ListDTO> getCheck(String checkinDate, String checkoutDate) {
-        return listMapper.getCheck(checkinDate, checkoutDate);
-    }
+//    @Override
+//    public List<ListDTO> getCheck(String checkinDate, String checkoutDate) {
+//        return listMapper.getCheck(checkinDate, checkoutDate);
+//    }
 
 
 

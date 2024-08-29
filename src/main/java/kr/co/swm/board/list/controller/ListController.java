@@ -41,7 +41,11 @@ public class ListController {
                        @ModelAttribute SearchDTO searchDTO,
                        Model model) {
 
-//        System.out.println("Board Type : " + searchDTO.getType());
+        System.out.println("Type : " + searchDTO.getType());
+        System.out.println("MinRate : " + searchDTO.getMinRate());
+        System.out.println("MaxRate : " + searchDTO.getMaxRate());
+        System.out.println("facilityName : " + searchDTO.getOptions());
+
 
 
         //전체 게시글 수 구하기(Pagenation 영역)
@@ -50,11 +54,22 @@ public class ListController {
         int boardLimit = 5; // 페이지당 게시글
 
 
+
+        System.out.println("listCount : "  + listCount);
+        System.out.println("currentPage : " + currentPage );
+        System.out.println("pageLimit : " + pageLimit);
+        System.out.println("boardLimit : " + boardLimit);
+
+
         // 페이징
         PageInfoDTO pi = pagenation.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
         //listCount: 전체 항목, currentPage: 현재 페이지
+        System.out.println(pi.getOffset());
+        System.out.println("start page :" + pi.getStartPage());
+        System.out.println("end page :" + pi.getEndPage());
 
         List<ListDTO> place = listService.getPlace(pi, searchDTO);
+        System.out.println(place.size());
 
         // 최소 기본 가격
         List<ListDTO> cost = listService.getCost();
@@ -72,6 +87,7 @@ public class ListController {
         model.addAttribute("searchDTO", new SearchDTO());
 
         model.addAttribute("uniqueFacilities", uniqueFacilities);
+
         // 체크인&아웃
 //        model.addAttribute("check",check);
 
@@ -96,14 +112,17 @@ public class ListController {
 
         PageInfoDTO pi = pagenation.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 
+
         // 업소 리스트 조회
         List<ListDTO> place = listService.getList(searchDTO);
+
 
         // 최소 기본 가격
         List<ListDTO> cost = listService.getCost();
 
         // 부가시설 조회
         List<String> uniqueFacilities = listService.getFacilities(searchDTO);
+
 
         // 데이터 바인딩
         model.addAttribute("place", place);
@@ -116,7 +135,6 @@ public class ListController {
 
         return "tour";  // 리스트 페이지로 이동
     }
-
 
 
 }

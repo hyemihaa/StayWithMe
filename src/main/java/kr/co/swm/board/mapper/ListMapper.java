@@ -20,7 +20,7 @@ public interface ListMapper {
   // tour페이지에서 부대시설 항목 불러오기
   List<String> getUniqueFacilities();
   // 체크인 & 체크아웃 지정할 때 나오는 리스트
-  List<ListDTO> getCheck(@Param("checkinDate") String checkinDate, @Param("checkoutDate") String checkoutDate);
+//  List<ListDTO> getCheck(@Param("checkinDate") String checkinDate, @Param("checkoutDate") String checkoutDate);
 
 
 
