@@ -16,7 +16,7 @@ public interface ListService {
 
     List<String> getUniqueFacilities();
     //  체크인 & 체크아웃 지정할 때 나오는 리스트
-    List<ListDTO> getCheck(String checkinDate, String checkoutDate);
+//    List<ListDTO> getCheck(String checkinDate, String checkoutDate);
 
 
 

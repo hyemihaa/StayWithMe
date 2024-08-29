@@ -30,8 +30,8 @@
         JOIN accommodation a ON a.ACCOMMODATION_ADMIN_NO = f.ACCOMMODATION_ADMIN_NO
         <if test="searchDTO.options != null and searchDTO.options.size() > 0">
             WHERE f.FACILITY_NAME IN
-            <foreach item="option" collection="searchDTO.options" open="(" separator="," close=")">
-                #{option}
+            <foreach item="options" collection="searchDTO.options" open="(" separator="," close=")">
+                #{options}
             </foreach>
         </if>
         ) ab
@@ -52,33 +52,32 @@
 
 
     <!-- 게시글의 총 개수 (옵션 조건부)-->
-<!--
-    1. 유형만 검색했을 떄
-    2. 가격만 검색했을 떄
-    3. 옵션만 검색헀을 떄
-    4. 전체 선택 후 검색했을 때
--->
+    <!--
+        1. 유형만 검색했을 떄
+        2. 가격만 검색했을 떄
+        3. 옵션만 검색헀을 떄
+        4. 전체 선택 후 검색했을 때
+    -->
     <select id="getTotalCount" resultType="int">
 
         SELECT
-        COUNT(ac.ACCOMMODATION_ADMIN_NO),
-               MIN(br.BASIC_RATE)
+        COUNT(distinct ac.ACCOMMODATION_ADMIN_NO)
         FROM ACCOMMODATION ac
         JOIN ROOM r ON ac.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
         JOIN BASIC_RATE br ON r.ROOM_NO = br.ROOM_NO
         <where>
             <choose>
-                <when test="searchDTO.type != null and !searchDTO.type.isEmpty()">
+                <when test='searchDTO.type != null and !searchDTO.type.isEmpty() and !searchDTO.type.equals("전체")'>
                     ac.ACCOMMODATION_TYPE = #{searchDTO.type}
                 </when>
                 <when test="searchDTO.minRate != null and searchDTO.maxRate != null">
-                    MIN(br.BASIC_RATE) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
+                    br.BASIC_RATE BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
                 </when>
-                <when test="searchDTO.facilityName != null and !searchDTO.facilityName.isEmpty()">
+                <when test="searchDTO.options != null and !searchDTO.options.isEmpty()">
                     ac.FACILITY_NAME IN (
-                        <foreach item="options" collection="searchDTO.options" separator="," open="" close="">
-                            #{options}
-                        </foreach>
+                    <foreach item="options" collection="searchDTO.options" separator="," open="" close="">
+                        #{options}
+                    </foreach>
                     )
                 </when>
             </choose>
