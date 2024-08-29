@@ -1,6 +1,7 @@
 package kr.co.swm.board.list.model.sevice;
 
 import kr.co.swm.board.list.model.DTO.ListDTO;
+import kr.co.swm.board.list.model.DTO.MainSearchDTO;
 import kr.co.swm.board.list.model.DTO.PageInfoDTO;
 import kr.co.swm.board.list.model.DTO.SearchDTO;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,9 +20,9 @@ public interface ListService {
     List<ListDTO> getCost();
 
     // 게시물 수 조회
-    int getListCount(SearchDTO searchDTO);
+    int getListCount(MainSearchDTO mainSearchDTO);
     // 게시물 데이터 조회
-    List<ListDTO> getList(SearchDTO searchDTO);
+    List<ListDTO> getList(MainSearchDTO mainSearchDTO);
     // 부가시설 조회
-    List<String> getFacilities(SearchDTO searchDTO);
+    List<String> getFacilities(MainSearchDTO mainSearchDTO);
 }
