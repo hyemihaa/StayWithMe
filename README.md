@@ -30,7 +30,7 @@
 ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJ%20IDEA-000000?style=for-the-badge&logo=intellij-idea&logoColor=white)
 ![DBeaver](https://img.shields.io/badge/DBeaver-372923?style=for-the-badge&logo=dbeaver&logoColor=white)
 ![ERD Cloud](https://img.shields.io/badge/ERD%20Cloud-005EFF?style=for-the-badge&logo=erddap&logoColor=white)
-![Draw.io](https://img.shields.io/badge/Draw.io-FF9900?style=for-the-badge&logo=draw.io&logoColor=white)
+![Draw.io](https://img.shields.io/badge/diagrams.net-FF9900?style=for-the-badge&logo=diagrams.net&logoColor=white)  <!-- Draw.io는 현재 diagrams.net으로 알려져 있음 -->
 ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white)
 
 ### Framework
@@ -53,6 +53,7 @@
 ![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
+
 
 <br>
 <br>
