@@ -168,7 +168,7 @@ public class mypageController {
     }
 
     // 마이페이지 예약 내역 조회
-    @PostMapping("/reservation")
+    @PostMapping("/reservation-list")
     @ResponseBody
     public Map<String, Object> getReservation(@CookieValue(value = "Authorization", required = false) String token) {
         Map<String, Object> response = new HashMap<>();
