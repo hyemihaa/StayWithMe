@@ -49,6 +49,7 @@ public class SecurityConfig {
                                 .requestMatchers("/", "/sms/send", "/signin", "/signup", "/idcheck", "/signform", "/lostpass", "/find-userId", "find-password", "/logout-success").permitAll()
                                 .requestMatchers("/tour/**","/hotel-single/**").permitAll()
                                 .requestMatchers("/seller-main.do", "/reservation.do", "/reservation-search.do", "/reservation-daily.do", "/reservation-monthly.do", "/basic-rate-list.do", "/getRoomRates", "/basic-rate-write.do", "/season-period.do", "/extra-delete", "/periods-update", "/reservation-monthly-data").permitAll()
+
                                 .requestMatchers("/member/mypage", "/mypage").hasRole("USER") // 일반유저 권한을 가진 사용자만 접근 (추후 수정)
                                 // hasRole([role]) : 현재 사용자의 권한이 파라미터의 권한과 동일한 경우 true
                                 //.hasAnyRole("ACCOMMODATION_ADMIN", "SITE_ADMIN", "USER")  //여러 권한 허용
