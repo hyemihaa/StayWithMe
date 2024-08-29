@@ -37,7 +37,7 @@ public class SecurityConfig {
                         // 인증 없이 접근 가능
                                 .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/scss/**").permitAll() // 정적 리소스
                                 .requestMatchers("/", "/sms/send", "/signin", "/signup", "/idcheck", "/signform", "/lostpass", "/find-userId", "find-password", "/logout-success").permitAll()
-                                .requestMatchers("/tour", "/get-list", "/hotel-single").permitAll()
+                                .requestMatchers("/tour","/hotel-single/**").permitAll()
                                 .requestMatchers("/enroll", "/save-location", "/couponList", "/addCoupon", "/add-all").permitAll()
                                 .requestMatchers("/static/**", "/web-login").permitAll()
                                 .requestMatchers("/member/mypage", "/mypage", "/update-profile","/update-phone", "/update-password", "/login-log", "/withdraw-account", "/coupons", "/reservation-list").hasRole("USER") // 일반유저 권한을 가진 사용자만 접근 (추후 수정)
@@ -55,16 +55,15 @@ public class SecurityConfig {
                 .logout((logout) -> logout
                         .logoutUrl("/logout")
                         .permitAll()
-                        .deleteCookies("Authorization") // Authorization 쿠키 삭제
-//                        .addLogoutHandler((request, response, authentication) -> {
-//                            Cookie accessCookie = new Cookie("Authorization", null);
-//                            accessCookie.setPath("/");
-//                            accessCookie.setDomain("localhost");
-//                            accessCookie.setHttpOnly(true);
-//                            accessCookie.setMaxAge(0);
-//                            response.addCookie(accessCookie);
-//                        })
-                        // 로그아웃 성공 후 리다이렉트 처리
+                        .deleteCookies("Authorization")
+                        .addLogoutHandler((request, response, authentication) -> {
+                            Cookie accessCookie = new Cookie("Authorization", null);
+                            accessCookie.setPath("/");
+                            accessCookie.setDomain("localhost");
+                            accessCookie.setHttpOnly(true);
+                            accessCookie.setMaxAge(0);
+                            response.addCookie(accessCookie);
+                        })
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.sendRedirect("/logout-success");
                         }))
