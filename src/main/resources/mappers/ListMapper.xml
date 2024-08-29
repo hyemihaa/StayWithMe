@@ -65,8 +65,8 @@
         ) ab
         JOIN room r ON ab.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
         JOIN basic_rate br ON r.ROOM_NO = br.ROOM_NO
-        <if test='searchDTO.type != null and !searchDTO.type.equals("전체")'>
-            WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.type}
+        <if test='searchDTO.boardType != null and !searchDTO.boardType.equals("전체")'>
+            WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.boardType}
         </if>
         GROUP BY ab.ACCOMMODATION_ADMIN_NO, ab.NAME, ab.ACCOMMODATION_TYPE, ab.ADDRESS, r.CHECK_IN_TIME
         HAVING MIN(br.BASIC_RATE) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
@@ -136,8 +136,8 @@
         ) ab
         JOIN room r ON ab.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
         JOIN basic_rate br ON r.ROOM_NO = br.ROOM_NO
-        <if test="searchDTO.type != null and !searchDTO.type.equals('전체')">
-            WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.type}
+        <if test="searchDTO.boardType != null and !searchDTO.boardType.equals('전체')">
+            WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.boardType}
         </if>
         GROUP BY ab.NAME, ab.ACCOMMODATION_TYPE, ab.ADDRESS, r.CHECK_IN_TIME
         HAVING MIN(br.BASIC_RATE) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
@@ -164,18 +164,17 @@
         JOIN ROOM r ON ac.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
         JOIN BASIC_RATE br ON r.ROOM_NO = br.ROOM_NO
         <where>
-            <if test="mainSearch != null and !mainSearch.isEmpty()">
-                (ac.NAME LIKE CONCAT('%', #{mainSearch}, '%')
-                OR ac.ADDRESS LIKE CONCAT('%', #{mainSearch}, '%')
-                OR ac.ACCOMMODATION_TYPE LIKE CONCAT('%', #{mainSearch}, '%')
-                OR br.BASIC_RATE LIKE CONCAT('%', #{mainSearch}, '%'))
+            <if test="mainSearchDTO.mainSearch != null and !mainSearchDTO.mainSearch.isEmpty()">
+                (ac.NAME LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
+                OR ac.ADDRESS LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
+                OR ac.ACCOMMODATION_TYPE LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
+                OR br.BASIC_RATE LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%'))
             </if>
-            <if test="boardType != null and !boardType.isEmpty()">
-                AND ac.ACCOMMODATION_TYPE = #{boardType}
+            <if test="mainSearchDTO.boardType != null and !mainSearchDTO.boardType.isEmpty()">
+                AND ac.ACCOMMODATION_TYPE = #{mainSearchDTO.boardType}
             </if>
         </where>
     </select>
-
 
     <!-- getList 쿼리 -->
     <select id="getList" resultMap="placeResultMap">
@@ -187,32 +186,37 @@
         FROM ACCOMMODATION ac
         JOIN ROOM r ON ac.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
         JOIN BASIC_RATE br ON r.ROOM_NO = br.ROOM_NO
+        LEFT JOIN RESERVE rs ON rs.ROOM_NO = r.ROOM_NO
         <where>
-            <if test="mainSearch != null and !mainSearch.isEmpty()">
-                (ac.NAME LIKE CONCAT('%', #{mainSearch}, '%')
-                OR ac.ADDRESS LIKE CONCAT('%', #{mainSearch}, '%')
-                OR ac.ACCOMMODATION_TYPE LIKE CONCAT('%', #{mainSearch}, '%')
-                OR br.BASIC_RATE LIKE CONCAT('%', #{mainSearch}, '%'))
+            <if test="mainSearchDTO.mainSearch != null and !mainSearchDTO.mainSearch.isEmpty()">
+                (ac.NAME LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
+                OR ac.ADDRESS LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
+                OR ac.ACCOMMODATION_TYPE LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
+                OR br.BASIC_RATE LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%'))
             </if>
-            <if test="boardType != null and !boardType.isEmpty()">
-                AND ac.ACCOMMODATION_TYPE = #{boardType}
+            <if test="mainSearchDTO.boardType != null and !mainSearchDTO.boardType.isEmpty()">
+                AND ac.ACCOMMODATION_TYPE = #{mainSearchDTO.boardType}
+            </if>
+            <if test="mainSearchDTO.checkInDate != null and !mainSearchDTO.checkInDate.isEmpty() and mainSearchDTO.checkOutDate != null and !mainSearchDTO.checkOutDate.isEmpty()">
+                AND (rs.CHECK_IN_DATE IS NULL OR rs.CHECK_IN_DATE &gt; #{mainSearchDTO.checkOutDate} OR rs.CHECK_OUT_DATE &lt; #{mainSearchDTO.checkInDate})
             </if>
         </where>
         GROUP BY ac.ACCOMMODATION_ADMIN_NO, ac.NAME, ac.ACCOMMODATION_TYPE, ac.ADDRESS
     </select>
 
+    <!-- getFacilities 쿼리 -->
     <select id="getFacilities" resultType="string">
         SELECT f.FACILITY_NAME
         FROM FACILITIES f
         JOIN ACCOMMODATION ac ON f.ACCOMMODATION_ADMIN_NO = ac.ACCOMMODATION_ADMIN_NO
         <where>
-            <if test="mainSearch != null and !mainSearch.isEmpty()">
-                (ac.NAME LIKE CONCAT('%', #{mainSearch}, '%')
-                OR ac.ADDRESS LIKE CONCAT('%', #{mainSearch}, '%')
-                OR ac.ACCOMMODATION_TYPE LIKE CONCAT('%', #{mainSearch}, '%'))
+            <if test="mainSearchDTO.mainSearch != null and !mainSearchDTO.mainSearch.isEmpty()">
+                (ac.NAME LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
+                OR ac.ADDRESS LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
+                OR ac.ACCOMMODATION_TYPE LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%'))
             </if>
-            <if test="boardType != null and !boardType.isEmpty()">
-                AND ac.ACCOMMODATION_TYPE = #{boardType}
+            <if test="mainSearchDTO.boardType != null and !mainSearchDTO.boardType.isEmpty()">
+                AND ac.ACCOMMODATION_TYPE = #{mainSearchDTO.boardType}
             </if>
         </where>
     </select>

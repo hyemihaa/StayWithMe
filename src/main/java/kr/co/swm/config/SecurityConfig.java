@@ -37,7 +37,7 @@ public class SecurityConfig {
                         // 인증 없이 접근 가능
                                 .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/scss/**").permitAll() // 정적 리소스
                                 .requestMatchers("/", "/sms/send", "/signin", "/signup", "/idcheck", "/signform", "/lostpass", "/find-userId", "find-password", "/logout-success").permitAll()
-                                .requestMatchers("/tour","/hotel-single/**").permitAll()
+                                .requestMatchers("/tour","/hotel-single/**", "/get-list").permitAll()
                                 .requestMatchers("/enroll", "/save-location", "/couponList", "/addCoupon", "/add-all").permitAll()
                                 .requestMatchers("/static/**", "/web-login").permitAll()
                                 .requestMatchers("/member/mypage", "/mypage", "/update-profile","/update-phone", "/update-password", "/login-log", "/withdraw-account", "/coupons", "/reservation-list").hasRole("USER") // 일반유저 권한을 가진 사용자만 접근 (추후 수정)
