@@ -50,7 +50,7 @@
                 label: "취소 건수",
                 data: monthlyCancelCounts, // 월별 취소 건수 데이터
                 backgroundColor: "rgba(255, 99, 132, .5)" // 취소 건수 막대 색상
-            },]
+            }]
         },
         options: {
             responsive: true,
@@ -65,11 +65,4 @@
             }
         }
     });
-
-    // 디버깅용 데이터 확인
-    console.log("monthlyLabels: ", monthlyLabels);
-    console.log("monthlyReservationCounts: ", monthlyReservationCounts);
-    console.log("monthlyCancelCounts: ", monthlyCancelCounts);
-    console.log("monthlyPaymentCounts: ", monthlyPaymentCounts);
-
 })(jQuery);

@@ -79,3 +79,76 @@ input[type="text"], input[type="file"] {
     margin-right: 10px;
     margin-bottom: 10px;
 }
+body {
+    margin: 0;
+    padding: 0;
+    /*background-image: url(/image/background-img.svg);svg*/
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.editor-container {
+    height: 800px;
+    width: 800px;
+    margin: 100px;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.editor-container h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #333;
+    text-align: center;
+    border-bottom: 2px solid #f2f2f2;
+    padding-bottom: 10px;
+}
+
+.editor-toolbar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.toolbar-btn {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.toolbar-btn:hover {
+    background-color: #ddd;
+}
+
+.editor-content {
+    min-height: 500px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.accommodation-type {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.accommodation-options {
+    margin-top: 10px; /* 라벨과 옵션 사이의 간격 */
+}
+
+.option-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* 각 라디오 버튼 사이의 간격 */
+}
+
+.option-item label {
+    margin-left: 5px; /* 라디오 버튼과 라벨 사이의 간격 */
+}

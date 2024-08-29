@@ -7,8 +7,8 @@
     <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{css/adminPage/accommodation/accommodation.css}">
     <div th:replace="~{fragments/admin/head.html :: head}"></div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 
@@ -178,12 +178,11 @@
                 </script>
                 <div class="container">
                     <h1>객실</h1>
-                    <input type="hidden" th:field="*{roomCount}">
-                    <input type="button" id="addRoomBtn" class="btn btn-primary" style="margin-bottom: 30px;" th:value="@{객실 추가}">
+
                     <div id="roomsContainer"></div>
+                    <input type="button" id="addRoomBtn" class="btn btn-primary" style="margin-bottom: 30px;" th:value="@{객실 추가}">
                 </div>
 
-                <!--            TODO : 기준 인원 기입, 텍스트 에리어 넣기, 카테고리 추가, -->
 
                 <!-- Recent Sales End -->
                 <input type="text" id="sample5_address" name="address" readonly>

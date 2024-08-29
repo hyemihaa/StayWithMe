@@ -317,6 +317,33 @@ function deleteMainPhoto(imgContainer) {
 
 
 
+document.addEventListener('DOMContentLoaded', function() {
+    var selectedType = document.getElementById("selectedAccommodationType").value; // 숨겨진 input의 값을 가져옴
+    var options = document.getElementsByClassName("accommodationType"); // 모든 라디오 버튼을 가져옴
+
+    for (var i = 0; i < options.length; i++) {
+        if (options[i].value === selectedType) {
+            options[i].checked = true; // 값이 일치하면 해당 라디오 버튼을 선택함
+            break;
+        }
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var checkboxes = document.querySelectorAll('.accommodationType');
+
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                checkboxes.forEach(function(box) {
+                    if (box !== checkbox) {
+                        box.checked = false;
+                    }
+                });
+            }
+        });
+    });
+});
 
 
 
@@ -369,6 +396,19 @@ document.addEventListener('click', function(event) {
     }
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+    // 숨겨진 input에서 roomCategory 값을 가져옴
+    var roomCategory = document.getElementById('roomCategory').value;
+
+    // 해당 roomCategory 값과 일치하는 라디오 버튼을 선택
+    var radioButtons = document.querySelectorAll(`input[type="radio"][name="type"]`);
+    radioButtons.forEach(function(radio) {
+        if (radio.getAttribute('data-tag') === roomCategory) {
+            radio.checked = true; // 라디오 버튼 체크
+        }
+    });
+});
+
 
 document.querySelectorAll('.tag input[type="radio"]').forEach(function (radio) {
     radio.addEventListener('change', function () {
@@ -405,6 +445,11 @@ document.getElementById('accommodationForm').addEventListener('submit', function
     const editorContent = document.getElementById('editor').innerHTML;
     formData.append('accommodationInfo', editorContent);
 
+    // 숙소 유형 추가
+    const selectedType = document.querySelector('input[class="accommodationType"]:checked');
+    if (selectedType) {
+        formData.append('accommodationType', selectedType.value);
+    }
 
     // 대표사진 파일이 있으면 FormData에 추가
     if (mainPhotoFile) {
