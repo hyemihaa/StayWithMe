@@ -56,7 +56,7 @@
                     </a>
                 </li>
                 <!-- 로그인관리 메뉴 -->
-                <li onclick="showSection('activity-log')">
+                <li onclick="showSection('activity-log');">
                     <a href="javascript:void(0);">
                         로그인 관리
                         <span class="arrow">></span>
@@ -75,71 +75,39 @@
         <div class="content">
             <!-- 예약 내역 섹션 -->
             <div id="reservation" class="section">
-                <h2>예약 내역</h2>
                 <div class="reservation-list">
                     <!-- 예약된 항목 리스트 -->
-                    <div class="reservation-item">
-                        <img th:src="@{images/hotel-1.jpg}" alt="Hotel 1">
-                        <div class="details">
-                            <p>호텔 이름: 아산 카네기</p>
-                            <p>예약 상태: 이용완료</p>
-                            <button class="btn-primary">예약 상세</button>
-                        </div>
-                    </div>
-                    <div class="reservation-item">
-                        <img th:src="@{images/hotel-2.jpg}" alt="Hotel 2">
-                        <div class="details">
-                            <p>호텔 이름: 장유 W</p>
-                            <p>예약 상태: 이용완료</p>
-                            <button class="btn-primary">예약 상세</button>
-                        </div>
-                    </div>
-                    <!-- 예약 내역이 없는 경우 -->
-                    <div class="no-reservation">
-                        <p>예정된 여행이 없습니다. 지금 새로운 예약을 진행해보세요.</p>
-                        <button class="btn-primary">여행지 찾아보기</button>
-                    </div>
+
                 </div>
-                <!-- 예약 취소 버튼 추가 -->
-                <div class="reservation-cancel">
-                    <button class="btn-danger">예약 취소</button>
+                <!-- 예약 내역이 없는 경우 -->
+                <div class="no-reservation" style="display: none;">
+                    <p>예정된 여행이 없습니다. 지금 새로운 예약을 진행해보세요.</p>
+                    <button class="btn-primary">여행지 찾아보기</button>
                 </div>
             </div>
-
 
             <!-- 쿠폰 섹션 -->
             <div id="coupons" class="section" style="display: none;">
                 <h2>쿠폰</h2>
                 <div class="coupon-list">
-                    <!-- 쿠폰이 있을 경우 -->
-                    <div class="coupon-item">
-                        <p>쿠폰 이름: 여름 할인 쿠폰</p>
-                        <p>유효기간: 2024-08-31</p>
-                        <button>쿠폰 사용하기</button>
-                    </div>
-                    <div class="coupon-item">
-                        <p>쿠폰 이름: 겨울 할인 쿠폰</p>
-                        <p>유효기간: 2024-12-31</p>
-                        <button>쿠폰 사용하기</button>
-                    </div>
-                    <!-- 쿠폰이 없는 경우 -->
-                    <div class="no-coupons">
-                        <p>현재 사용할 수 있는 쿠폰이 없습니다.</p>
-                    </div>
+                    <!-- 쿠폰 목록이 동적으로 추가됩니다. -->
+                </div>
+                <div class="no-coupons" style="display: none;">
+                    <p>현재 사용할 수 있는 쿠폰이 없습니다.</p>
                 </div>
             </div>
 
-            <!-- 내 정보 수정 섹션 -->
+            <!-- 내 정보 수정 섹션-->
             <div id="profile-edit" class="section" style="display: none;">
                 <h2>내 정보 수정</h2>
-                <form id="profileForm" method="post" action="/updateProfile">
+                <form id="profileForm" th:object="${user}">
                     <label for="userId">아이디</label>
-                    <input type="text" id="userId" name="userId" value="example111" readonly>
+                    <input type="text" id="userId" name="userId" th:value="${user.userId}" readonly>
 
                     <!-- 기본 비밀번호 필드 -->
                     <label for="password">비밀번호 (USER_PWD)</label>
                     <div style="display: flex; align-items: center;">
-                        <input type="password" id="password" name="password" value="********" readonly style="flex: 1;">
+                        <input type="password" id="password" name="password" value="*********" readonly style="flex: 1;">
                         <button type="button" id="changePasswordButton" style="margin-left: 10px;">변경</button>
                     </div>
 
@@ -148,28 +116,28 @@
                         <label for="currentPassword"></label>
                         <input type="password" id="currentPassword" name="currentPassword" placeholder="현재 비밀번호">
                         <span id="currentPwdMsg" style="display: block; margin-top: 5px; font-size: 12px;"></span>
-
+                        <!--새로운 비밀번호-->
                         <label for="newPassword"></label>
                         <input type="password" id="newPassword" name="newPassword" placeholder="영문+숫자+특수문자를 포함하여 8~20자">
                         <span id="pwdMsg" style="display: block; margin-top: 5px; font-size: 12px;"></span>
-
+                        <!--비밀번호 확인-->
                         <label for="confirmNewPassword"></label>
                         <input type="password" id="confirmNewPassword" name="confirmNewPassword" placeholder="새로운 비밀번호 확인">
                         <span id="pwdConfirmMsg" style="display: block; margin-top: 5px; font-size: 12px;"></span>
 
                         <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
                             <button type="button" id="cancelPasswordChange" style="margin-right: 10px; width:52px;">취소</button>
-                            <button type="submit" style="width:52px;">저장</button>
+                            <button type="button" onclick="savePasswordButton()" style="width:52px;">저장</button>
                         </div>
                     </div>
 
                     <label for="name">이름 (USER_NAME)</label>
-                    <input type="text" id="name" name="name" value="홍길동" required>
+                    <input type="text" id="name" name="name" th:value="${user.userName}" readonly>
 
                     <!-- 휴대폰 번호 필드 -->
                     <label for="phone">휴대폰 번호 (USER_PHONE)</label>
                     <div style="display: flex; align-items: center;">
-                        <input type="text" id="phone" name="phone" value="01012345678" readonly style="flex: 1;">
+                        <input type="text" id="phone" name="phone" th:value="${user.userPhone}" readonly style="flex: 1;">
                         <button type="button" id="changePhoneButton" style="margin-left: 10px; width:52px;">수정</button>
                     </div>
 
@@ -181,53 +149,52 @@
                         </div>
                         <span id="phoneMsg" style="display: block; margin-top: 5px; font-size: 12px;"></span>
 
-                        <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호 입력"
-                               style="margin-top: 10px;">
+                        <!-- 인증번호 입력 및 확인 버튼 -->
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <!--사용자가 입력한 인증번호-->
+                            <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호 입력" style="flex: 1;">
+                            <!--서버에서 발송된 인증번호-->
+                            <input type="hidden" id="randomNum" value="">
+                            <button type="button" id="verifyCodeButton" class="verify-button">인증 확인</button>
+                        </div>
+
                         <span id="timerMsg" style="display: inline-block; margin:5px 0px 0px 0px; font-size: 12px;"></span>
                         <p id="codeMsg" style="display: inline-block; float:right; margin-top: 5px; font-size: 12px;"></p>
 
                         <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
                             <button type="button" id="cancelPhoneChange" style="margin-right: 10px; width:52px;">취소</button>
-                            <button type="submit" style="width:52px;">저장</button>
+                            <button type="button" id="savePhoneButton" style="width:52px;">저장</button>
                         </div>
                     </div>
-                    <button type="submit">수정 완료</button>
                 </form>
             </div>
 
             <!-- 이력 관리 섹션 -->
             <div id="activity-log" class="section" style="display: none;">
                 <h2>로그인 관리</h2>
-                <p>회원 생성일, 마지막 로그인일자, IP 주소를 확인할 수 있습니다.</p>
+                <p>최근 로그인일자, IP 주소를 확인할 수 있습니다.</p>
 
+                <!-- 날짜 선택기 -->
+                <div>
+                    <input type="date" id="startDate">
+                    -
+                    <input type="date" id="currentDate">
+                    <button id="filter-button" onclick="filterLogsByDate()">조회</button>
+                </div>
                 <!-- 로그인 로그 테이블 -->
                 <table class="log-table">
                     <thead>
                     <tr>
-                        <th>회원 생성일</th>
-                        <th>마지막 로그인일자</th>
+                        <th>최근 접속일자</th>
                         <th>IP 주소</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>2024/03/13 (수) 18:56</td>
-                        <td>2024/07/31 (수) 21:44</td>
-                        <td>223.33.165.109 (대한민국)</td>
-                    </tr>
-                    <tr>
-                        <td>2024/03/13 (수) 18:56</td>
-                        <td>2024/07/31 (수) 19:49</td>
-                        <td>106.101.68.104 (대한민국)</td>
-                    </tr>
-                    <tr>
-                        <td>2024/03/14 (목) 14:43</td>
-                        <td>2024/07/29 (월) 10:45</td>
-                        <td>106.101.193.220 (대한민국)</td>
-                    </tr>
-                    <!-- 다른 로그인 기록들 추가 -->
+                    <tbody id="log-table-body">
+                    <!-- AJAX 요청 후 데이터를 여기 채움 -->
                     </tbody>
                 </table>
+                <!-- 더보기 버튼 -->
+                <button id="load-more-button" style="display: none;" onclick="loadMoreLogs()">더보기</button>
             </div>
 
             <!-- 회원 탈퇴 섹션 -->
@@ -241,19 +208,19 @@
                     <div class="radio-group">
                         <label>
                             <div>
-                                <input type="radio" name="reason" value="재가입" required>
+                                <input type="radio" name="reason" value="재가입(ID 변경 등 정보 수정)" required>
                             </div>
                             <span>재가입(ID변경)</span>
                         </label>
                         <label>
                             <div>
-                                <input type="radio" name="reason" value="정보 부족 또는 불필요한 정보">
+                                <input type="radio" name="reason" value="정보 부족 또는 불필요한 정보가 많아서">
                             </div>
                             <span>나에게 필요한 정보가 부족하거나, 불필요한 정보가 많아서</span>
                         </label>
                         <label>
                             <div>
-                                <input type="radio" name="reason" value="보안 문제">
+                                <input type="radio" name="reason" value="개인정보 유출 방지 등 보안 문제">
                             </div>
                             <span>개인정보 유출 방지 등 보안 상의 문제</span>
                         </label>
@@ -269,18 +236,16 @@
                         <p id="charCount" style="text-align: right; font-size: 12px; color: #666; margin:0px;">0 / 250</p>
                         <!-- 250자 초과 시 표시할 에러 메시지 (기본적으로 숨김) -->
                         <span id="errorMessage" style="text-align: left; font-size: 13px; color: red; display: none; margin-left:5px;">250자가 초과되었습니다.</span>
-
                     </div>
 
                     <div class="checkbox-group">
                         <label>
                             <div>
-                                <input type="checkbox" name="confirmation" required>
+                                <input type="checkbox" id="confirmation" name="confirmation" required>
                             </div>
                             <span>상기 내용을 확인하였으며 동의합니다.</span>
                         </label>
                     </div>
-
                     <button type="submit" style="margin:0px;">회원 탈퇴하기</button>
                 </form>
             </div>
@@ -301,6 +266,7 @@
 
 
 </body>
+
 <script th:src="@{/js/member/mypage.js}"></script>
 <div th:include="fragments/js.html :: js"></div>
 </html>

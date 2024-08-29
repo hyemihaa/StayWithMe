@@ -30,27 +30,19 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        // 모든 페이지에 대한 접근권한 설정, 사이트 위변조 방지 해제
-//        http    //authorizeHttpRequests 어떤 요청에 대해 어떤 권한이 필요한지 설정
-//                .authorizeHttpRequests(authorizeRequests ->
-//                                authorizeRequests  //.requestMatchers : 특정 URL 지정
-//                                        .requestMatchers("/", "/sms/send", "/signin", "/signup", "/idcheck", "/signform","/lostpass",
-//                                                "/find-userId","find-password","/member/mypage","/mypage",
-//                                                "/css/**", "/js/**", "/images/**", "/fonts/**", "/scss/**").permitAll() // 특정 경로에 대한 접근 권한 허용
-//                                        .anyRequest().authenticated() // 그 외 모든 요청은 권한 필요
-
-//                )
         // 모든 페이지에 대한 접근권한 설정, 사이트 위변조 방지 해제
         http    //authorizeHttpRequests 어떤 요청에 대해 어떤 권한이 필요한지 설정
                 .authorizeHttpRequests(auth -> auth
-                                //.requestMatchers : 특정 URL 지정
-                                // 인증 없이 접근 가능
+                        //.requestMatchers : 특정 URL 지정
+                        // 인증 없이 접근 가능
                                 .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/scss/**").permitAll() // 정적 리소스
                                 .requestMatchers("/", "/sms/send", "/signin", "/signup", "/idcheck", "/signform", "/lostpass", "/find-userId", "find-password", "/logout-success").permitAll()
-                                .requestMatchers("/tour/**","/hotel-single/**").permitAll()
-                                .requestMatchers("/seller-main.do", "/reservation.do", "/reservation-search.do", "/reservation-daily.do", "/reservation-monthly.do", "/basic-rate-list.do", "/getRoomRates", "/basic-rate-write.do", "/season-period.do", "/extra-delete", "/periods-update", "/reservation-monthly-data").permitAll()
-
-                                .requestMatchers("/member/mypage", "/mypage").hasRole("USER") // 일반유저 권한을 가진 사용자만 접근 (추후 수정)
+                                .requestMatchers("/tour","/hotel-single/**").permitAll()
+                                .requestMatchers("/enroll", "/save-location", "/couponList", "/addCoupon", "/add-all").permitAll()
+                                .requestMatchers("/static/**", "/web-login").permitAll()
+                                .requestMatchers("/member/mypage", "/mypage", "/update-profile","/update-phone", "/update-password", "/login-log", "/withdraw-account", "/coupons", "/reservation-list").hasRole("USER") // 일반유저 권한을 가진 사용자만 접근 (추후 수정)
+                                .requestMatchers("/seller-main.do", "/reservation.do", "/reservation-search.do", "/reservation-daily.do", "/reservation-monthly.do", "/basic-rate-list.do", "/getRoomRates", "/basic-rate-write.do", "/season-period.do", "/extra-delete", "/periods-update", "/reservation-monthly-data").hasRole("ACCOMMODATION_ADMIN")
+                                .requestMatchers("/web-center", "/web-coupon", "/web-member", "/web-seller", "/web-manager", "/admin-signup", "/web-coupon-save").hasRole("SITE_ADMIN") // 사이트 관리자 권한을 가진 사용자만 접근
                                 // hasRole([role]) : 현재 사용자의 권한이 파라미터의 권한과 동일한 경우 true
                                 //.hasAnyRole("ACCOMMODATION_ADMIN", "SITE_ADMIN", "USER")  //여러 권한 허용
                                 .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요
@@ -103,8 +95,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
-
-// 모든 페이지에 대한 접근권한 설정, 사이트 위변조 방지 해제
-//        http.authorizeHttpRequests(auth -> auth
-//        .requestMatchers(new AntPathRequestMatcher("/**"))
-//        .permitAll())

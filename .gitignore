@@ -6,9 +6,6 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 *.iml
 
-.gradle/**
-.idea/**
-build/**
 
 # User-specific stuff
 .idea/**/workspace.xml
@@ -17,6 +14,8 @@ build/**
 .idea/**/dictionaries
 .idea/**/shelf
 
+build/**
+.gradle/**
 # AWS User-specific
 .idea/**/aws.xml
 

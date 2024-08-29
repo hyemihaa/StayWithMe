@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.swm.adminPage.accommodation.mapper.AccommodationMapper">
+
+    <resultMap id="accommodation" type="kr.co.swm.model.dto.SellerDto">
+        <!-- 숙소 정보 -->
+        <result column="ACCOMMODATION_ADMIN_NO" property="accommodationNo"/>
+        <result column="NAME" property="accommodationName"/>
+        <result column="ACCOMMODATION_TYPE" property="accommodationType"/>
+        <result column="PHONE" property="accommodationPhone"/>
+        <result column="POST_NO" property="accommodationPost"/>
+        <result column="ADDRESS" property="accommodationAddress"/>
+        <result column="LAT" property="lat"/>
+        <result column="LNG" property="lng"/>
+        <result column="INFO" property="accommodationInfo"/>
+
+        <result column="VIEWS_DATE" property="viewsDate"/>
+        <result column="VIEWS_COUNT" property="viewsCount"/>
+
+        <!-- 객실 정보 -->
+        <result column="ROOM_NO" property="roomNo"/>
+        <result column="ROOM_TYPE_NO" property="roomTypeNo"/>
+        <result column="ROOM_TYPE_NAME" property="roomTypeName"/>
+        <result column="ROOM_NAME" property="roomName"/>
+        <result column="CHECK_IN_TIME" property="roomCheckIn"/>
+        <result column="CHECK_OUT_TIME" property="roomCheckOut"/>
+        <result column="STANDARD_OCCUPANCY" property="roomPersonnel"/>
+        <result column="MAX_OCCUPANCY" property="roomMaxPersonnel"/>
+
+        <result column="BASIC_RATE_NO" property="roomRateNo"/>
+        <result column="DAY_NO" property="basicDayNo"/>
+        <result column="RATE" property="basicRate"/>
+
+
+    </resultMap>
+    <insert id="enrollAccommodation">
+        INSERT INTO accommodation VALUES (
+                     #{no},
+                     #{accommodation.accommodationName},
+                     #{accommodation.accommodationType},
+                     #{accommodation.accommodationPhone},
+                     #{accommodation.roadName},
+                     #{accommodation.region},
+                     #{accommodation.lat},
+                     #{accommodation.lon},
+                     #{accommodation.accommodationInfo}
+                 )
+    </insert>
+
+    <insert id="enrollMainImage" parameterType="map">
+        INSERT INTO accommodation_image VALUES (
+            null,
+            #{no},
+            #{mainImage.uploadOriginName},
+            #{mainImage.uploadUniqueName},
+            #{mainImage.uploadImagePath}
+            )
+    </insert>
+
+    <insert id="enrollRoom" useGeneratedKeys="true" keyProperty="accommodation.roomNo">
+        INSERT INTO room VALUES (
+                     null,
+                     #{categoryNo},
+                     #{no},
+                     #{roomName},
+                     #{checkIn},
+                     #{checkOut},
+                     #{accommodation.standardOccupation},
+                     #{accommodation.maxOccupation}
+                 )
+    </insert>
+
+
+    <insert id="enrollFacilities" parameterType="map">
+        INSERT INTO facilities values (
+        null,
+        #{no},
+        #{facility}
+        )
+    </insert>
+    
+    
+    <insert id="enrollRoomImages" parameterType="map">
+        INSERT INTO room_images values (
+                                        null,
+                                        #{roomNo},
+                                        #{subImage.uploadOriginName},
+                                        #{subImage.uploadUniqueName},
+                                        #{subImage.uploadImagePath}
+                                      )
+    </insert>
+
+    <insert id="enrollWeekdayRate">
+        INSERT INTO basic_rate values (
+                                       null,
+                                       #{roomNo},
+                                       1,
+                                       #{roomRate.weekdayRate}
+                                      )
+    </insert>
+    <insert id="enrollFridayRate">
+        INSERT INTO basic_rate values (
+                                          null,
+                                          #{roomNo},
+                                          2,
+                                          #{roomRate.fridayRate}
+                                      )
+    </insert>
+    <insert id="enrollSaturdayRate">
+        INSERT INTO basic_rate values (
+                                          null,
+                                          #{roomNo},
+                                          3,
+                                          #{roomRate.saturdayRate}
+                                      )
+    </insert>
+    <insert id="enrollSundayRate">
+        INSERT INTO basic_rate values (
+                                          null,
+                                          #{roomNo},
+                                          4,
+                                          #{roomRate.sundayRate}
+                                      )
+    </insert>
+
+
+    <select id="accommodationList" resultMap="accommodation">
+        select * from accommodation a
+        where a.ACCOMMODATION_ADMIN_NO = #{sellerKey}
+    </select>
+
+    <select id="roomsList" resultMap="accommodation">
+        select * from room r
+        where ACCOMMODATION_ADMIN_NO = #{sellerKey}
+    </select>
+
+    <select id="getRates" resultMap="accommodation">
+        select * from basic_rate
+        where room_no = #{roomNo}
+    </select>
+
+    <select id="getFacilities" parameterType="Long" resultType="string">
+        SELECT facility_name from facilities
+        where accommodation_admin_no = #{sellerKey}
+    </select>
+</mapper>
+
