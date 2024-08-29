@@ -7,10 +7,10 @@
 관리자는 자신의 숙소를 관리하고, 매출 현황을 손쉽게 볼 수 있는 기능을 구현하였습니다.
 
 ## 👥 프로젝트 구성원
-- 👑 **팀장**: 이진우
-- 👤 **팀원**: 하혜미
-- 👤 **팀원**: 유상현
-- 👤 **팀원**: 김이석
+- 👑 **팀장**: 이진우 [![Velog](https://img.shields.io/badge/Velog-20C997?style=for-the-badge&logo=velog&logoColor=white)](https://velog.io/@dlwlsdn8022/posts)
+- 👤 **팀원**: 하혜미 [![Tistory](https://img.shields.io/badge/Tistory-000000?style=for-the-badge&logo=tistory&logoColor=white)](https://hmproject-1.tistory.com/)
+- 👤 **팀원**: 유상현 
+- 👤 **팀원**: 김이석 [![Tistory](https://img.shields.io/badge/Tistory-000000?style=for-the-badge&logo=tistory&logoColor=white)](https://kim-jayden.tistory.com/)
 
 ## 🛠 개발 환경
 
