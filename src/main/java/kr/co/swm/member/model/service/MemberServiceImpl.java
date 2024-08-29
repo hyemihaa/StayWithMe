@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,14 +47,17 @@ public class MemberServiceImpl implements MemberService {
         if(userPwd.equals(userConfirmPwd)) {
             // 비밀번호와 비밀번호 확인이 일치하는지 체크
             String encodedPassword = passwordEncoder.encode(userPwd);
+            System.out.println("encodedPassword : " + encodedPassword);
             // 암호화 비밀번호 DTO에 저장
             userDTO.setUserPwd(encodedPassword);
             // 현재 날짜와 시간 설정
             userDTO.setCreatedDate(LocalDateTime.now());
+            System.out.println("userDTO : " + userDTO.getUserPwd());
 
             return memberMapper.setSignUp(userDTO);
         }
         else {
+            System.out.println("else");
             return 0;
         }
     }
@@ -109,7 +113,7 @@ public class MemberServiceImpl implements MemberService {
     public String authenticate(String userId, String userPwd, HttpServletResponse response, String signRole) {
         // 사용자 정보 로드 및 권한 초기화
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId, signRole);
-
+        System.out.println(userDetails.getPassword());
         String role = "ROLE_USER"; // 기본 권한 (기본값은 일반 사용자)
         Long accommAdminKey = null; // 숙소 관리자 키 초기화
         Long userNo = null;
