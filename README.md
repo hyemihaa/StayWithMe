@@ -31,7 +31,7 @@
 ![DBeaver](https://img.shields.io/badge/DBeaver-372923?style=for-the-badge&logo=dbeaver&logoColor=white)
 ![ERD Cloud](https://img.shields.io/badge/ERD%20Cloud-005EFF?style=for-the-badge&logo=erddap&logoColor=white)
 ![Draw.io](https://img.shields.io/badge/diagrams.net-FF9900?style=for-the-badge&logo=diagrams.net&logoColor=white)  <!-- Draw.io는 현재 diagrams.net으로 알려져 있음 -->
-![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white)
+![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7?style=for-the-badge&logo=visual%20studio%20code&logoColor=white)
 
 ### Framework
 ![Spring](https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
