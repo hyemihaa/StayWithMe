@@ -3,13 +3,11 @@
 🏨 **숙박 예약 사이트**
 
 <br>
-<br>
 
 ## 📖 프로젝트 설명
 사용자가 사이트를 통하여 원하는 일자와 구성 조건으로 숙박을 예약하는 서비스입니다. <br>
 관리자는 자신의 숙소를 관리하고, 매출 현황을 손쉽게 볼 수 있는 기능을 구현하였습니다.
 
-<br>
 <br>
 
 ## 👥 프로젝트 구성원
@@ -18,7 +16,6 @@
 - 👤 <span style="display: inline-flex; align-items: center; font-size:1.2em;">**팀원**: 유상현</span>
 - 👤 <span style="display: inline-flex; align-items: center; font-size:1.2em;">**팀원**: 김이석</span> <a href="https://kim-jayden.tistory.com/"><img src="https://img.shields.io/badge/Tistory-000000?style=flat-square&logo=tistory&logoColor=white" alt="Tistory" style="margin-left: 8px;"></a>
 
-<br>
 <br>
 
 ## 🛠 개발 환경
