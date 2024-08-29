@@ -75,34 +75,14 @@
         <div class="content">
             <!-- 예약 내역 섹션 -->
             <div id="reservation" class="section">
-                <h2>예약 내역</h2>
                 <div class="reservation-list">
                     <!-- 예약된 항목 리스트 -->
-                    <div class="reservation-item">
-                        <img th:src="@{images/hotel-1.jpg}" alt="Hotel 1">
-                        <div class="details">
-                            <p>호텔 이름: 아산 카네기</p>
-                            <p>예약 상태: 이용완료</p>
-                            <button class="btn-primary">예약 상세</button>
-                        </div>
-                    </div>
-                    <div class="reservation-item">
-                        <img th:src="@{images/hotel-2.jpg}" alt="Hotel 2">
-                        <div class="details">
-                            <p>호텔 이름: 장유 W</p>
-                            <p>예약 상태: 이용완료</p>
-                            <button class="btn-primary">예약 상세</button>
-                        </div>
-                    </div>
-                    <!-- 예약 내역이 없는 경우 -->
-                    <div class="no-reservation">
-                        <p>예정된 여행이 없습니다. 지금 새로운 예약을 진행해보세요.</p>
-                        <button class="btn-primary">여행지 찾아보기</button>
-                    </div>
+
                 </div>
-                <!-- 예약 취소 버튼 추가 -->
-                <div class="reservation-cancel">
-                    <button class="btn-danger">예약 취소</button>
+                <!-- 예약 내역이 없는 경우 -->
+                <div class="no-reservation" style="display: none;">
+                    <p>예정된 여행이 없습니다. 지금 새로운 예약을 진행해보세요.</p>
+                    <button class="btn-primary">여행지 찾아보기</button>
                 </div>
             </div>
 
@@ -110,21 +90,10 @@
             <div id="coupons" class="section" style="display: none;">
                 <h2>쿠폰</h2>
                 <div class="coupon-list">
-                    <!-- 쿠폰이 있을 경우 -->
-                    <div class="coupon-item">
-                        <p>쿠폰 이름: 여름 할인 쿠폰</p>
-                        <p>유효기간: 2024-08-31</p>
-                        <button>쿠폰 사용하기</button>
-                    </div>
-                    <div class="coupon-item">
-                        <p>쿠폰 이름: 겨울 할인 쿠폰</p>
-                        <p>유효기간: 2024-12-31</p>
-                        <button>쿠폰 사용하기</button>
-                    </div>
-                    <!-- 쿠폰이 없는 경우 -->
-                    <div class="no-coupons">
-                        <p>현재 사용할 수 있는 쿠폰이 없습니다.</p>
-                    </div>
+                    <!-- 쿠폰 목록이 동적으로 추가됩니다. -->
+                </div>
+                <div class="no-coupons" style="display: none;">
+                    <p>현재 사용할 수 있는 쿠폰이 없습니다.</p>
                 </div>
             </div>
 
@@ -207,12 +176,11 @@
 
                 <!-- 날짜 선택기 -->
                 <div>
-                    <input type="date" id="startDate" value="2024-08-17">
+                    <input type="date" id="startDate">
                     -
                     <input type="date" id="currentDate">
                     <button id="filter-button" onclick="filterLogsByDate()">조회</button>
                 </div>
-
                 <!-- 로그인 로그 테이블 -->
                 <table class="log-table">
                     <thead>
@@ -298,6 +266,7 @@
 
 
 </body>
+
 <script th:src="@{/js/member/mypage.js}"></script>
 <div th:include="fragments/js.html :: js"></div>
 </html>

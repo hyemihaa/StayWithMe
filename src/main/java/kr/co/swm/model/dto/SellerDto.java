@@ -1,6 +1,6 @@
 package kr.co.swm.model.dto;
 
-import kr.co.swm.adminPage.accommodation.model.dto.AccommodationDto;
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,14 +27,7 @@ public class SellerDto {
     private String accommodationPhone;
     private String accommodationPost;
     private String accommodationAddress;
-    private String accommodationInfo;
-
-    private String roadName;
-    private String region;
-    private double lat;     // 위도
-    private double lng;     // 경도
-
-    private List<String> accommodationFacilities;
+    private int accommodationViews;
 
     private String viewsDate;
     private int viewsCount;
@@ -73,6 +66,9 @@ public class SellerDto {
     private String reservationCancellationDate;
     private String reservationStatus;
     private String reservationType;
+
+    // 숙소 이미지 DTO
+    private AccommodationImageDto accommodationImageDto;
 
     // 설정 파일
     private String requestDetails;
@@ -160,10 +156,6 @@ public class SellerDto {
         }
 
     }
-
-// □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
-// □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
-
 }
 
 

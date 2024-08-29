@@ -10,17 +10,26 @@ function showSection(sectionId) {
     if (selectedSection) {
         selectedSection.style.display = 'block';
 
-        // 로그인 관리 섹션이 선택된 경우 로그 데이터를 불러옴
+        // 섹션에 맞는 데이터 로드
         if (sectionId === 'activity-log') {
             loadLoginLogs();
         }
+        if (sectionId === 'coupons') {
+            loadCoupons();
+        }
+        if (sectionId === 'reservation') {
+            loadReservations();
+        }
+    }
+    else {
+        console.error(`Section with ID ${sectionId} not found.`);
     }
 }
 
-/*------내정보수정--------*/
-// 비밀번호 저장 -> 비밀번호 변경 요청 (전역 스코프에 정의)
+/*---------------내정보수정--------------*/
+// 비밀번호 저장 -> 비밀번호 변경 요청
 function savePasswordButton() {
-    const currentPassword = document.getElementById('currentPassword').value.trim();
+    const currentPassword = document.getElementById('currentPassword').value.trim(); // trim() 문자열의 시작과 끝에 있는 공백을 제거
     const newPassword = document.getElementById('newPassword').value.trim();
     const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
 
@@ -63,7 +72,7 @@ function savePasswordButton() {
     });
 }
 
-/*-------탈퇴 기타 사유 입력란 길이제한-------*/
+/*-----------탈퇴 기타 사유 입력란 길이제한-----------*/
 const textarea = document.getElementById('otherReason');
 const charCount = document.getElementById('charCount');
 const errorMessage = document.getElementById('errorMessage');
@@ -72,22 +81,27 @@ const maxChars = 250;
 // 입력 이벤트 리스너 추가
 textarea.addEventListener('input', function () {
     // 현재 입력된 문자 수를 가져옴
-    const currentLength = textarea.value.length;
+    let currentLength = textarea.value.length;
+
+    // 250자를 초과하는지 확인
+    if (currentLength > maxChars) {
+        // 초과된 부분을 잘라내어 입력 제한
+        textarea.value = textarea.value.slice(0, maxChars);
+        currentLength = maxChars;
+    }
 
     // 문자 수 업데이트
     charCount.textContent = `${currentLength} / ${maxChars}`;
 
-    // 250자를 초과하는지 확인
-    if (currentLength > maxChars) {
-        // 초과 시 에러 메시지 표시
+    // 250자를 초과했는지 확인 후 에러 메시지 표시
+    if (currentLength === maxChars) {
         errorMessage.style.display = 'inline';
     } else {
-        // 초과하지 않으면 에러 메시지 숨김
         errorMessage.style.display = 'none';
     }
 });
 
-/*-------이력관리(로그인기록)-------*/
+/*------------이력관리(로그인기록)-------------*/
 let logsData = []; // 모든 로그 데이터를 저장
 let filteredLogs = []; // 필터링된 로그 데이터를 저장
 let currentPage = 0; // 현재 페이지 번호
@@ -95,7 +109,7 @@ const logsPerPage = 3; // 한 번에 보여줄 로그 수
 
 function loadLoginLogs() {
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         url: '/login-log',
         contentType: 'application/json',
         success: function(data) {
@@ -136,7 +150,7 @@ function filterLogsByDate() {
     renderLogs(true); // 필터링된 데이터를 렌더링 (기존 로그 초기화)
 }
 
-// 로그 데이터를 현재 페이지에 맞게 렌더링하는 함수
+// 로그 데이터를 현재 페이지에 맞게 렌더링
 function renderLogs(reset = false) {
     const logTableBody = document.getElementById('log-table-body');
     if (reset) {
@@ -184,6 +198,135 @@ function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('ko-KR', options);
 }
+
+/*------------ 쿠폰 조회 -------------*/
+function loadCoupons() {
+    $.ajax({
+        type: 'POST',
+        url: '/coupons',
+        success: function(response) {
+            if (response.success) {
+                const coupons = response.coupons || []; // 쿠폰 데이터 배열
+                renderCoupons(coupons); // 데이터를 화면에 렌더링하는 함수 호출
+            } else {
+                console.error('쿠폰 정보를 가져오는 데 실패했습니다.', response.error);
+                alert('쿠폰 정보를 가져오는 데 실패했습니다.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('쿠폰 정보를 가져오는 데 실패했습니다.', status, error);
+            alert('쿠폰 정보를 가져오는 데 실패했습니다.');
+        }
+    });
+}
+
+// 쿠폰 데이터 렌더링
+function renderCoupons(coupons) {
+    var couponSection = document.querySelector('#coupons .coupon-list');
+    var noCouponsMessage = document.querySelector('#coupons .no-coupons');
+
+    couponSection.innerHTML = ''; // 기존 내용 비우기
+
+    if (coupons.length === 0) {
+        noCouponsMessage.style.display = 'block'; // 쿠폰이 없을 때 메시지 보이기
+    } else {
+        noCouponsMessage.style.display = 'none'; // 쿠폰이 있을 때 메시지 숨기기
+        coupons.forEach(function(coupon) {
+            // 쿠폰 타입에 따라 할인 텍스트
+            var discountText = coupon.couponType === 'DISCOUNT_AMOUNT'
+                ? '원 할인'
+                : (coupon.couponType === 'DISCOUNT_RATE'
+                    ? '% 할인'
+                    : '할인');
+            var couponItem = `
+                <div class="coupon-item">
+                    <p>쿠폰 이름: ${coupon.couponName}</p>
+                    <p>쿠폰코드: ${coupon.couponCode}</p>
+                    <p>유효기간: ${coupon.couponStartDate} - ${coupon.couponEndDate}</p>
+                    <p>할인 값: ${coupon.couponDiscount}${discountText}</p>
+                    <p>사용 최소 금액: ${coupon.couponMinimumAmount}원</p>
+                </div>
+            `;
+            couponSection.innerHTML += couponItem; // 쿠폰 항목 추가
+        });
+    }
+}
+
+/*-------------예약내역 조회-----------------*/
+function loadReservations() {
+    $.ajax({
+        type: 'POST',
+        url: '/reservation-list',
+        success: function(response) {
+            if (response.success) {
+                const reservation = response.reservation || []; // 예약 내역 배열
+                renderReservation(reservation); // 데이터를 화면에 렌더링하는 함수 호출
+            } else {
+                console.error('예약 정보를 가져오는 데 실패했습니다.', response.error);
+                alert('예약 정보를 가져오는 데 실패했습니다.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('예약 정보를 가져오는 데 실패했습니다.', status, error);
+            alert('예약 정보를 가져오는 데 실패했습니다.');
+        }
+    });
+}
+
+// 예약 데이터 렌더링
+function renderReservation(reservation) {
+    var reservationList = document.querySelector('#reservation .reservation-list');
+    var noReservation = document.querySelector('#reservation .no-reservation');
+
+    if (!noReservation) {
+        return;
+    }
+
+    reservationList.innerHTML = ''; // 기존 내용 비우기
+
+    if (reservation.length === 0) {
+        noReservation.style.display = 'block'; // 예약이 없을 때 메시지 보이기
+        reservationList.style.display = 'none';
+    } else {
+        noReservation.style.display = 'none'; // 예약이 있을 때 메시지 숨기기
+        reservation.forEach(function(reservation) {
+            const imageUrl = `${reservation.accommodationImageDto.uploadImagePath}${reservation.accommodationImageDto.uploadUniqueName}`;
+            const reservationItem = `
+                  <div class="reservation-item">
+                       <div class="details">
+                           <h4 class="hotel-name">${reservation.accommodationName}</h4>
+                           <div class="image-info">
+                                <img src="${imageUrl}" alt="Hotel Image">
+                                <div class="room-info">
+                                    <p>객실 이름: ${reservation.roomName}</p>
+                                    <p>${reservation.reserveCheckIn} - ${reservation.reserveCheckOut}</p>
+                                    <p>체크인: ${reservation.roomCheckIn} 체크아웃: ${reservation.roomCheckOut}</p>
+                                    <p>기준 인원: ${reservation.roomPersonnel}명 / 최대 인원: ${reservation.roomMaxPersonnel}명</p>
+                                </div>
+                           </div>
+                           <p class="price" style="text-align: right;">
+                                금액: <strong><span style="font-size: 1.2em;">${reservation.reserveAmount}원</span></strong>
+                           </p>
+                           <div class="button-group" style="float: right;">
+                                <button class="btn-danger" onclick="cancelReservation(${reservation.reserveRoomNo})">예약 취소</button>
+                                <button class="btn-primary" onclick="viewReservationDetails(${reservation.accommodationNo})">예약 상세</button>
+                           </div>
+                       </div>
+                  </div>
+                  `;
+                  reservationList.innerHTML += reservationItem; // 예약 리스트 항목 추가
+        });
+    }
+}
+  // 예약 상세 페이지로 이동
+    function viewReservationDetails(accommodationNo) {
+    // 상세 페이지 URL 생성
+    const url = `/hotel-single?boardNo=${accommodationNo}`;
+
+    // 해당 URL로 이동
+    window.location.href = url;
+    }
+
 
 // DOMContentLoaded 이벤트 리스너 내부의 코드
 document.addEventListener('DOMContentLoaded', function() {
@@ -415,7 +558,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 새로운 휴대폰 번호의 유효성을 검증하는 함수 호출
         validatePhone();
 
-        // 유효할 경우에만 sms 전송 요청
+        // 유효할 경우(유효할 때 나타나는 색상)에만 sms 전송 요청
         validatePhoneCheck = document.getElementById("phoneMsg").style.color === "rgb(170, 170, 170)";
 
         const newPhone = document.getElementById("newPhone").value;

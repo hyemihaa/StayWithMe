@@ -19,8 +19,8 @@ class JWTUtilTest {
     JWTUtil jwtUtil;
 
     @Test
-    void create() {
-        // given
+    void create() { // 토큰 생성
+        // given : 테스트 상황 설정
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", "testUser");
         claims.put("role", "USER");
@@ -28,12 +28,12 @@ class JWTUtilTest {
         Long accommAdminKey = 1L; // 테스트용 관리자 키 설정
         Long userNo = 1L;
 
-        // when
+        // when : 테스트가 실행되는 동작 부분
         String token = jwtUtil.create(claims, expireAt, accommAdminKey, userNo);
 
-        // then
+        // then : 테스트의 예상 결과를 확인
         assertNotNull(token);
-//        log.info("Generated token: {}", token);
+        log.info("Generated token: {}", token);
     }
 
     @Test
@@ -42,23 +42,24 @@ class JWTUtilTest {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", "testUser");
         claims.put("role", "USER");
-        LocalDateTime expireAt = LocalDateTime.now().minusMinutes(10); // 이미 만료된 시간
+        LocalDateTime expireAt = LocalDateTime.now().minusMinutes(10); // 이미 만료된 시간으로 설정
+                                // --> 테스트가 성공하려면 jwtUtil.isExpired() 메서드가 토큰이 만료되었다고 판단
         Long accommAdminKey = 1L; // 테스트용 관리자 키 설정
         Long userNo = 1L;
 
-        String expiredToken = jwtUtil.create(claims, expireAt, accommAdminKey, userNo);
+        String expiredToken = jwtUtil.create(claims, expireAt, accommAdminKey, userNo); //토큰을 생성  (이미 만료된 시간이 들어간 토큰)
 
         // when
-        Boolean isExpired = jwtUtil.isExpired(expiredToken);
+        Boolean isExpired = jwtUtil.isExpired(expiredToken); // 만료된 토큰이기 때문에 true
 
         // then
         assertTrue(isExpired);
-//        log.info("isExpired : {}", isExpired);
+        log.info("isExpired : {}", isExpired);
     }
 
     @Test
     void validate() {
-        // given
+        // given: 유효한 토큰인지 테스트
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", "testUser");
         claims.put("role", "USER");
@@ -66,9 +67,9 @@ class JWTUtilTest {
         Long accommAdminKey = 1L; // 테스트용 관리자 키 설정
         Long userNo = 1L;
 
-        String token = jwtUtil.create(claims, expireAt, accommAdminKey, userNo);
+        String token = jwtUtil.create(claims, expireAt, accommAdminKey, userNo);  // 유효한 토큰 생성
 
-        // when & then
+        // when & then : 토큰이 유효한지 검증
         assertDoesNotThrow(() -> jwtUtil.validate(token));
     }
 
