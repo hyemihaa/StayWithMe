@@ -47,3 +47,20 @@
 ![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
+
+
+## 📊 ERD (Entity-Relationship Diagram)
+
+아래는 프로젝트의 ERD 다이어그램입니다. 이 다이어그램은 데이터베이스 구조를 시각적으로 설명합니다.
+
+![ERD](./docs/ERD.png)
+
+## 🎯 유스케이스 다이어그램
+
+아래는 프로젝트의 유스케이스 다이어그램입니다.
+
+![Use Case](./docs/UseCaseDiagram.png)
+
+
+
+
