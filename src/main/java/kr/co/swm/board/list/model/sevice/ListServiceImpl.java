@@ -2,10 +2,10 @@ package kr.co.swm.board.list.model.sevice;
 
 
 import kr.co.swm.board.list.model.DTO.ListDTO;
+import kr.co.swm.board.list.model.DTO.MainSearchDTO;
 import kr.co.swm.board.list.model.DTO.PageInfoDTO;
 import kr.co.swm.board.list.model.DTO.SearchDTO;
 import kr.co.swm.board.mapper.ListMapper;
-import okhttp3.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +29,6 @@ public class ListServiceImpl implements ListService {
         return listMapper.getPlace(pi, searchDTO);
     }
 
-    //별점 불러오기
-    @Override
-    public double getAvgRate(int boardNo) {
-        return listMapper.getAvgRate(boardNo);
-    }
-
     //게시글의 수
     @Override
     public int getTotalCount(SearchDTO searchDTO){
@@ -47,15 +41,29 @@ public class ListServiceImpl implements ListService {
         return listMapper.getCost();
     }
 
+    // 부대시설 불러오기
     @Override
-    public int getListCount(SearchDTO searchDTO) {
+    public List<String> getUniqueFacilities() {
+        return listMapper.getUniqueFacilities();
+    }
+
+    //  체크인 & 체크아웃 지정할 때 나오는 리스트
+//    @Override
+//    public List<ListDTO> getCheck(String checkinDate, String checkoutDate) {
+//        return listMapper.getCheck(checkinDate, checkoutDate);
+//    }
+
+
+
+    @Override
+    public int getListCount(MainSearchDTO mainSearchDTO) {
 
         System.out.println("<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>");
-        System.out.println("Main Search : " + searchDTO.getMainSearch());
-        System.out.println("BoardType : " + searchDTO.getBoardType());
+        System.out.println("Main Search : " + mainSearchDTO.getMainSearch());
+        System.out.println("BoardType : " + mainSearchDTO.getBoardType());
         System.out.println("<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>");
 
-        int listCount = listMapper.getListCount(searchDTO);
+        int listCount = listMapper.getListCount(mainSearchDTO);
 
         System.out.println("========== ServiceImpl List Count ==========");
         System.out.println(listCount);
@@ -64,9 +72,9 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
-    public List<ListDTO> getList(SearchDTO searchDTO) {
+    public List<ListDTO> getList(MainSearchDTO mainSearchDTO) {
 
-        List<ListDTO> getList = listMapper.getList(searchDTO);
+        List<ListDTO> getList = listMapper.getList(mainSearchDTO);
         for(ListDTO item : getList) {
             System.out.println("========== ServiceImpl Get List ==========");
             System.out.println("Board Name : " + item.getBoardName());
@@ -80,11 +88,8 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
-    public List<String> getFacilities(SearchDTO searchDTO) {
-        List<String> facilities = listMapper.getFacilities(searchDTO);
+    public List<String> getFacilities(MainSearchDTO mainSearchDTO) {
+        List<String> facilities = listMapper.getFacilities(mainSearchDTO);
         return facilities.stream().distinct().collect(Collectors.toList());
     }
-
-
-
 }
