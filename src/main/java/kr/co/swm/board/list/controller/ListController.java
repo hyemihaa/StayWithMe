@@ -1,5 +1,6 @@
 package kr.co.swm.board.list.controller;
 
+import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import kr.co.swm.board.list.model.DTO.ListDTO;
 import kr.co.swm.board.list.model.DTO.PageInfoDTO;
 import kr.co.swm.board.list.model.DTO.SearchDTO;
@@ -47,8 +48,8 @@ public class ListController {
         //장소 불러오기
         List<ListDTO> place = listService.getPlace(pi, searchDTO);
 
-        double rate = 0;
         // 평균 별점 계산
+        double rate = 0;
         if(place.size() > 0) {
             rate = listService.getAvgRate(place.get(0).getBoardNo());
         }
@@ -106,3 +107,4 @@ public class ListController {
     }
 
 }
+

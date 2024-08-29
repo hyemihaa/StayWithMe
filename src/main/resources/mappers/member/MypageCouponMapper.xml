@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.swm.member.model.mapper.MemberMapper">
+
+    <resultMap id="CouponResultMap" type="kr.co.swm.model.dto.WebDto">
+        <!-- 쿠폰 정보 -->
+        <result column="COUPON_CODE" property="couponCode"/>
+        <result column="COUPON_NAME" property="couponName"/>
+        <result column="COUPON_TYPE" property="couponType"/>
+        <result column="DISCOUNT" property="couponDiscount"/>
+        <result column="COUPON_QUANTITY" property="couponQuantity"/>
+        <result column="USE_QUANTITY" property="couponUseQuantity"/>
+        <result column="LEFTOVER" property="couponLeftOver"/>
+        <result column="COUPON_START" property="couponStartDate"/>
+        <result column="COUPON_END" property="couponEndDate"/>
+        <result column="MIN_PURCHASE_PRICE" property="couponMinimumAmount"/>
+    </resultMap>
+
+    <!--사용자의 쿠폰 조회-->
+    <select id="getUserCoupons" resultMap="CouponResultMap">
+        SELECT
+        c.COUPON_NAME,
+        c.COUPON_CODE,
+        c.COUPON_START,
+        c.COUPON_END,
+        c.DISCOUNT,
+        c.MIN_PURCHASE_PRICE,
+        c.COUPON_TYPE
+        FROM coupon_list cl
+        JOIN COUPON c ON cl.COUPON_CODE = c.ID
+        WHERE cl.USER_NO = #{userNo}
+    </select>
+
+</mapper>
+

@@ -118,7 +118,6 @@ public class SignController {
                          HttpServletResponse response, HttpServletRequest request,
                          RedirectAttributes redirectAttributes) {
         System.out.println("로그인 요청");
-        System.out.println("로그인 요청" + signRole);
 
         // 사용자 정보 조회
         UserDTO user = memberServiceImpl.userInfo(userId);
@@ -137,7 +136,6 @@ public class SignController {
 
         if (token != null) {
             String role = jwtUtil.getRoleFromToken(token);
-            System.out.println("로그인 시도: " + role);  // 권한이 제대로 추출되는지 확인
 
             if (!isAdmin) { // 일반 사용자일 경우에만 로그인 기록을 저장
                 // IP 주소 가져오기
@@ -150,7 +148,6 @@ public class SignController {
                 userDTO.setUserIp(userIp);
                 userDTO.setLastLoginDate(LocalDateTime.now()); // 현재시간
 
-                System.out.println("로그인 시도 IP: " + userIp); // **로그 추가** (IP 출력)
                 memberServiceImpl.saveLoginLog(userDTO); // 로그기록 저장
             }
 
@@ -158,7 +155,7 @@ public class SignController {
             if ("ROLE_SITE_ADMIN".equals(role)) {
                 return "redirect:/web-center"; // 사이트 관리자 페이지로 리다이렉트
             } else if ("ROLE_ACCOMMODATION_ADMIN".equals(role)) {
-                return "redirect:/seller-main.do"; // 업소 관리자 페이지로 리다이렉트 ( 추후수정 )
+                return "redirect:/seller-main.do"; // 업소 관리자 페이지로 리다이렉트
             } else {
                 return "redirect:/"; // 일반 사용자 -> 메인
             }
@@ -174,7 +171,7 @@ public class SignController {
     @GetMapping("/logout-success")
     public String logoutSuccess(Model model) {
         model.addAttribute("logoutMessage", "로그아웃 되었습니다.");
-        return "/index";
+        return "index";
     }
 
     // 아이디 찾기 & 비밀번호 찾기 페이지 이동
@@ -187,11 +184,9 @@ public class SignController {
     @PostMapping("/find-userId")
     @ResponseBody
     public String findUserId(@RequestParam("userName") String userName, @RequestParam("userPhone") String userPhone) {
-        System.out.println("아이디찾기 컨트롤러 : " + userName + " " + userPhone);
 
         // 사용자 아이디를 찾는 서비스 호출
         String userId = memberServiceImpl.findUserId(userName, userPhone);
-        System.out.println("========================" + userId);
 
         if (userId != null) {
             return userId;

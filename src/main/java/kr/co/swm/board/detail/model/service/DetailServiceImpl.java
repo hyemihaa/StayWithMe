@@ -20,8 +20,22 @@ public class DetailServiceImpl implements DetailService{
 
     //  장소 불러오기
    @Override
-   public List<DetailDTO> getPlace() {
-       return detailMapper.getPlace();
+   public List<DetailDTO> getPlace(int boardNo) {
+       List<DetailDTO> list = detailMapper.getPlace(boardNo);
+       for(DetailDTO item : list) {
+           System.out.println("========== ServiceImpl Detail List ==========");
+           System.out.println("Board Name : " + item.getBoardName());
+           System.out.println("Board Room Type : " + item.getBoardRoomType());
+           System.out.println("Board Room Type : " + item.getBoardCount());
+           System.out.println("Board Check In : " + item.getBoardCheckIn());
+           System.out.println("Board Min Person : " + item.getBoardMinPerson());
+           System.out.println("Board Max Person : " + item.getBoardMaxPerson());
+           System.out.println("Board Address : " + item.getBoardAddress());
+           System.out.println("Lat : " + item.getLat());
+           System.out.println("Lon : " + item.getLon());
+           System.out.println("=============================================");
+       }
+       return list;
    }
 
    //   게시글 상세정보 조회
@@ -30,17 +44,28 @@ public class DetailServiceImpl implements DetailService{
         return detailMapper.getPost(boardNo);
     }
 
-    // 평균 별점 불러오기
+    //  업체 평균 별점 불러오기
     @Override
     public double getAvgRate(int boardNo) {
         return detailMapper.getAvgRate(boardNo);
     }
 
     // 방 평균 별점
-//    @Override
-//    public double getRoomRate(int boardNo) {
-//        return detailMapper.getRoomRate(boardNo);
-//    }
+    @Override
+    public double getRate(int boardNo) {
+      return detailMapper.getRate(boardNo);
+    }
+
+    @Override
+    public List<DetailDTO> getFacilities(int boardNo) {
+        return detailMapper.getFacilities(boardNo);
+    }
+
+    // 하단 관련 항목
+    @Override
+    public List<DetailDTO> getSubPlace(int boardNo) {
+        return detailMapper.getSubPlace(boardNo);
+    }
 
 
 }

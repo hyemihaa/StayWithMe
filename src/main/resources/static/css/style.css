@@ -9138,7 +9138,10 @@ textarea.form-control {
 .sidebar-wrap {
   padding: 20px;
   border: 1px solid #e6e6e6;
-  margin-bottom: 30px; }
+  margin-bottom: 30px;
+    position: sticky;
+    top: 150px;
+    }
   .sidebar-wrap .heading {
     font-size: 30px;
     text-transform: uppercase; }
@@ -9430,7 +9433,6 @@ textarea.form-control {
     stroke-dashoffset: -136px; } }
 
 
-/* 추가 영역 */
 
 /* 토글 버튼 */
 .toggle {
@@ -9563,4 +9565,30 @@ form#dateForm .form-group {
     margin-right: 10px; /* 그룹 간의 간격을 설정 */
 }
 
+/* 추가 영역 */
 
+/* 토글 버튼 */
+.toggle {
+}
+
+.toggle-input {
+    display: none; /* 기본 체크박스 숨기기 */
+}
+
+.toggle-label {
+    cursor: pointer;
+    text-align:center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    margin: 5px;
+    height: 30px;
+    width: 95px;
+    line-height: 10px;
+    float: left;
+}
+
+.toggle-input:checked + .toggle-label {
+    background-color: #17a2b8; /* 체크된 상태의 배경색 */
+    color: white; /* 체크된 상태의 텍스트 색상 */
+}
