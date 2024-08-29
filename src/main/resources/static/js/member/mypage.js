@@ -256,7 +256,7 @@ function renderCoupons(coupons) {
 function loadReservations() {
     $.ajax({
         type: 'POST',
-        url: '/reservation',
+        url: '/reservation-list',
         success: function(response) {
             if (response.success) {
                 const reservation = response.reservation || []; // 예약 내역 배열
