@@ -1,6 +1,7 @@
 package kr.co.swm.board.mapper;
 
 import kr.co.swm.board.list.model.DTO.ListDTO;
+import kr.co.swm.board.list.model.DTO.MainSearchDTO;
 import kr.co.swm.board.list.model.DTO.PageInfoDTO;
 import kr.co.swm.board.list.model.DTO.SearchDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -26,10 +27,9 @@ public interface ListMapper {
 
 
 
-  int getListCount(SearchDTO searchDTO);
+  int getListCount(@Param("mainSearchDTO") MainSearchDTO mainSearchDTO);
 
-  List<ListDTO> getList(SearchDTO searchDTO);
+  List<ListDTO> getList(@Param("mainSearchDTO") MainSearchDTO mainSearchDTO);
 
-  List<String> getFacilities(SearchDTO searchDTO);
-
+  List<String> getFacilities(@Param("mainSearchDTO") MainSearchDTO mainSearchDTO);
 }
