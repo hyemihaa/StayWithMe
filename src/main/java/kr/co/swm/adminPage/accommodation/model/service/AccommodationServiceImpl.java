@@ -5,12 +5,15 @@ import kr.co.swm.adminPage.accommodation.mapper.AccommodationMapper;
 import kr.co.swm.adminPage.accommodation.model.dto.AccommodationDto;
 import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.adminPage.accommodation.util.UploadFile;
+import kr.co.swm.model.dto.SellerDto;
+import kr.co.swm.model.dto.WebDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AccommodationServiceImpl implements AccommodationService {
@@ -81,6 +84,50 @@ public class AccommodationServiceImpl implements AccommodationService {
             }
         }
         return result;
+    }
+
+    @Override
+    public SellerDto accommodationList(Long sellerId) {
+        return mapper.accommodationList(sellerId);
+    }
+
+    @Override
+    public List<SellerDto> roomsList(Long sellerId, SellerDto sellerDto) {
+
+
+        // SellerDto 리스트를 가져옵니다.
+        List<SellerDto> rooms = mapper.roomsList(sellerId);
+
+
+        // 각 SellerDto 객체에 대해 rates 데이터를 처리합니다.
+        for (SellerDto room : rooms) {
+            int roomNo = room.getRoomNo();
+            // rates 리스트를 가져옵니다.
+            List<SellerDto> rates = mapper.getRates(roomNo);
+            for (SellerDto rate : rates) {
+
+                int dayNo = rate.getBasicDayNo();
+                int rateValue = rate.getBasicRate();
+                // 예시로 DAY_NO 값이 1인 경우, weekday 변수에 RATE 값을 저장합니다.
+                if (dayNo == 1) {
+                    room.setWeekdayRate(rateValue);
+                    // 다른 로직이 필요한 경우 추가 구현
+                } else if (dayNo == 2) {
+                    room.setFridayRate(rateValue);
+                } else if (dayNo == 3) {
+                    room.setSaturdayRate(rateValue);
+                } else if (dayNo == 4) {
+                    room.setSundayRate(rateValue);
+                }
+            }
+        }
+        // 최종적으로 SellerDto 리스트를 반환합니다.
+        return rooms;
+    }
+
+    @Override
+    public List<String> facilitiesList(Long sellerKey) {
+        return mapper.getFacilities(sellerKey);
     }
 }
 

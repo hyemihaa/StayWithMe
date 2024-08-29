@@ -131,3 +131,47 @@
         overflow-x: auto;
     }
 }
+
+/* 상단 내비게이션 바 안의 관리자 이름과 로그아웃 버튼 스타일링 */
+.navbar-nav.ms-auto {
+    display: flex;
+    align-items: center;
+    margin-right: 0rem;
+    margin-left: auto; /* 이 부분을 추가하여 요소들을 오른쪽으로 정렬 */
+}
+
+/* 로그인ID 폰트를 굵게 하고 버튼과 동일한 높이로 설정 */
+.navbar-text {
+    font-size: 1rem;
+    color: var(--dark);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+/* 버튼과 로그인ID 사이의 간격 추가 */
+.navbar-nav .navbar-text {
+    margin-right: 20px; /* 20px 간격 추가 */
+}
+
+/* 버튼 스타일 변경 - 기본적으로 색이 차 있고, 호버 시 색이 빠지는 효과 */
+.navbar-nav .btn {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar-nav .btn:hover {
+    background-color: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+
+/* 상단 네비게이션 바와 상단의 4개 박스 사이에 간격 추가 */
+.content .container-fluid {
+    padding-top: 2rem; /* 2rem 간격 추가 */
+}

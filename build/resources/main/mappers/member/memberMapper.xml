@@ -18,6 +18,21 @@
         <result column="WITHDRAWAL_REASON" property="withdrawalReason"></result>
     </resultMap>
 
+    <resultMap id="adminResultMap" type="kr.co.swm.member.model.dto.AdminDTO">
+        <result column="ACCOMMODATION_ADMIN_NO" property="no"></result>
+        <result column="USER_ID" property="userId"></result>
+        <result column="USER_PWD" property="userPwd"></result>
+        <result column="ROLES" property="role"></result>
+        <result column="ADMIN_ID" property="userId"></result>
+        <result column="ADMIN_PWD" property="userPwd"></result>
+        <result column="ADMIN_TYPE" property="role"></result>
+        <result column="LAST_LOGIN_DATE" property="lastLoginDate"></result>
+        <result column="LOG_ID" property="logId"></result>
+        <result column="USER_IP" property="userIp"></result>
+        <result column="STATUS" property="userStatus"></result>
+        <result column="WITHDRAWAL_REASON" property="withdrawalReason"></result>
+    </resultMap>
+
 
 
     <!--회원가입 insert-->
@@ -69,6 +84,38 @@
         SELECT * FROM USER
         WHERE USER_ID = #{userId}
     </select>
+
+    <!--마이페이지 내정보수정 비밀번호 변경-->
+    <update id="updatePassword">
+        UPDATE USER
+        SET USER_PWD = #{userDTO.userPwd}
+        WHERE user_id = #{userDTO.userId}
+    </update>
+
+    <!--마이페이지 내정보수정 휴대전화 번호 변경-->
+    <update id="updatePhoneNumber">
+        UPDATE USER
+        SET USER_PHONE = #{newPhone}
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <!--마이페이지 회원 탈퇴, 회원상태, 탈퇴사유 업데이트-->
+    <update id="updateUserStatus">
+        UPDATE USER
+        SET STATUS = #{userDTO.userStatus}, WITHDRAWAL_REASON = #{userDTO.withdrawalReason}, DELETED_DATE = #{userDTO.deletedDate}
+        WHERE USER_ID = #{userDTO.userId}
+    </update>
+    <!--업소관리자 가입-->
+    <insert id="setSellerSignup">
+        INSERT INTO ACCOMMODATIONADMINS
+        VALUES (NULL, #{adminDTO.userId}, #{adminDTO.userPwd}, #{adminDTO.role})
+    </insert>
+
+    <!--사이트 관리자 가입-->
+    <insert id="setManagerSignup">
+        INSERT INTO SITEADMINS
+        VALUES (NULL, #{adminDTO.userId}, #{adminDTO.userPwd}, #{adminDTO.role})
+    </insert>
 
     <!--마이페이지 내정보수정 비밀번호 변경-->
     <update id="updatePassword">

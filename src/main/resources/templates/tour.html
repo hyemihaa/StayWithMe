@@ -13,18 +13,7 @@
 
 <!-- header nav 여백 영역 -->
 <div class="under-nev" style="height: 100px">
-	<div class="hero-wrap js-fullheight">
-		<!-- <style="background-image: url('images/bg_3.jpg');"> -->
-		<!-- <div class="overlay"></div>
-            <div class="container">
-                <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
-                    <div class="col-md-9 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
-                        <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a href="index.html">Home</a></span> <span>Tour</span></p>
-                        <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Destination</h1>
-                    </div>
-                </div>
-            </div> -->
-	</div>
+	<div class="hero-wrap js-fullheight"></div>
 </div>
 
 <!-- 사이드 바(필터) 영역-->
@@ -39,7 +28,7 @@
 
 					<!-- 폼 태그  -->
 
-					<form action="/tour" method="get" th:object="${searchDTO}">
+					<form th:action="@{/tour}" method="get" th:object="${searchDTO}">
 						<div class="fields">
 
 							<!-- 숙소 유형 라디오버튼 -->
@@ -63,74 +52,27 @@
 								<h5>가격</h5>
 								<br>
 								<div class="range-slider">
-										<span>
-											<input type="number" style="width:80px;" th:field="*{minRate}" value="0" min="0" max="1000000" />원&nbsp-
-											<input type="number" style="width:80px;" th:field="*{maxRate}" value="1000000" min="0" max="1000000" />원
-										</span>
+									<span>
+										<input type="number" style="width:80px;" th:field="*{minRate}" value="0" min="0" max="1000000" />원&nbsp-
+										<input type="number" style="width:80px;" th:field="*{maxRate}" value="1000000" min="0" max="1000000" />원
+									</span>
 									<input value="0" min="0" max="1000000" step="1000" type="range" />
 									<input value="1000000" min="0" max="1000000" step="1000" type="range" />
 								</div>
 							</div>
+
 							<!-- 옵션 선택영역  -->
 							<h5>옵션</h5>
-							<br>
-								<div class="form-group" style="height:300px;">
-                                    <div class="toggle">
-                                        <input type="checkbox" name="options" th:field="*{options}" value="wifi" id="wifi" class="toggle-input" >
-                                        <label for="wifi" class="toggle-label">Wi-Fi</label>
-                                    </div>
+							<div class="form-group option_box">
+								<div th:each="facility : ${uniqueFacilities}">
 									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="주차장" id="parking" class="toggle-input" >
-										<label for="parking" class="toggle-label">주차장</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="수영장" id="pool" class="toggle-input" >
-										<label for="pool" class="toggle-label">수영장</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="헬스장" id="gym" class="toggle-input" >
-										<label for="gym" class="toggle-label">헬스장</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="레스토랑" id="restaurant" class="toggle-input" >
-										<label for="restaurant" class="toggle-label">레스토랑</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="취사 가능" id="bar" class="toggle-input" >
-										<label for="bar" class="toggle-label">취사 가능</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="세탁실" id="laundry" class="toggle-input" >
-										<label for="laundry" class="toggle-label">세탁실</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="스파" id="spa" class="toggle-input">
-										<label for="spa" class="toggle-label">스파</label>
-									</div>
-									<div class="toggle">
-									<input type="checkbox" name="options" th:field="*{options}" value="룸 서비스" id="room_service" class="toggle-input">
-									<label for="room_service" class="toggle-label">룸 서비스</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="카페" id="concierge" class="toggle-input">
-										<label for="concierge" class="toggle-label">카페</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="반려동물" id="pet_friendly" class="toggle-input">
-										<label for="pet_friendly" class="toggle-label">반려동물</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="바베큐" id="BBQ" class="toggle-input">
-										<label for="BBQ" class="toggle-label">바베큐</label>
-									</div>
-									<div class="toggle">
-										<input type="checkbox" name="options" th:field="*{options}" value="라운지" id="lounge" class="toggle-input">
-										<label for="lounge" class="toggle-label">라운지</label>
+										<input type="checkbox" name="options" th:field="*{options}" th:value="${facility}" th:id="${facility}" class="toggle-input">
+										<label th:for="${facility}" th:text="${facility}" class="toggle-label"></label>
 									</div>
 								</div>
-									<script th:src="@{js/toggle.js}"></script>
 								<!-- 서치 버튼 -->
-							<div class="form-group">
+							</div>
+							<div class="form-group option_box">
 								<input type="submit" value="Search" class="btn btn-primary py-3 px-5">
 							</div>
 						</div>
@@ -141,22 +83,9 @@
 
 
 			<!-- 숙박 상품 리스트 -->
-
 			<div class="col-lg-9">
 				<div class="col-md-4 ftco-animate">
-					<div class="col-md-6">
-<!--						<div class="form-group">-->
-<!--							<div class="select-wrap one-third">-->
-<!--&lt;!&ndash;								<select name="tour-option-select" class="form-control" style="width: 150px; border-radius: 10px; margin-left: 175%;">&ndash;&gt;-->
-<!--&lt;!&ndash;									<option value="0">추천순</option>&ndash;&gt;-->
-<!--&lt;!&ndash;									<option value="1">평점높은순</option>&ndash;&gt;-->
-<!--&lt;!&ndash;									<option value="2">리뷰많은순</option>&ndash;&gt;-->
-<!--&lt;!&ndash;									<option value="3">낮은가격순</option>&ndash;&gt;-->
-<!--&lt;!&ndash;									<option value="4">높은가격순</option>&ndash;&gt;-->
-<!--&lt;!&ndash;								</select>&ndash;&gt;-->
-<!--							</div>-->
-<!--						</div>-->
-					</div>
+					<div class="col-md-6"></div>
 				</div>
 				<div class="row">
 					<!-- 상품리스트 1칸 -->
@@ -174,38 +103,18 @@
 								<div class="d-flex">
 									<div class="one" >
 										<h3><a th:href="@{/hotel-single(boardNo=${place.boardNo})}" th:text="${place.boardName}"></a></h3>
-										<!-- 별점 평균 값에 따른 아이콘 변화 -->
-										<p class="rate" th:each="rate : ${rate}" th:if="${place.boardNo == 1}">
-											<i class="icon-star" th:if="${rate >= 1}"></i>
-											<i class="icon-star" th:if="${rate >= 2}"></i>
-											<i class="icon-star" th:if="${rate >= 3}"></i>
-											<i class="icon-star" th:if="${rate >= 4}"></i>
-											<i class="icon-star" th:if="${rate >= 5}"></i>
-											<!-- "icon-star" = 채워져있는 별 / "icon-star-o" = 비어있는 별 -->
-											<i class="icon-star-o" th:if="${rate < 1}"></i>
-											<i class="icon-star-o" th:if="${rate < 2}"></i>
-											<i class="icon-star-o" th:if="${rate < 3}"></i>
-											<i class="icon-star-o" th:if="${rate < 4}"></i>
-											<i class="icon-star-o" th:if="${rate < 5}"></i>
-											<span th:text="${rate}"></span>
-										</p>
 									</div>
 									<div class="two">
 										<p th:text="${place.boardType}"></p>
 									</div>
 								</div>
-								<span><i class="icon-map-o"></i> &nbsp <span th:text="${place.boardAddress}" /></span>
-								<p class="days"><span>체크인: &nbsp <span th:text="${place.boardCheckIn}" /></span></p>
+								<span><i class="icon-map-o"></i> &nbsp; <span th:text="${place.boardAddress}" /></span>
+								<p class="days"><span>체크인: &nbsp; <span th:text="${place.boardCheckIn}" /></span></p>
 								<hr>
 								<!-- 최저 기본값 영역 -->
 								<span class="price" style="font-weight:bold; font-size: 17px;" th:each="cost: ${cost}">
-										<span th:text="${cost.boardCount}"/>원 &nbsp ~
+										<span th:text="${cost.boardCount}"/>원~ <span style="font-size: 10px;"> &nbsp;/&nbsp;1박</span>
 									</span>
-								<!--									<br>-->
-								<!--									<p class="price" style="font-weight:bold">-->
-								<!--										쿠폰적용가 : 170000-->
-								<!--										<span style="font-weight:bold" th:text="${place?.boardDiscount}" />-->
-								<!--										원</p>-->
 								<p class="bottom-area d-flex">
 									<span class="ml-auto"><a th:href="@{/hotel-single(boardNo=${place.boardNo})}">자세히보기</a></span>
 								</p>
@@ -220,39 +129,27 @@
 						<div class="block-27">
 							<ul>
 								<!-- 왼쪽 버튼 -->
-
-								<!-- 현재페이지가 1페이지인 경우와 아닌경우-->
 								<li>
-									<a th:if="${pi.currentPage == 1}" href="#">&lt</a>
+									<a th:if="${pi.currentPage == 1}" href="#">&lt;</a>
 									<a th:if="${pi.currentPage > 1}"
-									   th:href="@{/tour(currentPage=${pi.currentPage-1})}">&lt;</a>
+									   th:href="@{/tour(currentPage=${pi.currentPage-1}, type=${searchDTO.type}, minRate=${searchDTO.minRate}, maxRate=${searchDTO.maxRate}, options=${searchDTO.options})}">&lt;</a>
 								</li>
-
-
 								<!-- 가운데 페이지 버튼 -->
-
-<!--								<li th:class="${page == pi.currentPage} ? 'active' : ''"-->
-<!--									th:each="page : ${#numbers.sequence(pi.startPage, pi.endPage)}">-->
-<!--									<a th:href="@{/tour(currentPage=${page})}"-->
-<!--									   th:text="${page}"></a>-->
-<!--								</li>-->
-
 								<li th:each="page : ${#numbers.sequence(pi.startPage, pi.endPage)}"
 									th:class="${page == pi.currentPage} ? 'active' : ''">
-									<a th:href="@{/tour(currentPage=${page})}"
+									<a th:href="@{/tour(currentPage=${page}, type=${searchDTO.type}, minRate=${searchDTO.minRate}, maxRate=${searchDTO.maxRate}, options=${searchDTO.options})}"
 									   th:text="${page}"></a>
 								</li>
 
 								<!-- 오른쪽 버튼 -->
-
-								<!-- 현재페이지가 마지막인 경우와 아닌경우 -->
 								<li>
-									<a th:if="${pi.currentPage == pi.maxPage}" href="#">&gt</a>
+									<a th:if="${pi.currentPage == pi.maxPage}" href="#">&gt;</a>
 									<a th:if="${pi.currentPage < pi.maxPage}"
-									   th:href="@{/tour(currentPage=${pi.currentPage+1})}">&gt;</a>
+									   th:href="@{/tour(currentPage=${pi.currentPage+1}, type=${searchDTO.type}, minRate=${searchDTO.minRate}, maxRate=${searchDTO.maxRate}, options=${searchDTO.options})}">&gt;</a>
 								</li>
 							</ul>
 						</div>
+
 					</div>
 				</div>
 			</div> <!-- .col-md-8 -->
@@ -261,12 +158,11 @@
 </section> <!-- .section -->
 
 
-<!--	<script th:src="@{js/option.js}"></script>-->
 <script th:src="@{js/range.js}"></script>
 <div th:include="fragments/footer.html :: footer"></div>
 <!-- loader -->
 <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
-<div th:include="fragments/js.html :: js"></div>
-</body>
+	<div th:include="fragments/js.html :: js"></div>
+  </body>
 </html>

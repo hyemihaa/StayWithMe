@@ -92,7 +92,7 @@ public class JWTFilter extends OncePerRequestFilter {
         // SecurityContext에 인증 정보 설정
         //SecurityContextHolder에 세션을 생성한다. (이 세션은 STATLESS 상태로 관리되기 때문에 해당 요청이 끝나면 소멸
         SecurityContextHolder.getContext().setAuthentication(authToken);
-        System.out.println("JWTFilter: 인증 정보가 SecurityContext에 설정되었습니다.");
+        log.info("JWTFilter: 인증 정보가 SecurityContext에 설정되었습니다.");
 
         // 유효한 토큰인 경우, 이후 처리 진행
         filterChain.doFilter(request, response);
