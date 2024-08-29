@@ -6,7 +6,6 @@ import kr.co.swm.board.list.model.DTO.SearchDTO;
 import kr.co.swm.board.list.model.sevice.ListService;
 import kr.co.swm.board.list.util.Pagenation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -25,15 +24,13 @@ public class ListController {
     private final ListService listService;
     //pagenation 의존성 주입
     private final Pagenation pagenation;
-    // ResourceLoader를 사용하여 이미지 리소스를 불러오기
-//    private final ResourceLoader resourceLoader;
+
 
 
     @Autowired
-    public ListController(ListService listService, Pagenation pagenation,ResourceLoader resourceLoader) {
+    public ListController(ListService listService, Pagenation pagenation) {
         this.listService = listService;
         this.pagenation = pagenation;
-//        this.resourceLoader;
     }
 
     @GetMapping("/tour")    //  tour에 대한 Get요청을 메소드와 mapping시킴

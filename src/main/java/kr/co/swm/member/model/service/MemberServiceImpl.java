@@ -10,7 +10,11 @@ import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.member.model.mapper.MemberMapper;
 import kr.co.swm.member.util.PasswordUtils;
 import kr.co.swm.member.util.SmsCertificationUtil;
+import kr.co.swm.model.dto.SellerDto;
+import kr.co.swm.model.dto.WebDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,6 +29,7 @@ import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class MemberServiceImpl implements MemberService {
 
     private final PasswordEncoder passwordEncoder;
@@ -153,9 +158,7 @@ public class MemberServiceImpl implements MemberService {
             }
 
             // claims에 추가된 값을 로그로 출력하여 확인
-            System.out.println("Claims 내용: " + claims);
-
-            System.out.println("------------memberService : " + accommAdminKey +"------------------");
+            log.info("Claims 내용: {} ", claims);
 
             // 토큰생성
             LocalDateTime expireAt = LocalDateTime.now().plusHours(1);
@@ -163,13 +166,11 @@ public class MemberServiceImpl implements MemberService {
 
             // 토큰 쿠키에 저장
             Cookie accessCookie = new Cookie("Authorization", token);
-            accessCookie.setMaxAge(24 * 60*60); // 1시간 동안 유효
+            accessCookie.setMaxAge(24 * 60 * 60); // 1일 동안 유효
             accessCookie.setPath("/"); // 모든 경로에 대해 쿠키 전송
             accessCookie.setDomain("localhost"); // 도메인 설정
             accessCookie.setSecure(false);
             response.addCookie(accessCookie);
-
-            // 로그인 기록 저장
 
             return token;
         }
@@ -190,6 +191,7 @@ public class MemberServiceImpl implements MemberService {
         // 사용자검증
         String userExists =  memberMapper.verifyUser(userId, userPhone);
         if(userExists == null) {
+            log.warn("해당 정보를 가진 사용자를 찾을 수 없습니다.");
             return "error: 해당 정보를 가진 사용자를 찾을 수 없습니다.";
         }
 
@@ -239,8 +241,6 @@ public class MemberServiceImpl implements MemberService {
     // 마이페이지 새로운 휴대전화 번호 업데이트
     @Override
     public void updatePhoneNumber(String newPhone, String userId) {
-        UserDTO userDTO = memberMapper.findByUserInfo(userId);
-
         // 새 전화번호 업데이트
         memberMapper.updatePhoneNumber(newPhone, userId);
     }
@@ -268,11 +268,38 @@ public class MemberServiceImpl implements MemberService {
         userDTO.setWithdrawalReason(reason);
         userDTO.setDeletedDate(LocalDateTime.now()); //탈퇴일 현재 시간으로 설정
 
-        System.out.println("service : " + userDTO.getUserId());
-        System.out.println("service : " + userDTO.getUserStatus());
-        System.out.println("service : " + userDTO.getWithdrawalReason());
-        System.out.println("service : " + userDTO.getDeletedDate());
-
         memberMapper.updateUserStatus(userDTO);
     }
+
+    // 탈퇴 상태인 회원 삭제( DELETED 업데이트된 날자 기준으로 일주일 뒤)
+    @Override
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행 (초 분 시 일 월 요일) "0 0/1  * * * ?" : 1분마다 실행
+    public void deleteUser() {
+        LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1); //현재 시간 기준 1주일 전
+                                // LocalDateTime.now()..minusDays(1) //현재 시간 기준 1일 전
+
+        try {
+            int deletedCount = memberMapper.deleteUser(oneWeekAgo);  // 1주일 이상 지난 DELETED 회원 삭제
+            log.info("{}개의 계정이 삭제되었습니다.",deletedCount);
+        } catch (Exception e) {
+            log.error("탈퇴 대기 중인 회원 삭제 중 오류 발생: {}", e.getMessage(), e);
+        }
+    }
+
+    // 사용자가 받은 쿠폰조회
+    @Override
+    public List<WebDto> getUserCoupons(Long userNo) {
+        return memberMapper.getUserCoupons(userNo);
+    }
+
+    // 예약 내역 조회
+    @Override
+    public List<SellerDto> getUserReservation(Long userNo) {
+        // 사용자의 예약 내역을 숙소 이미지와 함께 가져옴
+        return memberMapper.getUserReservation(userNo);
+    }
+
+
+
+
 }
