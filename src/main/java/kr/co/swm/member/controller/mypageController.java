@@ -2,10 +2,13 @@ package kr.co.swm.member.controller;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.member.model.service.MemberServiceImpl;
 import kr.co.swm.member.util.ClientIpUtil;
+import kr.co.swm.model.dto.SellerDto;
+import kr.co.swm.model.dto.WebDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -46,7 +49,6 @@ public class mypageController {
             // param에서 currentPassword와 newPassword 키의 값 추출
             String currentPassword = param.get("currentPassword");
             String newPassword = param.get("newPassword");
-            System.out.println("사용자가 입력한 새로운 비밀번호 : " + newPassword);
 
             // 사용자 식별
             String userId = jwtUtil.getUserIdFromToken(token);
@@ -57,7 +59,7 @@ public class mypageController {
                 response.put("error", "현재 비밀번호가 일치하지 않습니다.");
                 return response;
             }
-            // 새 비밀번호 설정
+            // 현재 비밀번호가 일치할 경우, 새 비밀번호로 업데이트
             memberServiceImpl.updatePassword(userId, newPassword);
 
             // 성공 응답
@@ -78,7 +80,6 @@ public class mypageController {
         // 응답을 담을 Map 객체 생성
         Map<String, Object> response = new HashMap<>();
         String newPhone = param.get("newPhone");
-        System.out.println("새로운 휴대전화 번호 : " + newPhone);
 
         // 사용자 식별
         String userId = jwtUtil.getUserIdFromToken(token);
@@ -102,6 +103,7 @@ public class mypageController {
     public String withdrawAccount(@RequestBody Map<String, String> param,
                                   @CookieValue(value = "Authorization", required = false) String token,
                                   HttpServletResponse response) {
+
         String withdrawalReason = param.get("withdrawalReason");
         String userId = jwtUtil.getUserIdFromToken(token);
 
@@ -125,14 +127,13 @@ public class mypageController {
     }
 
     // 마이페이지 로그 기록 조회
-    @GetMapping("/login-log")
+    @PostMapping("/login-log")
     @ResponseBody
     public Map<String, Object> viewLoginLog(@CookieValue(value = "Authorization", required = false) String token) {
         Map<String, Object> response = new HashMap<>();
         try {
             // 사용자 식별
             Long userNo = jwtUtil.getUserNoFromToken(token);
-            System.out.println("mypageController 토큰에서 추출한 사용자 번호: " + userNo);  // **로그 추가**
 
             // 로그인 로그 조회
             List<UserDTO> logs = memberServiceImpl.loginLog(userNo);
@@ -140,10 +141,47 @@ public class mypageController {
             // 조회된 로그를 응답에 추가
             response.put("logs", logs);
             response.put("success", true);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             response.put("success", false);
             response.put("error", "로그인 기록을 불러오는 중 오류가 발생했습니다.");
+        }
+        return response;
+    }
+
+    // 마이페이지 쿠폰 조회
+    @PostMapping("/coupons")
+    @ResponseBody
+    public Map<String, Object> getCoupons(@CookieValue(value = "Authorization", required = false) String token) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Long userNo = jwtUtil.getUserNoFromToken(token);
+            // 쿠폰 조회
+            List<WebDto> coupons = memberServiceImpl.getUserCoupons(userNo);
+            response.put("coupons", coupons);
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", "쿠폰 정보를 불러오는 중 오류가 발생했습니다.");
+        }
+        return response;
+
+    }
+
+    // 마이페이지 예약 내역 조회
+    @PostMapping("/reservation-list")
+    @ResponseBody
+    public Map<String, Object> getReservation(@CookieValue(value = "Authorization", required = false) String token) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Long userNo = jwtUtil.getUserNoFromToken(token);
+            // 예약 조회
+            List<SellerDto> reservation = memberServiceImpl.getUserReservation(userNo);
+
+            response.put("reservation", reservation);
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", "예약 정보를 불러오는 중 오류가 발생했습니다.");
         }
         return response;
     }

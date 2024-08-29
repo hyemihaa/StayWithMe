@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.swm.member.model.mapper.MemberMapper">
+
+    <resultMap id="UserReservation" type="kr.co.swm.model.dto.SellerDto">
+        <!-- 예약 정보 - 숙소 -->
+        <result column="ACCOMMODATION_ADMIN_NO" property="accommodationNo"/>
+        <result column="NAME" property="accommodationName"/>
+
+        <!-- 예약 정보 - 객실 -->
+        <result column="ROOM_NO" property="roomNo"/>
+        <result column="ROOM_NAME" property="roomName"/>
+        <result column="CHECK_IN_TIME" property="roomCheckIn"/>
+        <result column="CHECK_OUT_TIME" property="roomCheckOut"/>
+        <result column="STANDARD_OCCUPANCY" property="roomPersonnel"/>
+        <result column="MAX_OCCUPANCY" property="roomMaxPersonnel"/>
+
+        <!-- 예약 정보 - 예약 -->
+        <result column="BOOKING_NO" property="reserveRoomNo"/>
+        <result column="CHECK_IN_DATE" property="reserveCheckIn"/>
+        <result column="CHECK_OUT_DATE" property="reserveCheckOut"/>
+        <result column="RESULT_AMOUNT" property="reserveAmount"/>
+
+        <!-- 숙소 이미지 정보 매핑 -->
+        <association property="accommodationImageDto" javaType="kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto">
+            <result column="IMAGE_FILE" property="uploadUniqueName"/>
+            <result column="UPLOAD_NAME" property="uploadImagePath"/>
+        </association>
+
+    </resultMap>
+
+    <!--사용자의 예약 내역-->
+    <select id="getUserReservation" resultMap="UserReservation">
+        SELECT
+        re.BOOKING_NO,
+        re.ROOM_NO,
+        r.ACCOMMODATION_ADMIN_NO,
+        a.NAME,
+        r.ROOM_NAME AS room_name,
+        re.CHECK_IN_DATE,
+        re.CHECK_OUT_DATE,
+        r.CHECK_IN_TIME,
+        r.CHECK_OUT_TIME,
+        r.STANDARD_OCCUPANCY,
+        r.MAX_OCCUPANCY,
+        re.RESULT_AMOUNT,
+
+        ai.IMAGE_FILE,
+        ai.UPLOAD_NAME
+
+        FROM
+        RESERVE re
+        JOIN
+        ROOM r ON re.ROOM_NO = r.ROOM_NO
+        JOIN
+        accommodation a ON r.ACCOMMODATION_ADMIN_NO = a.ACCOMMODATION_ADMIN_NO
+        LEFT JOIN ACCOMMODATION_IMAGE ai ON a.ACCOMMODATION_ADMIN_NO = ai.ACCOMMODATION_ADMIN_NO
+        WHERE
+        re.USER_NO = #{userNo}
+    </select>
+
+</mapper>
+

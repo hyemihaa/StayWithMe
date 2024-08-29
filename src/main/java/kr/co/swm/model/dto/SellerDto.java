@@ -1,6 +1,5 @@
 package kr.co.swm.model.dto;
 
-import kr.co.swm.adminPage.accommodation.model.dto.AccommodationDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,6 +34,7 @@ public class SellerDto {
     private double lng;     // 경도
 
     private List<String> accommodationFacilities;
+    private int accommodationViews;
 
     private String viewsDate;
     private int viewsCount;

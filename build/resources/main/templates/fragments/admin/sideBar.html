@@ -7,49 +7,54 @@
 <body>
 
 <th:block th:fragment="side">
-    <!-- Sidebar Start -->
-    <div class="sidebar pe-4 pb-3">
-        <nav class="navbar bg-light navbar-light">
-            <a th:href="@{/seller-main.do}" class="navbar-brand mx-4 mb-3">
-                <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Stay With Me</h3>
-            </a>
-            <div class="navbar-nav w-100">
-                <a th:href="@{/seller-main.do}" class="nav-item nav-link"
-                   th:classappend="${currentUrl == '/seller-main.do'} ? ' active' : ''">
-                    <i class="fa fa-tachometer-alt me-2"></i>대시보드
-                </a>
-                <div class="nav-item dropdown show">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>숙소관리</a>
-                    <div class="dropdown-menu show bg-transparent border-0">
-                        <a th:href="@{/enroll}" class="dropdown-item"
-                           th:classappend="${currentUrl == '/enroll'} ? ' active' : ''">숙소등록</a>
-                        <a th:href="@{/modify}" class="dropdown-item"
-                           th:classappend="${currentUrl == '/modify'} ? ' active' : ''">숙소수정</a>
-                    </div>
-                </div>
-                <div class="nav-item dropdown show">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-book me-2"></i>예약관리</a>
-                    <div class="dropdown-menu show bg-transparent border-0">
-                        <a th:href="@{/reservation.do}" class="dropdown-item"
-                           th:classappend="${currentUrl == '/reservation.do'} ? ' active' : ''">예약리스트</a>
-                        <a th:href="@{/reservation-daily.do}" class="dropdown-item"
-                           th:classappend="${currentUrl == '/reservation-daily.do'} ? ' active' : ''">일별 현황보기</a>
-                        <a th:href="@{/reservation-monthly.do}" class="dropdown-item"
-                           th:classappend="${currentUrl == '/reservation-monthly.do'} ? ' active' : ''">월별 현황보기</a>
-                    </div>
-                </div>
-                <div class="nav-item dropdown show">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-cog me-2"></i>판매 환경설정</a>
-                    <div class="dropdown-menu show bg-transparent border-0">
-                        <a th:href="@{/basic-rate-list.do}" class="dropdown-item"
-                           th:classappend="${currentUrl == '/basic-rate-list.do'} ? ' active' : ''">기본요금 수정</a>
-                        <a th:href="@{/season-period.do}" class="dropdown-item"
-                           th:classappend="${currentUrl == '/season-period.do'} ? ' active' : ''">성수기/기간 관리</a>
-                    </div>
+<!-- Sidebar Start -->
+<div class="sidebar pe-4 pb-3">
+    <nav class="navbar bg-light navbar-light">
+        <a href="seller.html" class="navbar-brand mx-4 mb-3">
+            <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Stay With Me</h3>
+        </a>
+        <div class="navbar-nav w-100">
+            <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>대시보드</a>
+            <div class="nav-item dropdown show">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>숙소관리</a>
+                <div class="dropdown-menu show bg-transparent border-0">
+                    <a href="accomodate_create.html" class="dropdown-item">숙소등록</a>
+                    <a href="" class="dropdown-item">숙소수정</a>
                 </div>
             </div>
-        </nav>
-    </div>
+            <div class="nav-item dropdown show">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-book me-2"></i>예약관리</a>
+                <div class="dropdown-menu show bg-transparent border-0">
+                    <a href="reservation_list.html" class="dropdown-item">예약리스트</a>
+                    <a href="daily_status.html" class="dropdown-item">일별 현황보기</a>
+                    <a href="monthly_status.html" class="dropdown-item">월별 현황보기</a>
+                </div>
+            </div>
+            <div class="nav-item dropdown show">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-calculator me-2"></i>정산관리</a>
+                <div class="dropdown-menu show bg-transparent border-0">
+                    <a href="settlement_status.html" class="dropdown-item">정산현황</a>
+                    <a href="sales_data.html" class="dropdown-item">기간 별 매출자료</a>
+                </div>
+            </div>
+            <div class="nav-item dropdown show">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-cog me-2"></i>판매 환경설정</a>
+                <div class="dropdown-menu show bg-transparent border-0">
+                    <a href="basic_rate.html" class="dropdown-item">기본요금 수정</a>
+                    <a href="season_period.html" class="dropdown-item">성수기/기간 관리</a>
+                    <a href="discount.html" class="dropdown-item">할인판매 설정</a>
+                </div>
+            </div>
+            <div class="nav-item dropdown show">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-sliders-h me-2"></i>기본 환경설정</a>
+                <div class="dropdown-menu show bg-transparent border-0">
+                    <a href="admin_settings.html" class="dropdown-item">사업자/관리자/휴대폰</a>
+                    <a href="calendar_notice.html" class="dropdown-item">달력 공지사항</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
 </th:block>
 </body>
 </html>
