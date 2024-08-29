@@ -51,14 +51,16 @@ document.addEventListener('DOMContentLoaded', function () {
         calendarBody.innerHTML = ''; // 이전 달력 내용을 초기화
 
         let date = 1;
-        let currentProcessingDate = firstDay;
         const today = new Date();
 
-        while (currentProcessingDate <= lastDay) {
+        while (date <= lastDay.getDate()) {
             const row = document.createElement('tr'); // 새로운 행 생성
             for (let i = 0; i < 7; i++) {
                 const cell = document.createElement('td'); // 새로운 셀 생성
-                if (currentProcessingDate.getDate() === date) {
+                if (date > lastDay.getDate()) {
+                    // 남은 셀은 빈칸으로 채웁니다.
+                    row.appendChild(cell);
+                } else if (i >= firstDay.getDay() || date > 1) {
                     cell.innerHTML = `<div>${date}</div>`;
 
                     // 객실 이름별로 그룹화
@@ -87,8 +89,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             // 해당 날짜에 방이 예약된 상태인지 확인
                             const reservationForDate = roomData.find(reservation =>
-                                new Date(reservation.reserveCheckIn) <= currentProcessingDate &&
-                                new Date(reservation.reserveCheckOut) >= currentProcessingDate &&
+                                new Date(reservation.reserveCheckIn) <= new Date(year, month - 1, date) &&
+                                new Date(reservation.reserveCheckOut) >= new Date(year, month - 1, date) &&
                                 reservation.roomNo === roomNo
                             );
 
@@ -122,7 +124,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         cell.classList.add('today'); // 'today' 클래스 추가하여 스타일 적용
                     }
 
-                    currentProcessingDate.setDate(currentProcessingDate.getDate() + 1); // 날짜를 하루 증가
                     date++;
                 }
                 row.appendChild(cell); // 행에 셀 추가

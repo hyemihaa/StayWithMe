@@ -107,6 +107,9 @@ public class ListController {
         System.out.println(mainSearchDTO.getMainSearch());
         System.out.println("===========================================");
 
+        // 필드 이름 수정
+        System.out.println("BoardType : " + mainSearchDTO.getType());
+
         // 전체 게시글 수 구하기(Pagenation 영역)
         int listCount = listService.getListCount(mainSearchDTO);
         int pageLimit = 3; // 보여질 페이지
@@ -117,13 +120,11 @@ public class ListController {
         // 날짜 기준 필터링 된 업소 리스트 조회
         List<ListDTO> place = listService.getList(mainSearchDTO);
 
-
         // 최소 기본 가격
         List<ListDTO> cost = listService.getCost();
 
         // 부가시설 조회
         List<String> uniqueFacilities = listService.getFacilities(mainSearchDTO);
-
 
         // 데이터 바인딩
         model.addAttribute("place", place);
@@ -136,6 +137,7 @@ public class ListController {
 
         return "tour";  // 리스트 페이지로 이동
     }
+
 
 }
 

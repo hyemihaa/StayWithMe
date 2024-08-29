@@ -40,6 +40,12 @@
         GROUP BY a.name, a.ACCOMMODATION_TYPE, a.ADDRESS,a.INFO, a.LAT, a.LNG, r.CHECK_IN_TIME, r.CHECK_OUT_TIME, r.ROOM_NAME, r.STANDARD_OCCUPANCY, r.MAX_OCCUPANCY
     </select>
 
+    <select id="getAvgRate" resultType="double">
+        SELECT COALESCE(ROUND(AVG(r2.rating), 1), 0) AS avgRate
+        FROM room r
+        JOIN review r2 ON r.ROOM_NO = r2.ROOM_NO
+        where r.ACCOMMODATION_ADMIN_NO = #{boardNo}
+    </select>
 
     <select id="getPost" resultMap="placeResultMap">
         SELECT * FROM ACCOMMODATION a
@@ -49,6 +55,12 @@
         LIMIT 1
     </select>
 
+    <select id="getRate" resultType="double">
+        SELECT COALESCE(ROUND(AVG(r2.rating), 1), 0) AS avgRate
+        FROM room r
+        JOIN review r2 ON r.ROOM_NO = r2.ROOM_NO
+        where r.ROOM_NO = #{RoomNo}
+    </select>
 
     <select id="getSubPlace" resultMap="placeResultMap">
         SELECT

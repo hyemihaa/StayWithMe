@@ -44,8 +44,8 @@
 							<span th:text="${post.boardType}">숙박유형</span>
 							<h2 th:text="${post.boardName}">숙박명</h2>
 							<p class="rate mb-5">
-									<i class="icon-map-o"></i>&nbsp;<span th:text="${post.boardAddress}" /></span>
-									</p>
+								<i class="icon-map-o"></i>&nbsp;<span th:text="${post.boardAddress}" /></span>
+							</p>
 
 							<div class="d-md-flex mt-5 mb-5">
 								<!-- 호텔 정보 -->
@@ -98,16 +98,12 @@
 
 							</div>
 
-
-
 								<!-- 예약공지 -->
 							<div class="infomation">
 							<h5>INFO</h5>
 							<p th:text="${post.boardInfo}"></p>
 							</div>
 						</div>
-
-
 
 						<!-- 객실 선택 -->
 						<div class="col-md-12 hotel-single ftco-animate mb-5 mt-4">
@@ -139,10 +135,6 @@
 								</div>
 							</div>
 						</div>
-
-
-						<!-- 리뷰 & 별점 영역 -->
-
 
 
 						<!-- 연관 숙박시설 -->
@@ -197,3 +189,4 @@
 	<div th:include="fragments/js.html :: js"></div>
   </body>
 </html>
+
