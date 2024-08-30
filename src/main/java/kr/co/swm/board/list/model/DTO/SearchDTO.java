@@ -17,6 +17,4 @@ public class SearchDTO {
      private int minRate = 0;
      private int maxRate = 1000000;
      private List<String> options;
-
-     private String mainSearch;
 }

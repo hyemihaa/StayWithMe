@@ -348,13 +348,6 @@ public class SellerController {
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 
-    /**
-     * 월별 현황 조회 페이지 로드
-     *
-     * @param model   View에 데이터를 전달하기 위한 모델 객체
-     * @param token   사용자 인증을 위한 JWT 토큰
-     * @return 월별 현황 뷰 이름
-     */
     @GetMapping("/reservation-monthly.do")
     public String reservationMonthly(HttpServletRequest request,
                                      Model model,
@@ -378,13 +371,6 @@ public class SellerController {
         return "seller/reservation_monthly";  // 뷰 이름 반환
     }
 
-    /**
-     * 비동기 요청으로 월별 데이터 조회
-     *
-     * @param model   View에 데이터를 전달하기 위한 모델 객체
-     * @param token   사용자 인증을 위한 JWT 토큰
-     * @return 월별 데이터 (JSON)
-     */
     @GetMapping("/reservation-monthly-data")
     @ResponseBody
     public Map<String, Object> getReservationMonthlyData(HttpServletRequest request,

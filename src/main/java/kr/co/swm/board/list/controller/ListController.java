@@ -1,6 +1,7 @@
 package kr.co.swm.board.list.controller;
 
 import kr.co.swm.board.list.model.DTO.ListDTO;
+import kr.co.swm.board.list.model.DTO.MainSearchDTO;
 import kr.co.swm.board.list.model.DTO.PageInfoDTO;
 import kr.co.swm.board.list.model.DTO.SearchDTO;
 import kr.co.swm.board.list.model.sevice.ListService;
@@ -31,6 +32,7 @@ public class ListController {
     public ListController(ListService listService, Pagenation pagenation) {
         this.listService = listService;
         this.pagenation = pagenation;
+//        this.resourceLoader;
     }
 
     @GetMapping("/tour")    //  tour에 대한 Get요청을 메소드와 mapping시킴
@@ -84,7 +86,6 @@ public class ListController {
         model.addAttribute("searchDTO", new SearchDTO());
 
         model.addAttribute("uniqueFacilities", uniqueFacilities);
-
         // 체크인&아웃
 //        model.addAttribute("check",check);
 
@@ -100,26 +101,32 @@ public class ListController {
     @PostMapping("/get-list")
     public String getList(Model model,
                           @RequestParam(value="currentPage", defaultValue="1") int currentPage,
-                          @ModelAttribute SearchDTO searchDTO) {
+                          @ModelAttribute MainSearchDTO mainSearchDTO) {
+
+        System.out.println("========== Controller mainSearch ==========");
+        System.out.println(mainSearchDTO.getMainSearch());
+        System.out.println(mainSearchDTO.getCheckInDate());
+        System.out.println(mainSearchDTO.getCheckOutDate());
+        System.out.println("===========================================");
+
+        // 필드 이름 수정
+        System.out.println("BoardType : " + mainSearchDTO.getType());
 
         // 전체 게시글 수 구하기(Pagenation 영역)
-        int listCount = listService.getTotalCount(searchDTO);
+        int listCount = listService.getListCount(mainSearchDTO);
         int pageLimit = 3; // 보여질 페이지
         int boardLimit = 5; // 페이지당 게시글
 
         PageInfoDTO pi = pagenation.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 
-
-        // 업소 리스트 조회
-        List<ListDTO> place = listService.getList(searchDTO);
-
+        // 날짜 기준 필터링 된 업소 리스트 조회
+        List<ListDTO> place = listService.getList(mainSearchDTO);
 
         // 최소 기본 가격
         List<ListDTO> cost = listService.getCost();
 
         // 부가시설 조회
-        List<String> uniqueFacilities = listService.getFacilities(searchDTO);
-
+        List<String> uniqueFacilities = listService.getFacilities(mainSearchDTO);
 
         // 데이터 바인딩
         model.addAttribute("place", place);
@@ -128,7 +135,7 @@ public class ListController {
         model.addAttribute("uniqueFacilities", uniqueFacilities);
 
         // searchDTO 또는 listDto를 뷰로 전달
-        model.addAttribute("searchDTO", searchDTO);
+        model.addAttribute("searchDTO", mainSearchDTO);
 
         return "tour";  // 리스트 페이지로 이동
     }
