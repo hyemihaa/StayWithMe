@@ -22,6 +22,7 @@ public class DetailDTO {
     private int boardMaxPerson;  // 최대인원
     private String facilityName;  // 부대시설
     private String boardInfo;   // 정보
+    private int roomNo;
 
     private String filePath;    // 파일경로
     private String fileName;    // 파일 명
@@ -29,4 +30,6 @@ public class DetailDTO {
 
     private double lat;   // 위도
     private double lon;  // 경도
+
+
 }

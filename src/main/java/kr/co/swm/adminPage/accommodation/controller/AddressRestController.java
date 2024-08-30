@@ -1,10 +1,14 @@
 package kr.co.swm.adminPage.accommodation.controller;
 
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import kr.co.swm.model.dto.WebDto;
+import kr.co.swm.reservation.model.service.ReservationService;
+import kr.co.swm.reservation.model.service.ReservationServiceImpl;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -12,6 +16,11 @@ public class AddressRestController {
 
 
 
+    private final ReservationServiceImpl reservationService;
+
+    public AddressRestController(ReservationServiceImpl reservationService) {
+        this.reservationService = reservationService;
+    }
 
     @PostMapping("/saveLocation1111")
     public String saveLocation(@RequestBody Map<String, Object> location) {
@@ -35,4 +44,7 @@ public class AddressRestController {
         return "success";
 
     }
+
+
+
 }

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.swm.reservation.mapper.ReservationMapper">
+
+    <resultMap id="coupon" type="kr.co.swm.model.dto.WebDto">
+        <result column="ID" property="couponId"></result>
+        <result column="COUPON_CODE" property="couponCode"></result>
+        <result column="COUPON_NAME" property="couponName"></result>
+        <result column="COUPON_TYPE" property="couponType"></result>
+        <result column="DISCOUNT" property="couponDiscount"></result>
+        <result column="COUPON_QUANTITY" property="couponQuantity"></result>
+        <result column="USE_QUANTITY" property="couponUseQuantity"></result>
+        <result column="LEFTOVER" property="couponLeftOver"></result>
+        <result column="COUPON_START" property="couponStartDate"></result>
+        <result column="COUPON_END" property="couponEndDate"></result>
+        <result column="MIN_PURCHASE_PRICE" property="couponMinimumAmount"></result>
+        <result column="COUPON_NO" property="couponNo"></result>
+        <result column="USE_YN" property="useYN"></result>
+
+    </resultMap>
+
+    <resultMap id="reservation" type="kr.co.swm.model.dto.SellerDto">
+
+        <!-- 숙소 정보 -->
+        <result column="NAME" property="accommodationName"/>
+        <result column="ACCOMMODATION_TYPE" property="accommodationType"/>
+        <result column="PHONE" property="accommodationPhone"/>
+        <result column="POST_NO" property="accommodationPost"/>
+        <result column="ADDRESS" property="accommodationAddress"/>
+
+        <!-- 객실 정보 -->
+        <result column="ROOM_NO" property="roomNo"/>
+        <result column="ROOM_TYPE_NAME" property="roomTypeName"/>
+        <result column="ROOM_NAME" property="roomName"/>
+        <result column="CHECK_IN_TIME" property="roomCheckIn"/>
+        <result column="CHECK_OUT_TIME" property="roomCheckOut"/>
+        <result column="STANDARD_OCCUPANCY" property="roomPersonnel"/>
+        <result column="MAX_OCCUPANCY" property="roomMaxPersonnel"/>
+
+        <!-- 예약 정보 -->
+        <result column="BOOKING_NO" property="bookingNo"/>
+        <result column="RESERVE_ROOM_NO" property="reserveRoomNo"/>
+        <result column="RESERVE_ROOM_NAME" property="reserveRoomName"/>
+        <result column="CHECK_IN_DATE" property="reserveCheckIn"/>
+        <result column="CHECK_OUT_DATE" property="reserveCheckOut"/>
+        <result column="RESULT_AMOUNT" property="reserveAmount"/>
+        <result column="RESERVATION_DATE" property="reservationDate"/>
+        <result column="RESERVATION_CANCELLATION_DATE" property="reservationCancellationDate"/>
+        <result column="RESERVATION_STATUS" property="reservationStatus"/>
+        <result column="RESERVE_ACCOMMODATION_TYPE" property="reservationType"/>
+    </resultMap>
+
+    <resultMap id="user" type="kr.co.swm.member.model.dto.UserDTO">
+        <result column="USER_NAME" property="userName"/>
+        <result column="USER_phone" property="userPhone"/>
+    </resultMap>
+
+
+
+    <insert id="reserveSave">
+        insert into reserve values (
+                                    null,
+                                    #{userNo},
+                                    #{sellerDto.reserveRoomNo},
+                                    #{couponId},
+                                    #{sellerDto.reserveCheckIn},
+                                    #{sellerDto.reserveCheckOut},
+                                    #{sellerDto.reserveAmount},
+                                    null,
+                                    null,
+                                    "예약완료",
+                                    null
+                                   )
+        <selectKey resultType="int" keyProperty="sellerDto.bookingNo" keyColumn="BOOKING_NO" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+
+    <select id="couponList" resultMap="coupon">
+        SELECT * from coupon_list cl
+        join coupon c ON cl.coupon_code = c.id
+        where use_yn = "N"
+        AND user_no = ${userNo}
+    </select>
+
+    <select id="getDiscount" resultMap="coupon">
+        select DISCOUNT,COUPON_TYPE from coupon
+        where id = #{couponId}
+    </select>
+
+    <select id="reserveList" resultMap="reservation">
+        select a.name, r.room_name, r.CHECK_IN_TIME, r.CHECK_OUT_TIME,  r.STANDARD_OCCUPANCY, r.MAX_OCCUPANCY, r.room_no from accommodation a
+        JOIN room r ON a.accommodation_admin_no = r.accommodation_admin_no
+        where room_no = #{roomNo}
+    </select>
+
+    <select id="userInfo" resultMap="user">
+        select user_name, user_phone from user
+        where user_no = #{userNo}
+    </select>
+
+    <insert id="paymentSave" >
+        insert into payment values (null,
+                                    #{reservationNo},
+                                    #{payment.basicPrice},
+                                    #{payment.discountPrice},
+                                    #{payment.finalPrice}
+                                   )
+
+        <selectKey resultType="int" keyProperty="payment.paymentNo" keyColumn="PAYMENT_NO" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <insert id="paymentDetail">
+        insert into payment_detail values (
+                                           null,
+                                           #{paymentNo},
+                                           #{payment.method},
+                                           #{payment.uid},
+                                           NOW(),
+                                           #{payment.finalPrice}
+                                          )
+    </insert>
+</mapper>
+

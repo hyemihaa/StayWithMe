@@ -2,6 +2,7 @@ package kr.co.swm.board.detail.model.service;
 
 import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import kr.co.swm.board.mapper.DetailMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class DetailServiceImpl implements DetailService{
 
     //  장소 불러오기
    @Override
-   public List<DetailDTO> getPlace(int boardNo) {
-       List<DetailDTO> list = detailMapper.getPlace(boardNo);
+   public List<DetailDTO> getPlace(int boardNo, long nights) {
+       List<DetailDTO> list = detailMapper.getPlace(boardNo, nights);
        for(DetailDTO item : list) {
            System.out.println("========== ServiceImpl Detail List ==========");
            System.out.println("Board Name : " + item.getBoardName());
@@ -42,18 +43,6 @@ public class DetailServiceImpl implements DetailService{
     @Override
     public DetailDTO getPost(int boardNo) {
         return detailMapper.getPost(boardNo);
-    }
-
-    //  업체 평균 별점 불러오기
-    @Override
-    public double getAvgRate(int boardNo) {
-        return detailMapper.getAvgRate(boardNo);
-    }
-
-    // 방 평균 별점
-    @Override
-    public double getRate(int boardNo) {
-      return detailMapper.getRate(boardNo);
     }
 
     @Override
