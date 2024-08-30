@@ -56,14 +56,14 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .permitAll()
                         .deleteCookies("Authorization")
-                        .addLogoutHandler((request, response, authentication) -> {
-                            Cookie accessCookie = new Cookie("Authorization", null);
-                            accessCookie.setPath("/");
-                            accessCookie.setDomain("localhost");
-                            accessCookie.setHttpOnly(true);
-                            accessCookie.setMaxAge(0);
-                            response.addCookie(accessCookie);
-                        })
+//                        .addLogoutHandler((request, response, authentication) -> {
+//                            Cookie accessCookie = new Cookie("Authorization", null);
+//                            accessCookie.setPath("/");
+//                            accessCookie.setDomain("localhost");
+//                            accessCookie.setHttpOnly(true);
+//                            accessCookie.setMaxAge(0);
+//                            response.addCookie(accessCookie);
+//                        })
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.sendRedirect("/logout-success");
                         }))

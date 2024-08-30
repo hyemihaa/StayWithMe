@@ -197,7 +197,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 사용자검증 성공 -> 임시비밀번호 생성
         String changePassword = PasswordUtils.generateTemporaryPassword();
-        System.out.println("임시비밀번호 생성" + changePassword);
+        System.out.println("임시비밀번호 생성 : " + changePassword);
 
         // 비밀번호 인코딩
         String encodedPassword = passwordEncoder.encode(changePassword);
