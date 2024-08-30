@@ -117,8 +117,8 @@
                 OR ac.ACCOMMODATION_TYPE LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
                 OR br.BASIC_RATE LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%'))
             </if>
-            <if test="mainSearchDTO.boardType != null and !mainSearchDTO.boardType.isEmpty()">
-                AND ac.ACCOMMODATION_TYPE = #{mainSearchDTO.boardType}
+            <if test="mainSearchDTO.type != null and !mainSearchDTO.type.isEmpty()">
+                AND ac.ACCOMMODATION_TYPE = #{mainSearchDTO.type}
             </if>
         </where>
     </select>
@@ -141,8 +141,8 @@
                 OR ac.ACCOMMODATION_TYPE LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
                 OR br.BASIC_RATE LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%'))
             </if>
-            <if test="mainSearchDTO.boardType != null and !mainSearchDTO.boardType.isEmpty()">
-                AND ac.ACCOMMODATION_TYPE = #{mainSearchDTO.boardType}
+            <if test="mainSearchDTO.type != null and !mainSearchDTO.type.isEmpty()">
+                AND ac.ACCOMMODATION_TYPE = #{mainSearchDTO.type}
             </if>
             <if test="mainSearchDTO.checkInDate != null and !mainSearchDTO.checkInDate.isEmpty() and mainSearchDTO.checkOutDate != null and !mainSearchDTO.checkOutDate.isEmpty()">
                 AND (rs.CHECK_IN_DATE IS NULL OR rs.CHECK_IN_DATE &gt; #{mainSearchDTO.checkOutDate} OR rs.CHECK_OUT_DATE &lt; #{mainSearchDTO.checkInDate})
@@ -162,8 +162,8 @@
                 OR ac.ADDRESS LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
                 OR ac.ACCOMMODATION_TYPE LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%'))
             </if>
-            <if test="mainSearchDTO.boardType != null and !mainSearchDTO.boardType.isEmpty()">
-                AND ac.ACCOMMODATION_TYPE = #{mainSearchDTO.boardType}
+            <if test="mainSearchDTO.type != null and !mainSearchDTO.type.isEmpty()">
+                AND ac.ACCOMMODATION_TYPE = #{mainSearchDTO.type}
             </if>
         </where>
     </select>
