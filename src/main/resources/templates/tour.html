@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<title>Stay with me</title>
-
 	<div th:include="fragments/css.html :: css"></div>
 
 </head>
@@ -36,14 +35,14 @@
 							<br>
 							<div class="form-group">
 								<div class="select-wrap one-third">
-									<input type="radio" th:field="*{type}" name="accommodation" value="전체" id="전체" ><label
-										for="전체">전체</label><br>
-									<input type="radio" th:field="*{type}" name="accommodation" value="호텔" id="호텔"  ><label
-										for="호텔">호텔</label><br>
-									<input type="radio" th:field="*{type}" name="accommodation" value="리조트" id="리조트"  ><label
-										for="호텔">리조트</label><br>
-									<input type="radio" th:field="*{type}" name="accommodation" value="펜션" id="펜션" ><label
-										for="펜션">펜션</label><br>
+									<input type="radio" th:field="*{type}" name="accommodation" value="전체" id="전체" >
+										<label for="전체">전체</label><br>
+									<input type="radio" th:field="*{type}" name="accommodation" value="호텔" id="호텔"  >
+										<label for="호텔">호텔</label><br>
+									<input type="radio" th:field="*{type}" name="accommodation" value="리조트" id="리조트">
+										<label for="호텔">리조트</label><br>
+									<input type="radio" th:field="*{type}" name="accommodation" value="펜션" id="펜션" >
+										<label for="펜션">펜션</label><br>
 								</div>
 							</div>
 
@@ -113,7 +112,7 @@
 								<hr>
 								<!-- 최저 기본값 영역 -->
 								<span class="price" style="font-weight:bold; font-size: 17px;" th:each="cost: ${cost}">
-										<span th:text="${cost.boardCount}"/>원~ <span style="font-size: 10px;"> &nbsp;/&nbsp;1박</span>
+										<span th:text="${place.boardCount}"/>원~ <span style="font-size: 10px;"> &nbsp;/&nbsp;1박</span>
 									</span>
 								<p class="bottom-area d-flex">
 									<span class="ml-auto"><a th:href="@{/hotel-single(boardNo=${place.boardNo})}">자세히보기</a></span>
@@ -159,6 +158,7 @@
 
 
 <script th:src="@{js/range.js}"></script>
+<script th:src="@{/js/dateForm.js}" ></script>
 <div th:include="fragments/footer.html :: footer"></div>
 <!-- loader -->
 <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>

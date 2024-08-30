@@ -21,7 +21,7 @@
     speak: none;
     display: inline-block;
     text-decoration: inherit;
-    margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 */
+    margin-right: 8px;
     text-align: center;
 }
 
@@ -44,79 +44,77 @@
     padding: 10px 20px;
     font-size: 16px;
     font-weight: bold;
-    color: gray; /* 텍스트 색상 */
-    background-color: white; /* 배경 색상 */
-    border: 2px solid white; /* 테두리 색상 */
-    border-radius: 5px; /* 버튼 모서리 둥글게 */
+    color: gray;
+    background-color: white;
+    border: 2px solid white;
+    border-radius: 5px;
     text-align: center;
     cursor: pointer;
-    margin-right: 10px; /* 버튼 사이 간격 */
-    transition: background-color 0.3s ease, color 0.3s ease; /* 호버 시 색상 전환 */
+    margin-right: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* 숙박 유형 버튼 호버 시 스타일 */
 .lodging_btn:hover {
-    background-color: #007bff; /* 호버 시 배경 색상 */
-    color: white; /* 호버 시 텍스트 색상 */
+    background-color: #007bff;
+    color: white;
 }
 
 /* 숙박 유형 버튼 컨테이너 스타일 */
 .browse {
     display: flex;
-    justify-content: center; /* 버튼을 중앙 정렬 */
-    gap: 10px; /* 버튼 사이의 간격 */
-    margin-top: 20px; /* 위쪽 여백 */
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 /* 날짜 입력 필드와 조회 버튼을 포함하는 컨테이너 스타일 */
 .date-container {
     display: flex;
-    align-items: center; /* 버튼과 필드를 수직 중앙 정렬 */
-    justify-content: center; /* 버튼과 필드를 수평 중앙 정렬 */
+    align-items: center;
+    justify-content: center;
 }
 
 /* 날짜 입력 필드 스타일 */
 .form-control-checkin,
 .form-control-checkout {
-    width: 150px; /* 필드 너비 */
-    height: 35px; /* 필드 높이 */
+    width: 150px;
+    height: 35px;
     padding: 5px;
-    font-size: 14px; /* 텍스트 크기 */
-    border: 1px solid #0056b3; /* 테두리 색상 */
-    background-color: #337ab7; /* 배경 색상 */
-    color: white; /* 텍스트 색상 */
-    text-align: center; /* 텍스트 중앙 정렬 */
+    font-size: 14px;
+    border: 1px solid white;
+    background-color: #337ab7;
+    color: white;
+    text-align: center;
     cursor: pointer;
 }
 
 .form-control-checkin {
-    border-top-left-radius: 20px; /* 왼쪽 모서리를 둥글게 */
-    border-bottom-left-radius: 20px; /* 왼쪽 모서리를 둥글게 */
-    border-right: none; /* 오른쪽 테두리 제거 */
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-right: none;
 }
 
 .form-control-checkout {
-    border-top-right-radius: 20px; /* 오른쪽 모서리를 둥글게 */
-    border-bottom-right-radius: 20px; /* 오른쪽 모서리를 둥글게 */
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 /* 조회 버튼 스타일 */
 .submit-btn {
     height: 35px;
-    padding: 0 20px; /* 버튼 내부 패딩 */
-    font-size: 14px; /* 텍스트 크기 */
-    background-color: #17a2b8; /* 날짜 필드와 동일한 배경 색상 */
-    border: 1px solid #0056b3; /* 테두리 색상 */
-    border-left: none; /* 왼쪽 테두리 제거 */
-    color: white; /* 텍스트 색상 */
+    padding: 0 20px;
+    font-size: 14px;
+    background-color: #17a2b8;
+    border: 1px solid white;
+    border-left: none;
+    color: white;
     cursor: pointer;
-    border-radius: 15px; /* 오른쪽 모서리를 둥글게 */
+    border-radius: 15px;
 }
 
-/* 조회 버튼 호버 시 스타일 */
 .submit-btn:hover {
-    background-color: #0056b3; /* 호버 시 배경 색상 */
-    color: white; /* 호버 시 텍스트 색상 */
+    background-color: #0056b3;
+    color: white;
 }
 
 /* 기본 달력 아이콘 숨기기 */
@@ -132,4 +130,76 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .form-control-checkin:focus::before {
     content: '';
+}
+
+/* NavBar 스타일 (기존 레이아웃 유지) */
+.navbar {
+    background-color: transparent; /* 기존 배경색 유지 */
+    padding: 10px 20px; /* 기본 패딩 설정 */
+    box-shadow: none; /* 그림자 제거 */
+    z-index: 1000; /* 다른 요소 위에 표시 */
+}
+
+/* NavBar 링크 스타일 */
+.navbar .nav-item {
+    margin-right: 15px;
+}
+
+.navbar .nav-item a {
+    color: white; /* 링크 색상을 흰색으로 유지 */
+    text-decoration: none;
+}
+
+.navbar .nav-item a:hover {
+    color: #007bff; /* 링크 호버 시 색상 */
+}
+
+/* 메인 페이지에서 NavBar와 겹치지 않도록 컨텐츠 조정 */
+body.index-page {
+    padding-top: 0; /* 메인 페이지에서는 상단 패딩 제거 */
+}
+
+/* 메인 배너 및 콘텐츠 스타일 */
+.banner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* 전체 화면 높이를 사용 */
+    background-size: cover;
+    background-position: center;
+}
+
+.banner-content {
+    text-align: center;
+    color: white;
+}
+
+.banner-content h1 {
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.banner-content p {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.banner-content .search-box {
+    margin-top: 20px;
+}
+
+.banner-content .search-box input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.banner-content .search-box button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
 }

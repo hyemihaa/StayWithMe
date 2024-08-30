@@ -60,7 +60,7 @@ public class ListServiceImpl implements ListService {
 
         System.out.println("<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>");
         System.out.println("Main Search : " + mainSearchDTO.getMainSearch());
-        System.out.println("BoardType : " + mainSearchDTO.getBoardType());
+        System.out.println("BoardType : " + mainSearchDTO.getType());
         System.out.println("<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>");
 
         int listCount = listMapper.getListCount(mainSearchDTO);

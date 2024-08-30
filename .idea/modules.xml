@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FinalProject.swm.main.iml" filepath="$PROJECT_DIR$/.idea/modules/FinalProject.swm.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kr.co.swm.iml" filepath="$PROJECT_DIR$/.idea/modules/kr.co.swm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kr.co.swm.main.iml" filepath="$PROJECT_DIR$/.idea/modules/kr.co.swm.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kr.co.swm.test.iml" filepath="$PROJECT_DIR$/.idea/modules/kr.co.swm.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/swm.iml" filepath="$PROJECT_DIR$/.idea/modules/swm.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/swm.main.iml" filepath="$PROJECT_DIR$/.idea/modules/swm.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/swm.test.iml" filepath="$PROJECT_DIR$/.idea/modules/swm.test.iml" />
