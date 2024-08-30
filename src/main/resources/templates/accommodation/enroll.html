@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>Stay With Me</title>
     <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{css/seller/seller.css}">
     <link rel="stylesheet" th:href="@{css/adminPage/accommodation/accommodation.css}">
     <div th:replace="~{fragments/admin/head.html :: head}"></div>
 
@@ -12,49 +13,26 @@
 </head>
 
 
-<body style="margin-left: 20% !important;">
+<body>
 <div  class="container-xxl position-relative bg-white d-flex p-0">
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <!-- Spinner End -->
-
     <!-- Sidebar Start -->
     <div th:replace="~{fragments/admin/sideBar.html :: side}"></div>
     <!-- Sidebar End -->
 
-
     <!-- Content Start -->
     <div class="content">
-        <!-- Navbar Start -->
+        <!-- 상단 내비게이션 바 Start -->
         <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-            <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+            <a th:href="@{/seller-main.do}" class="navbar-brand d-flex d-lg-none me-4">
                 <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
             </a>
-            <a href="#" class="sidebar-toggler flex-shrink-0">
-                <i class="fa fa-bars"></i>
-            </a>
-            <div class="navbar-nav align-items-center ms-auto">
-                <div class="nav-item dropdown">
-                    <i class="fa fa-envelope me-lg-2"></i>
-                    <span class="d-none d-lg-inline-flex">Message</span>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <span class="d-none d-lg-inline-flex">John Doe</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">My Profile</a>
-                        <a href="#" class="dropdown-item">Settings</a>
-                        <a href="#" class="dropdown-item">Log Out</a>
-                    </div>
-                </div>
+
+            <div class="navbar-nav ms-auto d-flex align-items-center">
+                <span class="navbar-text me-3" th:text="${userId}">관리자</span>
+                <a th:href="@{/logout}" class="btn btn-outline-primary">로그아웃</a>
             </div>
         </nav>
-        <!-- Navbar End -->
+        <!-- 상단 내비게이션 바 End -->
 
         <!-- Sale & Revenue Start -->
         <div class="container">
@@ -176,7 +154,7 @@
                     });
 
                 </script>
-                <div class="container">
+                <div class="roomContainerPlus">
                     <h1>객실</h1>
 
                     <div id="roomsContainer"></div>
@@ -185,14 +163,14 @@
 
 
                 <!-- Recent Sales End -->
-                <input type="text" id="sample5_address" name="address" readonly>
-                <input type="hidden" id="sample5_region" name="region">
-                <input type="hidden" id="sample5_roadName" name="roadName">
-                <input type="hidden" id="sample5_lat" name="lat">
-                <input type="hidden" id="sample5_lon" name="lon">
-                <input type="hidden" id="sample6_postcode" name="lon">
-                <div onclick="sample5_execDaumPostcode()">주소 검색</div>
-
+                <div class="address-container">
+                    <button type="button" onclick="sample5_execDaumPostcode()">주소 검색</button>
+                    <input type="text" id="sample5_address" name="address" readonly>
+                    <input type="hidden" id="sample5_region" name="region">
+                    <input type="hidden" id="sample5_roadName" name="roadName">
+                    <input type="hidden" id="sample5_lat" name="lat">
+                    <input type="hidden" id="sample5_lon" name="lon">
+                </div>
                 <div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
 
                 <br>
@@ -219,10 +197,6 @@
             <!-- Footer End -->
         </div>
         <!-- Content End -->
-
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
     <!-- JavaScript Libraries -->
