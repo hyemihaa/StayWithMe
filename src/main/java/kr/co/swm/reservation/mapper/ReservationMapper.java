@@ -25,5 +25,8 @@ public interface ReservationMapper {
     int reserveSave(@Param("sellerDto")SellerDto sellerDto, @Param("couponId")Integer couponId, @Param("userNo")Long userNo);
 
     int paymentSave(@Param("payment")PaymentDto paymentDto, @Param("reservationNo")int reservationNo);
+
     int paymentDetail(@Param("payment")PaymentDto paymentDto, @Param("paymentNo")int paymentNo);
+
+    int refund(@Param("cancelBy")String cancelBy, @Param("bookingNo")int bookingNo, @Param("cancelAmount")int cancelAmount);
 }

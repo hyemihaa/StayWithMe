@@ -186,6 +186,32 @@ public class ReservationController {
 
         return "redirect:/complete";
     }
+
+    @PostMapping("/refund")
+    public ResponseEntity<String> refund(@RequestBody Map<String, String> refundData) {
+        try {
+            String cancelBy = refundData.get("cancel_by");
+            int bookingNo = Integer.parseInt(refundData.get("booking_no"));
+            int cancelAmount = Integer.parseInt(refundData.get("cancel_amount"));
+
+            int refundResult = reservationService.refund(cancelBy, bookingNo, cancelAmount);
+
+            if (refundResult > 0) {
+                // DB 업데이트 성공 시 OK 반환
+                return ResponseEntity.ok("OK");
+            } else {
+                // DB 업데이트 실패 시 실패 메시지 반환
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("DB 업데이트 실패");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생: " + e.getMessage());
+        }
+    }
+
+
+
+
     @GetMapping("/complete")
     public String complete() {
         return "complete";

@@ -317,6 +317,7 @@ function renderReservation(reservation) {
                   reservationList.innerHTML += reservationItem; // 예약 리스트 항목 추가
         });
     }
+
 }
   // 예약 상세 페이지로 이동
     function viewReservationDetails(accommodationNo) {
@@ -363,6 +364,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById("timerMsg").innerHTML = '';
         clearInterval(timer);
     });
+
+
 
     // 새로운 비밀번호 유효성 검사 함수
     function validatePassword() {

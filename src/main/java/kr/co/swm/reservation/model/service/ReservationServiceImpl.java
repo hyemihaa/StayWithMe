@@ -66,4 +66,14 @@ public class ReservationServiceImpl implements ReservationService {
 //        // 쿠폰 사용 시 쿠폰 use 컬럼 업데이트
 //        reservationService.couponUsedUpdate();
 
+
+    public int refund(String cancelBy, int bookingNo,int  cancelAmount) {
+        int result = reservationMapper.refund(cancelBy, bookingNo, cancelAmount);
+        if (result == 1) {
+            // 예약 취소 업데이트
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }
