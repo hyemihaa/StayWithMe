@@ -64,11 +64,13 @@
 							<!-- 옵션 선택영역  -->
 							<h5>옵션</h5>
 							<div class="form-group option_box">
+								<div style="height:200px;">
 								<div th:each="facility : ${uniqueFacilities}">
 									<div class="toggle">
 										<input type="checkbox" name="options" th:field="*{options}" th:value="${facility}" th:id="${facility}" class="toggle-input">
 										<label th:for="${facility}" th:text="${facility}" class="toggle-label"></label>
 									</div>
+								</div>
 								</div>
 								<!-- 서치 버튼 -->
 							</div>
@@ -113,7 +115,7 @@
 								<hr>
 								<!-- 최저 기본값 영역 -->
 								<span class="price" style="font-weight:bold; font-size: 17px;" th:each="cost: ${cost}">
-										<span th:text="${cost.boardCount}"/>원~ <span style="font-size: 10px;"> &nbsp;/&nbsp;1박</span>
+										<span th:text="${place.boardCount}"/>원~ <span style="font-size: 10px;"> &nbsp;/&nbsp;1박</span>
 									</span>
 								<p class="bottom-area d-flex">
 									<span class="ml-auto"><a th:href="@{/hotel-single(boardNo=${place.boardNo})}">자세히보기</a></span>

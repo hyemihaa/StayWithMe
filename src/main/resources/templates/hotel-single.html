@@ -120,7 +120,7 @@
 												</div>
 											</div>
 											<p class="days">
-												<span>체크인 : <span th:text="${post.boardCheckIn}"/> &nbsp; <span>체크아웃 : <span th:text="${post.boardCheckOut}"/>
+												<span>체크인 : <span th:text="${post.boardCheckIn}"/> &nbsp; <span>체크아웃 : <span th:text="${post.boardCheckOut}"/></span></span>
 											<br>
 													기준<span th:text="${place.boardMinPerson}"/>인 · 최대<span th:text="${place.boardMaxPerson}" />인
 											</p>
@@ -158,9 +158,9 @@
 											<p th:text="${subPlace.boardType}"></p>
 										</div>
 										</div>
-										<span><i class="icon-map-o"></i> &nbsp <span th:text="${subPlace.boardAddress}" /></span>
+										<span><i class="icon-map-o"></i> &nbsp <span th:text="${subPlace.boardAddress}" /></span></span>
 										<p class="days">
-												<span>체크인 : <span th:text="${subPlace.boardCheckIn}"/>
+											<span>체크인 : <span th:text="${subPlace.boardCheckIn}"/></span>
 										</p>
 										<hr>
 										<span class="price" style="font-weight: bold; font-size: 17px;"  th:text="${subPlace.boardCount} + '원 &nbsp; ~' "></span>

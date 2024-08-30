@@ -44,18 +44,7 @@ public class DetailServiceImpl implements DetailService{
         return detailMapper.getPost(boardNo);
     }
 
-    //  업체 평균 별점 불러오기
-    @Override
-    public double getAvgRate(int boardNo) {
-        return detailMapper.getAvgRate(boardNo);
-    }
-
-    // 방 평균 별점
-    @Override
-    public double getRate(int boardNo) {
-      return detailMapper.getRate(boardNo);
-    }
-
+    //부대 시설
     @Override
     public List<DetailDTO> getFacilities(int boardNo) {
         return detailMapper.getFacilities(boardNo);
@@ -66,6 +55,11 @@ public class DetailServiceImpl implements DetailService{
     public List<DetailDTO> getSubPlace(int boardNo) {
         return detailMapper.getSubPlace(boardNo);
     }
+
+//    @Override
+//    public String getImagePath(int boardNo) {
+//        return detailMapper.getImagePath(boardNo);
+//    }
 
 
 }
