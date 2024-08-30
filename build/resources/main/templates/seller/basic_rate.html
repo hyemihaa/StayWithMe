@@ -51,18 +51,24 @@
                         <a th:href="@{/reservation-monthly.do}" class="dropdown-item">월별 현황보기</a>
                     </div>
                 </div>
-<!--                <div class="nav-item dropdown show">-->
-<!--                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-calculator me-2"></i>정산관리</a>-->
-<!--                    <div class="dropdown-menu show bg-transparent border-0">-->
-<!--                        <a th:href="@{/settlement_status.do}" class="dropdown-item">정산현황</a>-->
-<!--                        <a th:href="@{/sales_data.do}" class="dropdown-item">기간 별 매출자료</a>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div class="nav-item dropdown show">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-calculator me-2"></i>정산관리</a>
+                    <div class="dropdown-menu show bg-transparent border-0">
+                        <a href="settlement_status.html" class="dropdown-item">정산현황</a>
+                        <a href="./sales_data.html" class="dropdown-item">기간 별 매출자료</a>
+                    </div>
+                </div>
                 <div class="nav-item dropdown show">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-cog me-2"></i>판매 환경설정</a>
                     <div class="dropdown-menu show bg-transparent border-0">
                         <a th:href="@{/basic-rate-list.do}" class="dropdown-item active">기본요금 수정</a>
                         <a th:href="@{/season-period.do}" class="dropdown-item">성수기/기간 관리</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown show">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-sliders-h me-2"></i>기본 환경설정</a>
+                    <div class="dropdown-menu show bg-transparent border-0">
+                        <a href="./admin_settings.html" class="dropdown-item">사업자/관리자/휴대폰</a>
                     </div>
                 </div>
             </div>
@@ -78,6 +84,25 @@
             <a href="seller.html" class="navbar-brand d-flex d-lg-none me-4">
                 <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
             </a>
+            <a href="#" class="sidebar-toggler flex-shrink-0">
+                <i class="fa fa-bars"></i>
+            </a>
+            <div class="navbar-nav align-items-center ms-auto">
+                <div class="nav-item dropdown">
+                    <i class="fa fa-envelope me-lg-2"></i>
+                    <span class="d-none d-lg-inline-flex">Message</span>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <span class="d-none d-lg-inline-flex">John Doe</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#" class="dropdown-item">My Profile</a>
+                        <a href="#" class="dropdown-item">Settings</a>
+                        <a href="#" class="dropdown-item">Log Out</a>
+                    </div>
+                </div>
+            </div>
         </nav>
         <!-- Navbar End -->
 
@@ -151,6 +176,7 @@
 
 
 <!-- Template Javascript -->
+<script th:src="@{js/seller/main.js}"></script>
 <script th:src="@{js/seller/basic_rate.js}"></script>
 </body>
 
