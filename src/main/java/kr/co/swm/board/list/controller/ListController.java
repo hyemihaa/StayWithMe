@@ -32,6 +32,7 @@ public class ListController {
     public ListController(ListService listService, Pagenation pagenation) {
         this.listService = listService;
         this.pagenation = pagenation;
+//        this.resourceLoader;
     }
 
     @GetMapping("/tour")    //  tour에 대한 Get요청을 메소드와 mapping시킴
@@ -85,7 +86,6 @@ public class ListController {
         model.addAttribute("searchDTO", new SearchDTO());
 
         model.addAttribute("uniqueFacilities", uniqueFacilities);
-
         // 체크인&아웃
 //        model.addAttribute("check",check);
 
