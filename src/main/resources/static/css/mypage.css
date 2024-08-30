@@ -265,7 +265,7 @@ button#changePasswordButton {
     margin-left: 10px;
 }
 
-button#cancelPasswordChange {
+button#cancelPasswordChange, button#cancelPhoneChange {
     background-color: #dc3545;
     margin-right: 10px;
 }
@@ -282,6 +282,18 @@ button#sendVerificationCode {
     border-radius: 4px;
     cursor: pointer;
     padding: 8px 12px;
+    width: 120px;
+}
+
+/* 인증번호 전송 버튼 스타일 */
+button#verifyCodeButton {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 8px 12px;
+    width: 100px;
 }
 
 button#sendVerificationCode:hover {
