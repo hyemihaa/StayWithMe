@@ -1,5 +1,7 @@
 package kr.co.swm.model.dto;
 
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationDto;
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -85,6 +87,7 @@ public class SellerDto {
     // 설정 파일
     private String requestDetails;
 
+    private AccommodationImageDto accommodationImageDto;
 
     // 생성자
     public SellerDto() {

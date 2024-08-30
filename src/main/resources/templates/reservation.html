@@ -666,8 +666,6 @@
                 if (response.status === "success") {
                     var reNo = response.saveNo;
                     let finalAmount = response.reserveAmount;
-                    console.log("type NO : " + typeof reNo)
-                    console.log("type NO : " + reNo)
                     requestPay(reNo, finalAmount);
                 } else {
                     alert("예약 처리에 실패했습니다. 다시 시도해주세요.");
@@ -686,9 +684,7 @@
     IMP.init("imp67844376");
 
     function requestPay(reNo, finalAmount) {
-        console.log("----- > " + reNo);
         const merchantUID = generateMerchantUID();
-        console.log("Merchant UID: " + merchantUID);
 
         // hidden input 생성
         let form = document.getElementById('terms-form');
