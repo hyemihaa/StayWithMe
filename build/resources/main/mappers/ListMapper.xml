@@ -16,8 +16,6 @@
 
     <!-- 장소 -->
     <select id="getPlace" resultMap="placeResultMap">
-
-
         SELECT ab.ACCOMMODATION_ADMIN_NO,
         ab.NAME,
         ab.ACCOMMODATION_TYPE,
@@ -46,36 +44,41 @@
         HAVING MIN(br.BASIC_RATE) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
         ORDER BY ab.ACCOMMODATION_ADMIN_NO
         LIMIT #{pi.boardLimit} OFFSET #{pi.offset}
-
-
     </select>
 
 
 
     <!-- 게시글의 총 개수 -->
     <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*)
+        FROM (
         SELECT ab.NAME,
         ab.ACCOMMODATION_TYPE,
+        ab.ADDRESS,
         r.CHECK_IN_TIME,
+        MIN(br.BASIC_RATE) AS BASIC_RATE
+        FROM (
+        SELECT a.ACCOMMODATION_ADMIN_NO,
         a.NAME,
         a.ACCOMMODATION_TYPE,
+        a.ADDRESS
         FROM facilities f
+        JOIN accommodation a ON a.ACCOMMODATION_ADMIN_NO = f.ACCOMMODATION_ADMIN_NO
         <if test="searchDTO.options != null and searchDTO.options.size() > 0">
             WHERE f.FACILITY_NAME IN
             <foreach item="option" collection="searchDTO.options" open="(" separator="," close=")">
                 #{option}
             </foreach>
+        </if>
+        ) ab
+        JOIN room r ON ab.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
         JOIN basic_rate br ON r.ROOM_NO = br.ROOM_NO
+        <if test="searchDTO.type != null and !searchDTO.type.equals('전체')">
             WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.type}
         </if>
+        GROUP BY ab.NAME, ab.ACCOMMODATION_TYPE, ab.ADDRESS, r.CHECK_IN_TIME
+        HAVING MIN(br.BASIC_RATE) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
         ) a
-
-<!--
-    1. 유형만 검색했을 떄
-    2. 가격만 검색했을 떄
-    3. 옵션만 검색헀을 떄
-    4. 전체 선택 후 검색했을 때
--->
     </select>
 
     <!-- 최저 기본 가격 -->
@@ -142,7 +145,7 @@
                 AND ac.ACCOMMODATION_TYPE = #{boardType}
             </if>
         </where>
-    </select>ㅎ
+    </select>
 
 
     <!--  체크인 체크아웃 클릭시 리스트 출력  -->

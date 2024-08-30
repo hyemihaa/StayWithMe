@@ -37,7 +37,6 @@
         ) ab
         JOIN room r ON ab.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
         JOIN basic_rate br ON r.ROOM_NO = br.ROOM_NO
-
         JOIN facilities f ON f.ACCOMMODATION_ADMIN_NO = ab.ACCOMMODATION_ADMIN_NO
         <if test='searchDTO.type != null and !searchDTO.type.equals("전체")'>
             WHERE ab.ACCOMMODATION_TYPE = #{searchDTO.type}
@@ -61,7 +60,6 @@
     -->
     <select id="getTotalCount" resultType="int">
 
-
         SELECT
         COUNT(distinct ac.ACCOMMODATION_ADMIN_NO)
         FROM ACCOMMODATION ac
@@ -73,7 +71,7 @@
                     ac.ACCOMMODATION_TYPE = #{searchDTO.type}
                 </when>
                 <when test="searchDTO.minRate != null and searchDTO.maxRate != null">
-                    br.BASIC_RATE BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
+                    MIN(br.BASIC_RATE) BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
                 </when>
                 <when test="searchDTO.options != null and !searchDTO.options.isEmpty()">
                     ac.FACILITY_NAME IN (
@@ -122,6 +120,7 @@
             </if>
         </where>
     </select>
+
 
     <!-- getList 쿼리 -->
     <select id="getList" resultMap="placeResultMap">
