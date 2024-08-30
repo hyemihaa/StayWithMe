@@ -109,6 +109,15 @@ public class ListController {
         System.out.println(mainSearchDTO.getCheckOutDate());
         System.out.println("===========================================");
 
+
+
+
+
+
+
+
+
+
         // 필드 이름 수정
         System.out.println("BoardType : " + mainSearchDTO.getType());
 
