@@ -82,4 +82,8 @@
         where ACCOMMODATION_ADMIN_NO = #{boardNo}
     </select>
 
+<!--    <select id="getImagePath" resultMap="placeResultMap">-->
+
+<!--    </select>-->
+
 </mapper>
