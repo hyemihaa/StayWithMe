@@ -489,3 +489,6 @@ button#sendVerificationCode:hover {
     background-color: #218838; /* 호버 시 배경색 */
 }
 
+form#dateForm {
+    flex-direction: row;
+}

@@ -105,6 +105,8 @@ public class ListController {
 
         System.out.println("========== Controller mainSearch ==========");
         System.out.println(mainSearchDTO.getMainSearch());
+        System.out.println(mainSearchDTO.getCheckInDate());
+        System.out.println(mainSearchDTO.getCheckOutDate());
         System.out.println("===========================================");
 
         // 필드 이름 수정
