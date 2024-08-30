@@ -15,14 +15,6 @@ public class PaymentController {
     @PostMapping("/payments/complete")
     public ResponseEntity<?> completePayment(@RequestBody PaymentRequest paymentRequest) {
 
-        System.out.println("================");
-        System.out.println("================");
-        System.out.println("================");
-        System.out.println("================");
-        System.out.println("================");
-        System.out.println("================");
-        System.out.println("================");
-        System.out.println("================");
         try {
             // 포트원(아임포트) API를 통해 결제 정보를 확인합니다.
             String impUid = paymentRequest.getImp_uid();

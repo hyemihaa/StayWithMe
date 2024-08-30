@@ -1,5 +1,6 @@
 package kr.co.swm.reservation.model.service;
 
+import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import kr.co.swm.coupon.model.dto.CouponListDto;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.model.dto.SellerDto;
@@ -17,7 +18,7 @@ public interface ReservationService {
 
     UserDTO userInfo(Long userNo);
 
-    SellerDto reserveList(Long userNo);
+    SellerDto reserveList(Long userNo, int roomNo);
 
     int reserveSave(SellerDto sellerDto, Integer couponId, Long userNo);
 

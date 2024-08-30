@@ -1,5 +1,6 @@
 package kr.co.swm.reservation.controller;
 
+import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import kr.co.swm.coupon.model.dto.CouponListDto;
 import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.member.model.dto.UserDTO;
@@ -7,6 +8,8 @@ import kr.co.swm.model.dto.SellerDto;
 import kr.co.swm.model.dto.WebDto;
 import kr.co.swm.reservation.model.dto.PaymentDto;
 import kr.co.swm.reservation.model.service.ReservationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,7 @@ import java.util.Map;
 @Controller
 public class ReservationController {
 
+    private static final Logger log = LoggerFactory.getLogger(ReservationController.class);
     private final ReservationService reservationService;
     private final JWTUtil jwtUtil;
 
@@ -33,21 +37,20 @@ public class ReservationController {
 
     @GetMapping("/reservation")
     public String reservation(@CookieValue(name = "Authorization", required = false)String userKey,
+                              @ModelAttribute DetailDTO detailDTO,
                               Model model) {
 
         Long userNo = jwtUtil.getUserNoFromToken(userKey);
-
-        System.out.println("userNo : " + userNo);
+        int roomNo = detailDTO.getRoomNo();
+        String amount = String.valueOf(detailDTO.getBoardCount());
 
         // 사용안한 쿠폰 리스트 전체조회
         // 최종 가격 변수 넘어오고, AND final_price < minPrice
         List<WebDto> coupons = reservationService.couponList(userNo);
-        SellerDto list = reservationService.reserveList(userNo);
+        SellerDto list = reservationService.reserveList(userNo, roomNo);
         UserDTO user = reservationService.userInfo(userNo);
 
-
         // 하드코딩
-        int price = 200;
         String checkIn = "2024-08-24";
         String checkOut = "2024-08-26";
 
@@ -55,7 +58,7 @@ public class ReservationController {
         model.addAttribute("coupons", coupons);
         model.addAttribute("list", list);
         model.addAttribute("user", user);
-        model.addAttribute("price", price);
+        model.addAttribute("price", amount);
         model.addAttribute("checkIn", checkIn);
         model.addAttribute("checkOut", checkOut);
 

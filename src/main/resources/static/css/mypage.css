@@ -223,7 +223,7 @@ form input {
 form button {
     margin-top: 5px;
     height:50px;
-    weight:50px
+    width:50px;
     padding: 10px;
     background-color: #007bff;
     color: #fff;

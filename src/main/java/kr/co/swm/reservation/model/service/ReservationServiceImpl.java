@@ -1,5 +1,6 @@
 package kr.co.swm.reservation.model.service;
 
+import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import kr.co.swm.coupon.model.dto.CouponListDto;
 import kr.co.swm.member.model.dto.UserDTO;
 import kr.co.swm.model.dto.SellerDto;
@@ -28,8 +29,8 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public SellerDto reserveList(Long userNo) {
-        return reservationMapper.reserveList(userNo);
+    public SellerDto reserveList(Long userNo, int roomNo) {
+        return reservationMapper.reserveList(userNo, roomNo);
     }
 
     @Override

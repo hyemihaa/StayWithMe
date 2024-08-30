@@ -92,7 +92,7 @@
     <select id="reserveList" resultMap="reservation">
         select a.name, r.room_name, r.CHECK_IN_TIME, r.CHECK_OUT_TIME,  r.STANDARD_OCCUPANCY, r.MAX_OCCUPANCY, r.room_no from accommodation a
         JOIN room r ON a.accommodation_admin_no = r.accommodation_admin_no
-        where room_no = 4
+        where room_no = #{roomNo}
     </select>
 
     <select id="userInfo" resultMap="user">

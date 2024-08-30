@@ -1,0 +1,187 @@
+/* Container for the whole form */
+.container1 {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+}
+
+/* Sections styling */
+.section {
+    margin-bottom: 20px;
+}
+
+/* Date section styling */
+.form-group.form-inline {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.form-group.form-inline label {
+    margin-right: 10px;
+}
+
+.form-group.form-inline span {
+    margin-right: 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Input boxes removal */
+input[type="text"] {
+    display: none;
+}
+
+/* Guest information styling */
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Coupon section styling */
+.button-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.button-group input[type="text"] {
+    margin-right: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.button-group button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button-group button:hover {
+    background-color: #0056b3;
+}
+
+/* Terms section styling */
+.terms-section {
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.terms-container {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.terms-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.checkbox-container label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 14px;
+    color: #333;
+}
+
+.checkbox-container label .expand {
+    margin-left: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.checkbox-container label .expand:hover {
+    color: #007bff;
+}
+
+/* Modal styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Price info styling */
+.price-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 16px;
+}
+
+.price-info div {
+    margin-bottom: 10px;
+}
+
+.price-info hr {
+    width: 100%;
+    border: 1px solid #000;
+}
+
+.pay-button {
+    padding: 15px 30px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.pay-button:hover {
+    background-color: #218838;
+}

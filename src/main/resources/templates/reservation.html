@@ -6,265 +6,298 @@
     <link rel="stylesheet" th:href="@{css/booking/booking.css}">
 
     <style>
+    body {
+        background-color: #0c5460;
+        font-family: Arial, sans-serif;
+    }
 
-        .terms-section {
-            margin: 20px;
-            font-size: 1.2em;
-        }
+    .container1 {
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+    }
 
-        .terms-section .expand {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-        }
+    h1, h3 {
+        color: #333;
+        text-align: center;
+    }
 
-        .terms-section .term-content {
-            display: none;
-            margin: 10px 0;
-        }
+    .form-group {
+        margin-bottom: 15px;
+    }
 
-        .terms-section .term-content p {
-            margin: 5px 0;
-        }
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
 
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
+    .form-group input[type="text"] {
+        width: calc(100% - 20px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 70%; /* 팝업 창의 너비를 50%로 줄였습니다. */
-            max-width: 600px; /* 최대 너비를 설정하여 큰 화면에서도 적당한 크기로 유지 */
-            font-size: 0.9em; /* 글씨 크기를 줄였습니다. */
-        }
-        .modal-content p {
-            margin-bottom: 10px; /* 문단 간 간격 조정 */
-            line-height: 1.4; /* 줄 간격을 약간 좁게 설정 */
-        }
+    .form-inline {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-        .privacy-modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
+    .form-inline label {
+        flex: 1;
+        margin-right: 10px;
+    }
 
-        .privacy-modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 70%;
-            max-width: 600px;
-            font-size: 0.9em;
-        }
+    .form-inline input[type="text"] {
+        flex: 2;
+    }
 
-        .privacy-close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+    }
 
-        .privacy-close:hover,
-        .privacy-close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+    .checkbox-container input[type="checkbox"] {
+        margin-right: 10px;
+    }
 
-        .privacy-modal-content table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+    .terms-section {
+        margin: 20px 0;
+        font-size: 1em;
+    }
 
-        .privacy-modal-content th, .privacy-modal-content td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
+    .terms-container {
+        margin-top: 10px;
+    }
 
-        .privacy-modal-content th {
-            background-color: #f2f2f2;
-        }
+    .terms-item {
+        margin-bottom: 15px;
+    }
 
-        .privacy-modal-content td {
-            vertical-align: top;
-        }
+    .terms-item .expand {
+        cursor: pointer;
+        margin-left: auto;
+        font-size: 1.2em;
+        color: #007bff;
+        padding: 0 10px;
+        user-select: none;
+    }
 
-        .notice {
-            margin-top: 20px;
-            font-size: 0.8em;
-            color: #555;
-        }
+    .terms-item .expand:hover {
+        color: #0056b3;
+    }
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+    .modal, .privacy-modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding-top: 60px;
+    }
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        select#coupon {
-            width: 200px;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            background-color: white;
-            color: #333;
-            font-size: 16px;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
+    .modal-content, .privacy-modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        border-radius: 8px;
+        width: 70%;
+        max-width: 600px;
+        font-size: 0.9em;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+    }
 
-        select#coupon:focus {
-            border-color: #5cb85c;
-            box-shadow: 0 0 5px rgba(92, 184, 92, 0.5);
-            outline: none;
-        }
+    .modal-content p, .privacy-modal-content p {
+        margin-bottom: 10px;
+        line-height: 1.4;
+    }
 
-        /* 버튼 스타일링 */
-        .button-group button {
-            padding: 10px 20px;
-            background-color: #5cb85c;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+    .privacy-modal-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
 
-        .button-group button:hover {
-            background-color: #4cae4c;
-        }
-        /*ㅁㄴㅇㅁㄴㅇㅁㅇㅁㄴ*/
-        .section {
-            margin: 20px;
-            text-align: center;
-        }
+    .privacy-modal-content th, .privacy-modal-content td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
 
-        .button-group button {
-            padding: 10px 20px;
-            background-color: #5cb85c;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+    .privacy-modal-content th {
+        background-color: #f2f2f2;
+    }
 
-        .button-group button:hover {
-            background-color: #4cae4c;
-        }
+    .privacy-close, .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
 
-        /* 쿠폰 모달 스타일 */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
+    .privacy-close:hover, .privacy-close:focus, .close:hover, .close:focus {
+        color: black;
+        text-decoration: none;
+    }
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 70%;
-            max-width: 500px;
-            max-height: 400px;
-            overflow-y: auto;
-            font-size: 1em;
-            border-radius: 8px;
-        }
+    .notice {
+        margin-top: 20px;
+        font-size: 0.8em;
+        color: #555;
+    }
 
-        .modal-content h2 {
-            margin-top: 0;
-            text-align: center;
-        }
+    select#coupon {
+        width: 200px;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        background-color: white;
+        color: #333;
+        font-size: 16px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+    select#coupon:focus {
+        border-color: #5cb85c;
+        box-shadow: 0 0 5px rgba(92, 184, 92, 0.5);
+        outline: none;
+    }
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+    button-group {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* 버튼과 인풋 필드 사이의 간격 */
+    }
 
-        #coupon-list {
-            list-style-type: none;
-            padding: 0;
-        }
+    .button-group input[type="text"] {
+        flex: 1; /* 인풋 필드가 가능한 공간을 차지하도록 설정 */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
 
-        #coupon-list div {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .button-group button {
+        padding: 10px 20px;
+        background-color: #5cb85c;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        white-space: nowrap; /* 텍스트가 버튼 안에서 줄바꿈되지 않도록 설정 */
+    }
 
-        #coupon-list div:hover {
-            background-color: #f0f0f0;
-        }
+    .button-group button:hover {
+        background-color: #4cae4c;
+    }
 
-        #coupon-list li {
-            display: inline-block;
-            margin-right: 10px;
-            color: #555;
-        }
+    .section {
+        margin: 20px 0;
+        text-align: center;
+    }
 
-        #selected-coupon {
-            width: 100%;
-            padding: 10px;
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 16px;
-            color: #333;
-        }
+    #coupon-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    #coupon-list div {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #coupon-list div:hover {
+        background-color: #f0f0f0;
+    }
+
+    #selected-coupon {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 16px;
+        color: #333;
+    }
+    .price-info {
+        margin-top: 20px;
+        text-align: right;
+        font-size: 1.5em; /* 폰트 크기를 키움 */
+    }
+
+    .price-info .price {
+        font-weight: bold;
+        color: #333;
+        font-size: 1.5em; /* 폰트 크기를 키움 */
+    }
+
+    .price-info .final-price {
+        font-weight: bold;
+        color: #d9534f;
+        font-size: 2em; /* 최종 결제 금액을 더 크게 강조 */
+    }
+
+    .pay-button {
+        display: block;
+        width: 100%;
+        padding: 20px; /* 버튼 크기를 키움 */
+        background-color: #5cb85c;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: 24px; /* 버튼 텍스트 크기를 키움 */
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    .pay-button:hover {
+        background-color: #4cae4c;
+    }
+
+    /* 결제 정보 텍스트 크기 조정 */
+    .payment-info {
+        font-size: 1.5em; /* 폰트 크기를 키움 */
+        margin-top: 20px;
+        color: #333;
+
+    .pay-button {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        background-color: #5cb85c;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    .pay-button:hover {
+        background-color: #4cae4c;
+    }
+
+
     </style>
 
     <!-- jQuery -->
@@ -333,7 +366,7 @@
             <label for="selected-coupon">쿠폰</label>
             <div class="button-group">
                 <input type="text" id="selected-coupon" placeholder="쿠폰을 선택하세요" onclick="openCouponModal()" readonly/>
-                <button type="button" onclick="applyCoupon()">적용</button>
+                <button type="button" onclick="cancelCoupon()">취소</button>
             </div>
         </div>
 
@@ -341,7 +374,7 @@
         <div id="coupon-modal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeCouponModal()">&times;</span>
-                <h2>쿠폰 선택</h2>
+                <h3>쿠폰 선택</h3>
                 <ul id="coupon-list" th:each="coupon : ${coupons}">
                     <!-- 쿠폰 리스트 항목들이 여기에 추가될 것입니다. -->
                     <div onclick="selectCoupon(this)"
@@ -368,8 +401,7 @@
                 <div class="terms-item">
                     <div class="checkbox-container">
                         <input type="checkbox" id="term1" class="individual-term" onclick="toggleAgreeAll()">
-                        <label for="term1">숙소 이용규칙 및 취소/환불규정 동의 (필수)</label>
-                        <span class="expand" onclick="openModal('modal1')">&gt;</span>
+                        <label for="term1">숙소 이용규칙 및 취소/환불규정 동의 (필수) <span class="expand" onclick="openModal('modal1')">&gt;</span></label>
                     </div>
                     <div id="modal1" class="modal">
                         <div class="modal-content">
@@ -398,8 +430,7 @@
                 <div class="terms-item">
                     <div class="checkbox-container">
                         <input type="checkbox" id="term2" class="individual-term" onclick="toggleAgreeAll()">
-                        <label for="term2">개인정보 수집 및 이용 동의 (필수)</label>
-                        <span class="expand" onclick="openModal('privacy-modal2')">&gt;</span>
+                        <label for="term2">개인정보 수집 및 이용 동의 (필수) <span class="expand" onclick="openModal('privacy-modal2')">&gt;</span></label>
                     </div>
                     <div id="privacy-modal2" class="privacy-modal">
                         <div class="privacy-modal-content">
@@ -444,8 +475,7 @@
                 <div class="terms-item">
                     <div class="checkbox-container">
                         <input type="checkbox" id="term4" class="individual-term" onclick="toggleAgreeAll()">
-                        <label for="term4">만 14세 이상 확인 (필수)</label>
-                        <span class="expand" onclick="openModal('privacy-modal4')">&gt;</span>
+                        <label for="term4">만 14세 이상 확인 (필수) <span class="expand" onclick="openModal('privacy-modal4')">&gt;</span></label>
                     </div>
                     <div id="privacy-modal4" class="modal">
                         <div class="modal-content">
@@ -459,18 +489,18 @@
             </div>
         </div>
         <div class="price-info">
-
             <div>
-                객실 가격 ( 1 박 기준 ): <span class="price" id="base-price-span" th:text="${price}">원</span> 원
+                객실 가격 (1 박 기준): <span class="price" id="base-price-span" th:text="${price}">원</span> 원
             </div>
             <div id="discount-amount">
-                할인 가격 : <span class="price" id="discount-price-span" th:text="0"></span>
+                할인 가격 : <span class="price" id="discount-price-span" th:text="0"></span> 원
             </div>
             <hr style="color: black;background-color: black">
             <div>
                 총 결제 금액 : <span class="final-price" id="final-price-span" th:text="${price}"></span> 원
             </div>
         </div>
+
 
         <!-- Hidden input fields to send data to the server -->
         <input type="hidden" id="basic-price" name="basic-price" />
@@ -490,8 +520,6 @@
     let discountAmount = (document.getElementById('discount-price').value = document.getElementById("discount-price-span").textContent);
     let basicPrice = (document.getElementById('basic-price').value = document.getElementById('base-price-span').textContent.trim());
     let finalPrice = (document.getElementById('final-price').value = document.getElementById('final-price-span').textContent.trim());
-    console.log("========================================================  " + finalPrice);
-
 
 
     let selectedCouponId = null;
@@ -509,7 +537,6 @@
         selectedCouponId = element.getAttribute('data-coupon-id');
         const discountType = element.getAttribute('data-coupon-type');
         const discountValue = parseInt(element.getAttribute('data-coupon-discount'));
-        console.log(discountValue + " : dsadsadasds")
 
         // 선택한 쿠폰 이름을 인풋 필드에 표시
         document.getElementById('selected-coupon').value = couponName;
@@ -521,29 +548,27 @@
         closeCouponModal();
     }
 
+    function cancelCoupon() {
+        // 선택된 쿠폰 초기화
+        selectedCouponId = null;
+        document.getElementById('selected-coupon').value = '';
+
+        // 적용된 쿠폰 효과 제거
+        removeCoupon();
+
+        console.log("쿠폰이 취소되었습니다.");
+    }
 
     function applyCoupon(discountType, discountValue) {
-
-        if (discountType === 'DISCOUNT_RATE') {
-            discountAmount = Math.floor(basicPrice * (discountValue / 100)); // 퍼센트 할인을 계산
-        } else if (discountType === 'DISCOUNT_AMOUNT') {
-            discountAmount = discountValue; // 금액 할인을 그대로 적용
-        }
-
-        finalPrice = basicPrice - discountAmount;
-
-        // 최종 가격을 업데이트
-        document.getElementById('final-price-span').textContent = finalPrice;
-
-        // 할인 금액을 표시
-        let discountElement = document.getElementById('discount-amount');
-        if (!discountElement) {
-            discountElement = document.createElement('p');
-            discountElement.id = 'discount-amount';
-            document.getElementById('price-section').appendChild(discountElement);
-        }
-        discountElement.textContent = `할인 가격: ${discountAmount} 원`;
+        // 여기에 쿠폰 적용 로직을 추가합니다.
+        console.log(`쿠폰이 적용되었습니다: ${discountType} - ${discountValue}`);
     }
+
+    function removeCoupon() {
+        // 여기에 쿠폰 적용 해제 로직을 추가합니다.
+        console.log("쿠폰 효과가 제거되었습니다.");
+    }
+
 
 
 
@@ -620,17 +645,6 @@
         const checkOutDate = document.getElementById("checkOutDate").textContent;
         const roomNo = document.getElementById("roomNo").value;
 
-        console.log("id ; " + selectedCouponId )
-        console.log("room : " + roomNo);
-        console.log("checkInDate : " + checkInDate);
-        console.log("checkOutDate : " + checkOutDate);
-        console.log("final : " + finalPrice);
-console.log("-------------")
-        console.log("selectedCouponId: ", selectedCouponId, ", type:", typeof selectedCouponId);
-        console.log("roomNo: ", roomNo, ", type:", typeof roomNo);
-        console.log("checkInDate: ", checkInDate, ", type:", typeof checkInDate);
-        console.log("checkOutDate: ", checkOutDate, ", type:", typeof checkOutDate);
-        console.log("finalPrice: ", finalPrice, ", type:", typeof finalPrice);
         // 데이터 객체를 만듭니다.
         const data = {
             checkInDate: checkInDate,

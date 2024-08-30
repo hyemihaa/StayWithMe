@@ -3,12 +3,17 @@ package kr.co.swm.board.detail.controller;
 
 import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import kr.co.swm.board.detail.model.service.DetailService;
+import kr.co.swm.board.list.model.DTO.SearchDTO;
+import kr.co.swm.model.dto.SellerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Controller
@@ -24,24 +29,31 @@ public class DetailController {
 
     @GetMapping("/hotel-single")
     public String detail(@RequestParam("boardNo") int boardNo,
+                         SearchDTO searchDto,
                          Model model) {
 
-        System.out.println(boardNo);
+
+        // 몇박 개수 구하기
+        LocalDate startDates = LocalDate.parse(searchDto.getCheckInDate());
+        LocalDate endDates = LocalDate.parse(searchDto.getCheckOutDate());
+        long nights = calculateNights(startDates, endDates);
 
         //  장소 불러오기
-        List<DetailDTO> place = detailService.getPlace(boardNo);
+        List<DetailDTO> place = detailService.getPlace(boardNo, nights);
 
         //  하단 관련 장소
         List<DetailDTO> subPlace = detailService.getSubPlace(boardNo);
 
+
         //  게시글 상세 조회
         DetailDTO post = detailService.getPost(boardNo);
 
-        //  별점 평균
-        double avgRate = detailService.getAvgRate(boardNo);
 
-        //  방 평균 점수
-        double rate = detailService.getRate(boardNo);
+
+        // 날짜에 대한 주중,금,토,일 구분
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDate startDate = LocalDate.parse(searchDto.getCheckInDate(), formatter);
+//        LocalDate endDate = LocalDate.parse(searchDto.getCheckOutDate(), formatter);
 
         //  부대시설 불러오기
         List<DetailDTO> facilities = detailService.getFacilities(boardNo);
@@ -49,8 +61,6 @@ public class DetailController {
         //  데이터 바인딩
         model.addAttribute("place",place);
         model.addAttribute("post",post);
-        model.addAttribute("avgRate",avgRate);
-        model.addAttribute("rate",rate);
         model.addAttribute("facilities",facilities);
         model.addAttribute("subPlace",subPlace);
 
@@ -60,5 +70,9 @@ public class DetailController {
         model.addAttribute("boardNo", boardNo);
 
         return "hotel-single"; //templates / ** .html
+    }
+    public static long calculateNights(LocalDate checkInDate, LocalDate checkOutDate) {
+        // 퇴실일에서 입실일을 빼서 숙박일 계산
+        return ChronoUnit.DAYS.between(checkInDate, checkOutDate);
     }
 }
