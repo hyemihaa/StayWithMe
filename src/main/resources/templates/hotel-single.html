@@ -3,10 +3,12 @@
 <head>
 	<title>Stay with me</title>
 	<div th:include="fragments/css.html :: css"></div>
+
 </head>
 <body>
 
 <nav th:include="fragments/navbar.html :: navbar"></nav>
+
     <!-- END nav -->
 
 	<div class="under-nev" style="height: 100px">
@@ -110,31 +112,36 @@
 							<h4 class="mb-4">객실선택</h4>
 							<div class="row">
 								<div class="col-md-4">
-									<div class="destination" th:each="place : ${place}">
-										<a href="#" class="img img-3"
-										   style="background-image: url(images/room-4.jpg);"></a>
-										<div class="text-tour p-3">
-											<div class="d-flex">
-												<div class="one">
-													<h3><a href="#" th:text="${place.boardRoomType}">방 유형</a></h3>
+										<div class="destination" th:each="place : ${place}">
+											<form action="/reservation" method="GET">
+											<input type="hidden" name="roomNo" th:value="${place.roomNo}" />
+											<input type="hidden" name="boardCount" th:value="${place.boardCount}" />
+
+											<a href="#" class="img img-3" style="background-image: url(images/room-4.jpg);"></a>
+											<div class="text-tour p-3">
+												<div class="d-flex">
+													<div class="one">
+														<h3 th:text="${place.boardRoomType}"> 방 유형</h3>
+													</div>
 												</div>
+												<p class="days">
+													<span>체크인 : <span th:text="${post.boardCheckIn}"/> &nbsp; <span>체크아웃 : <span th:text="${post.boardCheckOut}"/></span>
+												<br>
+														기준<span th:text="${place.boardMinPerson}"/>인 · 최대<span th:text="${place.boardMaxPerson}" />인 </span>
+												</p>
+												<hr>
+												<span class="price" style="font-weight: bold; font-size: 17px;" th:text="${place.boardCount} + '원 &nbsp; ~' "></span>
+												<br>
+												<p class="bottom-area d-flex">
+													<span class="ml-auto"><button type="submit">예약</button></span>
+												</p>
 											</div>
-											<p class="days">
-												<span>체크인 : <span th:text="${post.boardCheckIn}"/> &nbsp; <span>체크아웃 : <span th:text="${post.boardCheckOut}"/></span></span>
-											<br>
-													기준<span th:text="${place.boardMinPerson}"/>인 · 최대<span th:text="${place.boardMaxPerson}" />인
-											</p>
-											<hr>
-											<span class="price" style="font-weight: bold; font-size: 17px;"  th:text="${place.boardCount} + '원 &nbsp; ~' "></span>
-											<br>
-											<p class="bottom-area d-flex">
-												<span class="ml-auto"><a href="#">예약</a></span>
-											</p>
+												</form>
 										</div>
-									</div>
 								</div>
 							</div>
 						</div>
+
 
 
 						<!-- 연관 숙박시설 -->
@@ -158,9 +165,9 @@
 											<p th:text="${subPlace.boardType}"></p>
 										</div>
 										</div>
-										<span><i class="icon-map-o"></i> &nbsp <span th:text="${subPlace.boardAddress}" /></span></span>
+										<span><i class="icon-map-o"></i> &nbsp <span th:text="${subPlace.boardAddress}" /></span>
 										<p class="days">
-											<span>체크인 : <span th:text="${subPlace.boardCheckIn}"/></span>
+												<span>체크인 : <span th:text="${subPlace.boardCheckIn}"/>
 										</p>
 										<hr>
 										<span class="price" style="font-weight: bold; font-size: 17px;"  th:text="${subPlace.boardCount} + '원 &nbsp; ~' "></span>

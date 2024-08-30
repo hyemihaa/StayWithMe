@@ -46,7 +46,6 @@
         ORDER BY ab.ACCOMMODATION_ADMIN_NO
         LIMIT #{pi.boardLimit} OFFSET #{pi.offset}
 
-
     </select>
 
 
@@ -58,35 +57,35 @@
         3. 옵션만 검색헀을 떄
         4. 전체 선택 후 검색했을 때
     -->
-    <select id="getTotalCount" resultType="int">
-        SELECT
-        COUNT(DISTINCT ac.ACCOMMODATION_ADMIN_NO)
-        FROM ACCOMMODATION ac
-        JOIN ROOM r ON ac.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
-        JOIN (
-        SELECT ROOM_NO, MIN(BASIC_RATE) AS MIN_RATE
-        FROM BASIC_RATE
-        GROUP BY ROOM_NO
-        ) br_min ON r.ROOM_NO = br_min.ROOM_NO
-        <where>
-            <choose>
-                <when test='searchDTO.type != null and !searchDTO.type.isEmpty() and !searchDTO.type.equals("전체")'>
-                    ac.ACCOMMODATION_TYPE = #{searchDTO.type}
-                </when>
-                <when test="searchDTO.minRate != null and searchDTO.maxRate != null">
-                    br_min.MIN_RATE BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
-                </when>
-                <when test="searchDTO.options != null and !searchDTO.options.isEmpty()">
-                    ac.FACILITY_NAME IN (
-                    <foreach item="options" collection="searchDTO.options" separator="," open="" close="">
-                        #{options}
-                    </foreach>
-                    )
-                </when>
-            </choose>
-        </where>
-    </select>
 
+    <select id="getTotalCount" resultType="int">
+            SELECT
+            COUNT(DISTINCT ac.ACCOMMODATION_ADMIN_NO)
+            FROM ACCOMMODATION ac
+            JOIN ROOM r ON ac.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
+            JOIN (
+            SELECT ROOM_NO, MIN(BASIC_RATE) AS MIN_RATE
+            FROM BASIC_RATE
+            GROUP BY ROOM_NO
+            ) br_min ON r.ROOM_NO = br_min.ROOM_NO
+            <where>
+                <choose>
+                    <when test='searchDTO.type != null and !searchDTO.type.isEmpty() and !searchDTO.type.equals("전체")'>
+                        ac.ACCOMMODATION_TYPE = #{searchDTO.type}
+                    </when>
+                    <when test="searchDTO.minRate != null and searchDTO.maxRate != null">
+                        br_min.MIN_RATE BETWEEN #{searchDTO.minRate} AND #{searchDTO.maxRate}
+                    </when>
+                    <when test="searchDTO.options != null and !searchDTO.options.isEmpty()">
+                        ac.FACILITY_NAME IN (
+                        <foreach item="options" collection="searchDTO.options" separator="," open="" close="">
+                            #{options}
+                        </foreach>
+                        )
+                    </when>
+                </choose>
+            </where>
+    </select>
 
 
 

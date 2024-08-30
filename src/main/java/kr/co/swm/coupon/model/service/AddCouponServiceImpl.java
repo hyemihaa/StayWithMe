@@ -36,6 +36,7 @@ public class AddCouponServiceImpl implements AddCouponService {
         return addCouponMapper.updateCouponQuantity(couponId);
     }
 
+    @Override
     public int addAllCoupons(int couponIds, Long userNo){
         return addCouponMapper.addAllCoupons(couponIds, userNo);
     }

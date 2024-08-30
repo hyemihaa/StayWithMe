@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/coupon")
 public class AddCouponController {
 
     AddCouponServiceImpl addCouponService;
@@ -32,7 +31,10 @@ public class AddCouponController {
     public String couponList(@CookieValue(name = "Authorization", required = false) String userNo,
                              Model model) {
 
+
         Long id = jwtUtil.getUserNoFromToken(userNo);
+
+        System.out.println("id: " + id);
         List<WebDto> list = addCouponService.couponList(id);
 
         model.addAttribute("list", list);
@@ -44,9 +46,6 @@ public class AddCouponController {
     @PostMapping("/addCoupon")
     public String addCoupon(@RequestParam("couponId")int couponId,
                          @RequestParam("userNo")Long userNo) {
-
-
-        System.out.println("nininininin");
         // userNo 체크
         // 인입 성공 시 해당 쿠폰 재고 업데이트
         if (userNo == null || userNo <= 0) {
@@ -60,6 +59,7 @@ public class AddCouponController {
         }
         return "redirect:/couponList";
     }
+
     @PostMapping("add-all")
     public ResponseEntity<String> addAllCoupon(@RequestParam("couponNo")List<Integer> couponIds,
                                                @RequestParam("userNo")Long userNo) {

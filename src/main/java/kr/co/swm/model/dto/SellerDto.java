@@ -1,5 +1,7 @@
 package kr.co.swm.model.dto;
 
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationDto;
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -64,6 +66,7 @@ public class SellerDto {
     private int sundayRate;
 
     // 예약 정보
+    private int bookingNo;
     private int reserveRoomNo;
     private String reserveRoomName;
     private String reserveCheckIn;
@@ -74,9 +77,17 @@ public class SellerDto {
     private String reservationStatus;
     private String reservationType;
 
+    public SellerDto(String reserveCheckIn, String reserveCheckOut, int reserveRoomNo, int reserveAmount) {
+        this.reserveCheckIn = reserveCheckIn;
+        this.reserveCheckOut = reserveCheckOut;
+        this.reserveRoomNo = reserveRoomNo;
+        this.reserveAmount = reserveAmount;
+    }
+
     // 설정 파일
     private String requestDetails;
 
+    private AccommodationImageDto accommodationImageDto;
 
     // 생성자
     public SellerDto() {

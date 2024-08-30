@@ -63,4 +63,7 @@ public class WebDto {
     private String couponStartDate;
     private String couponEndDate;
     private int couponMinimumAmount;
+
+    private String couponNo;
+    private String useYN;
 }
