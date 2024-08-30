@@ -103,7 +103,6 @@ textarea.addEventListener('input', function () {
 
 /*------------이력관리(로그인기록)-------------*/
 let logsData = []; // 모든 로그 데이터를 저장
-let filteredLogs = []; // 필터링된 로그 데이터를 저장
 let currentPage = 0; // 현재 페이지 번호
 const logsPerPage = 3; // 한 번에 보여줄 로그 수
 
@@ -115,7 +114,7 @@ function loadLoginLogs() {
         success: function(data) {
             if (data.logs && data.logs.length > 0) {
                 logsData = data.logs; // 데이터를 저장
-                filterLogsByDate(); // 초기 로딩 시 날짜 필터 적용
+                renderLogs(); // 초기 로딩 시 날짜 필터 적용
             }
         },
         error: function(error) {
@@ -124,49 +123,21 @@ function loadLoginLogs() {
     });
 }
 
-// 페이지 로드 시 현재 날짜와 일주일 전 날짜로 startDate와 currentDate 설정
-window.onload = function() {
-    const currentDate = new Date();
-    const startDate = new Date();
-    startDate.setDate(currentDate.getDate() - 7); // 일주일 전 날짜로 설정
-
-    // 날짜 형식을 YYYY-MM-DD로 맞춤
-    document.getElementById('currentDate').value = currentDate.toISOString().substring(0, 10);
-    document.getElementById('startDate').value = startDate.toISOString().substring(0, 10);
-};
-
-// 날짜 필터링 함수
-function filterLogsByDate() {
-    const startDate = new Date(document.getElementById('startDate').value);
-    const endDate = new Date(document.getElementById('currentDate').value);
-    endDate.setHours(23, 59, 59, 999); // 날짜 범위를 끝까지 포함
-
-    filteredLogs = logsData.filter(log => {
-        const logDate = new Date(log.lastLoginDate);
-        return logDate >= startDate && logDate <= endDate;
-    });
-
-    currentPage = 0; // 페이지 초기화
-    renderLogs(true); // 필터링된 데이터를 렌더링 (기존 로그 초기화)
-}
 
 // 로그 데이터를 현재 페이지에 맞게 렌더링
-function renderLogs(reset = false) {
+function renderLogs() {
     const logTableBody = document.getElementById('log-table-body');
-    if (reset) {
-        logTableBody.innerHTML = ''; // 기존 데이터를 초기화
-    }
 
     const start = currentPage * logsPerPage;
     const end = start + logsPerPage;
-    const logsToRender = filteredLogs.slice(start, end);
+    const logsToRender = logsData.slice(start, end);
 
     logsToRender.forEach(log => {
         const row = document.createElement('tr');
 
         // 최근 접속일자와 IP 주소를 새로운 행(row)에 추가
         const dateCell = document.createElement('td');
-        dateCell.textContent = formatDate(log.lastLoginDate);
+        dateCell.textContent = log.lastLoginDate.replace('T', ' ');
         row.appendChild(dateCell);
 
         const ipCell = document.createElement('td');
@@ -179,7 +150,7 @@ function renderLogs(reset = false) {
 
     // "더보기" 버튼 표시 여부 결정
     const loadMoreButton = document.getElementById('load-more-button');
-    if (end >= filteredLogs.length) {
+    if (end >= logsData.length) {
         loadMoreButton.style.display = 'none';
     } else {
         loadMoreButton.style.display = 'block';
@@ -197,6 +168,7 @@ function formatDate(dateString) {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
     const date = new Date(dateString);
     return date.toLocaleDateString('ko-KR', options);
+
 }
 
 /*------------ 쿠폰 조회 -------------*/
