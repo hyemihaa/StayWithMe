@@ -135,14 +135,6 @@ public class ReservationController {
         String uid = paymentDto.getUid();
         String method = paymentDto.getMethod();
 
-        System.out.println("BPrice : " + basicPrice);
-        System.out.println("DPrice : " + discountPrice);
-        System.out.println("FPrice : " + finalPrice);
-        System.out.println("bookingNo : " + reservationNo);
-        System.out.println("uid : " + uid);
-        System.out.println("method : " + method);
-
-
         PaymentDto paymentPrices = new PaymentDto(finalPrice, basicPrice, discountPrice);
 
         // 결제 테이블 인입

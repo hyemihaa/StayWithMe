@@ -280,7 +280,7 @@ function renderReservation(reservation) {
                                 금액: <strong><span style="font-size: 1.2em;">${reservation.reserveAmount}원</span></strong>
                            </p>
                            <div class="button-group" style="float: right;">
-                                <button class="btn-danger" onclick="requestRefund(${reservation.bookingNo})">예약 취소</button>
+                                <button class="btn-danger" type="button" onclick="requestRefund(${reservation.bookingNo}, '${reservation.approvalCode}', ${reservation.reserveAmount} )">예약 취소</button>
                                 <button class="btn-primary" onclick="viewReservationDetails(${reservation.accommodationNo})">예약 상세</button>
                            </div>
                        </div>

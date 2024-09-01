@@ -1,10 +1,11 @@
 
-function requestRefund(bookingNo) {
+function requestRefund(bookingNo, impUid, cancelAmount) {
 
+        console.log(bookingNo);
+        console.log(impUid)
     if (confirm("정말로 환불을 진행하시겠습니까?")) {
 
         // 이제 amount 변수에 숫자 형태의 금액이 담깁니다.
-        console.log(bookingNo);
 
         // 서버로 환불 요청 전송
         jQuery.ajax({
@@ -14,7 +15,7 @@ function requestRefund(bookingNo) {
                 "Content-Type": "application/json"
             },
             data: JSON.stringify({
-                bookingNo: bookingNo,
+                imp_uid: impUid,
             })
         }).done(function (data) {
             console.log("서버 응답 데이터:", data);
@@ -27,7 +28,6 @@ function requestRefund(bookingNo) {
                     },
                     data: JSON.stringify({
                         imp_uid: impUid,
-                        cancel_by: cancelBy,
                         booking_no: bookingNo,
                         cancel_amount: cancelAmount,
                         // 필요에 따라 다른 데이터를 추가할 수 있습니다.

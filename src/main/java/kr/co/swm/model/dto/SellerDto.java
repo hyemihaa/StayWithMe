@@ -76,6 +76,7 @@ public class SellerDto {
     private String reservationCancellationDate;
     private String reservationStatus;
     private String reservationType;
+    private String approvalCode;
 
     public SellerDto(String reserveCheckIn, String reserveCheckOut, int reserveRoomNo, int reserveAmount) {
         this.reserveCheckIn = reserveCheckIn;
