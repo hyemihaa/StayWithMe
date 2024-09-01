@@ -63,11 +63,13 @@
 							<!-- 옵션 선택영역  -->
 							<h5>옵션</h5>
 							<div class="form-group option_box">
+								<div style="height:200px;">
 								<div th:each="facility : ${uniqueFacilities}">
 									<div class="toggle">
 										<input type="checkbox" name="options" th:field="*{options}" th:value="${facility}" th:id="${facility}" class="toggle-input">
 										<label th:for="${facility}" th:text="${facility}" class="toggle-label"></label>
 									</div>
+								</div>
 								</div>
 								<!-- 서치 버튼 -->
 							</div>
