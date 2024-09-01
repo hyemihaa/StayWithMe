@@ -103,7 +103,7 @@ public class AccommodationController {
     }
 
     @GetMapping("/acUpdate")
-    public String update(@CookieValue(name = "Authorization", required = false)String sellerKey, Model model, SellerDto sellerDto) {
+    public String update(@CookieValue(name = "Authorization", required = false) String sellerKey, Model model, SellerDto sellerDto) {
 
         Long sellerId = jwtUtil.getAccommAdminKeyFromToken(sellerKey);
 

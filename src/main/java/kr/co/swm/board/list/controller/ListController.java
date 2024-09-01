@@ -103,23 +103,7 @@ public class ListController {
                           @RequestParam(value="currentPage", defaultValue="1") int currentPage,
                           @ModelAttribute MainSearchDTO mainSearchDTO) {
 
-        System.out.println("========== Controller mainSearch ==========");
-        System.out.println(mainSearchDTO.getMainSearch());
-        System.out.println(mainSearchDTO.getCheckInDate());
-        System.out.println(mainSearchDTO.getCheckOutDate());
-        System.out.println("===========================================");
-
-
-
-
-
-
-
-
-
-
-        // 필드 이름 수정
-        System.out.println("BoardType : " + mainSearchDTO.getType());
+        System.out.println("Controller type : " + mainSearchDTO.getType());
 
         // 전체 게시글 수 구하기(Pagenation 영역)
         int listCount = listService.getListCount(mainSearchDTO);
@@ -142,6 +126,10 @@ public class ListController {
         model.addAttribute("pi", pi);
         model.addAttribute("cost", cost);
         model.addAttribute("uniqueFacilities", uniqueFacilities);
+
+        System.out.println("Unique Facilities: " + uniqueFacilities);
+
+        System.out.println("getType : " + mainSearchDTO.getType());
 
         // searchDTO 또는 listDto를 뷰로 전달
         model.addAttribute("searchDTO", mainSearchDTO);

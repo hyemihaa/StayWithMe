@@ -80,7 +80,7 @@ public class ReservationController {
     @PostMapping("/reserve-save")
     @ResponseBody  // 이 메서드에서 반환된 객체를 JSON으로 변환하여 클라이언트에게 전달
     public ResponseEntity<Map<String, Object>> processReservation(@RequestBody Map<String, Object> reservationData,
-                                                                  @CookieValue(name = "Authorization", required = false)String userKey
+                                                                  @CookieValue(name = "Authorization", required = false) String userKey
                              ) {
 
         Long userNo = jwtUtil.getUserNoFromToken(userKey);

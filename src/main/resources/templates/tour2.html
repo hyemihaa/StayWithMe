@@ -4,7 +4,6 @@
 	<title>Stay with me</title>
 	<div th:include="fragments/css.html :: css"></div>
 	<link rel="stylesheet" th:href="@{css/tour.css}">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 	<link rel="icon" th:href="@{/images/favicon-16x16.png}" sizes="16x16" type="image/png">
 </head>
 <body>
@@ -29,7 +28,7 @@
 
 					<!-- 폼 태그  -->
 
-					<form th:action="@{/get-list}" method="post" th:object="${searchDTO}">
+					<form th:action="@{/tour}" method="get" th:object="${searchDTO}">
 						<div class="fields">
 
 							<!-- 체크인 및 체크아웃 날짜 필터 추가 -->
@@ -37,40 +36,42 @@
 							<div class="check-date-group">
 								<div class="checkin-group">
 									<label for="checkInDate">체크인</label>
-									<input type="text" id="checkInDate" th:field="*{checkInDate}" name="checkInDate" placeholder="체크인 날짜" class="checkin-date-input">
+									<input type="text" id="checkInDate" th:field="*{checkInDate}" placeholder="체크인 날짜" class="checkin-date-input">
 								</div>
 								<div class="checkout-group">
 									<label for="checkOutDate">체크아웃</label>
-									<input type="text" id="checkOutDate" th:field="*{checkOutDate}" name="checkOutDate" placeholder="체크아웃 날짜" class="checkout-date-input">
+									<input type="text" id="checkOutDate" th:field="*{checkOutDate}" placeholder="체크아웃 날짜" class="checkout-date-input">
 								</div>
 							</div>
+							<br>
 
 							<!-- 숙박 인원 조절 -->
 							<h5>숙박 인원</h5>
 							<div class="guest-input-container">
 								<button type="button" id="decrease-guests" class="guest-btn">-</button>
-								<input type="text" class="personnel-input" id="guest-count" th:field="*{personnel}" name="personnel" value="1" readonly>
+								<input type="text" class="personnel-input" id="guest-count" name="personnel" value="1" readonly>
 								<button type="button" id="increase-guests" class="guest-btn">+</button>
 							</div>
+							<br>
 
 							<!-- 숙소 유형 라디오버튼 -->
 							<h5>숙소유형</h5>
 							<div class="form-group">
 								<div class="select-wrap one-third">
 									<div>
-										<input type="radio" name="type" value="전체" id="전체" th:checked="${searchDTO.type == null or searchDTO.type.isEmpty() or searchDTO.type == '전체'}">
+										<input type="radio" th:field="*{type}" name="accommodation" value="전체" id="전체" th:checked="${searchDTO.type == null or searchDTO.type.isEmpty() or searchDTO.type == '전체'}">
 										<label for="전체">전체</label><br>
 									</div>
 									<div>
-										<input type="radio" name="type" value="호텔" id="호텔" th:checked="${searchDTO.type == '호텔'}">
+										<input type="radio" th:field="*{type}" name="accommodation" value="호텔" id="호텔" th:checked="${searchDTO.type == '호텔'}">
 										<label for="호텔">호텔</label><br>
 									</div>
 									<div>
-										<input type="radio" name="type" value="리조트" id="리조트" th:checked="${searchDTO.type == '리조트'}">
+										<input type="radio" th:field="*{type}" name="accommodation" value="리조트" id="리조트" th:checked="${searchDTO.type == '리조트'}">
 										<label for="리조트">리조트</label><br>
 									</div>
 									<div>
-										<input type="radio" name="type" value="펜션" id="펜션" th:checked="${searchDTO.type == '펜션'}">
+										<input type="radio" th:field="*{type}" name="accommodation" value="펜션" id="펜션" th:checked="${searchDTO.type == '펜션'}">
 										<label for="펜션">펜션</label><br>
 									</div>
 								</div>
@@ -137,6 +138,7 @@
 									</div>
 								</div>
 							</div>
+
 							<!-- 서치 버튼 -->
 							<div class="form-group option_box">
 								<input type="submit" value="Search" class="btn btn-primary py-3 px-5">
@@ -233,6 +235,8 @@
 <div th:include="fragments/js.html :: js"></div>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
-<script th:src="@{/js/tourdate.js}"></script>
+<script th:src="@{/js/dateForm.js}"></script>
+<script th:src="@{/js/range.js}"></script>
+<script th:src="@{/js/toggle.js}"></script>
 </body>
 </html>
