@@ -16,11 +16,9 @@
         <result column="MIN_PURCHASE_PRICE" property="couponMinimumAmount"></result>
         <result column="COUPON_NO" property="couponNo"></result>
         <result column="USE_YN" property="useYN"></result>
-
     </resultMap>
 
     <resultMap id="reservation" type="kr.co.swm.model.dto.SellerDto">
-
         <!-- 숙소 정보 -->
         <result column="NAME" property="accommodationName"/>
         <result column="ACCOMMODATION_TYPE" property="accommodationType"/>
@@ -123,5 +121,9 @@
                                            #{payment.finalPrice}
                                           )
     </insert>
+
+    <select id="paymentInfo" resultMap="reservation">
+        SELECT
+    </select>
 </mapper>
 

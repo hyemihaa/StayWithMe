@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -61,6 +62,7 @@ public class ReservationController {
         model.addAttribute("price", amount);
         model.addAttribute("checkIn", checkIn);
         model.addAttribute("checkOut", checkOut);
+        model.addAttribute("payment", new PaymentDto());
 
         return "reservation";
     }
@@ -79,40 +81,20 @@ public class ReservationController {
 
     @PostMapping("/reserve-save")
     @ResponseBody  // 이 메서드에서 반환된 객체를 JSON으로 변환하여 클라이언트에게 전달
-    public ResponseEntity<Map<String, Object>> processReservation(@RequestBody Map<String, Object> reservationData,
+    public ResponseEntity<Map<String, Object>> processReservation(@RequestBody PaymentDto reservationData,
                                                                   @CookieValue(name = "Authorization", required = false)String userKey
                              ) {
 
         Long userNo = jwtUtil.getUserNoFromToken(userKey);
 
         // JSON으로 넘어온 데이터를 받아옵니다.
-        String reserveCheckIn = (String) reservationData.get("checkInDate");
-        String reserveCheckOut = (String) reservationData.get("checkOutDate");
 
+        String reserveCheckIn = reservationData.getReserveCheckIn();
+        String reserveCheckOut = reservationData.getReserveCheckOut();
 
-//        Integer reserveAmount = (Integer) reservationData.get("finalPrice");
-
-        Integer couponId = null;
-        if (reservationData.get("selectedCouponId") != null) {
-            couponId = Integer.parseInt((String) reservationData.get("selectedCouponId"));
-        }
-
-        System.out.println(couponId);
-        Integer reserveAmount = null;
-
-        if (couponId != null) {
-            if (reservationData.get("finalPrice") != null) {
-                reserveAmount = (Integer) reservationData.get("finalPrice");
-            }
-        } else  {
-            reserveAmount = Integer.parseInt((String) reservationData.get("finalPrice"));
-        }
-
-        Integer reserveRoomNo = null;
-        if (reservationData.get("roomNo") != null) {
-            reserveRoomNo = Integer.parseInt((String) reservationData.get("roomNo"));
-        }
-
+        Integer couponId = reservationData.getCouponId();
+        int reserveRoomNo = reservationData.getRoomNo();
+        int reserveAmount = reservationData.getFinalPrice();
 
         // 받아온 데이터를 로그로 출력하거나 다른 로직을 수행할 수 있습니다.
         System.out.println("Check-in Date: " + reserveCheckIn);
@@ -143,18 +125,15 @@ public class ReservationController {
 
 
     @PostMapping("/payment")
-    public String payment(@RequestParam("basic-price")String basicPriceStr,
-                                     @RequestParam("discount-price")String discountPriceStr,
-                                     @RequestParam("reserveAmount")String finalPriceStr,
-                                     @RequestParam("reNo") String reservationNoStr,
-                                     @RequestParam("uid")String uid,
-                                     @RequestParam("method")String method
+    public String payment(@ModelAttribute PaymentDto paymentDto
     ) {
 
-        int basicPrice = Integer.parseInt(basicPriceStr);
-        int discountPrice = Integer.parseInt(discountPriceStr);
-        int finalPrice = Integer.parseInt(finalPriceStr);
-        int reservationNo = Integer.parseInt(reservationNoStr);
+        int basicPrice = paymentDto.getBasicPrice();
+        int discountPrice = paymentDto.getDiscountPrice();
+        int finalPrice = paymentDto.getFinalPrice();
+        int reservationNo = paymentDto.getReservationNo();
+        String uid = paymentDto.getUid();
+        String method = paymentDto.getMethod();
 
         System.out.println("BPrice : " + basicPrice);
         System.out.println("DPrice : " + discountPrice);
@@ -164,16 +143,16 @@ public class ReservationController {
         System.out.println("method : " + method);
 
 
-        PaymentDto price = new PaymentDto(basicPrice, discountPrice, finalPrice);
+        PaymentDto paymentPrices = new PaymentDto(finalPrice, basicPrice, discountPrice);
 
         // 결제 테이블 인입
-        int reservationSave = reservationService.paymentSave(price , reservationNo);
-        int paymentNo = price.getPaymentNo();
+        int reservationSave = reservationService.paymentSave(paymentPrices , reservationNo);
+        int paymentNo = paymentPrices.getPaymentNo();
 
         // 결제 승인 테이블 인입
-        PaymentDto paymentDto = new PaymentDto(finalPrice, uid, method);
+        PaymentDto payment = new PaymentDto(finalPrice, uid, method);
         if (reservationSave > 0) {
-            reservationService.paymentDetail(paymentDto, paymentNo);
+            reservationService.paymentDetail(payment, paymentNo);
         }
 
 
@@ -190,10 +169,11 @@ public class ReservationController {
     @PostMapping("/refund")
     public ResponseEntity<String> refund(@RequestBody Map<String, String> refundData) {
         try {
-            String cancelBy = refundData.get("cancel_by");
-            int bookingNo = Integer.parseInt(refundData.get("booking_no"));
-            int cancelAmount = Integer.parseInt(refundData.get("cancel_amount"));
+            int bookingNo = Integer.parseInt(refundData.get("bookingNo"));
+            String cancelBy = refundData.get("cancelBy");
+            int cancelAmount = Integer.parseInt(refundData.get("cancelAmount"));
 
+//            int refundResult = reservationService.refund(cancelBy, bookingNo, cancelAmount);
             int refundResult = reservationService.refund(cancelBy, bookingNo, cancelAmount);
 
             if (refundResult > 0) {

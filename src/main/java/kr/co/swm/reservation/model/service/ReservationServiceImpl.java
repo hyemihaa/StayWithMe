@@ -76,4 +76,8 @@ public class ReservationServiceImpl implements ReservationService {
             return 0;
         }
     }
+
+    public SellerDto paymentInfo(int bookingNo) {
+        return reservationMapper.paymentInfo(bookingNo);
+    }
 }

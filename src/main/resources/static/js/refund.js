@@ -1,47 +1,57 @@
 
+function requestRefund(bookingNo) {
 
+    if (confirm("정말로 환불을 진행하시겠습니까?")) {
 
-function requestRefund() {
-    const impUid = 'YOUR_IMP_UID'; // 승인번호를 실제 데이터로 대체하세요.
-    const merchantUid = 'YOUR_MERCHANT_UID'; // 주문번호를 실제 데이터로 대체하세요.
-    const reason = '고객 요청에 의한 환불'; // 환불 사유
+        // 이제 amount 변수에 숫자 형태의 금액이 담깁니다.
+        console.log(bookingNo);
 
-    // 포트원(아임포트) API를 통해 환불 요청
-    jQuery.ajax({
-        url: "https://api.iamport.kr/payments/cancel",
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + getAccessToken() // 토큰을 가져오는 함수
-        },
-        data: JSON.stringify({
-            reason: reason,
-            imp_uid: impUid, // 환불할 결제 건의 imp_uid
-            merchant_uid: merchantUid // 환불할 결제 건의 merchant_uid (선택 사항)
-        })
-    }).done(function (data) {
-        if (data.response && data.response.status === 'cancelled') {
-            alert('환불이 성공적으로 처리되었습니다.');
-        } else {
-            alert('환불 처리 중 오류가 발생했습니다.');
-        }
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error("환불 요청 실패:", textStatus, errorThrown);
-        alert('환불 요청 중 오류가 발생했습니다.');
-    });
-}
+        // 서버로 환불 요청 전송
+        jQuery.ajax({
+            url: "http://localhost:8080/refund/complete",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            data: JSON.stringify({
+                bookingNo: bookingNo,
+            })
+        }).done(function (data) {
+            console.log("서버 응답 데이터:", data);
+            if (data.response && data.response.status === 'cancelled') {
+                jQuery.ajax({
+                    url: "http://localhost:8080/refund", // DB 업데이트를 처리할 서버 엔드포인트
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    data: JSON.stringify({
+                        imp_uid: impUid,
+                        cancel_by: cancelBy,
+                        booking_no: bookingNo,
+                        cancel_amount: cancelAmount,
+                        // 필요에 따라 다른 데이터를 추가할 수 있습니다.
+                    })
+                }).done(function (dbResponse) {
+                    if (dbResponse === 'OK') {
+                        alert('환불이 정상 처리되었습니다.');
+                    } else {
+                        alert('환불은 성공했지만 DB 업데이트 중 오류가 발생했습니다.');
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    console.error("DB 업데이트 요청 실패:", textStatus, errorThrown);
+                    alert('환불은 성공했지만 DB 업데이트 중 오류가 발생했습니다.');
+                });
 
-function getAccessToken() {
-    // 포트원(아임포트) 액세스 토큰을 가져오는 함수
-    return jQuery.ajax({
-        url: "https://api.iamport.kr/users/getToken", // 포트원(아임포트) 액세스 토큰 발급 API URL
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        data: JSON.stringify({
-            imp_key: "YOUR_REST_API_KEY", // 실제 포트원(아임포트) REST API 키로 대체
-            imp_secret: "YOUR_REST_API_SECRET" // 실제 포트원(아임포트) REST API 시크릿으로 대체
-        })
-    }).then(function (response) {
-        return response.response.access_token; // 토큰 값 반환
-    });
+            } else {
+                alert('환불 처리 중 오류가 발생했습니다.');
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.error("환불 요청 실패:", textStatus, errorThrown);
+            alert('환불 요청 중 오류가 발생했습니다.');
+        });
+    } else {
+        // 사용자가 취소를 눌렀을 때는 아무 동작도 하지 않습니다.
+        alert('환불 요청이 취소되었습니다.');
+    }
 }

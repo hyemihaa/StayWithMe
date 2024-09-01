@@ -20,6 +20,7 @@
         <result column="CHECK_IN_DATE" property="reserveCheckIn"/>
         <result column="CHECK_OUT_DATE" property="reserveCheckOut"/>
         <result column="RESULT_AMOUNT" property="reserveAmount"/>
+        <result column="BOOKING_NO" property="bookingNo"/>
 
         <!-- 숙소 이미지 정보 매핑 -->
         <association property="accommodationImageDto" javaType="kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto">
@@ -46,8 +47,8 @@
         re.RESULT_AMOUNT,
 
         ai.IMAGE_FILE,
-        ai.UPLOAD_NAME
-
+        ai.UPLOAD_NAME,
+        re.reserve_code
         FROM
         RESERVE re
         JOIN
