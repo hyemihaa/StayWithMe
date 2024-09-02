@@ -87,11 +87,17 @@
 
 
     <select id="getImages" resultMap="placeResultMap">
-        SELECT ai.image_file, ri.image_unique_name from accommodation a
-        JOIN accommodation_image ai ON a.accommodation_admin_no = ai.accommodation_admin_no
-        JOIN room r ON a.accommodation_admin_no = ai.accommodation_admin_no
-        JOIN room_images ri ON r.room_no = ri.room_no
-        WHERE a.accommodation_admin_no = #{boardNo}
+        SELECT
+            a.accommodation_admin_no,
+            a.name,
+            ai.image_file
+        FROM
+            accommodation a
+                JOIN
+            accommodation_image ai
+            ON a.accommodation_admin_no = ai.accommodation_admin_no
+        WHERE
+            a.accommodation_admin_no = #{boardNo}
     </select>
 
 </mapper>
