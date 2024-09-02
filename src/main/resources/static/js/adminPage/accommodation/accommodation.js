@@ -59,16 +59,40 @@ document.getElementById('addRoomBtn').addEventListener('click', function() {
                     <label class="form-check-label" for="type1-${roomCount}">오션뷰</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="type-${roomCount}" id="type2-${roomCount}" data-tag="리버뷰">
-                    <label class="form-check-label" for="type2-${roomCount}">리버뷰</label>
+                    <input class="form-check-input" type="radio" name="type-${roomCount}" id="type2-${roomCount}" data-tag="마운틴뷰">
+                    <label class="form-check-label" for="type2-${roomCount}">마운틴뷰</label>
                 </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="type-${roomCount}" id="type3-${roomCount}" data-tag="시티뷰">
                     <label class="form-check-label" for="type3-${roomCount}">시티뷰</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="type-${roomCount}" id="type5-${roomCount}" data-tag="마운틴뷰">
-                    <label class="form-check-label" for="type5-${roomCount}">마운틴뷰</label>
+                    <input class="form-check-input" type="radio" name="type-${roomCount}" id="type4-${roomCount}" data-tag="가든뷰">
+                    <label class="form-check-label" for="type4-${roomCount}">가든뷰</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="type-${roomCount}" id="type5-${roomCount}" data-tag="레이크뷰">
+                    <label class="form-check-label" for="type5-${roomCount}">레이크뷰</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="type-${roomCount}" id="type6-${roomCount}" data-tag="리버뷰">
+                    <label class="form-check-label" for="type6-${roomCount}">리버뷰</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="type-${roomCount}" id="type7-${roomCount}" data-tag="풀뷰">
+                    <label class="form-check-label" for="type7-${roomCount}">풀뷰</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="type-${roomCount}" id="type8-${roomCount}" data-tag="파크뷰">
+                    <label class="form-check-label" for="type8-${roomCount}">파크뷰</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="type-${roomCount}" id="type9-${roomCount}" data-tag="로드뷰">
+                    <label class="form-check-label" for="type9-${roomCount}">로드뷰</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="type-${roomCount}" id="type10-${roomCount}" data-tag="노뷰">
+                    <label class="form-check-label" for="type10-${roomCount}">노뷰</label>
                 </div>
             </div>
         </div>

@@ -4,11 +4,15 @@
 <head>
     <meta charset="utf-8">
     <title>Stay With Me</title>
-    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{css/seller/seller.css}">
-    <link rel="stylesheet" th:href="@{css/adminPage/accommodation/accommodation.css}">
-    <div th:replace="~{fragments/admin/head.html :: head}"></div>
 
+    <!-- Customized Bootstrap Stylesheet -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link th:href="@{/css/seller/seller.css}" rel="stylesheet">
+    <link th:href="@{/css/adminPage/accommodation/accommodation.css}" rel="stylesheet">
+    <div th:replace="~{fragments/admin/head.html :: head}"></div>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -64,6 +68,10 @@
                         <div class="option-item">
                             <input type="radio" id="pension" class="accommodationType" value="펜션">
                             <label for="pension">펜션</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="motel" class="accommodationType" value="모텔">
+                            <label for="motel">모텔</label>
                         </div>
                     </div>
                 </div>

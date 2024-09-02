@@ -16,7 +16,7 @@ public interface AccommodationService {
      * @param mainImage
      * @return
      */
-    int saveAccommodation(AccommodationDto accommodationDto, AccommodationImageDto mainImage);
+    int saveAccommodation(AccommodationDto accommodationDto, AccommodationImageDto mainImage, Long accommodationAdminNo);
 
     /**
      * 객실 저장
@@ -31,7 +31,8 @@ public interface AccommodationService {
                     AccommodationDto room,
                     int roomsSize,
                     List<MultipartFile> subFile,
-                    int startIndex
+                    int startIndex,
+                    Long accommodationAdminNo
     );
 
     SellerDto accommodationList(Long sellerId);
