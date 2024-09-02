@@ -28,17 +28,17 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
-    public int saveAccommodation(AccommodationDto accommodationDto, AccommodationImageDto mainImage) {
+    public int saveAccommodation(AccommodationDto accommodationDto, AccommodationImageDto mainImage, Long accommodationAdminNo) {
 
-        int no = accommodationDto.getAcAdminNo();   // 임시 업소관리자 번호
+           // 임시 업소관리자 번호
 
-        int result = mapper.enrollAccommodation(accommodationDto, no);
+        int result = mapper.enrollAccommodation(accommodationDto, accommodationAdminNo);
         if (result == 1) {
             for (int i = 0; i < accommodationDto.getAccommodationFacilities().size(); i++) {
                 String facility = accommodationDto.getAccommodationFacilities().get(i);
-                mapper.enrollFacilities(facility, no);
+                mapper.enrollFacilities(facility, accommodationAdminNo);
             }
-            return mapper.enrollMainImage(mainImage, no);
+            return mapper.enrollMainImage(mainImage, accommodationAdminNo);
         } else {
             return 0;
         }
@@ -49,17 +49,17 @@ public class AccommodationServiceImpl implements AccommodationService {
                            AccommodationDto room,
                            int roomsSize,
                            List<MultipartFile> subFile,
-                           int startIndex) {
+                           int startIndex,
+                           Long accommodationAdminNo) {
         int result = 0;     // return 값
         int categoryNo = 0;     // db 데이터에 맞추기 위한 변수 초기화
-        int no = accommodationDto.getAcAdminNo();   // 임시 업소 관리자 번호
         categoryNo = room.getCategoryNo(room, categoryNo);
 
         // 객실 추가
         for (int i = 1; i <= room.getRoomValues(); i++) {
             // 객식 인입
             int enrollRoom = mapper.enrollRoom(accommodationDto,
-                    no,
+                    accommodationAdminNo,
                     categoryNo,
                     room.getRoomName(),
                     room.getCheckInTime(),
@@ -72,10 +72,10 @@ public class AccommodationServiceImpl implements AccommodationService {
             }
 
             // C 객실별 금액 인입
-            mapper.enrollWeekdayRate(accommodationDto, roomNo, no);
-            mapper.enrollFridayRate(accommodationDto, roomNo, no);
-            mapper.enrollSaturdayRate(accommodationDto, roomNo, no);
-            result = mapper.enrollSundayRate(accommodationDto, roomNo, no);
+            mapper.enrollWeekdayRate(accommodationDto, roomNo, accommodationAdminNo);
+            mapper.enrollFridayRate(accommodationDto, roomNo, accommodationAdminNo);
+            mapper.enrollSaturdayRate(accommodationDto, roomNo, accommodationAdminNo);
+            result = mapper.enrollSundayRate(accommodationDto, roomNo, accommodationAdminNo);
 
             // C 객실별 다중 이미지 인입
             for (int k = startIndex; k <= room.getEndIndex() + roomsSize - 1; k++) {

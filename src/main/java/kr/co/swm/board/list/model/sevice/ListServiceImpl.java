@@ -54,7 +54,9 @@ public class ListServiceImpl implements ListService {
 //    }
 
 
+// ========== ========== ========== /get-list ========== ========== ==========
 
+    // 검색 조건에 부합하는 게시물 수 조회
     @Override
     public int getListCount(MainSearchDTO mainSearchDTO) {
 
@@ -71,6 +73,7 @@ public class ListServiceImpl implements ListService {
         return listCount;
     }
 
+    // 검색 조건에 부합하는 게시물 정보 조회
     @Override
     public List<ListDTO> getList(MainSearchDTO mainSearchDTO) {
 
@@ -87,6 +90,7 @@ public class ListServiceImpl implements ListService {
         return getList;
     }
 
+    // 검색 조건에 부합하는 게시물 부대시설 조회
     @Override
     public List<String> getFacilities(MainSearchDTO mainSearchDTO) {
         List<String> facilities = listMapper.getFacilities(mainSearchDTO);

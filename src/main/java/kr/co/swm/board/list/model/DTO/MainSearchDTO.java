@@ -14,6 +14,7 @@ public class MainSearchDTO {
     private List<String> options;
 
     private String mainSearch;
+    private int personnel;
     private String checkInDate;
     private String checkOutDate;
 }

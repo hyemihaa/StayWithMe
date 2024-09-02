@@ -1,0 +1,343 @@
+/* 공통 스타일 */
+h5 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+input[type="text"] {
+    width: 100%;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.select-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.select-wrap input[type="radio"] {
+    margin-right: 5px;
+}
+
+.select-wrap label {
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+/* 캘린더 스타일 */
+/* tour.css에 추가할 수 있는 스타일 */
+.checkin-date-input,
+.checkout-date-input {
+    flex: 1;
+    height: 50px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+/* 기본 달력 아이콘 숨기기 */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+/* 날짜 입력 필드에 대한 플레이스홀더 스타일 */
+.checkin-date-input::before,
+.checkout-date-input::before {
+    content: attr(placeholder);
+    color: grey;
+}
+
+.checkin-date-input:focus::before,
+.checkout-date-input:focus::before {
+    content: '';
+}
+
+
+
+.guest-input-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#guest-count {
+    font-size: 16px;
+    width: 60%;
+    text-align: center;
+    color: #138496;
+    font-weight: bold;
+    border: none;
+    outline: none;
+}
+
+.option_box {
+    margin-top: 15px;
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+    .form-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .guest-input-container {
+        flex-direction: column;
+    }
+}
+
+.sidebar {
+    position: sticky;
+    top: 100px; /* 헤더 높이에 맞게 설정 */
+    max-height: calc(100vh - 100px); /* 푸터에 도달하지 않도록 최대 높이 설정 */
+    overflow-y: auto; /* 스크롤 활성화 */
+    padding-right: 10px;
+    margin-right: 0;
+    z-index: 100;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 0px; /* 스크롤바의 너비를 0으로 설정하여 숨김 */
+    background: transparent; /* 필요시 배경을 투명으로 설정 */
+}
+
+/* 우측 게시물 리스트 영역 */
+.col-lg-9 {
+    padding-left: 15px;
+    margin-top: 0; /* 불필요한 마진 제거 */
+}
+
+
+/* 날짜 입력 필드 그룹 */
+.check-date-group {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.checkin-group,
+.checkout-group {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.checkin-group label,
+.checkout-group label {
+    margin-bottom: 0;
+    font-weight: normal;
+    font-size: 14px;
+    color: #333;
+}
+
+.check-date-group {
+    gap: 10px;
+}
+
+/* 인원 입력 필드 스타일 */
+.guest-input {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 50px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+/* 인원 수 조절 버튼 스타일 */
+.guest-btn {
+    color: #138496;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: transparent;
+    outline: none;
+}
+
+/* 인원 수 조절 버튼 호버 시 스타일 */
+.guest-btn:hover {
+    background-color: #138496;
+    color: white;
+    font-weight: bold;
+}
+
+/* 인원 수 조절 버튼 클릭 시 스타일 */
+.guest-btn:active {
+    background-color: #0f6674;
+    color: white;
+    font-weight: bold;
+}
+
+/* 인원 수 조절 버튼 포커스 시 스타일 */
+.guest-btn:focus {
+    outline: none;
+}
+
+/*  슬라이더 기능 */
+
+/* 가격 설정 스타일 */
+.sidebar-wrap .range-slider {
+    display: flex !important;
+    flex-direction: column !important;
+    margin-top: 40px !important;
+    margin-bottom: 0px !important;
+    gap: 10px !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+}
+
+.sidebar-wrap .price-inputs {
+    display: flex !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    margin-top: 5px !important; /* 슬라이더와 금액 표시 사이의 간격 */
+}
+
+/*.sidebar-wrap .price-inputs input[type="number"] {
+    width: 60px !important; *//* 숫자 입력 필드의 너비를 적절히 조정 *//*
+    padding: 0 !important; *//* 패딩을 조정하여 더 깔끔하게 *//*
+    font-size: 14px !important;
+    border-radius: 5px !important;
+}*/
+
+.min-price input[type="number"] {
+    width: auto !important;
+    font-size: 14px !important;
+    text-align: left;
+    left: 0;
+}
+
+.max-price input[type="number"] {
+    width: auto !important;
+    font-size: 14px !important;
+    text-align: right;
+    right: 0;
+}
+
+
+.sidebar-wrap .price-inputs span {
+    margin-left: 2px !important; /* "원"과 숫자 사이 간격을 최소화 */
+    font-weight: normal;
+}
+
+.sidebar-wrap .slider-inputs {
+    position: relative !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.sidebar-wrap .slider-inputs input[type="range"] {
+    appearance: none !important;
+    width: 100% !important;
+    height: 6px !important;
+    background: #ddd !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    margin: 0 !important; /* 여백 제거 */
+}
+
+.sidebar-wrap .slider-inputs input[type="range"]::-webkit-slider-thumb {
+    appearance: none !important;
+    width: 20px !important;
+    height: 20px !important;
+    background: #007bff !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+}
+
+.sidebar-wrap .slider-inputs input[type="range"]::-moz-range-thumb {
+    width: 20px !important;
+    height: 20px !important;
+    background: #007bff !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+}
+
+.sidebar-wrap .slider-inputs input[type="range"]::-ms-thumb {
+    width: 20px !important;
+    height: 20px !important;
+    background: #007bff !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+}
+
+/* 슬라이더와 금액 표시를 겹치지 않게 조정 */
+.sidebar-wrap .range-slider input[type="range"] {
+    margin-bottom: 15px !important; /* 슬라이더와 금액 입력 필드 사이의 간격 */
+}
+
+.sidebar-wrap .price-inputs {
+    margin-top: -15px !important; /* 금액 표시를 슬라이더 아래로 이동 */
+}
+
+.min-price,
+.max-price {
+    display: flex;
+    width: auto;
+    align-items: center;
+}
+
+/* 옵션 리스트 숨김/펼침 스타일 */
+.toggle-options-content {
+    max-height: 0; /* 기본적으로 닫힌 상태로 유지 */
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.toggle-options-content.open {
+    max-height: 200px; /* 펼쳐졌을 때의 높이 */
+    overflow-y: auto; /* 스크롤을 추가하여 내용이 넘칠 때 스크롤 가능 */
+}
+
+/* 옵션 제목 스타일 */
+#toggle-options-title {
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* 기타 스타일 */
+.form-group.option_box {
+    margin-top: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px; /* padding 활성화 */
+    border-radius: 5px;
+}
+
+.toggle-label {
+    padding: 10px;
+    margin: 5px;
+    font-size: 12px;
+    width: auto;
+    height: auto;
+}

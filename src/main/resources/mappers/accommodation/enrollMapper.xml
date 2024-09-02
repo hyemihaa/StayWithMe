@@ -93,32 +93,32 @@
     <insert id="enrollWeekdayRate">
         INSERT INTO basic_rate values (
                                        null,
-                                       #{roomNo},
                                        1,
+                                       #{roomNo},
                                        #{roomRate.weekdayRate}
                                       )
     </insert>
     <insert id="enrollFridayRate">
         INSERT INTO basic_rate values (
                                           null,
-                                          #{roomNo},
                                           2,
+                                          #{roomNo},
                                           #{roomRate.fridayRate}
                                       )
     </insert>
     <insert id="enrollSaturdayRate">
         INSERT INTO basic_rate values (
                                           null,
-                                          #{roomNo},
                                           3,
+                                          #{roomNo},
                                           #{roomRate.saturdayRate}
                                       )
     </insert>
     <insert id="enrollSundayRate">
         INSERT INTO basic_rate values (
                                           null,
-                                          #{roomNo},
                                           4,
+                                          #{roomNo},
                                           #{roomRate.sundayRate}
                                       )
     </insert>
