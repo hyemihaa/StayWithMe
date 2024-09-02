@@ -64,10 +64,12 @@ public class AccommodationController {
     public ResponseEntity<?> saveLocation(@RequestParam("previewFiles") List<MultipartFile> subFile,
                                           @RequestParam("mainPhoto") List<MultipartFile> mainFile,
                                           @ModelAttribute AccommodationDto accommodationDto, // 업소
-                                          @ModelAttribute RoomForm roomForm // 객실
+                                          @ModelAttribute RoomForm roomForm, // 객실
+                                          @CookieValue(value = "Authorization", required = false) String token
     ) {
+        Long accommodationAdminNo = jwtUtil.getAccommAdminKeyFromToken(token);
         AccommodationImageDto mainImage = uploadFile.uploadSingleFile(mainFile.get(1), "MAIN");
-        accommodationService.saveAccommodation(accommodationDto, mainImage);
+        accommodationService.saveAccommodation(accommodationDto, mainImage, accommodationAdminNo);
 
         int roomsSize = roomForm.getRooms().size() - 1;
         int startIndex = roomsSize;
@@ -84,7 +86,8 @@ public class AccommodationController {
                     room,
                     roomsSize,
                     subFile,
-                    startIndex);
+                    startIndex,
+                    accommodationAdminNo);
 
             startIndex = (endIndex + roomsSize);
         }

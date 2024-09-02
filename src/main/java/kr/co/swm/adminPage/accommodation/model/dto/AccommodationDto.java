@@ -15,7 +15,7 @@ public class AccommodationDto {
     /**
      * 업소
      */
-    private int acAdminNo = 23 ;
+    private int acAdminNo;
     private String accommodationInfo;         // 업소 정보
 
     private int accommodationNo;         // 업소 넘버

@@ -91,7 +91,6 @@ public class ListController {
 
 
         return "tour";  // tour위치 반환
-        //templates / ** .html
     }
 
 

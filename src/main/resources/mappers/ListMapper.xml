@@ -11,6 +11,7 @@
         <result column="CHECK_IN_DATE" property="checkinDate"></result>
         <result column="CHECK_OUT_DATE" property="checkoutDate"></result>
         <result column="FACILITY_NAME" property="options"></result>
+        <result column="IMAGE_FILE" property="fileName"></result>
     </resultMap>
 
 
@@ -127,18 +128,28 @@
 
     <!-- getList 쿼리 -->
     <select id="getList" resultMap="placeResultMap">
-        SELECT ac.ACCOMMODATION_ADMIN_NO,
+        SELECT
+        ac.ACCOMMODATION_ADMIN_NO,
         ac.NAME,
         ac.ACCOMMODATION_TYPE,
         ac.ADDRESS,
-        MIN(COALESCE(er.EXTRA_RATE, br.BASIC_RATE)) AS BASIC_RATE
-        FROM ACCOMMODATION ac
-        JOIN ROOM r ON ac.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
-        JOIN BASIC_RATE br ON r.ROOM_NO = br.ROOM_NO
-        LEFT JOIN EXTRA_RATE er ON r.ROOM_NO = er.ROOM_NO
+        MIN(COALESCE(er.EXTRA_RATE, br.BASIC_RATE)) AS BASIC_RATE,
+        ai.IMAGE_FILE
+        FROM
+        ACCOMMODATION ac
+        JOIN
+        ROOM r ON ac.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
+        JOIN
+        BASIC_RATE br ON r.ROOM_NO = br.ROOM_NO
+        LEFT JOIN
+        EXTRA_RATE er ON r.ROOM_NO = er.ROOM_NO
         AND #{mainSearchDTO.checkInDate} BETWEEN er.EXTRA_DATE_START AND er.EXTRA_DATE_END
-        LEFT JOIN FACILITIES f ON ac.ACCOMMODATION_ADMIN_NO = f.ACCOMMODATION_ADMIN_NO
-        LEFT JOIN RESERVE rs ON rs.ROOM_NO = r.ROOM_NO
+        LEFT JOIN
+        FACILITIES f ON ac.ACCOMMODATION_ADMIN_NO = f.ACCOMMODATION_ADMIN_NO
+        LEFT JOIN
+        ACCOMMODATION_IMAGE ai ON ac.ACCOMMODATION_ADMIN_NO = ai.ACCOMMODATION_ADMIN_NO
+        LEFT JOIN
+        RESERVE rs ON rs.ROOM_NO = r.ROOM_NO
         <where>
             <!-- 검색어 조건 조회  -->
             <if test="mainSearchDTO.mainSearch != null and !mainSearchDTO.mainSearch.isEmpty()">
@@ -163,8 +174,10 @@
                 </foreach>
             </if>
         </where>
-        GROUP BY ac.ACCOMMODATION_ADMIN_NO, ac.NAME, ac.ACCOMMODATION_TYPE, ac.ADDRESS
+        GROUP BY
+        ac.ACCOMMODATION_ADMIN_NO, ac.NAME, ac.ACCOMMODATION_TYPE, ac.ADDRESS, ai.IMAGE_FILE
     </select>
+
 
 
     <!-- getFacilities 쿼리 -->
