@@ -159,17 +159,24 @@ public class ReservationController {
     }
 
     @PostMapping("/refund")
-    public ResponseEntity<String> refund(@RequestBody Map<String, String> refundData) {
+    public ResponseEntity<String> refund(@RequestBody PaymentDto paymentDto,
+                                         @CookieValue(name = "Authorization", required = false)String userKey
+                                         ) {
         try {
-            int bookingNo = Integer.parseInt(refundData.get("bookingNo"));
-            String cancelBy = refundData.get("cancelBy");
-            int cancelAmount = Integer.parseInt(refundData.get("cancelAmount"));
+            int bookingNo = paymentDto.getReservationNo();
+            Long cancelBy = jwtUtil.getUserNoFromToken(userKey);
+            int cancelAmount = paymentDto.getFinalPrice();
+
+            System.out.println("121212 : " + cancelAmount);
+            System.out.println("121212 : " + bookingNo);
+            System.out.println("121212 : " + cancelAmount);
 
 //            int refundResult = reservationService.refund(cancelBy, bookingNo, cancelAmount);
             int refundResult = reservationService.refund(cancelBy, bookingNo, cancelAmount);
 
             if (refundResult > 0) {
                 // DB 업데이트 성공 시 OK 반환
+                reservationService.updateReservation(bookingNo);
                 return ResponseEntity.ok("OK");
             } else {
                 // DB 업데이트 실패 시 실패 메시지 반환

@@ -19,17 +19,17 @@ function requestRefund(bookingNo, impUid, cancelAmount) {
             })
         }).done(function (data) {
             console.log("서버 응답 데이터:", data);
-            if (data.response && data.response.status === 'cancelled') {
+            if (data.response.status === 'cancelled') {
                 jQuery.ajax({
-                    url: "http://localhost:8080/refund", // DB 업데이트를 처리할 서버 엔드포인트
+                    url: "/refund", // DB 업데이트를 처리할 서버 엔드포인트
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     data: JSON.stringify({
-                        imp_uid: impUid,
-                        booking_no: bookingNo,
-                        cancel_amount: cancelAmount,
+                        uid: impUid,
+                        reservationNo: bookingNo,
+                        finalPrice: cancelAmount,
                         // 필요에 따라 다른 데이터를 추가할 수 있습니다.
                     })
                 }).done(function (dbResponse) {

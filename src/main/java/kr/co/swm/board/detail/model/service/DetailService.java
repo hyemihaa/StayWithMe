@@ -1,5 +1,6 @@
 package kr.co.swm.board.detail.model.service;
 
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,4 +17,7 @@ public interface DetailService {
 
 //  하단 관련 항목
     List<DetailDTO> getSubPlace(int boardNo);
+
+
+    List<DetailDTO> getImages(int boardNo);
 }

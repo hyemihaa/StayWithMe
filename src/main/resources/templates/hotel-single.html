@@ -27,14 +27,8 @@
 					<div class="row">
 						<div class="col-md-12 ftco-animate">
 							<div class="single-slider owl-carousel">
-								<div class="item">
-									<div class="hotel-img" style="background-image: url(images/hotel-2.jpg);"></div>
-								</div>
-								<div class="item">
-									<div class="hotel-img" style="background-image: url(images/hotel-3.jpg);"></div>
-								</div>
-								<div class="item">
-									<div class="hotel-img" style="background-image: url(images/hotel-4.jpg);"></div>
+								<div th:each="image : ${images}" class="item">
+									<div class="hotel-img" th:style="'background-image: url(' + @{${image.imagePath} + ${image.accommodationImageName}} + ');'"></div>
 								</div>
 							</div>
 						</div>

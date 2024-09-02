@@ -121,9 +121,30 @@
                                            #{payment.finalPrice}
                                           )
     </insert>
+    <insert id="refund" >
+        <selectKey keyProperty="cancelBy" resultType="String" order="BEFORE">
+            SELECT user_name
+            FROM user
+            WHERE user_no = #{userNo}
+        </selectKey>
+
+        insert into cancel values (
+                                      null,
+                                      #{bookingNo},
+                                      #{cancelAmount},
+                                      NOW(),
+                                      #{cancelBy}
+                                  )
+    </insert>
 
     <select id="paymentInfo" resultMap="reservation">
         SELECT
     </select>
+
+    <update id="updateReservation" >
+        update reserve
+        set reservation_status = "예약취소"
+        where booking_no = #{bookingNo}
+    </update>
 </mapper>
 

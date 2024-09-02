@@ -62,7 +62,6 @@ public class PaymentController {
 
     @PostMapping("/refund/complete")
     public ResponseEntity<?> refundPayment(@RequestBody Map<String, String> request) {
-        System.out.println("lksandlknadlkand");
         try {
             String impUid = request.get("imp_uid");
 

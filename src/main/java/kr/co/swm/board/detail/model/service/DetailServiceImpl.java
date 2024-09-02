@@ -1,5 +1,6 @@
 package kr.co.swm.board.detail.model.service;
 
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import kr.co.swm.board.mapper.DetailMapper;
 import org.apache.ibatis.annotations.Param;
@@ -54,6 +55,10 @@ public class DetailServiceImpl implements DetailService{
     @Override
     public List<DetailDTO> getSubPlace(int boardNo) {
         return detailMapper.getSubPlace(boardNo);
+    }
+    @Override
+    public List<DetailDTO> getImages(int boardNo) {
+        return detailMapper.getImages(boardNo);
     }
 
 

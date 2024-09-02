@@ -1,5 +1,6 @@
 package kr.co.swm.board.mapper;
 
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,4 +21,6 @@ public interface DetailMapper {
     List<DetailDTO> getSubPlace(@Param("boardNo") int boardNo);
 
     List<DetailDTO> getFacilities(int boardNo);
+
+    List<DetailDTO> getImages(@Param("boardNo") int boardNo);
 }

@@ -28,9 +28,10 @@ public interface ReservationMapper {
 
     int paymentDetail(@Param("payment")PaymentDto paymentDto, @Param("paymentNo")int paymentNo);
 
-    int refund(@Param("cancelBy")String cancelBy, @Param("bookingNo")int bookingNo, @Param("cancelAmount")int cancelAmount);
+    int refund(@Param("userNo")Long cancelBy, @Param("bookingNo")int bookingNo, @Param("cancelAmount")int cancelAmount);
 
     SellerDto paymentInfo(@Param("bookingNo") int bookingNo);
 
+    void updateReservation(@Param("bookingNo") int bookingNo);
 
 }

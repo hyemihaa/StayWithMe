@@ -67,7 +67,7 @@ public class ReservationServiceImpl implements ReservationService {
 //        reservationService.couponUsedUpdate();
 
 
-    public int refund(String cancelBy, int bookingNo,int  cancelAmount) {
+    public int refund(Long cancelBy, int bookingNo,int  cancelAmount) {
         int result = reservationMapper.refund(cancelBy, bookingNo, cancelAmount);
         if (result == 1) {
             // 예약 취소 업데이트
@@ -79,5 +79,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     public SellerDto paymentInfo(int bookingNo) {
         return reservationMapper.paymentInfo(bookingNo);
+    }
+
+    public void updateReservation(int bookingNo) {
+        reservationMapper.updateReservation(bookingNo);
     }
 }
