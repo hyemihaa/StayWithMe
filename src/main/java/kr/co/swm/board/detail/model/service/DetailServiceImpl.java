@@ -56,10 +56,14 @@ public class DetailServiceImpl implements DetailService{
     public List<DetailDTO> getSubPlace(int boardNo) {
         return detailMapper.getSubPlace(boardNo);
     }
+
     @Override
     public List<DetailDTO> getImages(int boardNo) {
-        return detailMapper.getImages(boardNo);
+        return detailMapper.getMainImages(boardNo);
     }
 
-
+    @Override
+    public List<DetailDTO> getRoomImages(int roomNo) {
+        return detailMapper.getRoomImages(roomNo);
+    }
 }

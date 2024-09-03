@@ -4,6 +4,50 @@
 	<title>Stay with me</title>
 	<div th:include="fragments/css.html :: css"></div>
 
+	<style>
+		/* Basic styling for the modal and carousel */
+		.modal-content {
+			background-color: #fff;
+			border-radius: 8px;
+			padding: 20px;
+			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+		}
+
+		.modal-header {
+			border-bottom: 1px solid #eee;
+		}
+
+		.modal-title {
+			font-size: 24px;
+			font-weight: bold;
+		}
+
+		#image-carousel .item {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 10px;
+		}
+
+		#image-carousel img {
+			max-width: 100%;
+			height: auto;
+			border-radius: 8px;
+		}
+
+		.modal-backdrop {
+			z-index: 1040 !important;
+		}
+
+		.modal {
+			z-index: 1050 !important;
+		}
+		.modal-backdrop.show {
+			opacity: 0.5 !important;  /* 백드롭의 투명도를 50%로 설정 */
+			z-index: 1040 !important; /* 백드롭이 모달보다 낮은 z-index를 가지도록 설정 */
+		}
+
+	</style>
 </head>
 <body>
 
@@ -28,8 +72,7 @@
 						<div class="col-md-12 ftco-animate">
 							<div class="single-slider owl-carousel">
 								<div th:each="image : ${images}" class="item">
-									<div class="hotel-img" th:style="'background-image: url(' + @{${image.imagePath} + ${image.accommodationImageName}} + ');'"></div>
-									url(/accommodationImages/240902102453_BWjuwUbk.png)
+									<img th:src="${image.imagePath} + ${image.accommodationImageName}" class="hotel-img"  ></img>
 								</div>
 							</div>
 						</div>
@@ -98,21 +141,21 @@
 								<!-- 예약공지 -->
 							<div class="infomation">
 							<h5>INFO</h5>
-							<p th:text="${post.boardInfo}"></p>
+							<p th:utext="${post.boardInfo}"></p>
 							</div>
 						</div>
-
 						<!-- 객실 선택 -->
 						<div class="col-md-12 hotel-single ftco-animate mb-5 mt-4">
 							<h4 class="mb-4">객실선택</h4>
 							<div class="row">
 								<div class="col-md-4">
-										<div class="destination" th:each="place : ${place}">
-											<form action="/reservation" method="GET">
-											<input type="hidden" name="roomNo" th:value="${place.roomNo}" />
+									<div class="destination" th:each="place : ${place}">
+										<form action="/reservation" method="GET">
+											<input type="hidden" id="roomNo" name="roomNo" th:value="${place.roomNo}" />
 											<input type="hidden" name="boardCount" th:value="${place.boardCount}" />
-
-											<a href="#" class="img img-3" style="background-image: url(images/room-4.jpg);"></a>
+											<a href="#" onclick="loadImages(this)">
+												<img th:src="${place.imagePath} + ${place.roomsImageName}" class="img img-3">
+											</a>
 											<div class="text-tour p-3">
 												<div class="d-flex">
 													<div class="one">
@@ -120,9 +163,9 @@
 													</div>
 												</div>
 												<p class="days">
-													<span>체크인 : <span th:text="${post.boardCheckIn}"/> &nbsp; <span>체크아웃 : <span th:text="${post.boardCheckOut}"/></span>
-												<br>
-														기준<span th:text="${place.boardMinPerson}"/>인 · 최대<span th:text="${place.boardMaxPerson}" />인 </span>
+								<span>체크인 : <span th:text="${post.boardCheckIn}"/> &nbsp; <span>체크아웃 : <span th:text="${post.boardCheckOut}"/></span>
+							<br>
+								기준<span th:text="${place.boardMinPerson}"/>인 · 최대<span th:text="${place.boardMaxPerson}" />인 </span>
 												</p>
 												<hr>
 												<span class="price" style="font-weight: bold; font-size: 17px;" th:text="${place.boardCount} + '원 &nbsp; ~' "></span>
@@ -131,64 +174,141 @@
 													<span class="ml-auto"><button type="submit">예약</button></span>
 												</p>
 											</div>
-												</form>
-										</div>
+										</form>
+									</div>
 								</div>
 							</div>
 						</div>
+
+						<!-- 모달 팝업 -->
+						<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="imageModalLabel">객실 이미지</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<div id="image-carousel" class="carousel slide" data-ride="carousel">
+											<div class="carousel-inner">
+												<!-- Thymeleaf를 사용해 서버에서 받아온 이미지 리스트를 출력 -->
+												<div th:each="image, iterStat : ${roomImage}" th:class="'carousel-item' + ${iterStat.index == 0 ? ' active' : ''}">
+													<img th:src="@{${image.imagePath} + ${image.roomsImageName}}" class="d-block w-100" alt="...">
+												</div>
+											</div>
+											<a class="carousel-control-prev" href="#image-carousel" role="button" data-slide="prev">
+												<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+												<span class="sr-only">Previous</span>
+											</a>
+											<a class="carousel-control-next" href="#image-carousel" role="button" data-slide="next">
+												<span class="carousel-control-next-icon" aria-hidden="true"></span>
+												<span class="sr-only">Next</span>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
 
 
 
 						<!-- 연관 숙박시설 -->
 
 
-					<div class="col-md-12 hotel-single ftco-animate mb-5 mt-5">
-						<h4 class="mb-4">관련 항목</h4>
-						<div class="row">
-							<div class="col-md-4">
+						<div class="col-md-12 hotel-single ftco-animate mb-5 mt-5">
+							<h4 class="mb-4">관련 항목</h4>
+							<div class="row">
+								<div class="col-md-4">
 
 
-								<div class="destination" th:each="subPlace : ${subPlace}" >
-									<a href="#" class="img img-3"
-									   style="background-image: url(images/room-4.jpg);"></a>
-									<div class="text-tour p-3">
-										<div class="d-flex">
-											<div class="one">
-												<h3><a href="#" th:text="${subPlace.boardName}"></a></h3>
+									<div class="destination" th:each="subPlace : ${subPlace}" >
+										<a href="#" class="img img-3"
+										   style="background-image: url(images/room-4.jpg);"></a>
+										<div class="text-tour p-3">
+											<div class="d-flex">
+												<div class="one">
+													<h3><a href="#" th:text="${subPlace.boardName}"></a></h3>
+												</div>
+												<div class="two">
+													<p th:text="${subPlace.boardType}"></p>
+												</div>
 											</div>
-										<div class="two">
-											<p th:text="${subPlace.boardType}"></p>
+											<span><i class="icon-map-o"></i> &nbsp <span th:text="${subPlace.boardAddress}" /></span>
+											<p class="days">
+												<span>체크인 : <span th:text="${subPlace.boardCheckIn}"/></span>
+											</p>
+											<hr>
+											<span class="price" style="font-weight: bold; font-size: 17px;"  th:text="${subPlace.boardCount} + '원 &nbsp; ~' "></span>
+											<br>
+											<p class="bottom-area d-flex">
+												<span class="ml-auto"><a th:href="@{/hotel-single(boardNo=${subPlace.boardNo})}">바로가기</a></span>
+											</p>
 										</div>
-										</div>
-										<span><i class="icon-map-o"></i> &nbsp <span th:text="${subPlace.boardAddress}" /></span>
-										<p class="days">
-												<span>체크인 : <span th:text="${subPlace.boardCheckIn}"/>
-										</p>
-										<hr>
-										<span class="price" style="font-weight: bold; font-size: 17px;"  th:text="${subPlace.boardCount} + '원 &nbsp; ~' "></span>
-										<br>
-										<p class="bottom-area d-flex">
-											<span class="ml-auto"><a th:href="@{/hotel-single(boardNo=${subPlace.boardNo})}">바로가기</a></span>
-										</p>
 									</div>
-								</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<!-- .col-md-8 -->
 				</div>
-			</div>
+		</div>
 	</section>
-	<!-- .section -->
+<!-- .section -->
+
+
+<script>
+	function loadImages(element) {
+	const roomNo = document.getElementById("roomNo").value;
+
+	$.ajax({
+	url: '/getRoomImages',
+	type: 'GET',
+	data: {roomNo: roomNo},
+	success: function(data) {
+	let htmlContent = '';
+
+	// 서버에서 받아온 데이터를 HTML로 변환
+	$.each(data, function(index, image) {
+	const isActive = index === 0 ? ' active' : '';
+	htmlContent += `
+                        <div class="carousel-item${isActive}">
+                            <img src="${image.imagePath + image.roomsImageName}" class="d-block w-100" alt="...">
+                        </div>`;
+});
+
+	// carousel-inner에 HTML 코드 삽입
+	$('#image-carousel .carousel-inner').html(htmlContent);
+
+	// 모달 표시
+	$('#imageModal').modal('show');
+},
+	error: function(xhr, status, error) {
+	console.error('Error fetching room images:', error);
+}
+});
+}
+</script>
+
+
 
 <script th:src="@{js/range.js}"></script>
+
 <div th:include="fragments/footer.html :: footer"></div>
 
-  <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+<!-- loader -->
+<div id="ftco-loader" class="show fullscreen">
+	<svg class="circular" width="48px" height="48px">
+		<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+		<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+				stroke="#F96D00"/>
+	</svg>
+</div>
 
-	<div th:include="fragments/js.html :: js"></div>
-  </body>
+<div th:include="fragments/js.html :: js"></div>
+</body>
 </html>
 

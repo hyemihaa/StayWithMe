@@ -84,4 +84,8 @@ public class ReservationServiceImpl implements ReservationService {
     public void updateReservation(int bookingNo) {
         reservationMapper.updateReservation(bookingNo);
     }
+
+    public void reserveUpdate(int paymentNo) {
+        reservationMapper.reserveUpdate(paymentNo);
+    }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,16 +31,21 @@ public class DetailController {
 
     @GetMapping("/hotel-single")
     public String detail(@RequestParam("boardNo") int boardNo,
+                         @RequestParam(value = "checkInDate", required = false) String checkInDate,
+                         @RequestParam(value = "checkOutDate", required = false) String checkOutDate,
                          SearchDTO searchDto,
                          Model model) {
 
 
+
         // 몇박 개수 구하기
-        LocalDate startDates = LocalDate.parse(searchDto.getCheckInDate());
-        LocalDate endDates = LocalDate.parse(searchDto.getCheckOutDate());
+        LocalDate startDates = LocalDate.parse(checkInDate);
+        LocalDate endDates = LocalDate.parse(checkOutDate);
         long nights = calculateNights(startDates, endDates);
 
-        List<DetailDTO> images = detailService.getImages(boardNo);
+        List<DetailDTO> mainImages = detailService.getImages(boardNo);
+
+
         //  장소 불러오기
         List<DetailDTO> place = detailService.getPlace(boardNo, nights);
 
@@ -60,12 +66,24 @@ public class DetailController {
         //  부대시설 불러오기
         List<DetailDTO> facilities = detailService.getFacilities(boardNo);
 
+//        List<DetailDTO> roomImage = new ArrayList<>();
+//        int beforeRoomNo = 0;
+//        int roomNo = 0;
+//        for(DetailDTO item : place) {
+//            roomNo = item.getRoomNo();
+//            if(beforeRoomNo != roomNo) {
+//                roomImage.add(item);
+//                beforeRoomNo = roomNo;
+//            }
+//        }
+
         //  데이터 바인딩
         model.addAttribute("place", place);
         model.addAttribute("post", post);
         model.addAttribute("facilities", facilities);
         model.addAttribute("subPlace", subPlace);
-        model.addAttribute("images", images);
+        model.addAttribute("images", mainImages);
+//        model.addAttribute("roomImage", roomImages);
 
         //  각 페이지마다 boardNo에 대한 다른 값 불러오기
         // http://localhost:8080/hotel-single?boardNo=1 이면 boardNo=1

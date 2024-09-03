@@ -20,4 +20,7 @@ public interface DetailService {
 
 
     List<DetailDTO> getImages(int boardNo);
+
+    List<DetailDTO> getRoomImages(int roomNo);
+
 }

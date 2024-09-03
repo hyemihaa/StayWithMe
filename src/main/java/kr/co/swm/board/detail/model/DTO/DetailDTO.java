@@ -24,6 +24,8 @@ public class DetailDTO {
     private String boardInfo;   // 정보
     private int roomNo;
 
+
+    private int imageNo;
     private String accommodationImageName;    // 업소 사진 파일 명
     private String roomsImageName;    // 객실 사진 파일 명
     private String imagePath = "/accommodationImages/";     // 사진 파일경로

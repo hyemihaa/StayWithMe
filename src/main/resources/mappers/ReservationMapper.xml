@@ -143,8 +143,17 @@
 
     <update id="updateReservation" >
         update reserve
-        set reservation_status = "예약취소"
+        set reservation_status = "예약취소",
+            reservation_cancellation_date = NOW()
+            reservation_cancellation_date = NOW()
         where booking_no = #{bookingNo}
     </update>
+
+    <update id="reserveUpdate" >
+        update reserve
+        set reservation_date = NOW()
+        where booking_no = #{paymentNo}
+    </update>
+
 </mapper>
 

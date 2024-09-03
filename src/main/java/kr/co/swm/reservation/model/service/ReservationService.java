@@ -31,4 +31,6 @@ public interface ReservationService {
     SellerDto paymentInfo(int bookingNo);
 
     void updateReservation(int bookingNo);
+
+    void reserveUpdate(int paymentNo);
 }

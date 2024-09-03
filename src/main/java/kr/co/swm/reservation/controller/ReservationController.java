@@ -149,7 +149,7 @@ public class ReservationController {
 
 
         // 예약상태 업데이트 ( 예약안료/실패 )
-//        reservationService.reserveUpdate();
+        reservationService.reserveUpdate(reservationNo);
 
 //        // 쿠폰 사용 시 쿠폰 use 컬럼 업데이트
           // 사용안함 쿠폰은 업데이트 안됌

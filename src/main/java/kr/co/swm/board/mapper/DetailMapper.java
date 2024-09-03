@@ -22,5 +22,7 @@ public interface DetailMapper {
 
     List<DetailDTO> getFacilities(int boardNo);
 
-    List<DetailDTO> getImages(@Param("boardNo") int boardNo);
+    List<DetailDTO> getMainImages(@Param("boardNo") int boardNo);
+
+    List<DetailDTO> getRoomImages(@Param("roomNo") int roomNo);
 }

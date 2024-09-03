@@ -34,4 +34,6 @@ public interface ReservationMapper {
 
     void updateReservation(@Param("bookingNo") int bookingNo);
 
+    void reserveUpdate(@Param("paymentNo") int paymentNo);
+
 }
