@@ -66,24 +66,12 @@ public class DetailController {
         //  부대시설 불러오기
         List<DetailDTO> facilities = detailService.getFacilities(boardNo);
 
-//        List<DetailDTO> roomImage = new ArrayList<>();
-//        int beforeRoomNo = 0;
-//        int roomNo = 0;
-//        for(DetailDTO item : place) {
-//            roomNo = item.getRoomNo();
-//            if(beforeRoomNo != roomNo) {
-//                roomImage.add(item);
-//                beforeRoomNo = roomNo;
-//            }
-//        }
-
         //  데이터 바인딩
         model.addAttribute("place", place);
         model.addAttribute("post", post);
         model.addAttribute("facilities", facilities);
         model.addAttribute("subPlace", subPlace);
         model.addAttribute("images", mainImages);
-//        model.addAttribute("roomImage", roomImages);
 
         //  각 페이지마다 boardNo에 대한 다른 값 불러오기
         // http://localhost:8080/hotel-single?boardNo=1 이면 boardNo=1
