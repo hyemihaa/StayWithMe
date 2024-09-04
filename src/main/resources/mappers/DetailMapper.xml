@@ -18,34 +18,62 @@
         <result column="LNG" property="lon"></result>
         <result column="MIN_BASIC_RATE" property="boardCount"></result>
         <result column="FACILITY_NAME" property="facilityName"></result>
+        <result column="IMAGE_FILE" property="accommodationImageName"></result>
+        <result column="image_unique_name" property="roomsImageName"></result>
+        <result column="IMAGE_NO" property="imageNo"></result>
     </resultMap>
 
 <!-- 장소 -->
     <select id="getPlace" resultMap="placeResultMap">
-        SELECT  a.name,
-                a.ACCOMMODATION_TYPE,
-                a.ADDRESS,
-                a.INFO,
-                a.LAT,
-                a.LNG,
-                r.CHECK_IN_TIME,
-                r.CHECK_OUT_TIME,
-                r.ROOM_NAME,
-                r.STANDARD_OCCUPANCY,
-                r.MAX_OCCUPANCY,
-                r.ROOM_NO,
-                br.MIN_BASIC_RATE
-        FROM ACCOMMODATION a
-                 JOIN ROOM r ON r.ACCOMMODATION_ADMIN_NO = a.ACCOMMODATION_ADMIN_NO
-                 JOIN (
-            SELECT ROOM_NO, MIN(BASIC_RATE)*#{nights} AS MIN_BASIC_RATE
-            FROM basic_rate
-            GROUP BY ROOM_NO
+        WITH room_images AS (
+        SELECT
+        ri.ROOM_NO,
+        ri.image_unique_name,
+        ROW_NUMBER() OVER (PARTITION BY ri.ROOM_NO ORDER BY ri.image_no) AS rn
+        FROM
+        room_images ri
+        )
+        SELECT
+        a.name,
+        a.ACCOMMODATION_TYPE,
+        a.ADDRESS,
+        a.INFO,
+        a.LAT,
+        a.LNG,
+        r.CHECK_IN_TIME,
+        r.CHECK_OUT_TIME,
+        r.ROOM_NAME,
+        r.STANDARD_OCCUPANCY,
+        r.MAX_OCCUPANCY,
+        r.ROOM_NO,
+        br.MIN_BASIC_RATE,
+        ri.image_unique_name
+        FROM
+        ACCOMMODATION a
+        JOIN ROOM r ON r.ACCOMMODATION_ADMIN_NO = a.ACCOMMODATION_ADMIN_NO
+        JOIN (
+        SELECT ROOM_NO, MIN(BASIC_RATE) * #{nights} AS MIN_BASIC_RATE
+        FROM basic_rate
+        GROUP BY ROOM_NO
         ) br ON r.ROOM_NO = br.ROOM_NO
-        WHERE a.ACCOMMODATION_ADMIN_NO = #{boardNo}
-        GROUP BY a.name, a.ACCOMMODATION_TYPE, a.ADDRESS,a.INFO, a.LAT, a.LNG, r.CHECK_IN_TIME, r.CHECK_OUT_TIME, r.ROOM_NAME, r.STANDARD_OCCUPANCY, r.MAX_OCCUPANCY, r.room_no, br.MIN_BASIC_RATE;
+        JOIN room_images ri ON r.ROOM_NO = ri.ROOM_NO
+        WHERE
+        a.ACCOMMODATION_ADMIN_NO = #{boardNo}
+        AND ri.rn = 1
+        AND NOT EXISTS (
+        SELECT 1
+        FROM RESERVE rs
+        WHERE rs.ROOM_NO = r.ROOM_NO
+        AND (rs.CHECK_IN_DATE &gt; #{checkOutDate} OR rs.CHECK_OUT_DATE &lt; #{checkInDate})
+        )
+
+        GROUP BY
+        a.name, a.ACCOMMODATION_TYPE, a.ADDRESS, a.INFO, a.LAT, a.LNG,
+        r.CHECK_IN_TIME, r.CHECK_OUT_TIME, r.ROOM_NAME, r.STANDARD_OCCUPANCY,
+        r.MAX_OCCUPANCY, r.ROOM_NO, br.MIN_BASIC_RATE, ri.image_unique_name;
 
     </select>
+
 
 
     <select id="getPost" resultMap="placeResultMap">
@@ -74,7 +102,7 @@
         a.ACCOMMODATION_ADMIN_NO, a.NAME, a.ACCOMMODATION_TYPE, a.ADDRESS, r.CHECK_IN_TIME
         ORDER BY
         RAND()
-        LIMIT 3;
+        LIMIT 3
     </select>
 
     <select id="getFacilities" resultMap="placeResultMap">
@@ -82,8 +110,26 @@
         where ACCOMMODATION_ADMIN_NO = #{boardNo}
     </select>
 
-<!--    <select id="getImagePath" resultMap="placeResultMap">-->
 
-<!--    </select>-->
+
+    <select id="getMainImages" resultMap="placeResultMap">
+        SELECT
+            a.accommodation_admin_no,
+            a.name,
+            ai.image_file
+        FROM
+            accommodation a
+                JOIN
+            accommodation_image ai
+            ON a.accommodation_admin_no = ai.accommodation_admin_no
+        WHERE
+            a.accommodation_admin_no = #{boardNo}
+    </select>
+
+    <select id="getRoomImages" resultMap="placeResultMap">
+        select ri.room_no, ri.image_unique_name from room_images ri
+        join room r ON r.room_no = ri.room_no
+        where r.room_no = #{roomNo}
+    </select>
 
 </mapper>
