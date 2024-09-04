@@ -18,6 +18,15 @@ public class PaymentDto {
     private int basicPrice;
     private int discountPrice;
 
+
+    private String reserveCheckOut;
+    private String reserveCheckIn;
+
+    private int roomNo;
+    private Integer couponId;
+
+    private int reservationNo;
+    private int reservationAmount;
     private String uid;
     private String method;
 

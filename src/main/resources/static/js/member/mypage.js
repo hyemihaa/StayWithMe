@@ -282,14 +282,13 @@ function renderReservation(reservation) {
                                     <p>${reservation.reserveCheckIn} - ${reservation.reserveCheckOut}</p>
                                     <p>체크인: ${reservation.roomCheckIn} 체크아웃: ${reservation.roomCheckOut}</p>
                                     <p>기준 인원: ${reservation.roomPersonnel}명 / 최대 인원: ${reservation.roomMaxPersonnel}명</p>
-                                    <p>예약 상태: ${reservation.reservationStatus}</p>
                                 </div>
                            </div>
                            <p class="price" style="text-align: right;">
                                 금액: <strong><span style="font-size: 1.2em;">${reservation.reserveAmount}원</span></strong>
                            </p>
                            <div class="button-group" style="float: right;">
-                                ${cancelButton}
+                                <button class="btn-danger" onclick="cancelReservation(${reservation.reserveRoomNo})">예약 취소</button>
                                 <button class="btn-primary" onclick="viewReservationDetails(${reservation.accommodationNo})">예약 상세</button>
                            </div>
                        </div>
@@ -301,20 +300,19 @@ function renderReservation(reservation) {
 }
   // 예약 상세 페이지로 이동
     function viewReservationDetails(accommodationNo) {
-        // 상세 페이지 URL 생성
-        const url = `/hotel-single?boardNo=${accommodationNo}`;
+    // 상세 페이지 URL 생성
+    const url = `/hotel-single?boardNo=${accommodationNo}`;
 
-        // 해당 URL로 이동
-        window.location.href = url;
+    // 해당 URL로 이동
+    window.location.href = url;
     }
 
-    // 여행지 찾아보기 버튼
     function findTravelDestinations() {
-        // 여행지 찾아보기 페이지 URL 생성
-        const url = '/';
 
-        // 해당 URL로 이동
-        window.location.href = url;// 상세 페이지 URL 생성
+    const url = `/`;
+
+    // 해당 URL로 이동
+    window.location.href = url;
     }
 
 

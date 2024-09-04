@@ -60,13 +60,13 @@ public class AddCouponController {
         return "redirect:/couponList";
     }
 
-    @PostMapping("add-all")
-    public ResponseEntity<String> addAllCoupon(@RequestParam("couponNo")List<Integer> couponIds,
+    @PostMapping("/add-all")
+    public String addAllCoupon(@RequestParam("couponNo")List<Integer> couponIds,
                                                @RequestParam("userNo")Long userNo) {
 
         for (int couponId : couponIds) {
             addCouponService.addAllCoupons(couponId, userNo);
         }
-        return ResponseEntity.ok("모든 쿠폰이 성공적으로 추가되었습니다.");
+        return "redirect:/couponList";
     }
 }

@@ -11,7 +11,7 @@
         <result column="CHECK_IN_DATE" property="checkinDate"></result>
         <result column="CHECK_OUT_DATE" property="checkoutDate"></result>
         <result column="FACILITY_NAME" property="options"></result>
-        <result column="IMAGE_FILE" property="fileName"></result>
+        <result column="AC_IMAGE_FILE" property="fileName"></result>
     </resultMap>
 
 
@@ -134,7 +134,7 @@
         ac.ACCOMMODATION_TYPE,
         ac.ADDRESS,
         MIN(COALESCE(er.EXTRA_RATE, br.BASIC_RATE)) AS BASIC_RATE,
-        ai.IMAGE_FILE
+        ai.AC_IMAGE_FILE
         FROM
         ACCOMMODATION ac
         JOIN
@@ -175,7 +175,7 @@
             </if>
         </where>
         GROUP BY
-        ac.ACCOMMODATION_ADMIN_NO, ac.NAME, ac.ACCOMMODATION_TYPE, ac.ADDRESS, ai.IMAGE_FILE
+        ac.ACCOMMODATION_ADMIN_NO, ac.NAME, ac.ACCOMMODATION_TYPE, ac.ADDRESS, ai.AC_IMAGE_FILE
     </select>
 
 

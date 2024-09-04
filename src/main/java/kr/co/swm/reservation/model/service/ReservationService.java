@@ -26,4 +26,11 @@ public interface ReservationService {
 
     int paymentDetail(PaymentDto paymentDto, int paymentNo);
 
+    int refund(Long cancelBy, int bookingNo,int  cancelAmount);
+
+    SellerDto paymentInfo(int bookingNo);
+
+    void updateReservation(int bookingNo);
+
+    void reserveUpdate(int paymentNo);
 }

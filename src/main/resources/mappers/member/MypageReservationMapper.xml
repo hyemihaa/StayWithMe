@@ -21,6 +21,9 @@
         <result column="CHECK_OUT_DATE" property="reserveCheckOut"/>
         <result column="RESULT_AMOUNT" property="reserveAmount"/>
         <result column="RESERVATION_STATUS" property="reservationStatus"/>
+        <result column="BOOKING_NO" property="bookingNo"/>
+        <result column="APPROVAL_NO" property="approvalCode"/>
+
 
         <!-- 숙소 이미지 정보 매핑 -->
         <association property="accommodationImageDto" javaType="kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto">
@@ -47,18 +50,24 @@
         r.MAX_OCCUPANCY,
         re.RESULT_AMOUNT,
 
-        ai.IMAGE_FILE,
-        ai.UPLOAD_NAME
+            ai.IMAGE_FILE,
+            ai.UPLOAD_NAME,
+            pd.APPROVAL_NO
 
         FROM
-        RESERVE re
-        JOIN
-        ROOM r ON re.ROOM_NO = r.ROOM_NO
-        JOIN
-        accommodation a ON r.ACCOMMODATION_ADMIN_NO = a.ACCOMMODATION_ADMIN_NO
-        LEFT JOIN ACCOMMODATION_IMAGE ai ON a.ACCOMMODATION_ADMIN_NO = ai.ACCOMMODATION_ADMIN_NO
+            RESERVE re
+                JOIN
+            ROOM r ON re.ROOM_NO = r.ROOM_NO
+                JOIN
+            accommodation a ON r.ACCOMMODATION_ADMIN_NO = a.ACCOMMODATION_ADMIN_NO
+                LEFT JOIN ACCOMMODATION_IMAGE ai ON a.ACCOMMODATION_ADMIN_NO = ai.ACCOMMODATION_ADMIN_NO
+                JOIN
+            payment p ON re.BOOKING_NO = p.BOOKING_NO
+                JOin
+            payment_detail pd ON p.PAYMENT_NO = pd.PAYMENT_NO
         WHERE
-        re.USER_NO = #{userNo}
+            re.USER_NO = #{userNo}
+
     </select>
 
 </mapper>
