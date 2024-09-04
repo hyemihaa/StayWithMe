@@ -75,9 +75,9 @@ public class ListServiceImpl implements ListService {
 
     // 검색 조건에 부합하는 게시물 정보 조회
     @Override
-    public List<ListDTO> getList(MainSearchDTO mainSearchDTO) {
+    public List<ListDTO> getList(MainSearchDTO mainSearchDTO, int boardLimit, int offset) {
 
-        List<ListDTO> getList = listMapper.getList(mainSearchDTO);
+        List<ListDTO> getList = listMapper.getList(mainSearchDTO, boardLimit, offset);
         for(ListDTO item : getList) {
             System.out.println("========== ServiceImpl Get List ==========");
             System.out.println("Board Name : " + item.getBoardName());

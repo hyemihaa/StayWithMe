@@ -23,4 +23,7 @@ public class ListDTO {
 
     private String filePath = "C:\\dev\\work-space\\FinalProject\\src\\main\\resources\\static\\accommodationImages\\";    // 파일경로
     private String fileName;    // 파일 명
+
+    private int limit;
+    private int offset;
 }

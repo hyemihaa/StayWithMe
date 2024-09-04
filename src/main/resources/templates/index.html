@@ -4,7 +4,6 @@
 	<title>Stay With Me</title>
 	<div th:include="fragments/css.html :: css"></div>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-	<link rel="icon" th:href="@{/images/favicon-16x16.png}" sizes="16x16" type="image/png">
 </head>
 <body>
 
@@ -28,7 +27,7 @@
 
 				<!-- 새 폼 구조 -->
 				<div class="block-17 my-4">
-					<form th:action="@{/get-list}" method="post" class="d-block">
+					<form th:action="@{/get-list}" method="get" class="d-block">
 						<div class="search-box-top">
 							<input type="text" class="checkin-date-input" name="checkInDate" placeholder="체크인 날짜">
 							<input type="text" class="checkout-date-input" name="checkOutDate" placeholder="체크아웃 날짜">
@@ -48,7 +47,7 @@
 
 				<p>Or browse the highlights</p>
 				<p class="browse d-md-flex">
-				<form th:action="@{/get-list}" method="post" id="typeForm">
+				<form th:action="@{/get-list}" method="get" id="typeForm">
 					<input type="hidden" name="type" id="type" />
 					<button type="button" class="btn btn-link lodging_btn" onclick="submitType('호텔')">
 						<i class="flaticon-hotel"></i> 호텔
