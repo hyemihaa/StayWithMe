@@ -20,13 +20,14 @@
         <result column="CHECK_IN_DATE" property="reserveCheckIn"/>
         <result column="CHECK_OUT_DATE" property="reserveCheckOut"/>
         <result column="RESULT_AMOUNT" property="reserveAmount"/>
+        <result column="RESERVATION_STATUS" property="reservationStatus"/>
         <result column="BOOKING_NO" property="bookingNo"/>
         <result column="APPROVAL_NO" property="approvalCode"/>
 
 
         <!-- 숙소 이미지 정보 매핑 -->
         <association property="accommodationImageDto" javaType="kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto">
-            <result column="IMAGE_FILE" property="uploadUniqueName"/>
+            <result column="AC_IMAGE_FILE" property="uploadUniqueName"/>
             <result column="UPLOAD_NAME" property="uploadImagePath"/>
         </association>
 
@@ -35,20 +36,21 @@
     <!--사용자의 예약 내역-->
     <select id="getUserReservation" resultMap="UserReservation">
         SELECT
-            re.BOOKING_NO,
-            re.ROOM_NO,
-            r.ACCOMMODATION_ADMIN_NO,
-            a.NAME,
-            r.ROOM_NAME AS room_name,
-            re.CHECK_IN_DATE,
-            re.CHECK_OUT_DATE,
-            r.CHECK_IN_TIME,
-            r.CHECK_OUT_TIME,
-            r.STANDARD_OCCUPANCY,
-            r.MAX_OCCUPANCY,
-            re.RESULT_AMOUNT,
+        re.RESERVATION_STATUS,
+        re.BOOKING_NO,
+        re.ROOM_NO,
+        r.ACCOMMODATION_ADMIN_NO,
+        a.NAME,
+        r.ROOM_NAME AS room_name,
+        re.CHECK_IN_DATE,
+        re.CHECK_OUT_DATE,
+        r.CHECK_IN_TIME,
+        r.CHECK_OUT_TIME,
+        r.STANDARD_OCCUPANCY,
+        r.MAX_OCCUPANCY,
+        re.RESULT_AMOUNT,
 
-            ai.IMAGE_FILE,
+            ai.AC_IMAGE_FILE,
             ai.UPLOAD_NAME,
             pd.APPROVAL_NO
 
