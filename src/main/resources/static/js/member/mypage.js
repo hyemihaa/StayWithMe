@@ -405,7 +405,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 타이머 함수 추가
     let timer;
-    let timeLeft = 1200; // 1200초 (20분)
+    let timeLeft = 180;
 
     function startTimer() {
         const timerDisplay = document.getElementById("timerMsg");
@@ -415,7 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
             clearInterval(timer);
         }
 
-        timerDisplay.innerHTML = "1200초 남음";
+        timerDisplay.innerHTML = "180초 남음";
 
         timer = setInterval(function() {
             timeLeft--;

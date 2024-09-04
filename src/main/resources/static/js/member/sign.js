@@ -120,11 +120,11 @@ function validatePassword() {
 
 // 타이머 함수 추가
 let timer;
-let timeLeft = 1200; // 3분 (180초)
+let timeLeft = 180; // 3분 (180초)
 
 function startTimer() {
     clearInterval(timer); // 이전 타이머가 있다면 초기화
-    timeLeft = 1200; // 시간 초기화
+    timeLeft = 180; // 시간 초기화
 
     const authMsg = document.getElementById("authMsg");
     const authInput = document.getElementById("Authentication");

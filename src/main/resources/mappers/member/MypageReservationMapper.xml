@@ -27,7 +27,7 @@
 
         <!-- 숙소 이미지 정보 매핑 -->
         <association property="accommodationImageDto" javaType="kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto">
-            <result column="IMAGE_FILE" property="uploadUniqueName"/>
+            <result column="AC_IMAGE_FILE" property="uploadUniqueName"/>
             <result column="UPLOAD_NAME" property="uploadImagePath"/>
         </association>
 
@@ -50,7 +50,7 @@
         r.MAX_OCCUPANCY,
         re.RESULT_AMOUNT,
 
-            ai.IMAGE_FILE,
+            ai.AC_IMAGE_FILE,
             ai.UPLOAD_NAME,
             pd.APPROVAL_NO
 
