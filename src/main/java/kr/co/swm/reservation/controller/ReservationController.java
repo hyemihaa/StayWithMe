@@ -39,6 +39,7 @@ public class ReservationController {
     @GetMapping("/reservation")
     public String reservation(@CookieValue(name = "Authorization", required = false)String userKey,
                               @ModelAttribute DetailDTO detailDTO,
+
                               Model model) {
 
         Long userNo = jwtUtil.getUserNoFromToken(userKey);
@@ -51,17 +52,12 @@ public class ReservationController {
         SellerDto list = reservationService.reserveList(userNo, roomNo);
         UserDTO user = reservationService.userInfo(userNo);
 
-        // 하드코딩
-        String checkIn = "2024-08-24";
-        String checkOut = "2024-08-26";
-
-
         model.addAttribute("coupons", coupons);
         model.addAttribute("list", list);
         model.addAttribute("user", user);
         model.addAttribute("price", amount);
-        model.addAttribute("checkIn", checkIn);
-        model.addAttribute("checkOut", checkOut);
+        model.addAttribute("checkIn", detailDTO.getBoardCheckIn());
+        model.addAttribute("checkOut", detailDTO.getBoardCheckOut());
         model.addAttribute("payment", new PaymentDto());
 
         return "reservation";
@@ -97,12 +93,6 @@ public class ReservationController {
         int reserveAmount = reservationData.getFinalPrice();
 
         // 받아온 데이터를 로그로 출력하거나 다른 로직을 수행할 수 있습니다.
-        System.out.println("Check-in Date: " + reserveCheckIn);
-        System.out.println("Check-out Date: " + reserveCheckOut);
-        System.out.println("Final Price: " + reserveAmount);
-        System.out.println("room number: " + reserveRoomNo);
-        System.out.println("couponId: " + couponId);
-
         SellerDto sellerDto = new SellerDto(reserveCheckIn, reserveCheckOut, reserveRoomNo, reserveAmount);
 
 
@@ -112,6 +102,7 @@ public class ReservationController {
 
         // 여기서 필요한 예약 처리 로직을 수행합니다.
         // 예: 데이터베이스에 저장, 추가 검증 등
+        System.out.println("reservationNo = " + reservationNo);
 
         // 예약 처리 결과를 반환합니다.
         Map<String, Object> response = new HashMap<>();
@@ -133,11 +124,14 @@ public class ReservationController {
         int reservationNo = paymentDto.getReservationNo();
         String uid = paymentDto.getUid();
         String method = paymentDto.getMethod();
+        System.out.println("peicae : " + basicPrice);
+        System.out.println("peicae : " + discountPrice);
+        System.out.println("peicae : " + finalPrice);
 
         PaymentDto paymentPrices = new PaymentDto(finalPrice, basicPrice, discountPrice);
 
         // 결제 테이블 인입
-        int reservationSave = reservationService.paymentSave(paymentPrices , reservationNo);
+        int reservationSave = reservationService.paymentSave(paymentPrices, reservationNo);
         int paymentNo = paymentPrices.getPaymentNo();
 
         // 결제 승인 테이블 인입

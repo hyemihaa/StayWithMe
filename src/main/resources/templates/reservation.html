@@ -361,8 +361,10 @@
             <h3 id="product-name" th:text="${list.roomName}"></h3>
             <div class="form-inline">
                 <label for="check-out"> 일정 </label>
-                <span th:text="${checkIn}" id="checkInDate">&nbsp;:&nbsp;</span><input type="text" id="check-out" th:value="${list.roomCheckIn}" style="border: none; display: block;" readonly /><br>
-                <span th:text="${checkOut}" id="checkOutDate">&nbsp;:&nbsp;</span><input type="text" id="check" th:value="${list.roomCheckOut}" style="border: none;" readonly />
+                <span th:text="${checkIn}">&nbsp;:&nbsp;</span><input type="text" id="check-out" th:value="${list.roomCheckIn}" style="border: none; display: block;" readonly /><br>
+                <span th:text="${checkOut}">&nbsp;:&nbsp;</span><input type="text" id="check" th:value="${list.roomCheckOut}" style="border: none;" readonly />
+                <input type="hidden" id="checkInDate" name="reserveCheckOut" th:value="${checkIn}">
+                <input type="hidden" id="checkOutDate" name="reserveCheckOut" th:value="${checkOut}">
             </div>
         </div>
 
@@ -695,9 +697,10 @@
     }
 
     function reserveSave() {
-        const checkInDate = document.getElementById("checkInDate").textContent;
-        const checkOutDate = document.getElementById("checkOutDate").textContent;
+        const checkInDate = document.getElementById("checkInDate").value;
+        const checkOutDate = document.getElementById("checkOutDate").value;
         const roomNo = document.getElementById("roomNo").value;
+        console.log(checkInDate)
 
         // 데이터 객체를 만듭니다.
         const data = {
@@ -719,6 +722,7 @@
                 // 서버에서 긍정적인 응답을 받으면 결제 함수 호출
                 if (response.status === "success") {
                     var reNo = response.saveNo;
+                    console.log("reNo : " + reNo)
                     let finalAmount = response.reserveAmount;
                     requestPay(reNo, finalAmount);
                 } else {
@@ -741,6 +745,8 @@
         const userName = document.getElementById("name").value;
         const phone = document.getElementById("phone").value;
         const merchantUID = generateMerchantUID();
+
+        console.log("sadasdadas")
 
         // hidden input 생성
         let form = document.getElementById('terms-form');
