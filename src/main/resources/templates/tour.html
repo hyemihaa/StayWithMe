@@ -21,229 +21,131 @@
 <section>
     <div class="container">
         <div class="row">
+            <!-- 사이드바(필터) -->
             <div class="col-lg-3 sidebar ftco-animate">
                 <div class="sidebar-wrap bg-light ftco-animate">
                     <h3 class="heading mb-4">필터</h3>
-
                     <!-- 필터 폼 -->
                     <form id="searchForm" th:object="${mainSearchDTO}" autocomplete="off">
                         <div class="fields">
-                            <!-- 체크인 및 체크아웃 날짜 필터 추가 -->
+                            <!-- 체크인 및 체크아웃 날짜 필터 -->
                             <h5>체크인/체크아웃 날짜</h5>
                             <div class="check-date-group">
                                 <div class="checkin-group">
                                     <label for="checkInDate">체크인</label>
-                                    <input type="text" id="checkInDate" th:field="*{checkInDate}" name="checkInDate" placeholder="체크인 날짜" class="checkin-date-input">
+                                    <input type="text" id="checkInDate" th:field="*{checkInDate}" name="checkInDate"
+                                           placeholder="체크인 날짜" class="checkin-date-input">
                                 </div>
                                 <div class="checkout-group">
                                     <label for="checkOutDate">체크아웃</label>
-                                    <input type="text" id="checkOutDate" th:field="*{checkOutDate}" name="checkOutDate" placeholder="체크아웃 날짜" class="checkout-date-input">
+                                    <input type="text" id="checkOutDate" th:field="*{checkOutDate}" name="checkOutDate"
+                                           placeholder="체크아웃 날짜" class="checkout-date-input">
                                 </div>
                             </div>
 
-                            <!-- 숙박 인원 조절 -->
+                            <!-- 숙박 인원 선택 -->
                             <h5>숙박 인원</h5>
                             <div class="guest-input-container">
                                 <button type="button" id="decrease-guests" class="guest-btn">-</button>
-                                <input type="text" class="personnel-input" id="guest-count" th:field="*{personnel}" name="personnel" value="1" readonly>
+                                <input type="text" class="personnel-input" id="guest-count" th:field="*{personnel}"
+                                       name="personnel" value="1" readonly>
                                 <button type="button" id="increase-guests" class="guest-btn">+</button>
                             </div>
 
-                            <!-- 숙소 유형 라디오버튼 -->
+                            <!-- 숙소 유형 필터 -->
                             <h5>숙소유형</h5>
                             <div class="form-group">
                                 <div class="select-wrap one-third">
                                     <div>
-                                        <input type="radio" name="type" value="" id="all" th:checked="${mainSearchDTO.type == null or mainSearchDTO.type.isEmpty() or mainSearchDTO.type == '전체'}">
+                                        <input type="radio" name="type" value="" id="all"
+                                               th:checked="${mainSearchDTO.type == null or mainSearchDTO.type.isEmpty() or mainSearchDTO.type == '전체'}">
                                         <label for="all">전체</label><br>
                                     </div>
                                     <div>
-                                        <input type="radio" name="type" value="호텔" id="hotel" th:checked="${mainSearchDTO.type == '호텔'}">
+                                        <input type="radio" name="type" value="호텔" id="hotel"
+                                               th:checked="${mainSearchDTO.type == '호텔'}">
                                         <label for="hotel">호텔</label><br>
                                     </div>
                                     <div>
-                                        <input type="radio" name="type" value="리조트" id="resort" th:checked="${mainSearchDTO.type == '리조트'}">
+                                        <input type="radio" name="type" value="리조트" id="resort"
+                                               th:checked="${mainSearchDTO.type == '리조트'}">
                                         <label for="resort">리조트</label><br>
                                     </div>
                                     <div>
-                                        <input type="radio" name="type" value="펜션" id="pension" th:checked="${mainSearchDTO.type == '펜션'}">
+                                        <input type="radio" name="type" value="펜션" id="pension"
+                                               th:checked="${mainSearchDTO.type == '펜션'}">
                                         <label for="pension">펜션</label><br>
                                     </div>
                                     <div>
-                                        <input type="radio" name="type" value="모텔" id="motel" th:checked="${mainSearchDTO.type == '모텔'}">
+                                        <input type="radio" name="type" value="모텔" id="motel"
+                                               th:checked="${mainSearchDTO.type == '모텔'}">
                                         <label for="motel">모텔</label><br>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- 가격 양방향 범위 슬라이드 영역 -->
+                            <!-- 가격 슬라이더 -->
                             <div class="form-group">
                                 <h5>가격(￦)</h5>
                                 <div class="range-slider">
                                     <div class="slider-inputs">
-                                        <input type="range" th:field="*{minRate}" value="0" min="0" max="1000000" step="1000"/>
-                                        <input type="range" th:field="*{maxRate}" value="1000000" min="0" max="1000000" step="1000"/>
+                                        <input type="range" th:field="*{minRate}" value="0" min="0" max="1000000"
+                                               step="1000"/>
+                                        <input type="range" th:field="*{maxRate}" value="1000000" min="0" max="1000000"
+                                               step="1000"/>
                                     </div>
                                     <div class="price-inputs">
                                         <div class="min-price">
                                             <input type="number" th:field="*{minRate}" value="0" min="0" max="1000000"/>
                                         </div>
                                         <div class="max-price">
-                                            <input type="number" th:field="*{maxRate}" value="1000000" min="0" max="1000000"/>
+                                            <input type="number" th:field="*{maxRate}" value="1000000" min="0"
+                                                   max="1000000"/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- 옵션 선택영역  -->
+                            <!-- 옵션 선택 -->
                             <h5 id="toggle-options-title">옵션</h5>
                             <div class="form-group option_box">
                                 <div id="toggle-options-content" class="toggle-options-content">
                                     <div th:each="facility : ${uniqueFacilities}">
                                         <div class="toggle">
-                                            <input type="checkbox" name="options" th:field="*{options}" th:value="${facility}" th:id="${facility}" class="toggle-input">
-                                            <label th:for="${facility}" th:text="${facility}" class="toggle-label"></label>
+                                            <input type="checkbox" name="options" th:field="*{options}"
+                                                   th:value="${facility}" th:id="${facility}" class="toggle-input">
+                                            <label th:for="${facility}" th:text="${facility}"
+                                                   class="toggle-label"></label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- 서치 버튼 -->
+
+                            <!-- 검색 버튼 -->
                             <div class="form-group option_box">
-                                <button type="button" id="searchButton" class="btn btn-primary py-3 px-5">Search</button>
+                                <button type="button" id="searchButton" class="btn btn-primary py-3 px-5">Search
+                                </button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
 
-
-
-			<!-- 숙박 상품 리스트 -->
-			<div class="col-lg-9">
-				<div class="col-md-4 ftco-animate">
-					<div class="col-md-6"></div>
-				</div>
-				<div class="row">
-					<!-- 상품리스트 1칸 -->
-					<div class="col-md-4 ftco-animate">
-						<div class="destination" th:each="place : ${place}">
-							<!-- 이미지 영역 -->
-							<a id="getDetail"  th:onclick="'getDetail(event, \'' + ${place.boardNo} + '\')'" href="#"
-							   class="img img-3 d-flex justify-content-center align-items-center"
-							   th:style="|background-image: url('/accommodationImages/${place.fileName}');|">
-								<div class="icon d-flex justify-content-center align-items-center">
-									<span class="icon-search2"></span>
-								</div>
-							</a>
-            <!-- 숙박 상품 리스트 -->
-            <div class="col-lg-9" id="content">
-                <!-- AJAX로 로드된 컨텐츠가 여기에 추가됩니다 -->
-                <div th:each="place : ${place}">
-                    <div class="destination">
-                        <!-- 이미지 영역 -->
-                        <a th:href="@{/hotel-single(boardNo=${place.boardNo})}"
-                           class="img img-3 d-flex justify-content-center align-items-center"
-                           th:style="|background-image: url('/accommodationImages/${place.fileName}');|">
-                            <div class="icon d-flex justify-content-center align-items-center">
-                                <span class="icon-search2"></span>
-                            </div>
-                        </a>
-
-							<!-- 텍스트 영역 -->
-							<div class="text-tour p-3">
-								<div class="d-flex">
-									<div class="one">
-										<input type="hidden" id="boardNo" th:value="${place.boardNo}">
-										<h3> <a href="#" id="hotel-link" th:text="${place.boardName}"></a>
-										</h3>
-									</div>
-									<div class="two">
-										<p th:text="${place.boardType}"></p>
-									</div>
-								</div>
-								<span><i class="icon-map-o"></i> &nbsp; <span th:text="${place.boardAddress}"></span></span>
-								<p class="days"><span>체크인: &nbsp; <span th:text="${place.boardCheckIn}"></span></span></p>
-								<hr>
-								<!-- 최저 기본값 영역 -->
-								<span class="price" style="font-weight:bold; font-size: 17px;" th:each="cost: ${cost}">
-                        <span th:text="${place.boardCount}"></span>원~
-                        <span style="font-size: 10px;">&nbsp;/&nbsp;1박</span>
-                    </span>
-								<p class="bottom-area d-flex">
-									<span class="ml-auto"><a th:href="@{/hotel-single(boardNo=${place.boardNo})}">자세히보기</a></span>
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-
-
-			<!-- 페이지네이션 영역 -->
-				<div class="row mt-5">
-					<div class="col text-center">
-						<div class="block-27">
-							<ul>
-								<!-- 왼쪽 버튼 -->
-								<li>
-									<a th:if="${pi.currentPage == 1}" href="#">&lt;</a>
-									<a th:if="${pi.currentPage > 1}"
-									   th:href="@{/tour(currentPage=${pi.currentPage-1}, type=${searchDTO.type}, minRate=${searchDTO.minRate}, maxRate=${searchDTO.maxRate}, options=${searchDTO.options})}">&lt;</a>
-								</li>
-								<!-- 가운데 페이지 버튼 -->
-								<li th:each="page : ${#numbers.sequence(pi.startPage, pi.endPage)}"
-									th:class="${page == pi.currentPage} ? 'active' : ''">
-									<a th:href="@{/tour(currentPage=${page}, type=${searchDTO.type}, minRate=${searchDTO.minRate}, maxRate=${searchDTO.maxRate}, options=${searchDTO.options})}"
-									   th:text="${page}"></a>
-								</li>
-
-								<!-- 오른쪽 버튼 -->
-								<li>
-									<a th:if="${pi.currentPage == pi.maxPage}" href="#">&gt;</a>
-									<a th:if="${pi.currentPage < pi.maxPage}"
-									   th:href="@{/tour(currentPage=${pi.currentPage+1}, type=${searchDTO.type}, minRate=${searchDTO.minRate}, maxRate=${searchDTO.maxRate}, options=${searchDTO.options})}">&gt;</a>
-								</li>
-							</ul>
-						</div>
-
-					</div>
-				</div>
-			</div> <!-- .col-md-8 -->
-		</div>
-	</div>
-</section> <!-- .section -->
-                        <!-- 텍스트 영역 -->
-                        <div class="text-tour p-3">
-                            <div class="d-flex">
-                                <div class="one">
-                                    <h3><a th:href="@{/hotel-single(boardNo=${place.boardNo})}" th:text="${place.boardName}"></a></h3>
-                                </div>
-                                <div class="two">
-                                    <p th:text="${place.boardType}"></p>
-                                </div>
-                            </div>
-                            <span><i class="icon-map-o"></i> &nbsp; <span th:text="${place.boardAddress}"></span></span>
-                            <hr>
-                            <!-- 최저 기본값 영역 -->
-                            <span class="price" style="font-weight:bold; font-size: 17px;">
-                                <span th:text="${place.boardCount}"></span>원~
-                                <span style="font-size: 10px;">&nbsp;/&nbsp;1박</span>
-                            </span>
-                            <p class="bottom-area d-flex">
-                                <span class="ml-auto"><a th:href="@{/hotel-single(boardNo=${place.boardNo})}">자세히보기</a></span>
-                            </p>
-                        </div>
-                    </div>
+            <!-- 숙소 리스트 출력 -->
+            <div class="col-lg-9">
+                <div id="content" class="row">
+                    <!-- 숙소 리스트가 여기에 동적으로 추가됩니다 -->
                 </div>
             </div>
-            <!-- 로더 표시 -->
+
+            <!-- 로더 아이콘 -->
             <div id="loader" style="text-align:center; display:none;">
                 <img th:src="@{/css/ajax-loader.gif}" alt="Loading...">
             </div>
         </div>
     </div>
 </section>
+
 
 
 <div th:include="fragments/footer.html :: footer"></div>
@@ -266,14 +168,14 @@
 </body>
 </html>
 <script>
-	function getDetail(event, boardNo) {
+    function getDetail(event, boardNo) {
 
-		const checkInDate = document.getElementById('checkInDate').value;
-		const checkOutDate = document.getElementById('checkOutDate').value;
+        const checkInDate = document.getElementById('checkInDate').value;
+        const checkOutDate = document.getElementById('checkOutDate').value;
 
-		var link = document.getElementById('getDetail');
-		link.href = '/hotel-single?boardNo=' + encodeURIComponent(boardNo) + '&checkInDate=' + encodeURIComponent(checkInDate)+ '&checkOutDate=' + encodeURIComponent(checkOutDate);
+        var link = document.getElementById('getDetail');
+        link.href = '/hotel-single?boardNo=' + encodeURIComponent(boardNo) + '&checkInDate=' + encodeURIComponent(checkInDate)+ '&checkOutDate=' + encodeURIComponent(checkOutDate);
 
-		window.location.href = link.href;
-	}
+        window.location.href = link.href;
+    }
 </script>

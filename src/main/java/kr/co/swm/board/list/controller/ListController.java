@@ -2,8 +2,6 @@ package kr.co.swm.board.list.controller;
 
 import kr.co.swm.board.list.model.DTO.ListDTO;
 import kr.co.swm.board.list.model.DTO.MainSearchDTO;
-import kr.co.swm.board.list.model.DTO.PageInfoDTO;
-import kr.co.swm.board.list.model.DTO.SearchDTO;
 import kr.co.swm.board.list.model.sevice.ListService;
 import kr.co.swm.board.list.util.Pagenation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +11,12 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @CrossOrigin
@@ -207,8 +205,26 @@ public class ListController {
 
     @GetMapping("/get-list")
     public String getList(Model model,
-                          @RequestParam(value="currentPage", defaultValue="1") int currentPage,
+                          @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
                           @ModelAttribute MainSearchDTO mainSearchDTO) {
+
+        System.out.println("=============== Controller Main SearchDTO ===============");
+
+        // String 타입의 날짜를 LocalDate로 변환할 필요가 없으므로 Optional로 감싸기만 함
+        Optional<LocalDate> checkInDate = Optional.ofNullable(mainSearchDTO.getCheckInDate());
+        Optional<LocalDate> checkOutDate = Optional.ofNullable(mainSearchDTO.getCheckOutDate());
+
+        System.out.println("Check In : " + checkInDate.orElse(null));
+        System.out.println("Check Out : " + checkOutDate.orElse(null));
+        System.out.println("Personnel : " + mainSearchDTO.getPersonnel());
+        System.out.println("Search Text : " + Optional.ofNullable(mainSearchDTO.getMainSearch()).orElse("N/A"));
+        System.out.println("==========================================================");
+
+        // 날짜 필드의 유효성 검사
+        if (checkInDate.isEmpty() || checkOutDate.isEmpty()) {
+            model.addAttribute("errorMessage", "Check-in and check-out dates are required.");
+            return "error"; // 에러 페이지로 리다이렉트
+        }
 
         // 한번에 로드할 게시물 수 설정
         int boardLimit = 10;
@@ -219,11 +235,20 @@ public class ListController {
         // 날짜 기준 필터링 된 업소 리스트 조회
         List<ListDTO> place = listService.getList(mainSearchDTO, boardLimit, offset);
 
+        // 디버그용 로그: 조회된 이미지 파일 출력
+        if (place.isEmpty()) {
+            System.out.println("No places found matching the search criteria.");
+        } else {
+            for (ListDTO item : place) {
+                System.out.println("Image : " + item.getFileName());
+            }
+        }
+
         // 부가시설 조회
         List<String> uniqueFacilities = listService.getFacilities(mainSearchDTO);
 
         // 데이터 바인딩
-        model.addAttribute("place", place);
+        model.addAttribute("placeList", place);
         model.addAttribute("uniqueFacilities", uniqueFacilities);
         model.addAttribute("mainSearchDTO", mainSearchDTO);
 

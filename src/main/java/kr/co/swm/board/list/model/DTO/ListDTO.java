@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -16,10 +17,12 @@ public class ListDTO {
     private String boardAddress;    //  숙박 주소
     private String boardCheckIn;   //  체크인 시간
     private int boardCount; //  최저 기본 가격
+    private String boardStatus; // 예약 상태
+    private int personnel;
     private String options;
 
-    private String checkinDate;  // 체크인 날짜
-    private String checkoutDate; // 체크아웃 날짜
+    private LocalDate checkinDate;  // 체크인 날짜
+    private LocalDate checkoutDate; // 체크아웃 날짜
 
     private String filePath = "C:\\dev\\work-space\\FinalProject\\src\\main\\resources\\static\\accommodationImages\\";    // 파일경로
     private String fileName;    // 파일 명

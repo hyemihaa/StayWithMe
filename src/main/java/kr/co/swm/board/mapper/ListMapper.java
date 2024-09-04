@@ -27,7 +27,7 @@ public interface ListMapper {
 
 
 
-  int getListCount(@Param("mainSearchDTO") MainSearchDTO mainSearchDTO);
+  List<ListDTO> getReservationStatus(@Param("mainSearchDTO") MainSearchDTO mainSearchDTO);
 
   List<ListDTO> getList(@Param("mainSearchDTO") MainSearchDTO mainSearchDTO, @Param("limit") int limit,
                         @Param("offset") int offset);

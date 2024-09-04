@@ -23,7 +23,7 @@ public interface ListService {
 
 
     // 게시물 수 조회
-    int getListCount(MainSearchDTO mainSearchDTO);
+//    int getListCount(MainSearchDTO mainSearchDTO);
     // 게시물 데이터 조회
     List<ListDTO> getList(MainSearchDTO mainSearchDTO, int boardLimit, int offset);
     // 부가시설 조회

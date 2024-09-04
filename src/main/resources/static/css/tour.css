@@ -315,3 +315,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     width: auto !important;
     height: auto !important;
 }
+
+#content {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 200px;
+    height: auto;
+}
+
+.destination {
+    margin-bottom: 20px; /* 각 카드 사이에 여백 추가 */
+}
