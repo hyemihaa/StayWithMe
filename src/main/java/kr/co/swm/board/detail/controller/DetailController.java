@@ -1,6 +1,7 @@
 package kr.co.swm.board.detail.controller;
 
 
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import kr.co.swm.board.detail.model.service.DetailService;
 import kr.co.swm.board.list.model.DTO.SearchDTO;
@@ -9,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -29,17 +32,29 @@ public class DetailController {
 
     @GetMapping("/hotel-single")
     public String detail(@RequestParam("boardNo") int boardNo,
-                         SearchDTO searchDto,
+                         @RequestParam(value = "checkInDate", required = false) String checkInDate,
+                         @RequestParam(value = "checkOutDate", required = false) String checkOutDate,
                          Model model) {
 
 
+
         // 몇박 개수 구하기
-        LocalDate startDates = LocalDate.parse(searchDto.getCheckInDate());
-        LocalDate endDates = LocalDate.parse(searchDto.getCheckOutDate());
+        LocalDate startDates = LocalDate.parse(checkInDate);
+        LocalDate endDates = LocalDate.parse(checkOutDate);
         long nights = calculateNights(startDates, endDates);
 
+        String checkIn = String.valueOf(startDates);
+        String checkOut = String.valueOf(endDates);
+
+
+        System.out.println("aaaaaaaaa : " + checkIn);
+
+
+        List<DetailDTO> mainImages = detailService.getImages(boardNo);
+
+
         //  장소 불러오기
-        List<DetailDTO> place = detailService.getPlace(boardNo, nights);
+        List<DetailDTO> place = detailService.getPlace(boardNo, nights, checkIn, checkOut);
 
         //  하단 관련 장소
         List<DetailDTO> subPlace = detailService.getSubPlace(boardNo);
@@ -59,10 +74,11 @@ public class DetailController {
         List<DetailDTO> facilities = detailService.getFacilities(boardNo);
 
         //  데이터 바인딩
-        model.addAttribute("place",place);
-        model.addAttribute("post",post);
-        model.addAttribute("facilities",facilities);
-        model.addAttribute("subPlace",subPlace);
+        model.addAttribute("place", place);
+        model.addAttribute("post", post);
+        model.addAttribute("facilities", facilities);
+        model.addAttribute("subPlace", subPlace);
+        model.addAttribute("images", mainImages);
 
         //  각 페이지마다 boardNo에 대한 다른 값 불러오기
         // http://localhost:8080/hotel-single?boardNo=1 이면 boardNo=1

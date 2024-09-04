@@ -29,8 +29,8 @@
 				<div class="block-17 my-4">
 					<form th:action="@{/get-list}" method="get" class="d-block">
 						<div class="search-box-top">
-							<input type="text" class="checkin-date-input" name="checkInDate" placeholder="체크인 날짜">
-							<input type="text" class="checkout-date-input" name="checkOutDate" placeholder="체크아웃 날짜">
+							<input type="text" class="checkin-date-input" name="checkInDate" placeholder="체크인 날짜" required>
+							<input type="text" class="checkout-date-input" name="checkOutDate" placeholder="체크아웃 날짜" required>
 							<div class="guest-input">
 								<button type="button" id="decrease-guests" class="guest-btn">-</button>
 								<input type="text" id="guest-count" name="personnel" value="1" readonly>

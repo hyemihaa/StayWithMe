@@ -280,7 +280,7 @@ function renderReservation(reservation) {
                                 금액: <strong><span style="font-size: 1.2em;">${reservation.reserveAmount}원</span></strong>
                            </p>
                            <div class="button-group" style="float: right;">
-                                <button class="btn-danger" onclick="cancelReservation(${reservation.reserveRoomNo})">예약 취소</button>
+                                <button class="btn-danger" type="button" onclick="requestRefund(${reservation.bookingNo}, '${reservation.approvalCode}', ${reservation.reserveAmount} )">예약 취소</button>
                                 <button class="btn-primary" onclick="viewReservationDetails(${reservation.accommodationNo})">예약 상세</button>
                            </div>
                        </div>
@@ -289,6 +289,7 @@ function renderReservation(reservation) {
                   reservationList.innerHTML += reservationItem; // 예약 리스트 항목 추가
         });
     }
+
 }
   // 예약 상세 페이지로 이동
     function viewReservationDetails(accommodationNo) {
@@ -335,6 +336,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById("timerMsg").innerHTML = '';
         clearInterval(timer);
     });
+
+
 
     // 새로운 비밀번호 유효성 검사 함수
     function validatePassword() {

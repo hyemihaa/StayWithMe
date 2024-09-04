@@ -16,11 +16,9 @@
         <result column="MIN_PURCHASE_PRICE" property="couponMinimumAmount"></result>
         <result column="COUPON_NO" property="couponNo"></result>
         <result column="USE_YN" property="useYN"></result>
-
     </resultMap>
 
     <resultMap id="reservation" type="kr.co.swm.model.dto.SellerDto">
-
         <!-- 숙소 정보 -->
         <result column="NAME" property="accommodationName"/>
         <result column="ACCOMMODATION_TYPE" property="accommodationType"/>
@@ -123,5 +121,39 @@
                                            #{payment.finalPrice}
                                           )
     </insert>
+    <insert id="refund" >
+        <selectKey keyProperty="cancelBy" resultType="String" order="BEFORE">
+            SELECT user_name
+            FROM user
+            WHERE user_no = #{userNo}
+        </selectKey>
+
+        insert into cancel values (
+                                      null,
+                                      #{bookingNo},
+                                      #{cancelAmount},
+                                      NOW(),
+                                      #{cancelBy}
+                                  )
+    </insert>
+
+    <select id="paymentInfo" resultMap="reservation">
+        SELECT
+    </select>
+
+    <update id="updateReservation" >
+        update reserve
+        set reservation_status = "예약취소",
+            reservation_cancellation_date = NOW()
+            reservation_cancellation_date = NOW()
+        where booking_no = #{bookingNo}
+    </update>
+
+    <update id="reserveUpdate" >
+        update reserve
+        set reservation_date = NOW()
+        where booking_no = #{paymentNo}
+    </update>
+
 </mapper>
 

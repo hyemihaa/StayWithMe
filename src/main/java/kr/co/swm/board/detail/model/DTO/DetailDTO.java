@@ -24,8 +24,15 @@ public class DetailDTO {
     private String boardInfo;   // 정보
     private int roomNo;
 
-    private String filePath;    // 파일경로
-    private String fileName;    // 파일 명
+    public DetailDTO(String boardCheckIn, String boardCheckOut) {
+        this.boardCheckIn = boardCheckIn;
+        this.boardCheckOut = boardCheckOut;
+    }
+
+    private int imageNo;
+    private String accommodationImageName;    // 업소 사진 파일 명
+    private String roomsImageName;    // 객실 사진 파일 명
+    private String imagePath = "/accommodationImages/";     // 사진 파일경로
 
 
     private double lat;   // 위도

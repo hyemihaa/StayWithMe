@@ -1,11 +1,13 @@
 package kr.co.swm.board.detail.model.service;
 
+import kr.co.swm.adminPage.accommodation.model.dto.AccommodationImageDto;
 import kr.co.swm.board.detail.model.DTO.DetailDTO;
 import kr.co.swm.board.mapper.DetailMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -21,8 +23,8 @@ public class DetailServiceImpl implements DetailService{
 
     //  장소 불러오기
    @Override
-   public List<DetailDTO> getPlace(int boardNo, long nights) {
-       List<DetailDTO> list = detailMapper.getPlace(boardNo, nights);
+   public List<DetailDTO> getPlace(int boardNo, long nights, String checkInDate, String checkOutDate) {
+       List<DetailDTO> list = detailMapper.getPlace(boardNo, nights, checkInDate, checkOutDate);
        for(DetailDTO item : list) {
            System.out.println("========== ServiceImpl Detail List ==========");
            System.out.println("Board Name : " + item.getBoardName());
@@ -56,5 +58,13 @@ public class DetailServiceImpl implements DetailService{
         return detailMapper.getSubPlace(boardNo);
     }
 
+    @Override
+    public List<DetailDTO> getImages(int boardNo) {
+        return detailMapper.getMainImages(boardNo);
+    }
 
+    @Override
+    public List<DetailDTO> getRoomImages(int roomNo) {
+        return detailMapper.getRoomImages(roomNo);
+    }
 }
