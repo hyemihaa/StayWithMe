@@ -39,7 +39,7 @@ public class SecurityConfig {
                                 .requestMatchers("/", "/sms/send", "/signin", "/signup", "/idcheck", "/signform", "/lostpass", "/find-userId", "find-password", "/logout-success").permitAll()
                                 .requestMatchers("/tour","/hotel-single/**", "/get-list").permitAll()
                                 .requestMatchers("/enroll", "/save-location", "/couponList", "/addCoupon", "/add-all").permitAll()
-                                .requestMatchers("/static/**", "/web-login").permitAll()
+                                .requestMatchers("/static/**", "/web-login", "/accommodationImages/**").permitAll()
                                 .requestMatchers("/member/mypage", "/mypage", "/update-profile","/update-phone", "/update-password", "/login-log", "/withdraw-account", "/coupons", "/reservation-list").hasRole("USER") // 일반유저 권한을 가진 사용자만 접근 (추후 수정)
                                 .requestMatchers("/seller-main.do", "/reservation.do", "/reservation-search.do", "/reservation-daily.do", "/reservation-monthly.do", "/basic-rate-list.do", "/getRoomRates", "/basic-rate-write.do", "/season-period.do", "/extra-delete", "/periods-update", "/reservation-monthly-data").hasRole("ACCOMMODATION_ADMIN")
                                 .requestMatchers("/web-center", "/web-coupon", "/web-member", "/web-seller", "/web-manager", "/admin-signup", "/web-coupon-save").hasRole("SITE_ADMIN") // 사이트 관리자 권한을 가진 사용자만 접근
