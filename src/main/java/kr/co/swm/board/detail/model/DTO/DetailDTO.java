@@ -24,6 +24,10 @@ public class DetailDTO {
     private String boardInfo;   // 정보
     private int roomNo;
 
+    public DetailDTO(String boardCheckIn, String boardCheckOut) {
+        this.boardCheckIn = boardCheckIn;
+        this.boardCheckOut = boardCheckOut;
+    }
 
     private int imageNo;
     private String accommodationImageName;    // 업소 사진 파일 명

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
@@ -33,7 +34,6 @@ public class DetailController {
     public String detail(@RequestParam("boardNo") int boardNo,
                          @RequestParam(value = "checkInDate", required = false) String checkInDate,
                          @RequestParam(value = "checkOutDate", required = false) String checkOutDate,
-                         SearchDTO searchDto,
                          Model model) {
 
 
@@ -43,11 +43,18 @@ public class DetailController {
         LocalDate endDates = LocalDate.parse(checkOutDate);
         long nights = calculateNights(startDates, endDates);
 
+        String checkIn = String.valueOf(startDates);
+        String checkOut = String.valueOf(endDates);
+
+
+        System.out.println("aaaaaaaaa : " + checkIn);
+
+
         List<DetailDTO> mainImages = detailService.getImages(boardNo);
 
 
         //  장소 불러오기
-        List<DetailDTO> place = detailService.getPlace(boardNo, nights);
+        List<DetailDTO> place = detailService.getPlace(boardNo, nights, checkIn, checkOut);
 
         //  하단 관련 장소
         List<DetailDTO> subPlace = detailService.getSubPlace(boardNo);
