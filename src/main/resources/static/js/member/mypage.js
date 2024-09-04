@@ -261,8 +261,16 @@ function renderReservation(reservation) {
         reservationList.style.display = 'none';
     } else {
         noReservation.style.display = 'none'; // 예약이 있을 때 메시지 숨기기
+
         reservation.forEach(function(reservation) {
             const imageUrl = `${reservation.accommodationImageDto.uploadImagePath}${reservation.accommodationImageDto.uploadUniqueName}`;
+
+            // 조건에 따라 버튼을 다르게 추가
+            let cancelButton = '';
+            if (reservation.reservationStatus === 'Confirmed') {
+                cancelButton = `<button class="btn-danger" onclick="cancelReservation(${reservation.reserveRoomNo})">예약 취소</button>`;
+            }
+
             const reservationItem = `
                   <div class="reservation-item">
                        <div class="details">
@@ -280,7 +288,7 @@ function renderReservation(reservation) {
                                 금액: <strong><span style="font-size: 1.2em;">${reservation.reserveAmount}원</span></strong>
                            </p>
                            <div class="button-group" style="float: right;">
-                                <button class="btn-danger" type="button" onclick="requestRefund(${reservation.bookingNo}, '${reservation.approvalCode}', ${reservation.reserveAmount} )">예약 취소</button>
+                                <button class="btn-danger" onclick="cancelReservation(${reservation.reserveRoomNo})">예약 취소</button>
                                 <button class="btn-primary" onclick="viewReservationDetails(${reservation.accommodationNo})">예약 상세</button>
                            </div>
                        </div>
@@ -289,12 +297,19 @@ function renderReservation(reservation) {
                   reservationList.innerHTML += reservationItem; // 예약 리스트 항목 추가
         });
     }
-
 }
   // 예약 상세 페이지로 이동
     function viewReservationDetails(accommodationNo) {
     // 상세 페이지 URL 생성
     const url = `/hotel-single?boardNo=${accommodationNo}`;
+
+    // 해당 URL로 이동
+    window.location.href = url;
+    }
+
+    function findTravelDestinations() {
+
+    const url = `/`;
 
     // 해당 URL로 이동
     window.location.href = url;
@@ -336,8 +351,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById("timerMsg").innerHTML = '';
         clearInterval(timer);
     });
-
-
 
     // 새로운 비밀번호 유효성 검사 함수
     function validatePassword() {
@@ -392,7 +405,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 타이머 함수 추가
     let timer;
-    let timeLeft = 1200; // 1200초 (20분)
+    let timeLeft = 180;
 
     function startTimer() {
         const timerDisplay = document.getElementById("timerMsg");
@@ -402,7 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
             clearInterval(timer);
         }
 
-        timerDisplay.innerHTML = "1200초 남음";
+        timerDisplay.innerHTML = "180초 남음";
 
         timer = setInterval(function() {
             timeLeft--;

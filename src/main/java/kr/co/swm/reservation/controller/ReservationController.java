@@ -107,7 +107,6 @@ public class ReservationController {
 
 
         int save = reservationService.reserveSave(sellerDto, couponId, userNo);
-        System.out.println("assa : " + sellerDto.getBookingNo());
         int reservationNo = sellerDto.getBookingNo();
 
 

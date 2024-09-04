@@ -22,7 +22,9 @@ public interface ReservationMapper {
 
     WebDto getDiscount(@Param("couponId")int couponId);
 
-    int reserveSave(@Param("sellerDto")SellerDto sellerDto, @Param("couponId")Integer couponId, @Param("userNo")Long userNo);
+    int reserveSave(@Param("sellerDto")SellerDto sellerDto,
+                    @Param("couponId")Integer couponId,
+                    @Param("userNo")Long userNo);
 
     int paymentSave(@Param("payment")PaymentDto paymentDto, @Param("reservationNo")int reservationNo);
 

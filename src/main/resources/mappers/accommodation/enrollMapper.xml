@@ -60,8 +60,8 @@
     <insert id="enrollRoom" useGeneratedKeys="true" keyProperty="accommodation.roomNo">
         INSERT INTO room VALUES (
                      null,
-                     #{no},
                      #{categoryNo},
+                     #{no},
                      #{roomName},
                      #{checkIn},
                      #{checkOut},

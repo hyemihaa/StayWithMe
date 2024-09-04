@@ -11,7 +11,7 @@
         <result column="CHECK_IN_DATE" property="checkinDate"></result>
         <result column="CHECK_OUT_DATE" property="checkoutDate"></result>
         <result column="FACILITY_NAME" property="options"></result>
-        <result column="IMAGE_FILE" property="fileName"></result>
+        <result column="AC_IMAGE_FILE" property="fileName"></result>
     </resultMap>
 
 
@@ -128,47 +128,55 @@
 
     <!-- getList 쿼리 -->
     <select id="getList" resultMap="placeResultMap">
-        SELECT ac.ACCOMMODATION_ADMIN_NO,
-               MAX(ac.NAME) AS NAME,
-               MAX(ac.ACCOMMODATION_TYPE) AS ACCOMMODATION_TYPE,
-               MAX(ac.ADDRESS) AS ADDRESS,
-               MIN(COALESCE(er.EXTRA_RATE, br.BASIC_RATE)) AS BASIC_RATE,
-               MAX(ai.IMAGE_FILE) AS IMAGE_FILE
-        FROM ACCOMMODATION ac
-        JOIN ROOM r ON ac.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
-        JOIN BASIC_RATE br ON r.ROOM_NO = br.ROOM_NO
-        LEFT JOIN EXTRA_RATE er ON r.ROOM_NO = er.ROOM_NO
-        LEFT JOIN ACCOMMODATION_IMAGE ai ON ac.ACCOMMODATION_ADMIN_NO = ai.ACCOMMODATION_ADMIN_NO
-        LEFT JOIN RESERVE rs ON rs.ROOM_NO = r.ROOM_NO
-        AND (rs.RESERVATION_STATUS = 'CANCELLED'
-        OR (rs.CHECK_IN_DATE > #{mainSearchDTO.checkOutDate}
-        OR rs.CHECK_OUT_DATE &lt; #{mainSearchDTO.checkInDate}))
-        WHERE r.MAX_OCCUPANCY >= #{mainSearchDTO.personnel}
-        <if test="mainSearchDTO.mainSearch != null and !mainSearchDTO.mainSearch.isEmpty()">
-            AND (ac.NAME LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
-            OR ac.ADDRESS LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%'))
-        </if>
-        GROUP BY ac.ACCOMMODATION_ADMIN_NO
-        ORDER BY ac.ACCOMMODATION_ADMIN_NO
-        LIMIT #{limit} OFFSET #{offset};
+        SELECT
+        ac.ACCOMMODATION_ADMIN_NO,
+        ac.NAME,
+        ac.ACCOMMODATION_TYPE,
+        ac.ADDRESS,
+        MIN(COALESCE(er.EXTRA_RATE, br.BASIC_RATE)) AS BASIC_RATE,
+        ai.AC_IMAGE_FILE
+        FROM
+        ACCOMMODATION ac
+        JOIN
+        ROOM r ON ac.ACCOMMODATION_ADMIN_NO = r.ACCOMMODATION_ADMIN_NO
+        JOIN
+        BASIC_RATE br ON r.ROOM_NO = br.ROOM_NO
+        LEFT JOIN
+        EXTRA_RATE er ON r.ROOM_NO = er.ROOM_NO
+        AND #{mainSearchDTO.checkInDate} BETWEEN er.EXTRA_DATE_START AND er.EXTRA_DATE_END
+        LEFT JOIN
+        FACILITIES f ON ac.ACCOMMODATION_ADMIN_NO = f.ACCOMMODATION_ADMIN_NO
+        LEFT JOIN
+        ACCOMMODATION_IMAGE ai ON ac.ACCOMMODATION_ADMIN_NO = ai.ACCOMMODATION_ADMIN_NO
+        LEFT JOIN
+        RESERVE rs ON rs.ROOM_NO = r.ROOM_NO
+        <where>
+            <!-- 검색어 조건 조회  -->
+            <if test="mainSearchDTO.mainSearch != null and !mainSearchDTO.mainSearch.isEmpty()">
+                (ac.NAME LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
+                OR ac.ADDRESS LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
+                OR ac.ACCOMMODATION_TYPE LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%')
+                OR br.BASIC_RATE LIKE CONCAT('%', #{mainSearchDTO.mainSearch}, '%'))
+            </if>
+            <!-- 숙소 유형 조회 -->
+            <if test="mainSearchDTO.type != null and !mainSearchDTO.type.isEmpty()">
+                AND ac.ACCOMMODATION_TYPE = #{mainSearchDTO.type}
+            </if>
+            <!-- 조건 기간이 예약기간에 겹치지 않는지 조회 -->
+            <if test="mainSearchDTO.checkInDate != null and !mainSearchDTO.checkInDate.isEmpty() and mainSearchDTO.checkOutDate != null and !mainSearchDTO.checkOutDate.isEmpty()">
+                AND (rs.CHECK_IN_DATE IS NULL OR rs.CHECK_IN_DATE &gt; #{mainSearchDTO.checkOutDate} OR rs.CHECK_OUT_DATE &lt; #{mainSearchDTO.checkInDate})
+            </if>
+            <!-- 옵션(부대시설) 조건 조회 -->
+            <if test="mainSearchDTO.options != null and !mainSearchDTO.options.isEmpty()">
+                AND f.FACILITY_NAME IN
+                <foreach item="option" collection="mainSearchDTO.options" open="(" separator="," close=")">
+                    #{option}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY
+        ac.ACCOMMODATION_ADMIN_NO, ac.NAME, ac.ACCOMMODATION_TYPE, ac.ADDRESS, ai.AC_IMAGE_FILE
     </select>
-
-
-    <!-- 예약 상태 조회 -->
-    <select id="getReservationStatus" resultMap="placeResultMap">
-        SELECT rs.ROOM_NO,
-        rs.RESERVATION_STATUS,
-        rs.CHECK_IN_DATE,
-        rs.CHECK_OUT_DATE,
-        rs.RESERVATION_CANCELLATION_DATE
-        FROM RESERVE rs
-        WHERE (rs.CHECK_IN_DATE IS NULL OR rs.CHECK_IN_DATE > #{mainSearchDTO.checkOutDate}
-        OR rs.CHECK_OUT_DATE &lt; #{mainSearchDTO.checkInDate})
-        AND (rs.RESERVATION_CANCELLATION_DATE IS NULL OR rs.RESERVATION_STATUS = 'CANCELLED')
-    </select>
-
-
-
 
 
 

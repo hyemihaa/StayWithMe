@@ -18,8 +18,8 @@
         <result column="LNG" property="lon"></result>
         <result column="MIN_BASIC_RATE" property="boardCount"></result>
         <result column="FACILITY_NAME" property="facilityName"></result>
-        <result column="IMAGE_FILE" property="accommodationImageName"></result>
-        <result column="image_unique_name" property="roomsImageName"></result>
+        <result column="AC_IMAGE_FILE" property="accommodationImageName"></result>
+        <result column="IMAGE_FILE" property="roomsImageName"></result>
         <result column="IMAGE_NO" property="imageNo"></result>
     </resultMap>
 
@@ -28,7 +28,7 @@
         WITH room_images AS (
         SELECT
         ri.ROOM_NO,
-        ri.image_unique_name,
+        ri.IMAGE_FILE,
         ROW_NUMBER() OVER (PARTITION BY ri.ROOM_NO ORDER BY ri.image_no) AS rn
         FROM
         room_images ri
@@ -47,7 +47,7 @@
         r.MAX_OCCUPANCY,
         r.ROOM_NO,
         br.MIN_BASIC_RATE,
-        ri.image_unique_name
+        ri.IMAGE_FILE
         FROM
         ACCOMMODATION a
         JOIN ROOM r ON r.ACCOMMODATION_ADMIN_NO = a.ACCOMMODATION_ADMIN_NO
@@ -70,7 +70,7 @@
         GROUP BY
         a.name, a.ACCOMMODATION_TYPE, a.ADDRESS, a.INFO, a.LAT, a.LNG,
         r.CHECK_IN_TIME, r.CHECK_OUT_TIME, r.ROOM_NAME, r.STANDARD_OCCUPANCY,
-        r.MAX_OCCUPANCY, r.ROOM_NO, br.MIN_BASIC_RATE, ri.image_unique_name;
+        r.MAX_OCCUPANCY, r.ROOM_NO, br.MIN_BASIC_RATE, ri.IMAGE_FILE;
 
     </select>
 
@@ -116,7 +116,7 @@
         SELECT
             a.accommodation_admin_no,
             a.name,
-            ai.image_file
+            ai.ac_image_file
         FROM
             accommodation a
                 JOIN
@@ -127,7 +127,7 @@
     </select>
 
     <select id="getRoomImages" resultMap="placeResultMap">
-        select ri.room_no, ri.image_unique_name from room_images ri
+        select ri.room_no, ri.IMAGE_FILE from room_images ri
         join room r ON r.room_no = ri.room_no
         where r.room_no = #{roomNo}
     </select>
