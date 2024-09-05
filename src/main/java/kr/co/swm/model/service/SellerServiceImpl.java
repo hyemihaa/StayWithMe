@@ -2,12 +2,16 @@ package kr.co.swm.model.service;
 
 
 import kr.co.swm.mappers.SellerMapper;
+import kr.co.swm.model.dto.SellerDashboardDto;
 import kr.co.swm.model.dto.SellerDto;
+import kr.co.swm.model.dto.SellerMonthlyStatsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SellerServiceImpl implements SellerService {
@@ -53,6 +57,121 @@ public class SellerServiceImpl implements SellerService {
 
         return resultList;
     }
+
+    @Override
+    public SellerDashboardDto getDashboardData(Long accommodationNo) {
+        SellerDashboardDto dashboardData = new SellerDashboardDto();
+
+        // 조회수 가져오기
+        int roomViews = roomViews(accommodationNo);
+        dashboardData.setRoomViews(roomViews);
+
+        // 대시보드 정보 (예약 및 결제 정보) 가져오기
+        List<SellerDto> mainList = mainList(accommodationNo);
+
+        // 오늘 날짜 설정
+        LocalDate today = LocalDate.now();
+        String todayDate = today.toString(); // yyyy-MM-dd 형식
+
+        // 오늘 날짜에 해당하는 예약 리스트 필터링
+        List<SellerDto> todayList = mainList.stream()
+                .filter(item -> todayDate.equals(item.getReservationDate()))
+                .collect(Collectors.toList());
+
+        // 오늘 예약 건수
+        int todayReservationCount = todayList.size();
+        dashboardData.setReservationCount(todayReservationCount);
+
+        // 오늘 결제 건수
+        long todayPaymentCount = todayList.stream()
+                .filter(item -> "CONFIRM".equalsIgnoreCase(item.getReservationStatus()) || "Completed".equalsIgnoreCase(item.getReservationStatus()))
+                .count();
+        dashboardData.setPaymentCount(todayPaymentCount);
+
+        // 오늘 취소 건수
+        long todayCancelCount = todayList.stream()
+                .filter(item -> "CANCELLED".equalsIgnoreCase(item.getReservationStatus()))
+                .count();
+        dashboardData.setCancelCount(todayCancelCount);
+
+        // 오늘 매출액 계산
+        int todayTotalAmount = todayList.stream()
+                .filter(item -> "CONFIRM".equalsIgnoreCase(item.getReservationStatus()) || "Completed".equalsIgnoreCase(item.getReservationStatus()))
+                .mapToInt(SellerDto::getReserveAmount)
+                .sum();
+
+        int todayCancelledAmount = todayList.stream()
+                .filter(item -> "CANCELLED".equalsIgnoreCase(item.getReservationStatus()))
+                .mapToInt(SellerDto::getReserveAmount)
+                .sum();
+
+        int netAmount = todayTotalAmount - todayCancelledAmount;
+        dashboardData.setNetAmount(netAmount);
+
+        return dashboardData;
+    }
+
+    @Override
+    public SellerMonthlyStatsDto getMonthlyStats(Long accommodationNo) {
+        SellerMonthlyStatsDto monthlyStats = new SellerMonthlyStatsDto();
+
+        // 대시보드 정보 (예약 및 결제 정보) 가져오기
+        List<SellerDto> mainList = mainList(accommodationNo);
+
+        // 현재 월 계산
+        LocalDate today = LocalDate.now();
+        int currentMonth = today.getMonthValue();
+
+        // 1월부터 현재 월까지의 레이블 생성
+        List<String> monthlyLabels = new ArrayList<>();
+        for (int i = 1; i <= currentMonth; i++) {
+            monthlyLabels.add(String.format("%02d월", i));  // 월을 2자리 형식으로 출력
+        }
+        monthlyStats.setMonthlyLabels(monthlyLabels);
+
+        // 월별 예약, 취소, 결제 건수 계산을 위한 Map 초기화
+        Map<String, Integer> monthlyReservationCounts = new LinkedHashMap<>();
+        Map<String, Integer> monthlyCancelCounts = new LinkedHashMap<>();
+        Map<String, Integer> monthlyPaymentCounts = new LinkedHashMap<>();
+
+        // 월별 예약, 취소, 결제 건수를 0으로 초기화
+        for (String month : monthlyLabels) {
+            monthlyReservationCounts.put(month, 0);
+            monthlyCancelCounts.put(month, 0);
+            monthlyPaymentCounts.put(month, 0);
+        }
+
+        // mainList를 통해 월별 예약, 취소, 결제 건수를 계산
+        for (SellerDto item : mainList) {
+            String reservationMonth = item.getReservationDate().substring(5, 7) + "월"; // 월만 추출
+
+            // 예약 건수 추가 (CONFIRM 또는 CANCELLED 모두 포함)
+            if (monthlyReservationCounts.containsKey(reservationMonth)) {
+                monthlyReservationCounts.put(reservationMonth, monthlyReservationCounts.get(reservationMonth) + 1);
+            }
+
+            // 취소 건수 추가 (CANCELLED 상태만)
+            if ("CANCELLED".equalsIgnoreCase(item.getReservationStatus()) && monthlyCancelCounts.containsKey(reservationMonth)) {
+                monthlyCancelCounts.put(reservationMonth, monthlyCancelCounts.get(reservationMonth) + 1);
+            }
+
+            // 결제 건수 추가 (CONFIRM 상태만)
+            if ("CONFIRM".equalsIgnoreCase(item.getReservationStatus()) && monthlyPaymentCounts.containsKey(reservationMonth)) {
+                monthlyPaymentCounts.put(reservationMonth, monthlyPaymentCounts.get(reservationMonth) + 1);
+            }
+        }
+
+        monthlyStats.setMonthlyReservationCounts(new ArrayList<>(monthlyReservationCounts.values()));
+        monthlyStats.setMonthlyCancelCounts(new ArrayList<>(monthlyCancelCounts.values()));
+        monthlyStats.setMonthlyPaymentCounts(new ArrayList<>(monthlyPaymentCounts.values()));
+
+        return monthlyStats;
+    }
+
+
+
+
+
 
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□

@@ -60,14 +60,13 @@
                                     null,
                                     #{userNo},
                                     #{sellerDto.reserveRoomNo},
-                                    #{couponId},
                                     #{sellerDto.reserveCheckIn},
                                     #{sellerDto.reserveCheckOut},
                                     #{sellerDto.reserveAmount},
+                                    #{couponId},
                                     null,
                                     null,
-                                    "예약완료",
-                                    null
+                                    "CONFIRM"
                                    )
         <selectKey resultType="int" keyProperty="sellerDto.bookingNo" keyColumn="BOOKING_NO" order="AFTER">
             SELECT LAST_INSERT_ID()

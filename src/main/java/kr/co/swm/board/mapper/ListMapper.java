@@ -27,10 +27,9 @@ public interface ListMapper {
 
 
 
-  List<ListDTO> getReservationStatus(@Param("mainSearchDTO") MainSearchDTO mainSearchDTO);
+  int getListCount(@Param("mainSearchDTO") MainSearchDTO mainSearchDTO);
 
-  List<ListDTO> getList(@Param("mainSearchDTO") MainSearchDTO mainSearchDTO, @Param("limit") int limit,
-                        @Param("offset") int offset);
+  List<ListDTO> getList(@Param("mainSearchDTO") MainSearchDTO mainSearchDTO, @Param("boardLimit") int boardLimit, @Param("offset") int offset);
 
   List<String> getFacilities(@Param("mainSearchDTO") MainSearchDTO mainSearchDTO);
 }

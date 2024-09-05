@@ -1,6 +1,8 @@
 package kr.co.swm.model.service;
 
+import kr.co.swm.model.dto.SellerDashboardDto;
 import kr.co.swm.model.dto.SellerDto;
+import kr.co.swm.model.dto.SellerMonthlyStatsDto;
 
 import java.util.List;
 
@@ -13,6 +15,12 @@ public interface SellerService {
 
     // 대시보드 정보 조회
     List<SellerDto> mainList(Long accommodationNo);
+
+    // 오늘의 조회수, 예약, 결제, 취소, 매출 계산 메서드
+    SellerDashboardDto getDashboardData(Long accommodationNo);
+
+    // 월별 현황 데이터 가공 메서드
+    SellerMonthlyStatsDto getMonthlyStats(Long accommodationNo);
 
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 

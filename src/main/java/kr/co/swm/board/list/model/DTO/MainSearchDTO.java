@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -20,6 +19,11 @@ public class MainSearchDTO {
 
     private String mainSearch;
     private int personnel;
-    private LocalDate checkInDate;
-    private LocalDate checkOutDate;
+    private String checkInDate;
+    private String checkOutDate;
+
+    // 페이징 관련 변수 추가
+    private int currentPage = 1;  // 현재 페이지 (기본값 1)
+    private int boardLimit = 10;  // 한 번에 로드할 게시물 수 (기본값 10)
+    private int offset;
 }

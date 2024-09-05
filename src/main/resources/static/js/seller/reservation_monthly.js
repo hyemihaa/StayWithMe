@@ -31,16 +31,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const accommodationNo = 1; // 예시로 관리자 번호를 지정합니다.
 
         fetch(`/reservation-monthly-data?accommodationNo=${accommodationNo}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`); // HTTP 에러 처리
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                generateCalendar(data.accommodationRoomData, data.monthlyData, year, month); // 달력 생성
+                console.log(data); // 데이터 확인
+                generateCalendar(data.accommodationRoomData, data.monthlyData, year, month);
             })
-            .catch(error => console.error('Error loading data:', error)); // 데이터 로드 에러 처리
+            .catch(error => console.error('Error loading data:', error));
     }
 
     // 달력을 생성하는 함수
@@ -89,27 +85,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             // 해당 날짜에 방이 예약된 상태인지 확인
                             const reservationForDate = roomData.find(reservation =>
-                                new Date(reservation.reserveCheckIn) <= new Date(year, month - 1, date) &&
-                                new Date(reservation.reserveCheckOut) >= new Date(year, month - 1, date) &&
+                                new Date(reservation.reserveCheckIn).getTime() <= new Date(year, month - 1, date).getTime() &&
+                                new Date(reservation.reserveCheckOut).getTime() >= new Date(year, month - 1, date).getTime() &&
                                 reservation.roomNo === roomNo
                             );
 
+                            console.log(reservationForDate);
+
                             // 예약 상태에 따라 버튼 스타일을 적용
-                            if (reservationForDate) {  // 예약이 있는 경우
+                            if (reservationForDate && reservationForDate.reservationStatus === 'CONFIRM') {
+                                // 예약 상태가 CONFIRM인 경우
                                 roomBtn.textContent = roomNo;  // 버튼 텍스트에 방 번호 설정
                                 roomBtn.classList.add('unavailable');  // 예약된 방에 'unavailable' 클래스 추가
-
-                                // 예약 상태가 CONFIRMED일 경우 status-complete 클래스 적용
-                                if (reservationForDate.reservationStatus === 'CONFIRMED') {
-                                    roomBtn.classList.add('status-complete');  // 예약 확정 상태일 때 붉은색 스타일 적용
-                                } else {
-                                    // 예약 상태가 NULL 또는 CANCELLED일 경우 status-cancel 클래스 적용
-                                    roomBtn.classList.add('status-cancel');  // 예약 취소 또는 예약 없음일 때 녹색 스타일 적용
-                                }
-                            } else {  // 예약이 없는 경우
+                                roomBtn.classList.add('status-complete');  // 예약 확정 상태일 때 붉은색 스타일 적용
+                                console.log(`예약된 방 (CONFIRM): ${roomNo}`);
+                            } else {
+                                // 예약이 없거나 상태가 CANCELLED인 경우 (NULL 및 CANCELLED 같은 처리)
                                 roomBtn.textContent = roomNo;  // 버튼 텍스트에 방 번호 설정
                                 roomBtn.classList.add('available');  // 예약되지 않은 방에 'available' 클래스 추가
-                                roomBtn.classList.add('status-cancel');  // 예약 없음 상태일 때 녹색 스타일 적용
+                                roomBtn.classList.add('status-cancel');  // 예약 취소 또는 예약 없음 상태일 때 녹색 스타일 적용
+                                console.log(`예약이 없는 방 또는 취소된 방: ${roomNo}`);
                             }
 
                             // 방 정보 영역에 버튼을 추가
@@ -118,7 +113,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         cell.appendChild(roomInfo);  // 셀에 방 정보를 포함한 div를 추가
                     }
-
 
                     // 오늘 날짜 강조 표시
                     if (year === today.getFullYear() && month === today.getMonth() + 1 && date === today.getDate()) {

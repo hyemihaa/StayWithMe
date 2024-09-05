@@ -3,7 +3,9 @@ package kr.co.swm.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.swm.jwt.util.JWTUtil;
+import kr.co.swm.model.dto.SellerDashboardDto;
 import kr.co.swm.model.dto.SellerDto;
+import kr.co.swm.model.dto.SellerMonthlyStatsDto;
 import kr.co.swm.model.service.SellerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,114 +43,31 @@ public class SellerController {
     @GetMapping("/seller-main.do")
     public String mainDashBoard(HttpServletRequest request, Model model, @CookieValue(value = "Authorization", required = false) String token) {
 
-        // 관리자 번호(업소키)
+        // 관리자 번호(업소키) 가져오기
         Long accommodationNo = jwtUtil.getAccommAdminKeyFromToken(token);
 
-        // 디버깅 용으로 관리자 번호 출력
-        System.out.println("------------------------------------------");
-        System.out.println("Accommodation No: " + accommodationNo);
-        System.out.println("------------------------------------------");
+        // 대시보드 데이터 가져오기
+        SellerDashboardDto dashboardData = seller.getDashboardData(accommodationNo);
+        model.addAttribute("roomViews", dashboardData.getRoomViews());
+        model.addAttribute("reservationCount", dashboardData.getReservationCount());
+        model.addAttribute("paymentCount", dashboardData.getPaymentCount());
+        model.addAttribute("cancelCount", dashboardData.getCancelCount());
+        model.addAttribute("netAmount", dashboardData.getNetAmount());
 
-        // 업소 조회수 가져오기
-        int roomViews = seller.roomViews(accommodationNo);
-        model.addAttribute("roomViews", roomViews);
-
-        // 대시보드 정보 (예약 및 결제 정보) 가져오기
-        List<SellerDto> mainList = seller.mainList(accommodationNo);
-        model.addAttribute("mainList", mainList);
-
-        // 오늘 날짜 설정
-        LocalDate today = LocalDate.now();
-        String todayDate = today.toString(); // yyyy-MM-dd 형식으로 오늘 날짜를 얻음
-        model.addAttribute("today", today);
-
-        // 오늘 날짜에 해당하는 예약 리스트 필터링
-        List<SellerDto> todayList = mainList.stream()
-                .filter(item -> todayDate.equals(item.getReservationDate()))
-                .collect(Collectors.toList());
-
-        // 오늘 날짜에 해당하는 예약 건수 계산
-        int todayReservationCount = todayList.size();
-        model.addAttribute("reservationCount", todayReservationCount);
-
-        // 오늘 날짜에 대한 결제 건수 계산
-        long todayPaymentCount = todayList.stream()
-                .filter(item -> "Confirmed".equalsIgnoreCase(item.getReservationStatus()) || "Completed".equalsIgnoreCase(item.getReservationStatus()))
-                .count();
-        model.addAttribute("paymentCount", todayPaymentCount);
-
-        // 오늘 날짜에 대한 취소 건수 계산
-        long todayCancelCount = todayList.stream()
-                .filter(item -> "Cancelled".equalsIgnoreCase(item.getReservationStatus()))
-                .count();
-        model.addAttribute("cancelCount", todayCancelCount);
-
-        // 오늘 날짜에 대한 매출액 계산
-        int todayTotalAmount = todayList.stream()
-                .filter(item -> "Confirmed".equalsIgnoreCase(item.getReservationStatus()) || "Completed".equalsIgnoreCase(item.getReservationStatus()))
-                .mapToInt(SellerDto::getReserveAmount)
-                .sum();
-        int todayCancelledAmount = todayList.stream()
-                .filter(item -> "Cancelled".equalsIgnoreCase(item.getReservationStatus()))
-                .mapToInt(SellerDto::getReserveAmount)
-                .sum();
-        int netAmount = todayTotalAmount - todayCancelledAmount;
-        model.addAttribute("netAmount", netAmount);
-
-        // 예약 타입 결정 (오늘 예약이 없으면 "N/A")
-        String reservationType = todayList.isEmpty() ? "N/A" : todayList.get(0).getReservationType();
-        model.addAttribute("reservationType", reservationType);
-
-        // 현재 월 계산
-        int currentMonth = today.getMonthValue();
-
-        // 1월부터 현재 월까지의 레이블 생성
-        List<String> monthlyLabels = new ArrayList<>();
-        for (int i = 1; i <= currentMonth; i++) {
-            monthlyLabels.add(String.format("%02d월", i));  // 월을 2자리 형식으로 출력
-        }
-
-        // 월별 예약, 취소, 결제 건수 계산을 위한 Map 초기화
-        Map<String, Integer> monthlyReservationCounts = new LinkedHashMap<>();
-        Map<String, Integer> monthlyCancelCounts = new LinkedHashMap<>();
-        Map<String, Integer> monthlyPaymentCounts = new LinkedHashMap<>();
-
-        // 월별 예약, 취소, 결제 건수를 0으로 초기화
-        for (String month : monthlyLabels) {
-            monthlyReservationCounts.put(month, 0);
-            monthlyCancelCounts.put(month, 0);
-            monthlyPaymentCounts.put(month, 0);
-        }
-
-        // mainList를 통해 월별 예약, 취소, 결제 건수를 계산
-        for (SellerDto item : mainList) {
-            String reservationMonth = item.getReservationDate().substring(5, 7) + "월"; // 월만 추출
-            if (monthlyReservationCounts.containsKey(reservationMonth)) {
-                monthlyReservationCounts.put(reservationMonth, monthlyReservationCounts.get(reservationMonth) + 1);
-            }
-            if ("Cancelled".equalsIgnoreCase(item.getReservationStatus()) && monthlyCancelCounts.containsKey(reservationMonth)) {
-                monthlyCancelCounts.put(reservationMonth, monthlyCancelCounts.get(reservationMonth) + 1);
-            }
-            if (("Confirmed".equalsIgnoreCase(item.getReservationStatus()) || "Completed".equalsIgnoreCase(item.getReservationStatus())) &&
-                    monthlyPaymentCounts.containsKey(reservationMonth)) {
-                monthlyPaymentCounts.put(reservationMonth, monthlyPaymentCounts.get(reservationMonth) + 1);
-            }
-        }
-
-        // 모델에 월별 데이터 추가
-        model.addAttribute("monthlyLabels", monthlyLabels);
-        model.addAttribute("monthlyReservationCounts", new ArrayList<>(monthlyReservationCounts.values()));
-        model.addAttribute("monthlyCancelCounts", new ArrayList<>(monthlyCancelCounts.values()));
-        model.addAttribute("monthlyPaymentCounts", new ArrayList<>(monthlyPaymentCounts.values()));
+        // 월별 현황 데이터 가져오기
+        SellerMonthlyStatsDto monthlyStats = seller.getMonthlyStats(accommodationNo);
+        model.addAttribute("monthlyLabels", monthlyStats.getMonthlyLabels());
+        model.addAttribute("monthlyReservationCounts", monthlyStats.getMonthlyReservationCounts());
+        model.addAttribute("monthlyCancelCounts", monthlyStats.getMonthlyCancelCounts());
+        model.addAttribute("monthlyPaymentCounts", monthlyStats.getMonthlyPaymentCounts());
 
         // 사용자 이름 설정
         String userId = jwtUtil.getUserIdFromToken(token);
         model.addAttribute("userId", userId);
 
-        addCurrentUrlToModel(request, model);
-
         return "seller/seller"; // 뷰 이름 반환
     }
+
 
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
@@ -306,28 +225,15 @@ public class SellerController {
         // DB에서 선택된 날짜에 해당하는 객실 정보를 조회
         List<SellerDto> roomData = seller.roomData(accommodationNo, selectedDateString);
 
-        // 조회된 객실 정보 디버깅 출력
-        for (SellerDto item : roomData) {
-            System.out.println();
-            System.out.println("========= Controller Room Data =========");
-            System.out.println("ROOM NO : " + item.getRoomNo());
-            System.out.println("ROOM TYPE : " + item.getRoomTypeName());
-            System.out.println("ROOM NAME : " + item.getRoomName());
-            System.out.println("ROOM CHECK IN : " + item.getRoomCheckIn());
-            System.out.println("ROOM CHECK OUT : " + item.getRoomCheckOut());
-            System.out.println("ROOM Status : " + item.getReservationStatus());
-            System.out.println("========================================");
-            System.out.println();
-        }
-
-        // 각 방의 예약 상태를 계산 및 업데이트
+        // 예약 상태 처리 및 디버깅 로그 출력
         for (SellerDto room : roomData) {
             String reservationStatus = room.getReservationStatus();
+            System.out.println("룸 번호: " + room.getRoomNo() + " | 예약 상태: " + reservationStatus);
 
             // 예약 상태에 따라 텍스트를 업데이트
             if (reservationStatus == null || reservationStatus.equals("CANCELLED")) {
                 room.setReservationStatus("예약 가능");
-            } else if (reservationStatus.equals("CONFIRMED")) {
+            } else if (reservationStatus.equals("CONFIRM")) {
                 room.setReservationStatus("예약중");
             }
         }
@@ -344,6 +250,8 @@ public class SellerController {
         // 예약 상태가 반영된 뷰 페이지를 반환
         return "seller/reservation_daily"; // 뷰 이름 반환
     }
+
+
 
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 //  □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□

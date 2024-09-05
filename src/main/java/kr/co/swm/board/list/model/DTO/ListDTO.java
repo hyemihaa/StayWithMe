@@ -21,8 +21,8 @@ public class ListDTO {
     private int personnel;
     private String options;
 
-    private LocalDate checkinDate;  // 체크인 날짜
-    private LocalDate checkoutDate; // 체크아웃 날짜
+    private String checkinDate;  // 체크인 날짜
+    private String checkoutDate; // 체크아웃 날짜
 
     private String filePath = "C:\\dev\\work-space\\FinalProject\\src\\main\\resources\\static\\accommodationImages\\";    // 파일경로
     private String fileName;    // 파일 명

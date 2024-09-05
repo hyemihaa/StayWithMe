@@ -15,6 +15,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -203,79 +204,40 @@ public class ListController {
 //        return getList(model, currentPage, mainSearchDTO);
 //    }
 
-    @GetMapping("/get-list")
-    public String getList(Model model,
-                          @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-                          @ModelAttribute MainSearchDTO mainSearchDTO) {
+    @PostMapping("/get-list")
+    public String getList(Model model, @ModelAttribute MainSearchDTO mainSearchDTO) {
 
-        System.out.println("=============== Controller Main SearchDTO ===============");
-
-        // String 타입의 날짜를 LocalDate로 변환할 필요가 없으므로 Optional로 감싸기만 함
-        Optional<LocalDate> checkInDate = Optional.ofNullable(mainSearchDTO.getCheckInDate());
-        Optional<LocalDate> checkOutDate = Optional.ofNullable(mainSearchDTO.getCheckOutDate());
-
-        System.out.println("Check In : " + checkInDate.orElse(null));
-        System.out.println("Check Out : " + checkOutDate.orElse(null));
-        System.out.println("Personnel : " + mainSearchDTO.getPersonnel());
-        System.out.println("Search Text : " + Optional.ofNullable(mainSearchDTO.getMainSearch()).orElse("N/A"));
-        System.out.println("==========================================================");
-
-        // 날짜 필드의 유효성 검사
-        if (checkInDate.isEmpty() || checkOutDate.isEmpty()) {
-            model.addAttribute("errorMessage", "Check-in and check-out dates are required.");
-            return "error"; // 에러 페이지로 리다이렉트
-        }
-
-        // 한번에 로드할 게시물 수 설정
-        int boardLimit = 10;
-
-        // 오프셋 계산
-        int offset = (currentPage - 1) * boardLimit;
-
-        // 날짜 기준 필터링 된 업소 리스트 조회
-        List<ListDTO> place = listService.getList(mainSearchDTO, boardLimit, offset);
-
-        // 디버그용 로그: 조회된 이미지 파일 출력
-        if (place.isEmpty()) {
-            System.out.println("No places found matching the search criteria.");
-        } else {
-            for (ListDTO item : place) {
-                System.out.println("Image : " + item.getFileName());
-            }
-        }
+        List<ListDTO> place = listService.getList(mainSearchDTO);
 
         // 부가시설 조회
         List<String> uniqueFacilities = listService.getFacilities(mainSearchDTO);
 
         // 데이터 바인딩
-        model.addAttribute("placeList", place);
+        model.addAttribute("place", place);
         model.addAttribute("uniqueFacilities", uniqueFacilities);
-        model.addAttribute("mainSearchDTO", mainSearchDTO);
 
-        // tour.html 템플릿을 렌더링하고 결과를 반환
-        return "tour";
+        // searchDTO 또는 listDto를 뷰로 전달
+        model.addAttribute("searchDTO", mainSearchDTO);
+
+        return "tour";  // 리스트 페이지로 이동
     }
 
-    // AJAX 요청을 처리하여 JSON 데이터를 반환하는 메서드 추가
+
+    // AJAX 요청을 처리하여 JSON 데이터를 반환하는 메서드
     @GetMapping("/get-place-items")
     @ResponseBody
-    public ResponseEntity<List<ListDTO>> getPlaceItems(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
-                                                       @ModelAttribute MainSearchDTO mainSearchDTO) {
-
-
+    public ResponseEntity<List<ListDTO>> getPlaceItems(@ModelAttribute MainSearchDTO mainSearchDTO) {
         try {
-            // 한번에 로드할 게시물 수 설정
-            int boardLimit = 10;
+            // mainSearchDTO를 그대로 넘기면 됨
+            List<ListDTO> place = listService.getList(mainSearchDTO);
 
-            // 오프셋 계산
-            int offset = (currentPage - 1) * boardLimit;
+            if (place.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
 
-            // 날짜 기준 필터링 된 업소 리스트 조회
-            List<ListDTO> place = listService.getList(mainSearchDTO, boardLimit, offset);
-
-            // JSON으로 데이터 반환
             return ResponseEntity.ok(place);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

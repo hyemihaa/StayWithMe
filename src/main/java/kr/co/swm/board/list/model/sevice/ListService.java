@@ -19,13 +19,8 @@ public interface ListService {
     //  체크인 & 체크아웃 지정할 때 나오는 리스트
 //    List<ListDTO> getCheck(String checkinDate, String checkoutDate);
 
-
-
-
-    // 게시물 수 조회
-//    int getListCount(MainSearchDTO mainSearchDTO);
     // 게시물 데이터 조회
-    List<ListDTO> getList(MainSearchDTO mainSearchDTO, int boardLimit, int offset);
+    List<ListDTO> getList(MainSearchDTO mainSearchDTO);
     // 부가시설 조회
     List<String> getFacilities(MainSearchDTO mainSearchDTO);
 }
