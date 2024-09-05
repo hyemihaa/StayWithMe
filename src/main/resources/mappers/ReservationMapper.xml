@@ -144,7 +144,6 @@
         update reserve
         set reservation_status = "예약취소",
             reservation_cancellation_date = NOW()
-            reservation_cancellation_date = NOW()
         where booking_no = #{bookingNo}
     </update>
 
