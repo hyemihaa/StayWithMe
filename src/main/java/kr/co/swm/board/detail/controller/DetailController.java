@@ -79,6 +79,8 @@ public class DetailController {
         model.addAttribute("facilities", facilities);
         model.addAttribute("subPlace", subPlace);
         model.addAttribute("images", mainImages);
+        model.addAttribute("checkIn", checkIn);
+        model.addAttribute("checkOut", checkOut);
 
         //  각 페이지마다 boardNo에 대한 다른 값 불러오기
         // http://localhost:8080/hotel-single?boardNo=1 이면 boardNo=1

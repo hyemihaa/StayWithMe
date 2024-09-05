@@ -152,8 +152,8 @@
 									<div class="destination" th:each="place : ${place}">
 										<form action="/reservation" method="GET">
 											<input type="hidden" id="roomNo" name="roomNo" th:value="${place.roomNo}" />
-											<input type="hidden" id="boardCheckIn" name="boardCheckIn" th:value="${post.boardCheckIn}" />
-											<input type="hidden" id="boardCheckOut" name="boardCheckOut" th:value="${post.boardCheckOut}" />
+											<input type="hidden" id="boardCheckIn" name="boardCheckIn" th:value="${checkIn}" />
+											<input type="hidden" id="boardCheckOut" name="boardCheckOut" th:value="${checkOut}" />
 											<input type="hidden" name="boardCount" th:value="${place.boardCount}" />
 											<a href="#" onclick="loadImages(this)">
 												<img th:src="${place.imagePath} + ${place.roomsImageName}" class="img img-3">
