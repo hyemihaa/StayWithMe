@@ -786,8 +786,6 @@
                     }).done(function (data) {
                         // 서버로부터 성공적으로 응답을 받은 경우
                         console.log("서버 응답 성공:", data);
-
-                        if (data) {
                             // 결제 성공한 imp_uid와 기타 필요한 정보를 폼에 추가
                             let form = document.getElementById('terms-form'); // form 요소 가져오기
                             let uidHiddenInput = document.createElement('input');
@@ -795,18 +793,14 @@
                             uidHiddenInput.name = 'uid';
                             uidHiddenInput.value = rsp.imp_uid; // 서버에서 받은 imp_uid 사용
                             form.appendChild(uidHiddenInput);
-
                             let methodHiddenInput = document.createElement('input');
                             methodHiddenInput.type = 'hidden';
                             methodHiddenInput.name = 'reservationMethod';
                             methodHiddenInput.value = rsp.pay_method; // 서버에서 받은 imp_uid 사용
                             form.appendChild(methodHiddenInput);
 
-                            // 폼 제출
+
                             document.getElementById('terms-form').submit();
-                        } else {
-                            alert("서버에서 결제 완료 처리를 실패했습니다.");
-                        }
                     }).fail(function (jqXHR, textStatus, errorThrown) {
                         console.error("서버 요청 실패:", textStatus, errorThrown);
                         alert("서버 요청 중 오류가 발생했습니다.");

@@ -143,23 +143,36 @@ public class SellerServiceImpl implements SellerService {
 
         // mainList를 통해 월별 예약, 취소, 결제 건수를 계산
         for (SellerDto item : mainList) {
-            String reservationMonth = item.getReservationDate().substring(5, 7) + "월"; // 월만 추출
+            // getReservationDate()가 null을 반환할 수 있으므로 이를 확인
+            String reservationDate = item.getReservationDate();
+            if (reservationDate != null && reservationDate.length() >= 7) {
+                String reservationMonth = reservationDate.substring(5, 7) + "월"; // 월만 추출
 
-            // 예약 건수 추가 (CONFIRM 또는 CANCELLED 모두 포함)
-            if (monthlyReservationCounts.containsKey(reservationMonth)) {
-                monthlyReservationCounts.put(reservationMonth, monthlyReservationCounts.get(reservationMonth) + 1);
-            }
+                // 예약 건수 추가 (CONFIRM 또는 CANCELLED 모두 포함)
+                if (monthlyReservationCounts.containsKey(reservationMonth)) {
+                    monthlyReservationCounts.put(reservationMonth, monthlyReservationCounts.get(reservationMonth) + 1);
+                } else {
+                    monthlyReservationCounts.put(reservationMonth, 1); // 처음 카운팅하는 경우 초기화
+                }
 
-            // 취소 건수 추가 (CANCELLED 상태만)
-            if ("CANCELLED".equalsIgnoreCase(item.getReservationStatus()) && monthlyCancelCounts.containsKey(reservationMonth)) {
-                monthlyCancelCounts.put(reservationMonth, monthlyCancelCounts.get(reservationMonth) + 1);
-            }
+                // 취소 건수 추가 (CANCELLED 상태만)
+                if ("CANCELLED".equalsIgnoreCase(item.getReservationStatus()) && monthlyCancelCounts.containsKey(reservationMonth)) {
+                    monthlyCancelCounts.put(reservationMonth, monthlyCancelCounts.get(reservationMonth) + 1);
+                } else if ("CANCELLED".equalsIgnoreCase(item.getReservationStatus()) && !monthlyCancelCounts.containsKey(reservationMonth)) {
+                    monthlyCancelCounts.put(reservationMonth, 1); // 처음 카운팅하는 경우 초기화
+                }
 
-            // 결제 건수 추가 (CONFIRM 상태만)
-            if ("CONFIRM".equalsIgnoreCase(item.getReservationStatus()) && monthlyPaymentCounts.containsKey(reservationMonth)) {
-                monthlyPaymentCounts.put(reservationMonth, monthlyPaymentCounts.get(reservationMonth) + 1);
+                // 결제 건수 추가 (CONFIRM 상태만)
+                if ("CONFIRM".equalsIgnoreCase(item.getReservationStatus()) && monthlyPaymentCounts.containsKey(reservationMonth)) {
+                    monthlyPaymentCounts.put(reservationMonth, monthlyPaymentCounts.get(reservationMonth) + 1);
+                } else if ("CONFIRM".equalsIgnoreCase(item.getReservationStatus()) && !monthlyPaymentCounts.containsKey(reservationMonth)) {
+                    monthlyPaymentCounts.put(reservationMonth, 1); // 처음 카운팅하는 경우 초기화
+                }
+            } else {
+                // reservationDate가 null이거나 길이가 충분하지 않은 경우 로그 기록
             }
         }
+
 
         monthlyStats.setMonthlyReservationCounts(new ArrayList<>(monthlyReservationCounts.values()));
         monthlyStats.setMonthlyCancelCounts(new ArrayList<>(monthlyCancelCounts.values()));

@@ -9,14 +9,11 @@ import kr.co.swm.adminPage.accommodation.model.service.AccommodationServiceImpl;
 import kr.co.swm.adminPage.accommodation.util.UploadFile;
 import kr.co.swm.jwt.util.JWTUtil;
 import kr.co.swm.model.dto.SellerDto;
-import kr.co.swm.model.dto.WebDto;
-import kr.co.swm.jwt.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

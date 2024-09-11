@@ -263,7 +263,8 @@ function renderReservation(reservation) {
         noReservation.style.display = 'none'; // 예약이 있을 때 메시지 숨기기
 
         reservation.forEach(function(reservation) {
-            const imageUrl = `${reservation.accommodationImageDto.uploadImagePath}${reservation.accommodationImageDto.uploadUniqueName}`;
+            const imageUrl = `/accommodationImages/${reservation.accommodationImageDto.uploadUniqueName}`;
+
 
             // 조건에 따라 버튼을 다르게 추가
             let cancelButton = '';
@@ -288,7 +289,7 @@ function renderReservation(reservation) {
                                 금액: <strong><span style="font-size: 1.2em;">${reservation.reserveAmount}원</span></strong>
                            </p>
                            <div class="button-group" style="float: right;">
-                                <button class="btn-danger" onclick="cancelReservation(${reservation.reserveRoomNo})">예약 취소</button>
+                                <button class="btn-danger" onclick="requestRefund(${reservation.reserveRoomNo}, '${reservation.approvalCode}', ${reservation.reserveAmount} )">예약 취소</button>
                                 <button class="btn-primary" onclick="viewReservationDetails(${reservation.accommodationNo})">예약 상세</button>
                            </div>
                        </div>

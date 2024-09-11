@@ -104,7 +104,7 @@ public class SellerController {
             System.out.println("예약연락처 : " + item.getUserPhone());
             System.out.println("결제금액 : " + item.getReserveAmount());
             System.out.println("예약상태 : " + item.getReservationStatus());
-            System.out.println("예약일 : " + item.getReservationDate());
+//            System.out.println("예약일 : " + item.getReservationDate());
             System.out.println("예약취소일 : " + item.getReservationCancellationDate());
             System.out.println("= = = = = = = = = = = = = = = = = = = = = = =");
             System.out.println();
