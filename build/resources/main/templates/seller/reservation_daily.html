@@ -74,18 +74,18 @@
                 </thead>
                 <tbody>
                 <!-- roomData 리스트를 반복하여 테이블에 표시 -->
-                <tr th:each="room : ${roomData}">
-                    <td th:text="${room.roomNo}">1</td>
-                    <td th:text="${room.roomTypeName}">오션뷰</td>
-                    <td th:text="${room.roomName}">2인 트윈베드</td>
-                    <td th:text="${room.roomCheckIn}">14:00</td>
-                    <td th:text="${room.roomCheckOut}">12:00</td>
-                    <td>
-                        <button th:class="${room.reservationStatus == '예약중' ? 'btn btn-danger status-btn' : 'btn btn-success status-btn'}" disabled>
-                            <span th:text="${room.reservationStatus}">예약 가능</span>
-                        </button>
-                    </td>
-                </tr>
+                    <tr th:each="room : ${roomData}">
+                        <td th:text="${room.roomNo}">1</td>
+                        <td th:text="${room.roomTypeName}">오션뷰</td>
+                        <td th:text="${room.roomName}">2인 트윈베드</td>
+                        <td th:text="${room.roomCheckIn}">14:00</td>
+                        <td th:text="${room.roomCheckOut}">12:00</td>
+                        <td>
+                            <button th:class="${room.reservationStatus == '예약중' ? 'btn btn-danger status-btn' : 'btn btn-success status-btn'}" disabled>
+                                <span th:text="${room.reservationStatus}">예약 가능</span>
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 

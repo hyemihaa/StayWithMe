@@ -1,12 +1,12 @@
-.content {
-    margin-left: 300px !important; /* 사이드바의 너비와 일치 */
-    min-height: 100vh !important; /* 화면 높이에 맞게 최소 높이 설정 */
-    padding: 20px !important; /* 경계와 컨텐츠 사이 여백 */
-    width: 83%; /* 컨텐츠 영역의 너비 설정 */
-    background: #FFFFFF !important; /* 배경색을 흰색으로 설정 */
-    transition: margin-left 0.5s ease !important; /* 사이드바 토글 시 부드러운 전환 효과 */
-    z-index: 1 !important; /* 사이드바보다 위에 위치 */
-}
+/*.content {
+    margin-left: 300px !important; *//* 사이드바의 너비와 일치 *//*
+    min-height: 100vh !important; *//* 화면 높이에 맞게 최소 높이 설정 *//*
+    padding: 20px !important; *//* 경계와 컨텐츠 사이 여백 *//*
+    width: 83%; *//* 컨텐츠 영역의 너비 설정 *//*
+    background: #FFFFFF !important; *//* 배경색을 흰색으로 설정 *//*
+    transition: margin-left 0.5s ease !important; *//* 사이드바 토글 시 부드러운 전환 효과 *//*
+    z-index: 1 !important; *//* 사이드바보다 위에 위치 *//*
+}*/
 
 /* Search Area Styles */
 /* 검색 필드 스타일링 */
@@ -56,24 +56,22 @@
 /* Badge Styles */
 /* 예약 상태 배지 스타일링 */
 .badge {
-    padding: 0.5em 1em; /* 배지 안쪽 여백 설정 */
-    font-size: 14px; /* 배지 텍스트 크기 설정 */
-    font-weight: 700; /* 배지 텍스트 굵게 설정 */
-    border-radius: 12px; /* 배지 모서리를 둥글게 설정 */
-    display: inline-block; /* 배지를 인라인 블록 요소로 설정 */
-    text-align: center; /* 배지 텍스트를 중앙 정렬 */
+    padding: 0.5em 1em;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 12px;
+    display: inline-block;
+    text-align: center;
 }
 
-/* 예약 완료 상태 배지 스타일 */
 .status-complete {
-    background-color: #d4edda; /* 녹색 배경색 설정 */
-    color: #155724; /* 녹색 텍스트 색상 설정 */
+    background-color: #d4edda;
+    color: #155724;
 }
 
-/* 예약 취소 상태 배지 스타일 */
 .status-cancel {
-    background-color: #f8d7da; /* 붉은색 배경색 설정 */
-    color: #721c24; /* 붉은색 텍스트 색상 설정 */
+    background-color: #f8d7da;
+    color: #721c24;
 }
 
 /* Flexbox for Footer Positioning */
@@ -115,3 +113,8 @@ input[type="date"],
 input[type="text"] {
     width: auto; /* 날짜 및 텍스트 필드의 너비를 자동으로 설정 */
 }
+
+
+
+
+

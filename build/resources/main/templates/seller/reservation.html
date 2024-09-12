@@ -114,13 +114,13 @@
                                     <label class="form-check-label" for="reservationStatus1">전체</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="reservationStatus" id="reservationStatus3" value="Confirmed"
-                                           th:checked="${reservationStatus == 'Confirmed'}">
+                                    <input class="form-check-input" type="radio" name="reservationStatus" id="reservationStatus3" value="CONFIRM"
+                                           th:checked="${reservationStatus == 'CONFIRM'}">
                                     <label class="form-check-label" for="reservationStatus3">예약완료</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="reservationStatus" id="reservationStatus5" value="Cancelled"
-                                           th:checked="${reservationStatus == 'Cancelled'}">
+                                    <input class="form-check-input" type="radio" name="reservationStatus" id="reservationStatus5" value="CANCELLED"
+                                           th:checked="${reservationStatus == 'CANCELLED'}">
                                     <label class="form-check-label" for="reservationStatus5">예약취소</label>
                                 </div>
                             </div>
@@ -155,9 +155,9 @@
                         <td th:text="|${#numbers.formatInteger(item.reserveAmount, 0)}원|">결제금액</td>
                         <td>
                             <!-- 예약 상태에 따라 출력 내용 변경 -->
-                            <span th:if="${item.reservationStatus == 'Confirmed'}" class="badge status-complete"
+                            <span th:if="${item.reservationStatus == 'CONFIRM'}" class="badge status-complete"
                                   th:utext="|예약완료<br/>${item.reservationDate}|"></span>
-                            <span th:if="${item.reservationStatus == 'Cancelled'}" class="badge status-cancel"
+                            <span th:if="${item.reservationStatus == 'CANCELLED'}" class="badge status-cancel"
                                   th:utext="|예약취소<br/>${item.reservationCancellationDate}|"></span>
                         </td>
                         <td th:text="${item.requestDetails != null ? item.requestDetails : '없음'}">요청사항</td>
@@ -170,7 +170,29 @@
                         <td th:text="|${item.userName}, ${item.userPhone}|">예약자정보</td>
                         <td th:text="|${#numbers.formatInteger(item.reserveAmount, 0)}원|">결제금액</td>
                         <td>
-                            <span th:if="${item.reservationStatus == 'CONFIRMED'}" class="badge status-complete">
+                            <!-- 예약 상태에 따라 출력 내용 변경 -->
+                            <span th:if="${item.reservationStatus == 'CONFIRM'}" class="badge status-complete">
+                                예약완료
+                            </span>
+                            <span th:if="${item.reservationStatus != 'CANCELLED'}" th:text="${item.reservationDate}"></span>
+
+                            <span th:if="${item.reservationStatus == 'CANCELLED'}" class="badge status-cancel">
+                                예약취소
+                            </span>
+                            <span th:if="${item.reservationStatus == 'CANCELLED'}" th:text="${item.reservationCancellationDate}"></span>
+                        </td>
+                        <td th:text="${item.requestDetails != null ? item.requestDetails : '없음'}">요청사항</td>
+                    </tr>
+
+
+                    <!-- 'reservationSearch'가 없고 'reservation'이 존재하면 그 데이터를 반복하여 테이블에 출력 -->
+                    <tr th:if="${reservationSearch == null}" th:each="item : ${reservation}">
+                        <td th:text="${item.reserveRoomName}">객실명</td>
+                        <td th:text="|${item.reserveCheckIn} ~ ${item.reserveCheckOut}|">예약일</td>
+                        <td th:text="|${item.userName}, ${item.userPhone}|">예약자정보</td>
+                        <td th:text="|${#numbers.formatInteger(item.reserveAmount, 0)}원|">결제금액</td>
+                        <td>
+                            <span th:if="${item.reservationStatus == 'CONFIRM'}" class="badge status-complete">
                                 예약완료
                             </span>
                             <span th:if="${item.reservationStatus != 'CANCELLED'}" th:text="${item.reservationDate}"></span>
