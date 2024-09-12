@@ -16,10 +16,9 @@
         <result column="MIN_PURCHASE_PRICE" property="couponMinimumAmount"></result>
         <result column="COUPON_NO" property="couponNo"></result>
         <result column="USE_YN" property="useYN"></result>
-
     </resultMap>
-    <resultMap id="reservation" type="kr.co.swm.model.dto.SellerDto">
 
+    <resultMap id="reservation" type="kr.co.swm.model.dto.SellerDto">
         <!-- 숙소 정보 -->
         <result column="NAME" property="accommodationName"/>
         <result column="ACCOMMODATION_TYPE" property="accommodationType"/>
@@ -37,6 +36,7 @@
         <result column="MAX_OCCUPANCY" property="roomMaxPersonnel"/>
 
         <!-- 예약 정보 -->
+        <result column="BOOKING_NO" property="bookingNo"/>
         <result column="RESERVE_ROOM_NO" property="reserveRoomNo"/>
         <result column="RESERVE_ROOM_NAME" property="reserveRoomName"/>
         <result column="CHECK_IN_DATE" property="reserveCheckIn"/>
@@ -46,13 +46,32 @@
         <result column="RESERVATION_CANCELLATION_DATE" property="reservationCancellationDate"/>
         <result column="RESERVATION_STATUS" property="reservationStatus"/>
         <result column="RESERVE_ACCOMMODATION_TYPE" property="reservationType"/>
-
     </resultMap>
+
     <resultMap id="user" type="kr.co.swm.member.model.dto.UserDTO">
         <result column="USER_NAME" property="userName"/>
         <result column="USER_phone" property="userPhone"/>
     </resultMap>
 
+
+
+    <insert id="reserveSave">
+        insert into reserve values (
+                                    null,
+                                    #{userNo},
+                                    #{sellerDto.reserveRoomNo},
+                                    #{sellerDto.reserveCheckIn},
+                                    #{sellerDto.reserveCheckOut},
+                                    #{sellerDto.reserveAmount},
+                                    #{couponId},
+                                    null,
+                                    null,
+                                    "CONFIRM"
+                                   )
+        <selectKey resultType="int" keyProperty="sellerDto.bookingNo" keyColumn="BOOKING_NO" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
 
 
     <select id="couponList" resultMap="coupon">
@@ -70,7 +89,7 @@
     <select id="reserveList" resultMap="reservation">
         select a.name, r.room_name, r.CHECK_IN_TIME, r.CHECK_OUT_TIME,  r.STANDARD_OCCUPANCY, r.MAX_OCCUPANCY, r.room_no from accommodation a
         JOIN room r ON a.accommodation_admin_no = r.accommodation_admin_no
-        where room_no = 4
+        where room_no = #{roomNo}
     </select>
 
     <select id="userInfo" resultMap="user">
@@ -78,9 +97,61 @@
         where user_no = #{userNo}
     </select>
 
-    <insert id="reserveSave">
-        insert into reserve values (null, #{userNo}, #{roomNo}, #{checkIn}, #{checkOut},#{price},NOW() ,null, "예약완료")
+    <insert id="paymentSave" >
+        insert into payment values (null,
+                                    #{reservationNo},
+                                    #{payment.basicPrice},
+                                    #{payment.discountPrice},
+                                    #{payment.finalPrice}
+                                   )
+
+        <selectKey resultType="int" keyProperty="payment.paymentNo" keyColumn="PAYMENT_NO" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
     </insert>
+
+    <insert id="paymentDetail">
+        insert into payment_detail values (
+                                           null,
+                                           #{paymentNo},
+                                           #{payment.method},
+                                           #{payment.uid},
+                                           NOW(),
+                                           #{payment.finalPrice}
+                                          )
+    </insert>
+    <insert id="refund" >
+        <selectKey keyProperty="cancelBy" resultType="String" order="BEFORE">
+            SELECT user_name
+            FROM user
+            WHERE user_no = #{userNo}
+        </selectKey>
+
+        insert into cancel values (
+                                      null,
+                                      #{bookingNo},
+                                      #{cancelAmount},
+                                      NOW(),
+                                      #{cancelBy}
+                                  )
+    </insert>
+
+    <select id="paymentInfo" resultMap="reservation">
+        SELECT
+    </select>
+
+    <update id="updateReservation" >
+        update reserve
+        set reservation_status = "예약취소",
+            reservation_cancellation_date = NOW()
+        where booking_no = #{bookingNo}
+    </update>
+
+    <update id="reserveUpdate" >
+        update reserve
+        set reservation_date = NOW()
+        where booking_no = #{paymentNo}
+    </update>
 
 </mapper>
 
